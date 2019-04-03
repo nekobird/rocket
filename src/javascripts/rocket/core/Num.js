@@ -76,7 +76,7 @@ export class Num {
     }
   }
 
-  // An efficient way to calculate hypotenuse.
+  // A more efficient way to calculate hypotenuse.
   static hypotenuse(x, y) {
     // http://www.johndcook.com/blog/2010/06/02/whats-so-hard-about-finding-a-hypotenuse/
     let max = Math.max(Math.abs(x), Math.abs(y))
