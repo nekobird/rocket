@@ -3,7 +3,7 @@ import { TextBoxModel } from '../text/TextBoxModel'
 export class UITextArea {
 
   constructor(element, properties) {
-    // Flags
+    // FLAGS
     this.disableLineBreaks = false
     this.disableTabs = false
     this.isInFocus = false
@@ -11,16 +11,16 @@ export class UITextArea {
     this.removeLeadingWhitespaces = false
     this.removeMultipleWhitespaces = false
 
-    // Variables
+    // VARIABLES
     this.element
 
-    // Callbacks
-    this.onBlur
-    this.onFocus
-    this.onInput
-    this.onPaste
+    // CALLBACKS
+    this.onBlur = () => { }
+    this.onFocus = () => { }
+    this.onInput = () => { }
+    this.onPaste = () => { }
 
-    // Properties
+    // PROPERTIES
     this._eventInput
     this._eventInputName = 'UITextAreaOnInput'
     this._eventKeydown
@@ -28,22 +28,21 @@ export class UITextArea {
     this._lastKeyCode
     this._textBoxModel
   
+    // Initialize TextBoxModel.
     this._textBoxModel = new TextBoxModel
+
+    // Initialize custom events.
     this._eventInput = new CustomEvent(this._eventInputName)
     this._eventKeydown = new CustomEvent(this._eventKeydownName)
 
     this.setElement(element)
     this.setProperties(properties)
+
     this.initialize()
     return this
   }
 
   initialize() {
-    this.onBlur = () => { }
-    this.onFocus = () => { }
-    this.onInput = () => { }
-    this.onPaste = () => { }
-
     this.filterInput()
     this.grow()
     this.startListening()
@@ -62,8 +61,27 @@ export class UITextArea {
     return this
   }
 
+  get value() {
+    return this.element.value
+  }
+
+  get selectedText() {
+    let text = this.element.value
+    let start = this.element.selectionStart
+    let end = this.element.selectionEnd
+    return text.substring(start, end)
+  }
+
+  set value(value) {
+    if (typeof value === 'string') {
+      this.element.value = value
+      this.processText()
+    }
+    return this.element.value
+  }
+
   grow() {
-    let height = this._textBoxModel.getTextBoxHeightFromElement(this.element)
+    const height = this._textBoxModel.getTextBoxHeightFromElement(this.element)
     this.element.style.height = `${height}px`
     return this
   }
@@ -74,37 +92,30 @@ export class UITextArea {
   }
 
   filterInput() {
-    // Remove new lines
+    // Remove new lines.
     if (this.disableLineBreaks === true) {
       this.element.value = this.element.value.replace(/[\r\n]+/g, '')
     }
-    // remove tabs
+    // Remove tabs.
     if (this.disableTabs === true) {
       this.element.value = this.element.value.replace(/[\t]+/g, '')
     }
-    // remove multiple whitespaces to one
+    // Remove multiple whitespaces to one.
     if (this.removeMultipleWhitespaces === true) {
       this.element.value = this.element.value.replace(/[\s]+/g, ' ')
     }
-    // remove leading whitespaces
+    // Remove leading whitespaces.
     if (this.removeLeadingWhitespaces === true) {
       this.element.value = this.element.value.replace(/^[\s]+/g, '')
     }
-    // if limit number of characters is a number
-    // trim element value
+    // Trim element value if limit number of characters is a number.
     if (typeof this.limitNumberOfCharacters === 'number') {
       this.element.value = this.element.value.substring(0, this.limitNumberOfCharacters)
     }
-    // replace tabs with spaces
+    // Replace tabs with spaces.
+    // TODO: Fix this because it's not working as intended.
     // this.element.value = this.element.value.replace(/[\t]+/g, '    ')
     return this
-  }
-
-  getSelection() {
-    let text = this.element.value
-    let start = this.element.selectionStart
-    let end = this.element.selectionEnd
-    return text.substring(start, end)
   }
 
   insertString(string) {
@@ -114,14 +125,6 @@ export class UITextArea {
     this.element.value = text.substring(0, start) + string + text.substring(end)
     this.element.selectionEnd = start + string.length
     return this
-  }
-
-  value(value) {
-    if (typeof value === 'string') {
-      this.element.value = value
-      this.processText()
-    }
-    return this.element.value
   }
 
   processText() {
@@ -150,7 +153,7 @@ export class UITextArea {
     return this
   }
 
-  // Events
+  // EVENTS
 
   _handleBlur() {
     this.isInFocus = false
@@ -175,7 +178,10 @@ export class UITextArea {
       this.insertString('\t')
       event.preventDefault()
     }
-    if (keyCode === 13 && this.disableLineBreaks === true) {
+    if (
+      keyCode === 13 &&
+      this.disableLineBreaks === true
+    ) {
       event.preventDefault()
     }
     this._lastKeyCode = keyCode

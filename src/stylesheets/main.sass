@@ -1,0 +1,26 @@
+@import 'reset'
+
+$font_family_0: 'Helvetica Neue', 'Helvetica', Arial, sans-serif
+
+$base_font_family: $font_family_0
+$base_font_size: 16px
+
+%normalize_fonts
+  font-family: $base_font_family
+  font-size: $base_font_size
+
+.textarea
+  @extend %normalize_fonts
+  $line_height: 40px
+  $padding: 20px
+  appearance: none
+  border: 1px solid hsl(0, 0, 20)
+  font-size: 16px
+  line-height: $line_height
+  min-height: $padding * 2 + $line_height * 3
+  padding: $padding
+  resize: none
+  width: 500px
+
+  &:focus
+    outline: none

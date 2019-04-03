@@ -1,4 +1,4 @@
-const DEFAULT_ATTRIBUTES = {
+const MODEL_ATTRIBUTES = {
   border: 'none',
   height: '0px',
   left: '0px',
@@ -62,36 +62,53 @@ const FONT_STYLE_PROPERTIES = [
 export class TextBoxModel {
 
   constructor() {
-    this.element = undefined
+    this.modelElement = undefined
   }
 
   getTextBoxHeightFromElement(element, text) {
+    // Create and prepare model to measure height.
     this
       .destroy()
       .create('TEXTAREA')
-      .applyDefaultAttributes()
+      .applyModelAttributes()
       .applyBoxModelPropertiesFromElement(element)
       .applyFontPropertiesFromElement(element)
-    this.element.style.maxHeight = '0px'
-    this.element.style.height = '0px'
-    this.element.style.whiteSpace = 'pre-wrap'
+      .setStyle({
+        height: '0px',
+        maxHeight: '0px',
+        whiteSpace: 'pre-wrap'
+      })
+
+    // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
       text = this.getTextFromElement(element)
     }
-    this.setText(text)
+
+    this.modelText = text
+
     let offset = 0
+
+    // Set offset for when boxSizing is set to border-box
     let style = window.getComputedStyle(element, null)
     if (style['boxSizing'] === 'border-box') {
       offset = this.getElementVerticalBorderHeight(element)
+    } else {
+      // Minus one lineHeight if boxShadow is content-box.
+      // Why? I don't know but it works.
+      // TODO: Look into this.
+      offset -= parseInt(style['lineHeight'])
     }
-    return this.element.scrollHeight + offset
+
+    // Return calculated height value.
+    return this.modelElement.scrollHeight + offset
   }
 
   getTextBoxWidthFromElement(element, text) {
+    // Create and prepare model to measure width.
     this
       .destroy()
       .create('DIV')
-      .applyDefaultAttributes()
+      .applyModelAttributes()
       .applyBoxModelPropertiesFromElement(element)
       .applyFontPropertiesFromElement(element)
       .setStyle({
@@ -106,24 +123,39 @@ export class TextBoxModel {
         wordBreak: 'normal',
         wordWrap: 'normal'
       })
+
+    // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
       text = this.getTextFromElement(element)
     }
-    this.setText(text)
+
+    this.modelText = text
+
     let offset = 0
+
+    // Set offset for when boxSizing is set to border-box
     let style = window.getComputedStyle(element, null)
     if (style['boxSizing'] === 'border-box') {
       offset = this.getElementHorizontalBorderWidth(element)
       offset += this.getElementHorizontalPaddingWidth(element)
     }
-    return this.element.scrollWidth + offset
+
+    // Return calculated width value.
+    return this.modelElement.scrollWidth + offset
   }
 
-  // Model
+  // MODEL
+  set modelFontSize(fontSize) {
+    this.setFontSize(fontSize)
+  }
 
-  applyDefaultAttributes() {
-    for (let key in DEFAULT_ATTRIBUTES) {
-      this.element.style[key] = DEFAULT_ATTRIBUTES[key]
+  set modelText(text) {
+    this.setText(text)
+  }
+
+  applyModelAttributes() {
+    for (let key in MODEL_ATTRIBUTES) {
+      this.modelElement.style[key] = MODEL_ATTRIBUTES[key]
     }
     return this
   }
@@ -131,7 +163,7 @@ export class TextBoxModel {
   applyBoxModelPropertiesFromElement(element) {
     let style = window.getComputedStyle(element, null)
     for (let name of STYLE_PROPERTIES) {
-      this.element.style[name] = style[name]
+      this.modelElement.style[name] = style[name]
     }
     return this
   }
@@ -139,59 +171,59 @@ export class TextBoxModel {
   applyFontPropertiesFromElement(element) {
     let style = window.getComputedStyle(element, null)
     for (let name of FONT_STYLE_PROPERTIES) {
-      this.element.style[name] = style[name]
+      this.modelElement.style[name] = style[name]
     }
     return this
   }
 
   create(type = undefined) {
     type = typeof type === 'string' ? type : 'TEXTAREA'
-    this.element = document.createElement(type)
-    document.body.appendChild(this.element)
+    this.modelElement = document.createElement(type)
+    document.body.appendChild(this.modelElement)
     return this
   }
 
   destroy() {
     if (
-      typeof this.element !== 'undefined' &&
-      this.element.nodeType === 1
+      typeof this.modelElement !== 'undefined' &&
+      this.modelElement.nodeType === 1
     ) {
-      document.body.removeChild(this.element)
-      this.element.remove()
+      document.body.removeChild(this.modelElement)
+      this.modelElement.remove()
     }
     return this
   }
 
   setFontSize(fontSize) {
-    this.element.style.fontSize = `${fontSize}px`
+    this.modelElement.style.fontSize = `${fontSize}px`
     return this
   }
 
   setStyle(style) {
     for (let key in style) {
-      this.element.style[key] = style[key]
+      this.modelElement.style[key] = style[key]
     }
     return this
   }
 
   setText(text) {
     if (
-      this.element instanceof HTMLTextAreaElement ||
-      this.element instanceof HTMLInputElement ||
-      this.element.nodeName === 'TEXTAREA' ||
-      this.element.nodeName === 'INPUT'
+      this.modelElement instanceof HTMLTextAreaElement ||
+      this.modelElement instanceof HTMLInputElement ||
+      this.modelElement.nodeName === 'TEXTAREA' ||
+      this.modelElement.nodeName === 'INPUT'
     ) {
-      (this.element).value = text
+      (this.modelElement).value = text
     } else {
       text = text.replace(/[\n\r]/g, '<br>')
       text = text.replace(/[\t]/g, '&#9')
       text = text.replace(/[\s]/g, '&nbsp')
-      this.element.innerHTML = text
+      this.modelElement.innerHTML = text
     }
     return this
   }
 
-  // Element
+  // ELEMENT
 
   getElementFontSize(element) {
     let style = window.getComputedStyle(element, null)
