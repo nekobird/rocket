@@ -12,16 +12,20 @@ export class DOMUtil {
   // Returns false if no matching ancestor is found.
   static findAncestor(el, identifierFn, isMoreThanOneResults = true) {
     let results = new Array
+
     if (identifierFn(el)) {
       results.push(el)
     }
+
     let currentEl = el
+
     while (currentEl.nodeName !== 'HTML') {
       if (identifierFn(currentEl)) {
         results.push(currentEl)
       }
       currentEl = currentEl.parentElement
     }
+
     if (results.length > 0) {
       return isMoreThanOneResults === true ? results : results[0]
     } else {
@@ -34,6 +38,7 @@ export class DOMUtil {
     let identifierFn = element => {
       return element.classList.contains(className)
     }
+
     return this.findAncestor(el, identifierFn, isMoreThanOneResults)
   }
 
@@ -42,15 +47,18 @@ export class DOMUtil {
     let identifierFn = element => {
       return element.id === ID ? true : false
     }
+
     return this.findAncestor(el, identifierFn, isMoreThanOneResults)
   }
 
   // Find descendant that match the identifierFn.
   static findDescendant(el, identifierFn, isMoreThanOneResults = true) {
     let results = new Array
+
     if (identifierFn(el)) {
       results.push(el)
     }
+
     let inspectDescendant = inspectEl => {
       let childrenEls = inspectEl.children
       if (childrenEls.length > 0) {
@@ -67,7 +75,9 @@ export class DOMUtil {
         }
       }
     }
+
     inspectDescendant(el)
+
     if (results.length > 0) {
       return isMoreThanOneResults === true ? results : results[0]
     } else {

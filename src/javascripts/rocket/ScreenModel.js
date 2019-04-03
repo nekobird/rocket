@@ -21,29 +21,50 @@ export class ScreenModel {
     this.create()
   }
 
-  get modelIsReady() {
+  static get modelIsReady() {
     return modelIsReady
   }
 
-  get width() {
+  static get width() {
+    this.startModel()
     return modelElement.offsetWidth
   }
 
-  get height() {
+  static get height() {
+    this.startModel()
     return modelElement.offsetHeight
   }
 
-  get diagonal() {
+  static get diagonal() {
+    this.startModel()
     const h = modelElement.offsetHeight
     const w = modelElement.offsetWidth
     return Math.abs(Math.sqrt(w * w + h * h))
   }
 
-  get modelElement() {
+  static get modelElement() {
+    this.startModel()
     return modelElement
   }
 
   // MODEL
+
+  static get modelIsCreated() {
+    if (
+      typeof modelElement !== 'undefined' &&
+      modelElement.nodeType === 1
+    ) {
+      return true
+    }
+    return false
+  }
+
+  static startModel() {
+    if (!this.modelIsCreated) {
+      this.create()
+    }
+    return this
+  }
 
   static create() {
     // Create and append model element.
@@ -59,10 +80,7 @@ export class ScreenModel {
 
   static destroy() {
     // Check if model is created.
-    if (
-      typeof modelElement !== 'undefined' &&
-      modelElement.nodeType === 1
-    ) {
+    if (this.modelIsCreated) {
       // Remove model from DOM and destroy it.
       document.body.removeChild(modelElement)
       modelElement.remove()
