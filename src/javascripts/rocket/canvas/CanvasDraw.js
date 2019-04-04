@@ -1,8 +1,7 @@
 import {
   Color,
-  Point,
   Vector2,
-} from '../Anvil'
+} from '../Rocket'
 
 // export interface CanvasDrawStyle {
 //   fillColor? | string
@@ -29,12 +28,12 @@ export class CanvasDraw {
 
     this.element = element
     this.context = this.element.getContext('2d')
-  
+
     this.resolutionMultiplier = window.devicePixelRatio
 
     this.previousTranslation = new Vector2(0, 0)
 
-    this.defaultStyle = {
+    this._defaultStyle = {
       fillColor: 'black',
       noFill: false,
       noStroke: false,
@@ -47,11 +46,14 @@ export class CanvasDraw {
     this.resize()
   }
 
-  setDefaultStyle(style) {
+  get defaultStyle() {
+    return this._defaultStyle
+  }
+
+  set defaultStyle(style) {
     for (let key in style) {
-      this.defaultStyle[key] = style[key]
+      this._defaultStyle[key] = style[key]
     }
-    return this
   }
 
   // GRADIENTS

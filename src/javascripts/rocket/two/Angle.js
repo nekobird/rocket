@@ -1,4 +1,6 @@
-import { Num } from '../core/Num'
+import {
+  Num,
+} from '../Rocket'
 
 export class Angle {
 

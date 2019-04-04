@@ -1,5 +1,7 @@
-import { CanvasLayer } from './CanvasLayer'
-import { ScreenModel } from '../ScreenModel'
+import {
+  CanvasLayer,
+  ScreenModel,
+} from '../Rocket'
 
 export class CanvasLayerManager {
 

@@ -1,4 +1,6 @@
-import { TextBoxModel } from '../text/TextBoxModel'
+import {
+  TextBoxModel
+} from '../Rocket'
 
 export class UITextArea {
 
@@ -27,7 +29,7 @@ export class UITextArea {
     this._eventKeydownName = 'UITextAreaOnKeydown'
     this._lastKeyCode
     this._textBoxModel
-  
+
     // Initialize TextBoxModel.
     this._textBoxModel = new TextBoxModel
 
@@ -35,8 +37,8 @@ export class UITextArea {
     this._eventInput = new CustomEvent(this._eventInputName)
     this._eventKeydown = new CustomEvent(this._eventKeydownName)
 
-    this.setElement(element)
-    this.setProperties(properties)
+    this.element = element
+    this.properties = properties
 
     this.initialize()
     return this
@@ -49,16 +51,10 @@ export class UITextArea {
     return this
   }
 
-  setElement(element) {
-    this.element = element
-    return this
-  }
-
-  setProperties(properties) {
+  set properties(properties) {
     for (let key in properties) {
       this[key] = properties[key]
     }
-    return this
   }
 
   get value() {

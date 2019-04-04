@@ -1,8 +1,8 @@
-import { Num } from './Num'
+import { Num } from '../Rocket'
 
 export class Util {
 
-   static cycle(array) {
+  static cycle(array) {
     let index = -1
 
     return () => {
@@ -18,7 +18,7 @@ export class Util {
 
   // Returns a debouncer function that no matter the frequency of calls
   // will only be invoked after the given delay timeout (in seconds).
-   static debounce(delay, fn) {
+  static debounce(delay, fn) {
     let timeout
 
     return function (...args) {
@@ -31,23 +31,23 @@ export class Util {
   }
 
   // Delay given function call given number of second(s).
-   static delay(time, fn) {
+  static delay(time, fn) {
     return setTimeout(fn, time * 1000)
   }
 
-   static cancelDelay(id) {
+  static cancelDelay(id) {
     clearTimeout(id)
   }
 
-   static repeat(interval, fn) {
+  static repeat(interval, fn) {
     return setInterval(fn, interval * 1000)
   }
 
-   static stopRepeat(id) {
+  static stopRepeat(id) {
     clearInterval(id)
   }
 
-   static match(string, _with) {
+  static match(string, _with) {
     let value = String(string).match(_with)
 
     if (value === null) {
@@ -59,12 +59,12 @@ export class Util {
     return value
   }
 
-   static randomChoice(array) {
+  static randomChoice(array) {
     let index = Num.random(array.length - 1, true)
     return array[index]
   }
 
-   static throttle(threshold, fn) {
+  static throttle(threshold, fn) {
     let timeout
     let last
 
@@ -89,7 +89,7 @@ export class Util {
     }
   }
 
-   static toHex(n) {
+  static toHex(n) {
     return parseInt(n).toString(16).toUpperCase()
   }
 

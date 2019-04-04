@@ -1,4 +1,4 @@
-import { Vector2 } from '../two/Vector2'
+import { Vector2 } from '../Rocket'
 
 export class ScrollEventHandler {
 
@@ -7,50 +7,57 @@ export class ScrollEventHandler {
     this.name
 
     this.event
-  
+
     this.isScrolling = false
-  
+
     this.scrollStartTime
     this.scrollEndTime
     this.scrollDuration
-  
+
     determineScroll = () => { return true }
-  
-    onScrollStart = () => {}
-    onScroll = () => {}
-    onScrollEnd = () => {}
-  
-    debounce = () => {}
+
+    onScrollStart = () => { }
+    onScroll = () => { }
+    onScrollEnd = () => { }
+
+    debounce = () => { }
 
     this.element = element
 
-    this.position = new Vector2
-    this.velocity = new Vector2
-    this.acceleration = new Vector2
+    this._position = new Vector2
+    this._velocity = new Vector2
+    this._acceleration = new Vector2
 
-    this.previousPosition = new Vector2
-    this.previousVelocity = new Vector2
+    this._previousPosition = new Vector2
+    this._previousVelocity = new Vector2
   }
 
   handleScroll(event) {
     this.event = event
-    this.position.equals(this.getPosition())
-    this.velocity.equals(Vector2.subtract(this.position, this.previousPosition))
-    this.acceleration.equals(Vector2.subtract(this.velocity, this.previousVelocity))
+
+    this._position.equals(this.getPosition())
+    this._velocity.equals(
+      Vector2.subtract(this._position, this._previousPosition)
+    )
+    this._acceleration.equals(
+      Vector2.subtract(this._velocity, this._previousVelocity)
+    )
 
     if (this.isScrolling === false) {
       if (this.determineScroll(event, this) === true) {
         this.scrollStartTime = Date.now()
         this.isScrolling = true
-        this.onScrollStart(this.position, this)
+        this.onScrollStart(this._position, this)
       }
     } else {
-      this.acceleration.equals(Vector2.subtract(this.velocity, this.previousVelocity))
-      this.onScroll(this.position, this)
+      this._acceleration.equals(
+        Vector2.subtract(this._velocity, this._previousVelocity)
+      )
+      this.onScroll(this._position, this)
     }
 
-    this.previousPosition.equals(this.position)
-    this.previousVelocity.equals(this.velocity)
+    this._previousPosition.equals(this._position)
+    this._previousVelocity.equals(this._velocity)
   }
 
   handleScrollEnd() {
@@ -58,15 +65,17 @@ export class ScrollEventHandler {
       this.scrollEndTime = Date.now()
       this.scrollDuration = this.scrollEndTime - this.scrollStartTime
       this.isScrolling = false
-      this.onScrollEnd(this.position, this)
+      this.onScrollEnd(this._position, this)
     }
   }
 
-  getPosition() {
+  get position() {
     if (this.element === window) {
       return new Vector2(window.scrollX, window.scrollY)
     } else {
-      return new Vector2(this.element.scrollLeft, this.element.scrollTop)
+      return new Vector2(
+        this.element.scrollLeft, this.element.scrollTop
+      )
     }
   }
 
@@ -106,10 +115,10 @@ export class ScrollEventHandler {
       }
     } else {
       if (typeof top === 'number') {
-        (this.element).scrollTop = top
+        this.element.scrollTop = top
         result = top
       } else {
-        result = (this.element).scrollTop
+        result = this.element.scrollTop
       }
     }
 
@@ -132,11 +141,16 @@ export class ScrollEventHandler {
   }
 
   update() {
-    let currentPosition = this.getPosition()
-    let currentVelocity = Vector2.subtract(this.position, currentPosition)
-    this.acceleration.equals(Vector2.subtract(currentVelocity, this.velocity))
-    this.velocity.equals(currentVelocity)
-    this.position.equals(currentPosition)
+    let currentPosition = this.position()
+    let currentVelocity = Vector2.subtract(
+      this._position, currentPosition
+    )
+
+    this._acceleration.equals(
+      Vector2.subtract(currentVelocity, this._velocity)
+    )
+    this._velocity.equals(currentVelocity)
+    this._position.equals(currentPosition)
     return this
   }
 

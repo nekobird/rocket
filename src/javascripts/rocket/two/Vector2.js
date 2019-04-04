@@ -1,5 +1,4 @@
-import { Angle } from './Angle'
-import { Num } from '../core/Num'
+import { Angle, Num, } from '../Rocket'
 
 export class Vector2 {
 
@@ -29,11 +28,16 @@ export class Vector2 {
     return this
   }
 
-  setMagnitude(mag) {
-    this
-      .normalize()
-      .multiply(mag)
-    return this
+  set magnitude(mag) {
+    if (typeof mag === 'number') {
+      this
+        .normalize()
+        .multiply(mag)
+    }
+  }
+
+  get magnitude() {
+    return Num.hypotenuse(this.x, this.y)
   }
 
   equals(point) {
@@ -66,6 +70,7 @@ export class Vector2 {
     return Vector2.equals(this)
   }
 
+  // TODO: Turn this into getters
   getArray() {
     return [this.x, this.y]
   }
@@ -74,7 +79,7 @@ export class Vector2 {
     return `x: ${this.x}, y: ${this.y}`
   }
 
-  average() {
+  get average() {
     return (Math.abs(this.x) + Math.abs(this.y)) / 2
   }
 
@@ -177,12 +182,8 @@ export class Vector2 {
     return this.x * point.x + this.y * point.y
   }
 
-  magnitude() {
-    return Num.hypotenuse(this.x, this.y)
-  }
-
   normalize() {
-    let mag = Math.abs(this.magnitude())
+    let mag = Math.abs(this.magnitude)
     mag = mag === 0 ? 1 : mag
     this.x /= mag
     this.y /= mag
@@ -192,10 +193,10 @@ export class Vector2 {
   getDistanceTo(to) {
     return Vector2
       .subtract(this, to)
-      .magnitude()
+      .magnitude
   }
 
-  getAngle() {
+  get angle() {
     let m = Math.abs(
       Math.sqrt(this.x * this.x + this.y * this.y)
     )
@@ -233,7 +234,7 @@ export class Vector2 {
   }
 
   rotateBy(by) {
-    let angle = this.getAngle() + by
+    let angle = this.angle + by
     let m = Math.abs(
       Math.sqrt(this.x * this.x + this.y * this.y)
     )
@@ -339,7 +340,7 @@ export class Vector2 {
 
   scaleByFrom(by, from) {
     let sub = Vector2.subtract(this, from)
-    let m = sub.magnitude()
+    let m = sub.magnitude
     sub
       .normalize()
       .multiply(m * by)
@@ -349,7 +350,7 @@ export class Vector2 {
   }
 
   limit(by) {
-    let mag = this.magnitude()
+    let mag = this.magnitude
     if (mag > by) {
       this
         .normalize()
@@ -364,15 +365,17 @@ export class Vector2 {
     return this
   }
 
-  isZero() {
-    return this.x === 0 && this.y === 0 ? true : false
-  }
-
   zero() {
     this.x = 0
     this.y = 0
     return this
   }
+
+  get isZero() {
+    return this.x === 0 && this.y === 0 ? true : false
+  }
+
+  // STATIC
 
   static projectFrom(from, direction, by) {
     let to = Vector2
@@ -427,7 +430,7 @@ export class Vector2 {
   static getDistanceBetween(a, b) {
     return Vector2
       .subtract(a, b)
-      .magnitude()
+      .magnitude
   }
 
   static splitAtAngle(target, angle, by) {
@@ -456,13 +459,13 @@ export class Vector2 {
       .normalize()
   }
 
-  // @comparison
+  // COMPARISON
 
   static isEqual(a, b) {
     return a.x === a.x && a.y === b.y ? true : false
   }
 
-  // Angles
+  // ANGLES
 
   static angleIsInProximity(a, b, tolerance) {
     let d1 = Angle.differenceClockwise(a, b)
@@ -472,8 +475,8 @@ export class Vector2 {
   }
 
   static getAngleBetween2Points(a, b) {
-    let a1 = Vector2.equals(a).getAngle()
-    let a2 = Vector2.equals(b).getAngle()
+    let a1 = Vector2.equals(a).angle
+    let a2 = Vector2.equals(b).angle
     let b1 = Angle.differenceClockwise(a1, a2)
     let b2 = Angle.differenceCounterclockwise(a1, a2)
     return Math.min(b1, b2)
@@ -490,7 +493,7 @@ export class Vector2 {
     return Math.min(b1, b2)
   }
 
-  // Triangle
+  // TRIANGLE
 
   static getBasePointOfTriangle(v1, v2, v3) {
     let a1 = v1.getAngleTo(v3)
@@ -503,7 +506,7 @@ export class Vector2 {
     return fv.moveRadiallyBy(a1, ml)
   }
 
-  // Group
+  // GROUP
 
   static addGroupBy(group, by) {
     for (let point of group) {

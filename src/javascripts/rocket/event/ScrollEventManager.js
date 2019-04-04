@@ -1,19 +1,21 @@
-import { ScrollEventHandler } from './ScrollEventHandler'
-import { Util } from '../core'
-import { Vector2 } from '../two/Vector2'
+import {
+  ScrollEventHandler,
+  Util,
+  Vector2,
+} from '../Rocket'
 
 export class ScrollEventManager {
 
   constructor() {
     this.debounce
     this.debounceTime = 0.2
-  
+
     this.isScrolling = false
-  
-    this.onEvent = () => {}
-    this.onScrollStart = () => {}
-    this.onScroll = () => {}
-    this.onScrollEnd = () => {}
+
+    this.onEvent = () => { }
+    this.onScrollStart = () => { }
+    this.onScroll = () => { }
+    this.onScrollEnd = () => { }
 
     this.handlers = {}
 
@@ -41,6 +43,18 @@ export class ScrollEventManager {
     return this
   }
 
+  handleScroll(event) {
+    for (let name in this.handlers) {
+      this.handlers[name].handleScroll(event)
+    }
+  }
+
+  handleScrollEnd() {
+    for (let name in this.handlers) {
+      this.handlers[name].handleScroll(event)
+    }
+  }
+
   startListening() {
     for (let name in this.handlers) {
       this.handlers[name].debounce = Util.debounce(
@@ -66,18 +80,6 @@ export class ScrollEventManager {
       )
     }
     return this
-  }
-
-  handleScroll(event) {
-    for (let name in this.handlers) {
-      this.handlers[name].handleScroll(event)
-    }
-  }
-
-  handleScrollEnd() {
-    for (let name in this.handlers) {
-      this.handlers[name].handleScroll(event)
-    }
   }
 
 }

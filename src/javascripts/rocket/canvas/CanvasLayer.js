@@ -1,4 +1,6 @@
-import { CanvasDraw } from './CanvasDraw'
+import {
+  CanvasDraw
+} from '../Rocket'
 
 export class CanvasLayer {
 

@@ -1,7 +1,7 @@
 import {
   Num,
   Util,
-} from './Anvil'
+} from '../Rocket'
 
 // export interface ColorInput {
 //   alpha?
@@ -128,7 +128,7 @@ export class Color {
     return this
   }
 
-  _setFromObject(inputInput) {
+  _setFromObject(input) {
     let rgb
     if (typeof input.hex === 'string') {
       rgb = ConvertColor.HEXToRGB(input.hex)
@@ -204,6 +204,29 @@ export class Color {
   // GETTERS AND SETTERS
 
   // STRINGS
+  set rgbString(input) {
+    let rgb = input.match(/(\d+)/g).map(v => {
+      return Num.cycle(parseFloat(v) / 255, 1)
+    })
+    this.r = rgb[0]
+    this.g = rgb[1]
+    this.b = rgb[2]
+  }
+
+  set rgbaString(input) {
+    let rgba = input.match(/(\d+)/g).map((v, index) => {
+      if (index === 3) {
+        return Num.cycle(v, 1)
+      } else {
+        return Num.cycle(parseFloat(v) / 255, 1)
+      }
+    })
+    this.r = rgba[0]
+    this.g = rgba[1]
+    this.b = rgba[2]
+    this.a = rgba[3]
+  }
+
   // These will always return HTML color format.
   get rgbString() {
     const rgb = this.rgb255
@@ -388,7 +411,7 @@ export class Color {
       this.r = red
     }
   }
-  
+
   get red() {
     return this.r
   }
@@ -625,34 +648,38 @@ export class Color {
     return color
   }
 
-  static _name = {
-    azure: [0, 0.5, 1, 1],
-    black: [0, 0, 0, 1],
-    blue: [0, 0, 1, 1],
-    brown: [0.6, 0.3, 0, 1],
-    clear: [0, 0, 0, 0],
-    cyan: [0, 1, 1, 1],
-    gray: [0.5, 0.5, 0.5, 1],
-    green: [0, 1, 0, 1],
-    magenta: [1, 0, 1, 1],
-    orange: [1, 0.5, 0, 1],
-    pink: [1, 0.8, 0.86, 1],
-    purple: [0.5, 0, 0.5, 1],
-    red: [1, 0, 0, 1],
-    salmon: [0.98, 0.5, 0.45, 1],
-    transparent: [0, 0, 0, 0],
-    ultramarine: [0.25, 0, 1, 1],
-    violet: [0.5, 0, 1, 1],
-    white: [1, 1, 1, 1],
-    yellow: [1, 1, 0, 1]
+  static get _name() {
+    return {
+      azure: [0, 0.5, 1, 1],
+      black: [0, 0, 0, 1],
+      blue: [0, 0, 1, 1],
+      brown: [0.6, 0.3, 0, 1],
+      clear: [0, 0, 0, 0],
+      cyan: [0, 1, 1, 1],
+      gray: [0.5, 0.5, 0.5, 1],
+      green: [0, 1, 0, 1],
+      magenta: [1, 0, 1, 1],
+      orange: [1, 0.5, 0, 1],
+      pink: [1, 0.8, 0.86, 1],
+      purple: [0.5, 0, 0.5, 1],
+      red: [1, 0, 0, 1],
+      salmon: [0.98, 0.5, 0.45, 1],
+      transparent: [0, 0, 0, 0],
+      ultramarine: [0.25, 0, 1, 1],
+      violet: [0.5, 0, 1, 1],
+      white: [1, 1, 1, 1],
+      yellow: [1, 1, 0, 1]
+    }
   }
 
-  static _regex = {
-    hex: /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/g,
-    hsl: /^(hsl|HSL)\((360|3[0-5][0-9]|2[0-9][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(100|[1-9]?[0-9]),\s?(100|[1-9]?[0-9])\)$/g,
-    hsla: /^(hsl|HSL)\((360|3[0-5][0-9]|2[0-9][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(100|[1-9]?[0-9]),\s?(100|[1-9]?[0-9]),\s?(1|0|0\.([0-9]?)+[1-9])\)$/g,
-    rgb: /^(rgb|RGB)\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\)$/g,
-    rgba: /^(rgba|RGBA)\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(1|0|0\.([0-9]?){1,5}[1-9])\)$/g,
+  static get _regex() {
+    return {
+      hex: /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/g,
+      hsl: /^(hsl|HSL)\((360|3[0-5][0-9]|2[0-9][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(100|[1-9]?[0-9]),\s?(100|[1-9]?[0-9])\)$/g,
+      hsla: /^(hsl|HSL)\((360|3[0-5][0-9]|2[0-9][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(100|[1-9]?[0-9]),\s?(100|[1-9]?[0-9]),\s?(1|0|0\.([0-9]?)+[1-9])\)$/g,
+      rgb: /^(rgb|RGB)\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\)$/g,
+      rgba: /^(rgba|RGBA)\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(1|0|0\.([0-9]?){1,5}[1-9])\)$/g,
+    }
   }
 
 }

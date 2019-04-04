@@ -73,11 +73,12 @@ export class TextBoxModel {
       .applyModelAttributes()
       .applyBoxModelPropertiesFromElement(element)
       .applyFontPropertiesFromElement(element)
-      .setStyle({
-        height: '0px',
-        maxHeight: '0px',
-        whiteSpace: 'pre-wrap'
-      })
+
+    this.style = {
+      height: '0px',
+      maxHeight: '0px',
+      whiteSpace: 'pre-wrap'
+    }
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
@@ -111,18 +112,19 @@ export class TextBoxModel {
       .applyModelAttributes()
       .applyBoxModelPropertiesFromElement(element)
       .applyFontPropertiesFromElement(element)
-      .setStyle({
-        borderLeftWidth: '0px',
-        borderRightWidth: '0px',
-        boxSizing: 'content-box',
-        minWidth: '0px',
-        paddingLeft: '0px',
-        paddingRight: '0px',
-        whiteSpace: 'nowrap',
-        width: '0px',
-        wordBreak: 'normal',
-        wordWrap: 'normal'
-      })
+
+    this.style = {
+      borderLeftWidth: '0px',
+      borderRightWidth: '0px',
+      boxSizing: 'content-box',
+      minWidth: '0px',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      whiteSpace: 'nowrap',
+      width: '0px',
+      wordBreak: 'normal',
+      wordWrap: 'normal'
+    }
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
@@ -133,7 +135,7 @@ export class TextBoxModel {
 
     let offset = 0
 
-    // Set offset for when boxSizing is set to border-box
+    // Set offset for when boxSizing is set to border-box.
     let style = window.getComputedStyle(element, null)
     if (style['boxSizing'] === 'border-box') {
       offset = this.getElementHorizontalBorderWidth(element)
@@ -145,12 +147,31 @@ export class TextBoxModel {
   }
 
   // MODEL
+
   set modelFontSize(fontSize) {
-    this.setFontSize(fontSize)
+    this.modelElement.style.fontSize = `${fontSize}px`
   }
 
   set modelText(text) {
-    this.setText(text)
+    if (
+      this.modelElement instanceof HTMLTextAreaElement ||
+      this.modelElement instanceof HTMLInputElement ||
+      this.modelElement.nodeName === 'TEXTAREA' ||
+      this.modelElement.nodeName === 'INPUT'
+    ) {
+      (this.modelElement).value = text
+    } else {
+      text = text.replace(/[\n\r]/g, '<br>')
+      text = text.replace(/[\t]/g, '&#9')
+      text = text.replace(/[\s]/g, '&nbsp')
+      this.modelElement.innerHTML = text
+    }
+  }
+
+  set style(style) {
+    for (let key in style) {
+      this.modelElement.style[key] = style[key]
+    }
   }
 
   applyModelAttributes() {
@@ -194,35 +215,6 @@ export class TextBoxModel {
     return this
   }
 
-  setFontSize(fontSize) {
-    this.modelElement.style.fontSize = `${fontSize}px`
-    return this
-  }
-
-  setStyle(style) {
-    for (let key in style) {
-      this.modelElement.style[key] = style[key]
-    }
-    return this
-  }
-
-  setText(text) {
-    if (
-      this.modelElement instanceof HTMLTextAreaElement ||
-      this.modelElement instanceof HTMLInputElement ||
-      this.modelElement.nodeName === 'TEXTAREA' ||
-      this.modelElement.nodeName === 'INPUT'
-    ) {
-      (this.modelElement).value = text
-    } else {
-      text = text.replace(/[\n\r]/g, '<br>')
-      text = text.replace(/[\t]/g, '&#9')
-      text = text.replace(/[\s]/g, '&nbsp')
-      this.modelElement.innerHTML = text
-    }
-    return this
-  }
-
   // ELEMENT
 
   getElementFontSize(element) {
@@ -237,7 +229,7 @@ export class TextBoxModel {
       element.nodeName === 'INPUT' ||
       element.nodeName === 'TEXTAREA'
     ) {
-      return (element).value
+      return element.value
     } else {
       return element.textContent
     }

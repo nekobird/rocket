@@ -1,4 +1,6 @@
-import { Num } from '../core/Num'
+import {
+  Num,
+} from '../Rocket'
 
 // export interface AnimationProperties {
 //   alternate?
@@ -20,48 +22,47 @@ export class Animation {
     this.alternate = false
     this.delay = 0 // Delay before animation starts.
     this.duration = 2 // In seconds.
-  
+
     // States
     this.isActive = false
     this.isAnimating = false
     this.isPaused = false
     this.isReversed = false
-  
+
     this.iterationCount = 0
     this.iterationDelay = 0 // Delay before next iteration.
     this.numberOfIterations = 1
-  
+
     this.exports = 0
-  
+
     this.timingFunction = (t) => { return t }
-  
+
     // Hooks
-    this.onAnimationStart = () => {}
-    this.onAnimationEnd = () => {}
-    this.onIterationEnd = () => {}
-    this.onIterationStart = () => {}
-    this.callback = () => {}
-    this.onTick = (n, fn, data) => {}
-  
+    this.onAnimationStart = () => { }
+    this.onAnimationEnd = () => { }
+    this.onIterationEnd = () => { }
+    this.onIterationStart = () => { }
+    this.callback = () => { }
+    this.onTick = (n, fn, data) => { }
+
     this.currentDirection = true
     this.currentProgress
-  
+
     this.startTime
     this.pauseTime
     this.endTime
-  
+
     this.RAFID
     this.timeoutID
 
-    this.setProperties(properties)
+    this.properties = properties
     return this
   }
 
-  setProperties(properties) {
+  set properties(properties) {
     for (let key in properties) {
       this[key] = properties[key]
     }
-    return this
   }
 
   goToBeginning() {
@@ -148,11 +149,14 @@ export class Animation {
   // A
   play(delay) {
     this.callOnAnimationStart()
+
     // This is only called when it's not animating.
     this.isActive = true
+
     if (typeof delay !== 'number') {
       delay = this.delay
     }
+
     this.timeoutID = setTimeout(
       this.start.bind(this),
       delay * 1000
@@ -253,7 +257,7 @@ export class Animation {
   // D
   tick() {
     // Update currentProgress.
-    this.currentProgress = this.getCurrentNValue()
+    this.currentProgress = this.currentNValue
 
     // Modify N based on TimingFunction.
     let n = this.timingFunction(
@@ -281,10 +285,10 @@ export class Animation {
     return this
   }
 
-  // Helpers
+  // HELPERS
 
   // Get current N value.
-  getCurrentNValue() {
+  get currentNValue() {
     return Num.modulate(
       Date.now(),
       [this.startTime, this.endTime],
@@ -303,7 +307,7 @@ export class Animation {
     return this
   }
 
-  // Callbacks
+  // CALLBACKS
 
   callOnAnimationStart() {
     if (typeof this.onAnimationStart === 'function') {
