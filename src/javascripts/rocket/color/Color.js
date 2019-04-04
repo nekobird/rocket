@@ -3,26 +3,25 @@ import {
   Util,
 } from '../Rocket'
 
-// export interface ColorInput {
-//   alpha?
-//   black?
-//   blue
-//   brightness?
-//   cmyk?[]
-//   cyan?
-//   green?
-//   hex?
-//   hsl?[]
-//   hsv?[]
-//   hue?
-//   lightness?
-//   magenta?
-//   red
-//   rgb?[]
-//   saturation?
-//   value?
-//   yellow?
-// }
+// COLOR INPUT
+// alpha
+// black
+// blue
+// brightness
+// cmyk
+// cyan
+// green
+// hex
+// hsl
+// hsv
+// hue
+// lightness
+// magenta
+// red
+// rgb
+// saturation
+// value
+// yellow
 
 export class Color {
 
@@ -253,6 +252,10 @@ export class Color {
   }
 
   // Alias to this.hex
+  set hexString(hex) {
+    this.hex = hex
+  }
+
   get hexString() {
     return this.hex
   }
