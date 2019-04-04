@@ -1,3 +1,7 @@
+import {
+  Num,
+} from '../Rocket'
+
 /*
   https://gist.github.com/felipesabino/5066336
   http://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
