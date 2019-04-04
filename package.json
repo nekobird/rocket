@@ -1,14 +1,14 @@
 {
   "name": "rocket",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "Rocket UI Library",
+  "main": "./src/rocket/Rocket.js",
   "scripts": {
     "start": "parcel ./src/index.html",
     "build": "parcel build ./src/index.html --public-url ./"
   },
   "keywords": [],
-  "author": "",
+  "author": "Andrew Prasetya",
   "license": "ISC",
   "devDependencies": {
     "sass": "^1.17.4"
