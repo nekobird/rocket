@@ -1,6 +1,5 @@
 import {
   Util,
-  MouseEventHandler,
 } from '../Rocket'
 
 export class MouseEventManager {

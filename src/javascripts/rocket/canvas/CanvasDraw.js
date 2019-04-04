@@ -12,6 +12,7 @@ import {
 //   noFill?: boolean
 //   noStroke?: boolean
 // }
+
 const DEFAULT_STYLE = {
   fillColor: 'black',
   noFill: false,

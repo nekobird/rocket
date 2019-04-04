@@ -12,8 +12,6 @@ export class TouchEventHandler {
     this.touch
     this.touchCount
 
-    this.data
-
     this.identity
 
     this.isTouching = false
@@ -47,10 +45,14 @@ export class TouchEventHandler {
     this.moveDuration
 
     this.determine = () => { return false }
+
     this.onDoubleTap = () => { }
+
     this.onTouchStart = () => { }
     this.onTouchEnd = () => { }
+
     this.onCancel = () => { }
+
     this.onMoveStart = () => { }
     this.onMove = () => { }
     this.onMoveEnd = () => { }
@@ -58,6 +60,7 @@ export class TouchEventHandler {
     this.doubleTapCounter = 0
     this.doubleTapMaximumTouchTime = 500
     this.doubleTapMaximumDelayTime = 500
+
     this.initialize()
   }
 

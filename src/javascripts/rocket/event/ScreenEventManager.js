@@ -3,34 +3,26 @@ import {
   ScreenModel,
 } from '../Rocket'
 
-// export interface Size {
-//   height
-//   width
-// }
-
-// export interfac {
-//   data?: object
-//   determine?
-//   event?: Event
-//   isActive?
-//   name?
-//   onResize?
-//   onResizeEnd?
-//   onResizeStart?
-// }
+// SCREEN HANDLER
+// name
+// event
+// isResizing
+// determine
+// onResize
+// onResizeEnd
+// onResizeStart
 
 export class ScreenEventManager {
 
   constructor() {
-
     this.debounce
     this.debounceTime = 0.2
 
     this.isResizing = false
 
-    this.onResizeStart
-    this.onResize
-    this.onResizeEnd
+    this.onResizeStart = () => { }
+    this.onResize = () => { }
+    this.onResizeEnd = () => { }
 
     this.resizeStartTime
     this.resizeEndTime
@@ -40,18 +32,18 @@ export class ScreenEventManager {
     this.currentSize
     this.endSize
 
-    this.scaleDelta
-
     this.handlers = new Array
+
     this.startListening()
     return this
   }
 
+  // Copies handler?
   register(name, handler) {
     this.handlers[name] = new Object
     let _handler = this.handlers[name]
     _handler.name = name
-    _handler.isActive = false
+    _handler.isResizing = false
     for (let key in handler) {
       _handler[key] = handler[key]
     }
@@ -74,40 +66,30 @@ export class ScreenEventManager {
     }
   }
 
-  startListening() {
-    this.debounce = Util.debounce(
-      this.debounceTime, this._handleResizeEnd.bind(this)
-    )
-    window.addEventListener('resize', this._handleResize.bind(this))
-    window.addEventListener('resize', this.debounce.bind(this))
-    return this
-  }
-
-  stopListening() {
-    window.removeEventListener('resize', this._handleResize)
-    window.removeEventListener('resize', this.debounce)
-    return this
-  }
-
-  _handleResize(event) {
+  handleResize(event) {
     if (this.isResizing === false) {
-      this.isResizing = true
       this.resizeStartTime = Date.now()
-      this.startSize = this.size
+
       this.currentSize = this.size
+      this.startSize = this.size
+
+      this.isResizing = true
+
       this.onResizeStart(this, event)
+
       for (let handler of this.handlers) {
         if (handler.determine(this, event) === true) {
-          handler.isActive = true
           handler.event = event
+          handler.isResizing = true
           handler.onResizeStart(this, this.handlers[handler.name])
         }
       }
     } else {
       this.currentSize = this.size
+
       this.onResize(this, event)
       for (let handler of this.handlers) {
-        if (handler.isActive === true) {
+        if (handler.isResizing === true) {
           handler.event = event
           handler.onResize(this, this.handlers[handler.name])
         }
@@ -115,24 +97,39 @@ export class ScreenEventManager {
     }
   }
 
-  _handleResizeEnd() {
-    this.isResizing = false
-
+  handleResizeEnd() {
     this.resizeEndTime = Date.now()
     this.resizeDuration = this.resizeEndTime - this.resizeStartTime
 
-    this.endSize = this.size
     this.currentSize = this.size
+    this.endSize = this.size
+
+    this.isResizing = false
 
     this.onResizeEnd(this)
-
     for (let handler of this.handlers) {
-      if (handler.isActive === true) {
-        handler.isActive = false
+      if (handler.isResizing === true) {
+        handler.isResizing = false
         handler.event = event
         handler.onResizeEnd(this, this.handlers[handler.name])
       }
     }
+  }
+
+  // LISTENER
+  startListening() {
+    this.debounce = Util.debounce(
+      this.debounceTime, this.handleResizeEnd.bind(this)
+    )
+    window.addEventListener('resize', this.handleResize.bind(this))
+    window.addEventListener('resize', this.debounce.bind(this))
+    return this
+  }
+
+  stopListening() {
+    window.removeEventListener('resize', this.handleResize)
+    window.removeEventListener('resize', this.debounce)
+    return this
   }
 
 }

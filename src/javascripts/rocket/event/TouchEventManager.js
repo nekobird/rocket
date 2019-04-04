@@ -1,5 +1,4 @@
 import {
-  TouchEventHandler,
   Util,
 } from '../Rocket'
 
@@ -7,15 +6,17 @@ export class TouchEventManager {
 
   constructor() {
     this.onEvent = () => { }
+
     this.onTouchStart = () => { }
     this.onTouchEnd = () => { }
     this.onTouchCancel = () => { }
     this.onTouchMove = () => { }
 
-    this.debounceMoveEnd = () => { }
+    this.debounceMoveEnd
     this.debounceTime = 0.2
 
     this.handlers = {}
+
     this.startListening()
     return this
   }
@@ -33,23 +34,6 @@ export class TouchEventManager {
   remove(name) {
     delete this.handlers[name]
     return this
-  }
-
-  startListening() {
-    this.debounceMoveEnd = Util.debounce(this.debounceTime, this.handleTouchMoveEnd.bind(this))
-    window.addEventListener('touchstart', this.handleTouchStart.bind(this))
-    window.addEventListener('touchmove', this.handleTouchMove.bind(this))
-    window.addEventListener('touchmove', this.debounceMoveEnd.bind(this))
-    window.addEventListener('touchend', this.handleTouchEnd.bind(this))
-    window.addEventListener('touchcancel', this.handleTouchCancel.bind(this))
-  }
-
-  stopListening() {
-    window.removeEventListener('touchstart', this.handleTouchStart)
-    window.removeEventListener('touchmove', this.handleTouchMove)
-    window.removeEventListener('touchmove', this.debounceMoveEnd)
-    window.removeEventListener('touchend', this.handleTouchEnd)
-    window.removeEventListener('touchcancel', this.handleTouchCancel)
   }
 
   isTouchIdentityTaken(identity) {
@@ -109,6 +93,25 @@ export class TouchEventManager {
     for (let name in this.handlers) {
       this.handlers[name].handleTouchMoveEnd()
     }
+  }
+
+  startListening() {
+    this.debounceMoveEnd = Util.debounce(
+      this.debounceTime, this.handleTouchMoveEnd.bind(this)
+    )
+    window.addEventListener('touchstart', this.handleTouchStart.bind(this))
+    window.addEventListener('touchmove', this.handleTouchMove.bind(this))
+    window.addEventListener('touchmove', this.debounceMoveEnd.bind(this))
+    window.addEventListener('touchend', this.handleTouchEnd.bind(this))
+    window.addEventListener('touchcancel', this.handleTouchCancel.bind(this))
+  }
+
+  stopListening() {
+    window.removeEventListener('touchstart', this.handleTouchStart)
+    window.removeEventListener('touchmove', this.handleTouchMove)
+    window.removeEventListener('touchmove', this.debounceMoveEnd)
+    window.removeEventListener('touchend', this.handleTouchEnd)
+    window.removeEventListener('touchcancel', this.handleTouchCancel)
   }
 
 }

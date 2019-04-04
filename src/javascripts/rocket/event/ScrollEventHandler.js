@@ -3,7 +3,6 @@ import { Vector2 } from '../Rocket'
 export class ScrollEventHandler {
 
   constructor(element) {
-    this.data
     this.name
 
     this.event
@@ -20,7 +19,7 @@ export class ScrollEventHandler {
     onScroll = () => { }
     onScrollEnd = () => { }
 
-    debounce = () => { }
+    this.debounce
 
     this.element = element
 
@@ -32,10 +31,76 @@ export class ScrollEventHandler {
     this._previousVelocity = new Vector2
   }
 
+  get position() {
+    if (this.element === window) {
+      return new Vector2(window.scrollX, window.scrollY)
+    } else {
+      return new Vector2(
+        this.element.scrollLeft, this.element.scrollTop
+      )
+    }
+  }
+
+  set top(top) {
+    if (typeof top === 'number') {
+      if (this.element === window) {
+        window.scrollTo(window.scrollX, top)
+      } else {
+        this.element.scrollTop = top
+      }
+      this.update()
+    }
+  }
+
+  get top() {
+    return this.element === window ? window.scrollY : this.element.scrollTop
+  }
+
+  set left(left) {
+    if (typeof left === 'number') {
+      if (this.element === window) {
+        window.scrollTo(left, window.scrollY)
+      } else {
+        this.element.scrollLeft = left
+      }
+      this.update()
+    }
+  }
+
+  get left() {
+    return this.element === window ? window.scrollX : this.element.scrollLeft
+  }
+
+  scrollTo(to) {
+    if (this.element === window) {
+      window.scrollTo(to.x, to.y)
+    } else {
+      this.element.scrollLeft = to.x
+      this.element.scrollTop = to.y
+    }
+
+    this.update()
+
+    return this
+  }
+
+  update() {
+    let currentPosition = this.position
+    let currentVelocity = Vector2.subtract(
+      this._position, currentPosition
+    )
+    this._acceleration.equals(
+      Vector2.subtract(currentVelocity, this._velocity)
+    )
+    this._velocity.equals(currentVelocity)
+    this._position.equals(currentPosition)
+    return this
+  }
+
   handleScroll(event) {
     this.event = event
 
-    this._position.equals(this.getPosition())
+    this._position.equals(this.position)
     this._velocity.equals(
       Vector2.subtract(this._position, this._previousPosition)
     )
@@ -46,7 +111,9 @@ export class ScrollEventHandler {
     if (this.isScrolling === false) {
       if (this.determineScroll(event, this) === true) {
         this.scrollStartTime = Date.now()
+
         this.isScrolling = true
+
         this.onScrollStart(this._position, this)
       }
     } else {
@@ -64,94 +131,11 @@ export class ScrollEventHandler {
     if (this.isScrolling === true) {
       this.scrollEndTime = Date.now()
       this.scrollDuration = this.scrollEndTime - this.scrollStartTime
+
       this.isScrolling = false
+
       this.onScrollEnd(this._position, this)
     }
-  }
-
-  get position() {
-    if (this.element === window) {
-      return new Vector2(window.scrollX, window.scrollY)
-    } else {
-      return new Vector2(
-        this.element.scrollLeft, this.element.scrollTop
-      )
-    }
-  }
-
-  scrollLeft(left) {
-    let result
-
-    if (this.element === window) {
-      if (typeof left === 'number') {
-        window.scrollTo(left, window.scrollY)
-        result = left
-      } else {
-        result = window.scrollX
-      }
-    } else {
-      if (typeof left === 'number') {
-        (this.element).scrollLeft = left
-        result = left
-      } else {
-        result = (this.element).scrollLeft
-      }
-    }
-
-    this.update()
-
-    return result
-  }
-
-  scrollTop(top) {
-    let result
-
-    if (this.element === window) {
-      if (typeof top === 'number') {
-        window.scrollTo(window.scrollX, top)
-        result = top
-      } else {
-        result = window.scrollY
-      }
-    } else {
-      if (typeof top === 'number') {
-        this.element.scrollTop = top
-        result = top
-      } else {
-        result = this.element.scrollTop
-      }
-    }
-
-    this.update()
-
-    return result
-  }
-
-  scrollTo(to) {
-    if (this.element === window) {
-      window.scrollTo(to.x, to.y)
-    } else {
-      this.element.scrollLeft = to.x
-      this.element.scrollTop = to.y
-    }
-
-    this.update()
-
-    return this
-  }
-
-  update() {
-    let currentPosition = this.position()
-    let currentVelocity = Vector2.subtract(
-      this._position, currentPosition
-    )
-
-    this._acceleration.equals(
-      Vector2.subtract(currentVelocity, this._velocity)
-    )
-    this._velocity.equals(currentVelocity)
-    this._position.equals(currentPosition)
-    return this
   }
 
 }

@@ -3,11 +3,6 @@
 // The exception is webkit, which has an extra event in there:
 // keydown, keypress, textInput, keyup
 
-import {
-  KeyboardEventHandler,
-} from '../Rocket'
-
-
 export class KeyboardEventManager {
 
   constructor() {
@@ -15,8 +10,8 @@ export class KeyboardEventManager {
     this.ctrlKeyIsDown = false
     this.shiftKeyIsDown = false
 
-    this.isDisabled = false
     this.isDown = false
+    this._isDisabled = false
 
     this.lastKeyCode
 
@@ -47,64 +42,92 @@ export class KeyboardEventManager {
     return this
   }
 
-  // HANDLE
+  get isDisabled() {
+    return this._isDisabled
+  }
+
+  set isDisabled(isDisabled) {
+    if (isDisabled === true) {
+      this._isDisabled = true
+    }
+    else if (isDisabled === false) {
+      this._isDisabled = false
+    }
+  }
+
+  // HANDLERS
 
   handleKeyDown(event) {
     this.downKeys.push(event.keyCode)
+
     // SHIFT
     if (event.keyCode === 16) {
       this.shiftKeyIsDown = true
     }
     // CTRL
-    if (event.keyCode === 17) {
+    else if (event.keyCode === 17) {
       this.ctrlKeyIsDown = true
     }
     // ALT
-    if (event.keyCode === 18) {
+    else if (event.keyCode === 18) {
       this.altKeyIsDown = true
     }
-    this.onEvent(this, event)
-    this.onKeyDown(this, event)
+
     this.lastKeyCode = event.keyCode
+
     this.isDown = true
-    for (let name in this.handlers) {
-      this.handlers[name].handleKeyDown(event)
+
+    if (this._isDisabled === false) {
+      this.onEvent(event, this)
+      this.onKeyDown(event, this)
+      for (let name in this.handlers) {
+        this.handlers[name].handleKeyDown(event)
+      }
     }
   }
 
   handleKeyPress(event) {
-    this.onEvent(event)
-    this.onKeyPress(event)
     this.lastKeyCode = event.keyCode
-    for (let name in this.handlers) {
-      this.handlers[name].handleKeyPress(event)
+
+    if (this._isDisabled === false) {
+      this.onEvent(event, this)
+      this.onKeyDown(event, this)
+      for (let name in this.handlers) {
+        this.handlers[name].handleKeyPress(event)
+      }
     }
   }
 
   handleKeyUp(event) {
     let downKeyIndex = this.downKeys.indexOf(event.keyCode)
+
     if (downKeyIndex !== -1) {
       this.downKeys.splice(downKeyIndex, 1)
     }
+
     // SHIFT
     if (event.keyCode === 16) {
       this.shiftKeyIsDown = false
     }
     // CTRL
-    if (event.keyCode === 17) {
+    else if (event.keyCode === 17) {
       this.ctrlKeyIsDown = false
     }
     // AlT
-    if (event.keyCode === 18) {
+    else if (event.keyCode === 18) {
       this.altKeyIsDown = false
     }
-    this.onEvent(event)
-    this.onKeyUp(event)
+
     if (this.downKeys.length === 0) {
       this.isDown = false
     }
-    for (let name in this.handlers) {
-      this.handlers[name].handleKeyUp(event)
+
+    if (this._isDisabled === false) {
+      this.onEvent(event, this)
+      this.onKeyDown(event, this)
+      for (let name in this.handlers) {
+        this.handlers[name].handleKeyUp(event)
+      }
     }
   }
 

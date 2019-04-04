@@ -13,6 +13,7 @@ export class ScrollEventManager {
     this.isScrolling = false
 
     this.onEvent = () => { }
+
     this.onScrollStart = () => { }
     this.onScroll = () => { }
     this.onScrollEnd = () => { }

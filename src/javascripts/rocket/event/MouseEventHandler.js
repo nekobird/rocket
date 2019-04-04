@@ -5,17 +5,13 @@ import {
 export class MouseEventHandler {
 
   constructor() {
-    this.event
     this.name
 
-    this.isDown = false
-    this.isDragging = false
-    this.isMoving = false
+    this.event
 
-    this.determineClick = () => { return true }
-    this.determineDown = () => { return true }
-    this.determineMove = () => { return true }
-    this.determineDrag = () => { return true }
+    this.isDown = false
+    this.isMoving = false
+    this.isDragging = false
 
     this.clickCount = 0
     this.clickTime = 0
@@ -35,20 +31,24 @@ export class MouseEventHandler {
     this.doubleClickCounter = 0
     this.doubleClickMaximumDelayTime = 500
 
+    this.determineClick = () => { return true }
+    this.determineDown = () => { return true }
+    this.determineMove = () => { return true }
+    this.determineDrag = () => { return true }
+
     this.onClick = () => { }
+    this.onDoubleClick = () => { }
 
     this.onDownStart = () => { }
     this.onDownEnd = () => { }
-
-    this.onDragStart = () => { }
-    this.onDrag = () => { }
-    this.onDragEnd = () => { }
 
     this.onMoveStart = () => { }
     this.onMove = () => { }
     this.onMoveEnd = () => { }
 
-    this.onDoubleClick = () => { }
+    this.onDragStart = () => { }
+    this.onDrag = () => { }
+    this.onDragEnd = () => { }
 
     this.position = new Vector2
     this.velocity = new Vector2
@@ -68,23 +68,20 @@ export class MouseEventHandler {
     this.dragEndPosition = new Vector2
   }
 
+  // HANDLERS
+
   handleClick(event) {
     if (this.determineClick(event, this) === true) {
-
-      let point = new Vector2(event.clientX, event.clientY)
-
+      this.clickTime = Date.now()
       this.event = event
 
       this.clickCount++
 
+      const point = new Vector2(event.clientX, event.clientY)
       this.position.equals(point)
-
       this.clickPosition.equals(point)
 
-      this.clickTime = Date.now()
-
       this.onClick(point, this)
-
       this.handleDoubleClick()
     }
   }
@@ -103,40 +100,44 @@ export class MouseEventHandler {
 
   handleDown(event) {
     if (this.determineDown(event, this) === true) {
-      let point = new Vector2(event.clientX, event.clientY)
+      this.downStartTime = Date.now()
       this.event = event
+
+      const point = new Vector2(event.clientX, event.clientY)
       this.position.equals(point)
       this.downStartPosition.equals(point)
-      this.downStartTime = Date.now()
+
       this.isDown = true
+
       this.onDownStart(point, this)
     }
   }
 
   handleUp(event) {
     if (this.isDown === true) {
-      let point = new Vector2(this.position)
-      this.handleDragEnd()
-      this.event = event
-      this.position.equals(point)
-      this.downEndPosition.equals(point)
       this.downEndTime = Date.now()
       this.downDuration = this.downEndTime - this.downStartTime
+
+      this.event = event
+
+      const point = new Vector2(this.position)
+      this.position.equals(point)
+      this.downEndPosition.equals(point)
+
+      this.handleDragEnd()
+
       this.isDown = false
+
       this.onDownEnd(point, this)
     }
   }
 
   handleMove(event) {
-    let point = new Vector2(event.clientX, event.clientY)
-
-    // Update
+    const point = new Vector2(event.clientX, event.clientY)
     this.position.equals(point)
-
     this.velocity.equals(
       Vector2.subtract(this.position, this.previousPosition)
     )
-
     this.acceleration.equals(
       Vector2.subtract(this.velocity, this.previousVelocity)
     )
@@ -146,8 +147,8 @@ export class MouseEventHandler {
       this.isMoving === false &&
       this.determineMove(event, this) === true
     ) {
-      this.isMoving = true
       this.moveStartTime = Date.now()
+      this.isMoving = true
       this.onMoveStart(event)
     } else if (this.isMoving === true) {
       this.onMove(point, this)
@@ -166,10 +167,9 @@ export class MouseEventHandler {
         this.onDrag(this.position, this)
       } else {
         // Initialize drag.
-        this.isDragging = true
         this.dragStartTime = Date.now()
         this.dragStartPosition.equals(this.position)
-
+        this.isDragging = true
         this.onDragStart(this.position, this)
       }
     }
@@ -179,7 +179,9 @@ export class MouseEventHandler {
     if (this.isDragging === true) {
       this.dragEndTime = Date.now()
       this.dragDuration = this.dragEndTime - this.dragStartTime
+
       this.dragEndPosition.equals(this.position)
+
       this.isDragging = false
       this.onDragEnd(this.position, this)
     }
@@ -188,9 +190,12 @@ export class MouseEventHandler {
   handleMoveEnd() {
     if (this.isMoving === true) {
       this.handleDragEnd()
+
       this.moveEndTime = Date.now()
       this.moveDuration = this.moveEndTime - this.moveStartTime
+
       this.moveEndPosition.equals(this.position)
+
       this.isMoving = false
       this.onMoveEnd(this.position, this)
     }

@@ -1,4 +1,7 @@
-import { Angle, Num, } from '../Rocket'
+import {
+  Angle,
+  Num,
+} from '../Rocket'
 
 export class Vector2 {
 
@@ -70,12 +73,11 @@ export class Vector2 {
     return Vector2.equals(this)
   }
 
-  // TODO: Turn this into getters
-  getArray() {
+  get array() {
     return [this.x, this.y]
   }
 
-  getString() {
+  get string() {
     return `x: ${this.x}, y: ${this.y}`
   }
 
@@ -88,6 +90,8 @@ export class Vector2 {
     this.y = Math.abs(this.y)
     return this
   }
+
+  // ADD
 
   add(point) {
     this.x += point.x
@@ -113,6 +117,8 @@ export class Vector2 {
     return this
   }
 
+  // SUBTRACT
+
   subtract(point) {
     this.x -= point.x
     this.y -= point.y
@@ -137,6 +143,8 @@ export class Vector2 {
     return this
   }
 
+  // MULTIPLY
+
   multiply(by) {
     this.x *= by
     this.y *= by
@@ -152,6 +160,8 @@ export class Vector2 {
     this.y *= by
     return this
   }
+
+  // DIVIDE
 
   divide(by) {
     by = by === 0 ? 1 : by
@@ -196,6 +206,8 @@ export class Vector2 {
       .magnitude
   }
 
+  // ANGLE
+
   get angle() {
     let m = Math.abs(
       Math.sqrt(this.x * this.x + this.y * this.y)
@@ -232,6 +244,8 @@ export class Vector2 {
     }
     return angle
   }
+
+  // ROTATE
 
   rotateBy(by) {
     let angle = this.angle + by
@@ -281,6 +295,8 @@ export class Vector2 {
     this.y = from.y + Math.sin(to) * m
     return this
   }
+
+  // MOVE
 
   moveBy(x, y) {
     if (
@@ -365,6 +381,8 @@ export class Vector2 {
     return this
   }
 
+  // ZERO
+
   zero() {
     this.x = 0
     this.y = 0
@@ -385,11 +403,11 @@ export class Vector2 {
     return Vector2.add(from, to)
   }
 
-  static zero() {
+  static get zero() {
     return new Vector2(0, 0)
   }
 
-  static random() {
+  static get random() {
     return new Vector2(Math.random(), Math.random())
   }
 

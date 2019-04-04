@@ -15,9 +15,9 @@
   saturation = 100
   value      = 100
   yellow     = 100
-  */
+*/
 
- export class ConvertColor {
+export class ConvertColor {
 
   // RGB 1, 1, 1
   static RGBToHEX(rgb) {
