@@ -5,42 +5,45 @@ import {
 export class UIModal {
 
   constructor(properties) {
+
     this.activeModalEl
+
     this.closeKeyCodes = [27]
+
     this.closeOnOutsideClick = true
     this.isActive = false
+
     this.lastTriggerOpenEl
+
     this.triggerCloseClass = '_jsUIModalClose'
     this.triggerOpenClass = '_jsUIModalOpen'
+
     this._eventClose
     this._eventOpen
     this._eventTransit
+
     if (typeof properties !== 'undefined') {
       this.properties = properties
     }
-    this.initialize()
-    return this
-  }
 
-  openOnCondition = (targetModalEl) => { return true }
+    this.openOnCondition = targetModalEl => { return true }
 
-  open = (modalEl, completeFn, context) => {
-    modalEl.classList.add('_UIModal-active')
-    completeFn()
-  }
+    this.open = (modalEl, completeFn, context) => {
+      modalEl.classList.add('_UIModal-active')
+      completeFn()
+    }
 
-  close = (activeModalEl, completeFn, context) => {
-    activeModalEl.classList.remove('_UIModal-active')
-    completeFn()
-  }
+    this.close = (activeModalEl, completeFn, context) => {
+      activeModalEl.classList.remove('_UIModal-active')
+      completeFn()
+    }
 
-  transit = (currentModalEl, nextModalEl, completeFn, context) => {
-    currentModalEl.classList.remove('_UIModal-active')
-    nextModalEl.classList.add('_UIModal-active')
-    completeFn()
-  }
+    this.transit = (currentModalEl, nextModalEl, completeFn, context) => {
+      currentModalEl.classList.remove('_UIModal-active')
+      nextModalEl.classList.add('_UIModal-active')
+      completeFn()
+    }
 
-  initialize() {
     this._eventOpen = new Event('UIModalOpen')
     this._eventClose = new Event('UIModalClose')
     this._eventTransit = new Event('UIModalTransit')
