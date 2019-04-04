@@ -8,6 +8,10 @@ export * from './color/Color'
 
 export * from './ScreenModel'
 
+export * from './two/Vector2'
+export * from './two/Angle'
+export * from './two/Geo2Util'
+
 export * from './animation/Animation'
 export * from './animation/Easings'
 
@@ -33,3 +37,5 @@ export * from './event/ScreenEventManager'
 export * from './text/TextBoxModel'
 
 export * from './ui/UITextArea'
+export * from './ui/UITextField'
+export * from './ui/UIModal'
