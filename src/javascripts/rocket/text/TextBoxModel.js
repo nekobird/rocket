@@ -89,15 +89,15 @@ export class TextBoxModel {
 
     let offset = 0
 
-    // Set offset for when boxSizing is set to border-box
+    // Set offset for when boxSizing is set to border-box.
     let style = window.getComputedStyle(element, null)
     if (style['boxSizing'] === 'border-box') {
       offset = this.getElementVerticalBorderHeight(element)
     } else {
-      // Minus one lineHeight if boxShadow is content-box.
-      // Why? I don't know but it works.
-      // TODO: Look into this.
-      offset -= parseInt(style['lineHeight'])
+      // Minus vertical padding.
+      let padding = parseInt(style['paddingTop'])
+      padding += parseInt(style['paddingBottom'])
+      offset -= padding
     }
 
     // Return calculated height value.

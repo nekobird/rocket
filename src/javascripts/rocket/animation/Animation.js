@@ -2,19 +2,18 @@ import {
   Num,
 } from '../Rocket'
 
-// export interface AnimationProperties {
-//   alternate?
-//   delay?
-//   duration?
-//   exports?
-//   numberOfIterations? | 'infinite'
-//   onAnimationEnd?
-//   onAnimationStart?
-//   onIterationEnd?
-//   onIterationStart?
-//   onTick?
-//   timingFunction?
-// }
+// AnimationProperties
+// alternate
+// delay
+// duration
+// exports
+// numberOfIterations: number | 'infinite'
+// onAnimationEnd
+// onAnimationStart
+// onIterationEnd
+// onIterationStart
+// onTick
+// timingFunction
 
 export class Animation {
 
@@ -23,7 +22,7 @@ export class Animation {
     this.delay = 0 // Delay before animation starts.
     this.duration = 2 // In seconds.
 
-    // States
+    // STATES
     this.isActive = false
     this.isAnimating = false
     this.isPaused = false
@@ -37,7 +36,7 @@ export class Animation {
 
     this.timingFunction = (t) => { return t }
 
-    // Hooks
+    // HOOKS
     this.onAnimationStart = () => { }
     this.onAnimationEnd = () => { }
     this.onIterationEnd = () => { }

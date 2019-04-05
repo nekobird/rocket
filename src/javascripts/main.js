@@ -2,11 +2,7 @@ import {
   KeyboardEventManager,
   KeyboardEventHandler,
   UITextArea,
-  Color
 } from './rocket/Rocket'
-
-let color_0 = new Color('hsla(240, 100%, 50%, 0.5)')
-// color_0.hslaString = "hsla(240, 100%, 50%, 0.5)"
 
 // KeyboardEventManager Demo
 let keyboardEventHandler = new KeyboardEventHandler()

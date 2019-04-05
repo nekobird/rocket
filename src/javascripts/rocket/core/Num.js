@@ -98,7 +98,7 @@ export class Num {
 
   static round(number, to) {
     to = typeof to === 'undefined' ? 0 : to
-    return parseFloat((number).toFixed(to))
+    return parseFloat(number.toFixed(to))
   }
 
   // Simple linear interpolation
@@ -139,7 +139,7 @@ export class Num {
       if (whole === true) {
         return Math.random() > 0.5 ? 1 : 0
       } else {
-        return parseFloat((Math.random()).toFixed(fixed))
+        return parseFloat(Math.random().toFixed(fixed))
       }
     } else {
       let number = this.modulate(Math.random(), 1, range, false)

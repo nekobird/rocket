@@ -4,6 +4,13 @@ import {
   ConvertColor
 } from '../Rocket'
 
+// Range
+// A   : 1
+// RGB : 1  , 1, 1
+// HSL : 359, 1, 1
+// HSV : 359, 1, 1
+// CYMK: 1  , 1, 1, 1
+
 const NAMED_COLOR_SET = {
   azure: [0, 0.5, 1, 1],
   black: [0, 0, 0, 1],
