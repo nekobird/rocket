@@ -14,5 +14,5 @@ let keyboardEventManager = new KeyboardEventManager()
 keyboardEventManager.register('main', keyboardEventHandler)
 
 // UITextArea Demo
-let textareaDemo = document.getElementById('textarea_demo')
+let textareaDemo = document.getElementById('textarea_grow_demo')
 let textarea = new UITextArea(textareaDemo)
