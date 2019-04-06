@@ -38,6 +38,13 @@ export class ScreenEventManager {
     return this
   }
 
+  get size() {
+    return {
+      height: ScreenModel.height,
+      width: ScreenModel.width
+    }
+  }
+
   // Copies handler?
   register(name, handler) {
     this.handlers[name] = new Object
@@ -50,21 +57,16 @@ export class ScreenEventManager {
     return this
   }
 
-  find(name) {
-    return this.handlers[name]
-  }
-
   remove(name) {
     delete this.handlers[name]
     return this
   }
 
-  get size() {
-    return {
-      height: ScreenModel.height,
-      width: ScreenModel.width
-    }
+  find(name) {
+    return this.handlers[name]
   }
+
+  // HANDLE
 
   handleResize(event) {
     if (this.isResizing === false) {
@@ -116,7 +118,8 @@ export class ScreenEventManager {
     }
   }
 
-  // LISTENER
+  // LISTEN
+
   startListening() {
     this.debounce = Util.debounce(
       this.debounceTime, this.handleResizeEnd.bind(this)

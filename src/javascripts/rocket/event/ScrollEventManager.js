@@ -13,7 +13,6 @@ export class ScrollEventManager {
     this.isScrolling = false
 
     this.onEvent = () => { }
-
     this.onScrollStart = () => { }
     this.onScroll = () => { }
     this.onScrollEnd = () => { }
@@ -29,10 +28,6 @@ export class ScrollEventManager {
     return this
   }
 
-  find(name) {
-    return this.handlers[name]
-  }
-
   remove(name) {
     this.handlers[name].element.removeEventListener(
       'scroll', this.handleScroll
@@ -43,6 +38,12 @@ export class ScrollEventManager {
     delete this.handlers[name]
     return this
   }
+
+  find(name) {
+    return this.handlers[name]
+  }
+
+  // HANDLE
 
   handleScroll(event) {
     for (let name in this.handlers) {
@@ -55,6 +56,8 @@ export class ScrollEventManager {
       this.handlers[name].handleScroll(event)
     }
   }
+
+  // LISTEN
 
   startListening() {
     for (let name in this.handlers) {

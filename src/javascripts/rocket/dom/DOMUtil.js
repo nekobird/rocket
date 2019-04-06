@@ -28,9 +28,8 @@ export class DOMUtil {
 
     if (results.length > 0) {
       return isMoreThanOneResults === true ? results : results[0]
-    } else {
-      return false
     }
+    return false
   }
 
   // Find ancestor with given class name.
@@ -80,9 +79,8 @@ export class DOMUtil {
 
     if (results.length > 0) {
       return isMoreThanOneResults === true ? results : results[0]
-    } else {
-      return false
     }
+    return false
   }
 
   // Find descendant with ID.
@@ -103,17 +101,22 @@ export class DOMUtil {
 
   static findSibling(el, identifierFn, isMoreThanOneResults = true) {
     let results = this.getSiblings(el)
+
     if (results === false) {
       return false
     }
+
     let siblingEls = results
+
     if (siblingEls.length > 0) {
       let results = new Array
+
       siblingEls.forEach(sibling => {
         if (identifierFn(sibling)) {
           results.push(sibling)
         }
       })
+
       if (results.length > 0) {
         return isMoreThanOneResults === true ? results : results[0]
       }
@@ -159,9 +162,8 @@ export class DOMUtil {
       element.nodeType === 1
     ) {
       return true
-    } else {
-      return false
     }
+    return false
   }
 
   static isElementNodeName(element, name) {
@@ -171,9 +173,8 @@ export class DOMUtil {
       element.nodeName === name
     ) {
       return true
-    } else {
-      return false
     }
+    return false
   }
 
 }

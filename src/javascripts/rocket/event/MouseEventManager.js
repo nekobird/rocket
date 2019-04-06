@@ -16,6 +16,7 @@ export class MouseEventManager {
     this.debounceTime = 0.2
 
     this.handlers = {}
+
     this.startListening()
   }
 
@@ -25,13 +26,13 @@ export class MouseEventManager {
     return this
   }
 
-  find(name) {
-    return this.handlers[name]
-  }
-
   remove(name) {
     delete this.handlers[name]
     return this
+  }
+
+  find(name) {
+    return this.handlers[name]
   }
 
   // HANDLE

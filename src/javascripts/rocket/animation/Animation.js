@@ -67,7 +67,8 @@ export class Animation {
   goToBeginning() {
     if (typeof this.onTick === 'function') {
       this.onTick(0, this, undefined)
-    } else if (this.onTick.constructor === Array) {
+    }
+    else if (this.onTick.constructor === Array) {
       for (let onTick of this.onTick) {
         onTick(0, this, undefined)
       }
@@ -78,7 +79,8 @@ export class Animation {
   goToEnd() {
     if (typeof this.onTick === 'function') {
       this.onTick(1, this, undefined)
-    } else if (this.onTick.constructor === Array) {
+    }
+    else if (this.onTick.constructor === Array) {
       for (let onTick of this.onTick) {
         onTick(1, this, undefined)
       }
@@ -176,9 +178,12 @@ export class Animation {
     if (this.isPaused === true) {
       let startTimeDelta = this.pauseTime - this.startTime
       let endTimeDelta = this.endTime - this.pauseTime
+
       let now = Date.now()
+
       this.startTime = now - startTimeDelta
       this.endTime = now + endTimeDelta
+
       this.isPaused = false
     }
     // If it's not paused.
@@ -245,11 +250,13 @@ export class Animation {
 
       } // End if active, animating, and not paused.
 
-    }
+    } // End frame.
+
     // Go!
     this.RAFID = window.requestAnimationFrame(
       frame.bind(this)
     )
+
     return this
   }
 
@@ -273,7 +280,8 @@ export class Animation {
       this.onTick(
         n, this.iterationCount, this.exports
       )
-    } else if (this.onTick.constructor === Array) {
+    }
+    else if (this.onTick.constructor === Array) {
       for (let onTick of this.onTick) {
         onTick(
           n, this.iterationCount, this.exports
@@ -311,7 +319,8 @@ export class Animation {
   callOnAnimationStart() {
     if (typeof this.onAnimationStart === 'function') {
       this.onAnimationStart(this)
-    } else if (this.onAnimationStart.constructor === Array) {
+    }
+    else if (this.onAnimationStart.constructor === Array) {
       for (let onAnimationStart of this.onAnimationStart) {
         onAnimationStart(this)
       }
@@ -322,7 +331,8 @@ export class Animation {
   callOnAnimationEnd() {
     if (typeof this.onAnimationEnd === 'function') {
       this.onAnimationEnd(this)
-    } else if (this.onAnimationEnd.constructor === Array) {
+    }
+    else if (this.onAnimationEnd.constructor === Array) {
       for (let onAnimationEnd of this.onAnimationEnd) {
         onAnimationEnd(this)
       }
@@ -333,7 +343,8 @@ export class Animation {
   callOnIterationStart() {
     if (typeof this.onIterationStart === 'function') {
       this.onIterationStart(this)
-    } else if (this.onIterationStart.constructor === Array) {
+    }
+    else if (this.onIterationStart.constructor === Array) {
       for (let onIterationStart of this.onIterationStart) {
         onIterationStart(this)
       }
@@ -344,7 +355,8 @@ export class Animation {
   callOnIterationEnd() {
     if (typeof this.onIterationEnd === 'function') {
       this.onIterationEnd(this)
-    } else if (this.onIterationEnd.constructor === Array) {
+    }
+    else if (this.onIterationEnd.constructor === Array) {
       for (let onIterationEnd of this.onIterationEnd) {
         onIterationEnd(this)
       }

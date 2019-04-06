@@ -13,9 +13,6 @@ export class UITextArea {
     this.removeLeadingWhitespaces = false
     this.removeMultipleWhitespaces = false
 
-    // VARIABLES
-    this.element
-
     // CALLBACKS
     this.onBlur = () => { }
     this.onFocus = () => { }
@@ -23,17 +20,16 @@ export class UITextArea {
     this.onPaste = () => { }
 
     // PROPERTIES
-    this._eventInput
-    this._eventInputName = 'UITextAreaOnInput'
-    this._eventKeydown
-    this._eventKeydownName = 'UITextAreaOnKeydown'
     this._lastKeyCode
-    this._textBoxModel
 
     // Initialize TextBoxModel.
     this._textBoxModel = new TextBoxModel
 
-    // Initialize custom events.
+    // EVENT NAMES
+    this._eventInputName = 'UITextAreaOnInput'
+    this._eventKeydownName = 'UITextAreaOnKeydown'
+
+    // EVENTS
     this._eventInput = new CustomEvent(this._eventInputName)
     this._eventKeydown = new CustomEvent(this._eventKeydownName)
 

@@ -18,10 +18,9 @@ export class KeyboardEventHandler {
     this.keyDownDuration
     this.keyPressTime
 
-    // Callbacks
+    // HOOKS
     this.determineKeyDown = () => { return true }
     this.determineKeyPress = () => { return true }
-
     this.onKeyDownStart = () => { }
     this.onKeyDownEnd = () => { }
     this.onKeyPress = () => { }

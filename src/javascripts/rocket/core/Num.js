@@ -5,9 +5,7 @@ export class Num {
       throw new Error('num.average expects at least 2 numbers')
     }
 
-    let sum = this.sum(numbers)
-
-    return sum / numbers.length
+    return this.sum(numbers) / numbers.length
   }
 
   static constrain(number, range) {

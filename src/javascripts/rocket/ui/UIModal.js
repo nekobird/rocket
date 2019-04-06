@@ -5,22 +5,16 @@ import {
 export class UIModal {
 
   constructor(properties) {
-
-    this.activeModalEl
-
     this.closeKeyCodes = [27]
 
     this.closeOnOutsideClick = true
     this.isActive = false
 
+    this.activeModalEl
     this.lastTriggerOpenEl
 
     this.triggerCloseClass = '_jsUIModalClose'
     this.triggerOpenClass = '_jsUIModalOpen'
-
-    this._eventClose
-    this._eventOpen
-    this._eventTransit
 
     if (typeof properties !== 'undefined') {
       this.properties = properties
@@ -47,6 +41,7 @@ export class UIModal {
     this._eventOpen = new Event('UIModalOpen')
     this._eventClose = new Event('UIModalClose')
     this._eventTransit = new Event('UIModalTransit')
+
     this.startListening()
     return this
   }

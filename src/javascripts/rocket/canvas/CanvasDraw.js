@@ -3,15 +3,14 @@ import {
   Vector2,
 } from '../Rocket'
 
-// export interface CanvasDrawStyle {
-//   fillColor? | string
-//   strokeCap?: string
-//   strokeColor? | string
-//   strokeJoin?: string
-//   strokeWidth?
-//   noFill?: boolean
-//   noStroke?: boolean
-// }
+// CanvasDrawStyle
+// fillColor
+// noFill
+// noStroke
+// strokeCap
+// strokeColor
+// strokeJoin
+// strokeWidth
 
 const DEFAULT_STYLE = {
   fillColor: 'black',
@@ -32,7 +31,7 @@ export class CanvasDraw {
 
     this.resolutionMultiplier = window.devicePixelRatio
 
-    this.previousTranslation = new Vector2(0, 0)
+    this.previousTranslation = new Vector2
 
     this._defaultStyle = {
       fillColor: 'black',
@@ -72,26 +71,31 @@ export class CanvasDraw {
   createRadialGradient(from, fromRadius, to, toRadius) {
     let m = this.resolutionMultiplier
     return this.context.createRadialGradient(
-      from.x * m, from.y * m, fromRadius * m, to.x * m, to.y * m, toRadius * m
+      from.x * m, from.y * m, fromRadius * m,
+      to.x * m, to.y * m, toRadius * m
     )
   }
 
   // Apply Gradient
   applyStyle(style) {
     let computedStyleStyle = new Object
+
     for (let key in this.defaultStyle) {
       computedStyle[key] = this.defaultStyle[key]
     }
+
     if (typeof style !== 'undefined') {
       for (let key in style) {
         computedStyle[key] = style[key]
       }
     }
+
     this.context.fillStyle = computedStyle.fillColor
     // this.context.lineCap = computedStyle.strokeCap
     // this.context.lineJoin = computedStyle.strokeJoin
     this.context.strokeStyle = computedStyle.strokeColor
     this.context.lineWidth = computedStyle.strokeWidth
+
     if (computedStyle.noFill === false) {
       this.context.fill()
     }

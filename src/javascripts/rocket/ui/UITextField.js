@@ -6,39 +6,39 @@ export class UITextField {
 
   constructor(element, properties) {
 
-    // Flags
-    allowDecimals
-    disableTabs
-    isEmpty
-    isInFocus
-    isShowingValuePlaceholder
-    limitNumberOfCharacters
-    numbersOnly
-    placeholder
-    removeLeadingWhitespaces
-    removeMultipleWhitespaces
-    _value
-    valuePlaceholder
+    // FLAGS
+    this.allowDecimals = false
+    this.disableTabs = false
+    this.isEmpty = false
+    this.isInFocus = false
+    this.isShowingValuePlaceholder = false
+    this.limitNumberOfCharacters = false
+    this.numbersOnly = false
+    this.placeholder
+    this.removeLeadingWhitespaces
+    this.removeMultipleWhitespaces
 
-    // Callbacks
-    onBlur
-    onFocus
-    onInput
-    onPaste
+    this.valuePlaceholder
+    this._value
 
-    // Variables
-    element
+    // CALLBACKS
+    this.onBlur
+    this.onFocus
+    this.onInput
+    this.onPaste
 
-    _eventBlur
-    _eventFocus
-    _eventInput
-    _eventKeydown
+    // EVENT NAMES
+    this._eventBlurName = 'UITextFieldOnBlur'
+    this._eventFocusName = 'UITextFieldOnFocus'
+    this._eventInputName = 'UITextFieldOnInput'
+    this._eventKeydownName = 'UITextFieldOnKeydown'
+    this._eventPasteName = 'UITextFieldOnPaste'
 
-    _eventBlurName = 'UITextFieldOnBlur'
-    _eventFocusName = 'UITextFieldOnFocus'
-    _eventInputName = 'UITextFieldOnInput'
-    _eventKeydownName = 'UITextFieldOnKeydown'
-    _eventPasteName = 'UITextFieldOnPaste'
+    // EVENTS
+    this._eventBlur = new CustomEvent(this._eventBlurName)
+    this._eventFocus = new CustomEvent(this._eventFocusName)
+    this._eventInput = new CustomEvent(this._eventInputName)
+    this._eventKeydown = new CustomEvent(this._eventKeydownName)
 
     this.element = element
 
@@ -51,10 +51,6 @@ export class UITextField {
   }
 
   initialize() {
-    this._eventBlur = new CustomEvent(this._eventBlurName)
-    this._eventFocus = new CustomEvent(this._eventFocusName)
-    this._eventInput = new CustomEvent(this._eventInputName)
-    this._eventKeydown = new CustomEvent(this._eventKeydownName)
     if (this.element.value === '') {
       this.isEmpty = true
       this.element.value = this._valuePlaceholder
@@ -80,7 +76,8 @@ export class UITextField {
   get value() {
     if (this.isShowingValuePlaceholder === true) {
       this._value = ''
-    } else {
+    }
+    else {
       this._value = this.element.value
     }
     return this._value
@@ -93,7 +90,8 @@ export class UITextField {
     ) {
       this.element.value = this._valuePlaceholder
       this.isShowingValuePlaceholder = true
-    } else if (
+    }
+    else if (
       this.isInFocus === true &&
       this.element.value === this._valuePlaceholder
     ) {

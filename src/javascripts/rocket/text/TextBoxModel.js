@@ -84,12 +84,10 @@ export class TextBoxModel {
     if (typeof text === 'undefined') {
       text = this.getTextFromElement(element)
     }
-
     this.modelText = text
 
-    let offset = 0
-
     // Set offset for when boxSizing is set to border-box.
+    let offset = 0
     let style = window.getComputedStyle(element, null)
     if (style['boxSizing'] === 'border-box') {
       offset = this.getElementVerticalBorderHeight(element)
@@ -130,12 +128,10 @@ export class TextBoxModel {
     if (typeof text === 'undefined') {
       text = this.getTextFromElement(element)
     }
-
     this.modelText = text
 
-    let offset = 0
-
     // Set offset for when boxSizing is set to border-box.
+    let offset = 0
     let style = window.getComputedStyle(element, null)
     if (style['boxSizing'] === 'border-box') {
       offset = this.getElementHorizontalBorderWidth(element)
@@ -159,7 +155,7 @@ export class TextBoxModel {
       this.modelElement.nodeName === 'TEXTAREA' ||
       this.modelElement.nodeName === 'INPUT'
     ) {
-      (this.modelElement).value = text
+      this.modelElement.value = text
     } else {
       text = text.replace(/[\n\r]/g, '<br>')
       text = text.replace(/[\t]/g, '&#9')
@@ -183,6 +179,7 @@ export class TextBoxModel {
 
   applyBoxModelPropertiesFromElement(element) {
     let style = window.getComputedStyle(element, null)
+
     for (let name of STYLE_PROPERTIES) {
       this.modelElement.style[name] = style[name]
     }
@@ -191,6 +188,7 @@ export class TextBoxModel {
 
   applyFontPropertiesFromElement(element) {
     let style = window.getComputedStyle(element, null)
+
     for (let name of FONT_STYLE_PROPERTIES) {
       this.modelElement.style[name] = style[name]
     }
@@ -199,7 +197,9 @@ export class TextBoxModel {
 
   create(type = undefined) {
     type = typeof type === 'string' ? type : 'TEXTAREA'
+
     this.modelElement = document.createElement(type)
+
     document.body.appendChild(this.modelElement)
     return this
   }
@@ -210,6 +210,7 @@ export class TextBoxModel {
       this.modelElement.nodeType === 1
     ) {
       document.body.removeChild(this.modelElement)
+
       this.modelElement.remove()
     }
     return this
@@ -219,6 +220,7 @@ export class TextBoxModel {
 
   getElementFontSize(element) {
     let style = window.getComputedStyle(element, null)
+
     return parseFloat(style['font-size'])
   }
 

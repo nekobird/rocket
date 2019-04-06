@@ -6,22 +6,24 @@
 export class KeyboardEventManager {
 
   constructor() {
+    this.isDown = false
+    this.isDisabled = false
+
     this.altKeyIsDown = false
     this.ctrlKeyIsDown = false
     this.shiftKeyIsDown = false
 
-    this.isDown = false
-    this._isDisabled = false
-
+    this.downKeys = new Array
     this.lastKeyCode
 
+    // HOOKS
     this.onEvent = () => { }
     this.onKeyDown = () => { }
     this.onKeyPress = () => { }
     this.onKeyUp = () => { }
 
     this.handlers = {}
-    this.downKeys = new Array
+
     this.startListening()
   }
 
@@ -32,27 +34,14 @@ export class KeyboardEventManager {
     return this
   }
 
-  find(name) {
-    return this.handlers[name]
-  }
-
   remove(name) {
     this.handlers[name].manager = undefined
     delete this.handlers[name]
     return this
   }
 
-  get isDisabled() {
-    return this._isDisabled
-  }
-
-  set isDisabled(isDisabled) {
-    if (isDisabled === true) {
-      this._isDisabled = true
-    }
-    else if (isDisabled === false) {
-      this._isDisabled = false
-    }
+  find(name) {
+    return this.handlers[name]
   }
 
   // HANDLERS
@@ -77,7 +66,7 @@ export class KeyboardEventManager {
 
     this.isDown = true
 
-    if (this._isDisabled === false) {
+    if (this.isDisabled === false) {
       this.onEvent(event, this)
       this.onKeyDown(event, this)
       for (let name in this.handlers) {
@@ -89,7 +78,7 @@ export class KeyboardEventManager {
   handleKeyPress(event) {
     this.lastKeyCode = event.keyCode
 
-    if (this._isDisabled === false) {
+    if (this.isDisabled === false) {
       this.onEvent(event, this)
       this.onKeyDown(event, this)
       for (let name in this.handlers) {
@@ -122,7 +111,7 @@ export class KeyboardEventManager {
       this.isDown = false
     }
 
-    if (this._isDisabled === false) {
+    if (this.isDisabled === false) {
       this.onEvent(event, this)
       this.onKeyDown(event, this)
       for (let name in this.handlers) {

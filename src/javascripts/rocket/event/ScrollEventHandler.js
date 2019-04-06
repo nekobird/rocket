@@ -5,7 +5,7 @@ export class ScrollEventHandler {
   constructor(element) {
     this.name
 
-    this.event
+    this.lastFiredEvent
 
     this.isScrolling = false
 
@@ -97,8 +97,10 @@ export class ScrollEventHandler {
     return this
   }
 
+  // HANDLE
+
   handleScroll(event) {
-    this.event = event
+    this.lastFiredEvent = event
 
     this._position.equals(this.position)
     this._velocity.equals(

@@ -7,7 +7,7 @@ export class MouseEventHandler {
   constructor() {
     this.name
 
-    this.event
+    this.lastFiredEvent
 
     this.isDown = false
     this.isMoving = false
@@ -68,12 +68,12 @@ export class MouseEventHandler {
     this.dragEndPosition = new Vector2
   }
 
-  // HANDLERS
+  // HANDLE
 
   handleClick(event) {
     if (this.determineClick(event, this) === true) {
       this.clickTime = Date.now()
-      this.event = event
+      this.lastFiredEvent = event
 
       this.clickCount++
 
@@ -101,7 +101,7 @@ export class MouseEventHandler {
   handleDown(event) {
     if (this.determineDown(event, this) === true) {
       this.downStartTime = Date.now()
-      this.event = event
+      this.lastFiredEvent = event
 
       const point = new Vector2(event.clientX, event.clientY)
       this.position.equals(point)
@@ -118,7 +118,7 @@ export class MouseEventHandler {
       this.downEndTime = Date.now()
       this.downDuration = this.downEndTime - this.downStartTime
 
-      this.event = event
+      this.lastFiredEvent = event
 
       const point = new Vector2(this.position)
       this.position.equals(point)

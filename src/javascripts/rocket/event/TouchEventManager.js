@@ -6,7 +6,6 @@ export class TouchEventManager {
 
   constructor() {
     this.onEvent = () => { }
-
     this.onTouchStart = () => { }
     this.onTouchEnd = () => { }
     this.onTouchCancel = () => { }
@@ -27,13 +26,13 @@ export class TouchEventManager {
     return this
   }
 
-  find(name) {
-    return this.handlers[name]
-  }
-
   remove(name) {
     delete this.handlers[name]
     return this
+  }
+
+  find(name) {
+    return this.handlers[name]
   }
 
   isTouchIdentityTaken(identity) {
@@ -44,6 +43,8 @@ export class TouchEventManager {
     }
     return false
   }
+
+  // HANDLE
 
   handleTouchStart(event) {
     this.onEvent(event)
@@ -94,6 +95,8 @@ export class TouchEventManager {
       this.handlers[name].handleTouchMoveEnd()
     }
   }
+
+  // LISTEN
 
   startListening() {
     this.debounceMoveEnd = Util.debounce(

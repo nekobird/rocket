@@ -5,14 +5,14 @@ import {
 export class TouchEventHandler {
 
   constructor() {
-    this.event
-
     this.name
+
+    this.identity
+
+    this.lastFiredEvent
 
     this.touch
     this.touchCount
-
-    this.identity
 
     this.isTouching = false
     this.isMoving = false
@@ -83,7 +83,7 @@ export class TouchEventHandler {
   }
 
   handleTouchStart(event, touch) {
-    this.event = event
+    this.lastFiredEvent = event
     this.touch = touch
     let point = new Vector2(touch.clientX, touch.clientY)
     if (this.determine(point, this) === true) {
@@ -120,7 +120,7 @@ export class TouchEventHandler {
       this.identity === touch.identifier &&
       this.isTouching === true
     ) {
-      this.event = event
+      this.lastFiredEvent = event
       this.touch = touch
       let point = new Vector2(touch.clientX, touch.clientY)
       // TouchMoveStart
