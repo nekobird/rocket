@@ -1,8 +1,12 @@
 import {
+  Animation,
   KeyboardEventManager,
   KeyboardEventHandler,
   UITextArea,
 } from './rocket/Rocket'
+
+
+let animation = new Animate
 
 // KeyboardEventManager Demo
 let keyboardEventHandler = new KeyboardEventHandler()

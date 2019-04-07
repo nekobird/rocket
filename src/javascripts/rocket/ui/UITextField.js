@@ -5,7 +5,6 @@ import {
 export class UITextField {
 
   constructor(element, properties) {
-
     // FLAGS
     this.allowDecimals = false
     this.disableTabs = false
@@ -14,11 +13,11 @@ export class UITextField {
     this.isShowingValuePlaceholder = false
     this.limitNumberOfCharacters = false
     this.numbersOnly = false
-    this.placeholder
-    this.removeLeadingWhitespaces
-    this.removeMultipleWhitespaces
+    this.removeLeadingWhitespaces = false
+    this.removeMultipleWhitespaces = false
 
-    this.valuePlaceholder
+    this.placeholder
+    this._valuePlaceholder
     this._value
 
     // CALLBACKS
@@ -76,8 +75,7 @@ export class UITextField {
   get value() {
     if (this.isShowingValuePlaceholder === true) {
       this._value = ''
-    }
-    else {
+    } else {
       this._value = this.element.value
     }
     return this._value
@@ -90,8 +88,7 @@ export class UITextField {
     ) {
       this.element.value = this._valuePlaceholder
       this.isShowingValuePlaceholder = true
-    }
-    else if (
+    } else if (
       this.isInFocus === true &&
       this.element.value === this._valuePlaceholder
     ) {
@@ -113,7 +110,9 @@ export class UITextField {
     // If limit number of characters is a number.
     // Trim element value.
     if (typeof this.limitNumberOfCharacters === 'number') {
-      this.element.value = this.element.value.substring(0, this.limitNumberOfCharacters)
+      this.element.value = this.element.value.substring(
+        0, this.limitNumberOfCharacters
+      )
     }
     return this
   }
@@ -142,7 +141,7 @@ export class UITextField {
     return this
   }
 
-  // EVENTS
+  // HANDLE
 
   _handleBlur() {
     this.isInFocus = false

@@ -17,10 +17,10 @@ export class KeyboardEventManager {
     this.lastKeyCode
 
     // HOOKS
-    this.onEvent = () => { }
-    this.onKeyDown = () => { }
-    this.onKeyPress = () => { }
-    this.onKeyUp = () => { }
+    this.onEvent = () => {}
+    this.onKeyDown = () => {}
+    this.onKeyPress = () => {}
+    this.onKeyUp = () => {}
 
     this.handlers = {}
 

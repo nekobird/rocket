@@ -31,24 +31,32 @@ export class MouseEventHandler {
     this.doubleClickCounter = 0
     this.doubleClickMaximumDelayTime = 500
 
-    this.determineClick = () => { return true }
-    this.determineDown = () => { return true }
-    this.determineMove = () => { return true }
-    this.determineDrag = () => { return true }
+    this.determineClick = () => {
+      return true
+    }
+    this.determineDown = () => {
+      return true
+    }
+    this.determineMove = () => {
+      return true
+    }
+    this.determineDrag = () => {
+      return true
+    }
 
-    this.onClick = () => { }
-    this.onDoubleClick = () => { }
+    this.onClick = () => {}
+    this.onDoubleClick = () => {}
 
-    this.onDownStart = () => { }
-    this.onDownEnd = () => { }
+    this.onDownStart = () => {}
+    this.onDownEnd = () => {}
 
-    this.onMoveStart = () => { }
-    this.onMove = () => { }
-    this.onMoveEnd = () => { }
+    this.onMoveStart = () => {}
+    this.onMove = () => {}
+    this.onMoveEnd = () => {}
 
-    this.onDragStart = () => { }
-    this.onDrag = () => { }
-    this.onDragEnd = () => { }
+    this.onDragStart = () => {}
+    this.onDrag = () => {}
+    this.onDragEnd = () => {}
 
     this.position = new Vector2
     this.velocity = new Vector2

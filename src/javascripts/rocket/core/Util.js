@@ -1,4 +1,6 @@
-import { Num } from '../Rocket'
+import {
+  Num
+} from '../Rocket'
 
 export class Util {
 
@@ -73,7 +75,7 @@ export class Util {
     return function () {
       let context = this
       let args = arguments
-      let now = + new Date
+      let now = +new Date
 
       if (last && now < last + threshold) {
         clearTimeout(timeout)

@@ -39,7 +39,9 @@ export class ScreenModel {
     this.startModel()
     const h = modelElement.offsetHeight
     const w = modelElement.offsetWidth
-    return Math.abs(Math.sqrt(w * w + h * h))
+    return Math.abs(
+      Math.sqrt(w * w + h * h)
+    )
   }
 
   static get modelElement() {

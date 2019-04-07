@@ -19,11 +19,15 @@ export class KeyboardEventHandler {
     this.keyPressTime
 
     // HOOKS
-    this.determineKeyDown = () => { return true }
-    this.determineKeyPress = () => { return true }
-    this.onKeyDownStart = () => { }
-    this.onKeyDownEnd = () => { }
-    this.onKeyPress = () => { }
+    this.determineKeyDown = () => {
+      return true
+    }
+    this.determineKeyPress = () => {
+      return true
+    }
+    this.onKeyDownStart = () => {}
+    this.onKeyDownEnd = () => {}
+    this.onKeyPress = () => {}
   }
 
   handleKeyDown(event) {
@@ -37,8 +41,7 @@ export class KeyboardEventHandler {
       // Call onKeyDownStart.
       if (typeof this.onKeyDownStart === 'function') {
         this.onKeyDownStart(event.keyCode, event, this)
-      }
-      else if (this.onKeyDownStart.constructor === Array) {
+      } else if (this.onKeyDownStart.constructor === Array) {
         this.onKeyDownStart.forEach(callback => {
           callback(event.keyCode, event, this)
         })
@@ -56,8 +59,7 @@ export class KeyboardEventHandler {
       // Call onKeyPress
       if (typeof this.onKeyPress === 'function') {
         this.onKeyPress(event.keyCode, event, this)
-      }
-      else if (this.onKeyPress.constructor === Array) {
+      } else if (this.onKeyPress.constructor === Array) {
         this.onKeyPress.forEach(callback => {
           callback(event.keyCode, event, this)
         })
@@ -77,8 +79,7 @@ export class KeyboardEventHandler {
       // Call onKeyDownEnd AKA keyUp
       if (typeof this.onKeyDownEnd === 'function') {
         this.onKeyDownEnd(event.keyCode, event, this)
-      }
-      else if (this.onKeyDownEnd.constructor === Array) {
+      } else if (this.onKeyDownEnd.constructor === Array) {
         this.onKeyDownEnd.forEach(callback => {
           callback(event.keyCode, event, this)
         })

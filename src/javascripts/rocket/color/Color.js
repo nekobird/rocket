@@ -71,11 +71,9 @@ export class Color {
   set(input) {
     if (Color.isColor(input)) {
       this.equals(input)
-    }
-    else if (typeof input === 'string') {
+    } else if (typeof input === 'string') {
       this.colorString = input
-    }
-    else {
+    } else {
       this.r = 0
       this.g = 0
       this.b = 0
@@ -87,20 +85,15 @@ export class Color {
   set colorString(input) {
     if (typeof NAMED_COLOR_SET[input] !== 'undefined') {
       this.rgba = NAMED_COLOR_SET[input]
-    }
-    else if (typeof Util.match(input, COLOR_INPUT_REGEX.hex) === 'string') {
+    } else if (typeof Util.match(input, COLOR_INPUT_REGEX.hex) === 'string') {
       this.hex = input
-    }
-    else if (typeof Util.match(input, COLOR_INPUT_REGEX.rgb) === 'string') {
+    } else if (typeof Util.match(input, COLOR_INPUT_REGEX.rgb) === 'string') {
       this.rgbString = input
-    }
-    else if (typeof Util.match(input, COLOR_INPUT_REGEX.rgba) === 'string') {
+    } else if (typeof Util.match(input, COLOR_INPUT_REGEX.rgba) === 'string') {
       this.rgbaString = input
-    }
-    else if (typeof Util.match(input, COLOR_INPUT_REGEX.hsl) === 'string') {
+    } else if (typeof Util.match(input, COLOR_INPUT_REGEX.hsl) === 'string') {
       this.hslString = input
-    }
-    else if (typeof Util.match(input, COLOR_INPUT_REGEX.hsla) === 'string') {
+    } else if (typeof Util.match(input, COLOR_INPUT_REGEX.hsla) === 'string') {
       this.hslaString = input
     }
     return this
@@ -231,7 +224,9 @@ export class Color {
 
   get rgb255() {
     const rgb = [this.r, this.g, this.b]
-    return rgb.map(v => { return Math.round(v * 255) })
+    return rgb.map(v => {
+      return Math.round(v * 255)
+    })
   }
 
   set rgb(rgb) {

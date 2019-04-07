@@ -44,18 +44,20 @@ export class TouchEventHandler {
     this.moveEndTime
     this.moveDuration
 
-    this.determine = () => { return false }
+    this.determine = () => {
+      return false
+    }
 
-    this.onDoubleTap = () => { }
+    this.onDoubleTap = () => {}
 
-    this.onTouchStart = () => { }
-    this.onTouchEnd = () => { }
+    this.onTouchStart = () => {}
+    this.onTouchEnd = () => {}
 
-    this.onCancel = () => { }
+    this.onCancel = () => {}
 
-    this.onMoveStart = () => { }
-    this.onMove = () => { }
-    this.onMoveEnd = () => { }
+    this.onMoveStart = () => {}
+    this.onMove = () => {}
+    this.onMoveEnd = () => {}
 
     this.doubleTapCounter = 0
     this.doubleTapMaximumTouchTime = 500

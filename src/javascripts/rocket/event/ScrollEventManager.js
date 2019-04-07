@@ -12,10 +12,10 @@ export class ScrollEventManager {
 
     this.isScrolling = false
 
-    this.onEvent = () => { }
-    this.onScrollStart = () => { }
-    this.onScroll = () => { }
-    this.onScrollEnd = () => { }
+    this.onEvent = () => {}
+    this.onScrollStart = () => {}
+    this.onScroll = () => {}
+    this.onScrollEnd = () => {}
 
     this.handlers = {}
 

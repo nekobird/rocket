@@ -14,10 +14,10 @@ export class UITextArea {
     this.removeMultipleWhitespaces = false
 
     // CALLBACKS
-    this.onBlur = () => { }
-    this.onFocus = () => { }
-    this.onInput = () => { }
-    this.onPaste = () => { }
+    this.onBlur = () => {}
+    this.onFocus = () => {}
+    this.onInput = () => {}
+    this.onPaste = () => {}
 
     // PROPERTIES
     this._lastKeyCode
@@ -125,46 +125,26 @@ export class UITextArea {
     return this
   }
 
-  startListening() {
-    this.element.addEventListener('blur', this._handleBlur.bind(this))
-    this.element.addEventListener('focus', this._handleFocus.bind(this))
-    this.element.addEventListener('input', this._handleInput.bind(this))
-    this.element.addEventListener('keydown', this._handleKeydown.bind(this))
-    this.element.addEventListener('paste', this._handlePaste.bind(this))
-    window.addEventListener('resize', this._handleInput.bind(this))
-    return this
-  }
+  // HANDLER
 
-  stopListening() {
-    this.element.removeEventListener('blur', this._handleBlur.bind(this))
-    this.element.removeEventListener('focus', this._handleFocus.bind(this))
-    this.element.removeEventListener('input', this._handleInput.bind(this))
-    this.element.removeEventListener('keydown', this._handleKeydown.bind(this))
-    this.element.removeEventListener('paste', this._handlePaste.bind(this))
-    window.removeEventListener('resize', this._handleInput.bind(this))
-    return this
-  }
-
-  // EVENTS
-
-  _handleBlur() {
+  handleBlur() {
     this.isInFocus = false
     return this
   }
 
-  _handleFocus() {
+  handleFocus() {
     this.isInFocus = true
     return this
   }
 
-  _handleInput(event) {
+  handleInput(event) {
     this.onInput(this)
     this.processText()
     window.dispatchEvent(this._eventInput)
     return this
   }
 
-  _handleKeydown(event) {
+  handleKeydown(event) {
     let keyCode = event.keyCode
     if (keyCode === 9) {
       this.insertString('\t')
@@ -181,9 +161,31 @@ export class UITextArea {
     return this
   }
 
-  _handlePaste(event) {
+  handlePaste(event) {
     this.onPaste(this)
     this.processText()
+    return this
+  }
+
+  // LISTEN
+
+  startListening() {
+    this.element.addEventListener('blur', this.handleBlur.bind(this))
+    this.element.addEventListener('focus', this.handleFocus.bind(this))
+    this.element.addEventListener('input', this.handleInput.bind(this))
+    this.element.addEventListener('keydown', this.handleKeydown.bind(this))
+    this.element.addEventListener('paste', this.handlePaste.bind(this))
+    window.addEventListener('resize', this.handleInput.bind(this))
+    return this
+  }
+
+  stopListening() {
+    this.element.removeEventListener('blur', this.handleBlur.bind(this))
+    this.element.removeEventListener('focus', this.handleFocus.bind(this))
+    this.element.removeEventListener('input', this.handleInput.bind(this))
+    this.element.removeEventListener('keydown', this.handleKeydown.bind(this))
+    this.element.removeEventListener('paste', this.handlePaste.bind(this))
+    window.removeEventListener('resize', this.handleInput.bind(this))
     return this
   }
 

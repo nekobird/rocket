@@ -20,7 +20,9 @@ export class UIModal {
       this.properties = properties
     }
 
-    this.openOnCondition = targetModalEl => { return true }
+    this.openOnCondition = targetModalEl => {
+      return true
+    }
 
     this.open = (modalEl, completeFn, context) => {
       modalEl.classList.add('_UIModal-active')

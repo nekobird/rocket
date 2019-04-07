@@ -20,9 +20,9 @@ export class ScreenEventManager {
 
     this.isResizing = false
 
-    this.onResizeStart = () => { }
-    this.onResize = () => { }
-    this.onResizeEnd = () => { }
+    this.onResizeStart = () => {}
+    this.onResize = () => {}
+    this.onResizeEnd = () => {}
 
     this.resizeStartTime
     this.resizeEndTime

@@ -28,7 +28,9 @@ export class ConvertColor {
     rgb[0] = Num.cycle(rgb[0], 1)
     rgb[1] = Num.cycle(rgb[1], 1)
     rgb[2] = Num.cycle(rgb[2], 1)
-    rgb = rgb.map((n) => { return n * 255 })
+    rgb = rgb.map(n => {
+      return n * 255
+    })
     return `#${rgb[0].toString(16)}${rgb[1].toString(16)}${rgb[2].toString(16)}`
   }
 
@@ -53,7 +55,9 @@ export class ConvertColor {
     rgb[1] = parseInt(g, 16)
     rgb[2] = parseInt(b, 16)
 
-    return rgb.map((n) => { return n / 255 })
+    return rgb.map(n => {
+      return n / 255
+    })
   }
 
   // CMYK 1, 1, 1, 1
@@ -146,7 +150,9 @@ export class ConvertColor {
 
     let m = hsl[2] - (0.5 * c)
 
-    return rgb.map((v) => { return v + m })
+    return rgb.map(v => {
+      return v + m
+    })
   }
 
   // RGB   1, 1, 1
@@ -221,6 +227,8 @@ export class ConvertColor {
     }
 
     let m = hsv[2] - c
-    return rgb.map((v) => { return v + m })
+    return rgb.map(v => {
+      return v + m
+    })
   }
 }

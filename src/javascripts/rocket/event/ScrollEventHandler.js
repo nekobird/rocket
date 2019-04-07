@@ -1,4 +1,6 @@
-import { Vector2 } from '../Rocket'
+import {
+  Vector2
+} from '../Rocket'
 
 export class ScrollEventHandler {
 
@@ -13,11 +15,13 @@ export class ScrollEventHandler {
     this.scrollEndTime
     this.scrollDuration
 
-    determineScroll = () => { return true }
+    determineScroll = () => {
+      return true
+    }
 
-    onScrollStart = () => { }
-    onScroll = () => { }
-    onScrollEnd = () => { }
+    onScrollStart = () => {}
+    onScroll = () => {}
+    onScrollEnd = () => {}
 
     this.debounce
 

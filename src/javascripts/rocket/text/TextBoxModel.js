@@ -232,9 +232,8 @@ export class TextBoxModel {
       element.nodeName === 'TEXTAREA'
     ) {
       return element.value
-    } else {
-      return element.textContent
     }
+    return element.textContent
   }
 
   getElementHorizontalBorderWidth(element) {

@@ -24,8 +24,7 @@ export class Angle {
       ) {
         sign = -1
       }
-    }
-    else if (
+    } else if (
       to < from &&
       to >= range
     ) {
@@ -40,8 +39,7 @@ export class Angle {
 
     if (from > to) {
       result = from - to
-    }
-    else if (to > from) {
+    } else if (to > from) {
       result = to - from
     }
 
@@ -61,8 +59,7 @@ export class Angle {
       ) {
         sign = -1
       }
-    }
-    else if (
+    } else if (
       to > from &&
       to <= range
     ) {
@@ -77,8 +74,7 @@ export class Angle {
 
     if (from > to) {
       result = from - to
-    }
-    else if (to > from) {
+    } else if (to > from) {
       result = to - from
     }
 
@@ -90,8 +86,7 @@ export class Angle {
 
     if (from > to) {
       result = (Math.PI * 2) - from + to
-    }
-    else if (to > from) {
+    } else if (to > from) {
       result = to - from
     }
 
@@ -104,8 +99,7 @@ export class Angle {
 
     if (from > to) {
       result = from - to
-    }
-    else if (to > from) {
+    } else if (to > from) {
       result = from + (Math.PI * 2) - to
     }
 

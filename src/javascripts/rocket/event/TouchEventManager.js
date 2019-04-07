@@ -5,11 +5,11 @@ import {
 export class TouchEventManager {
 
   constructor() {
-    this.onEvent = () => { }
-    this.onTouchStart = () => { }
-    this.onTouchEnd = () => { }
-    this.onTouchCancel = () => { }
-    this.onTouchMove = () => { }
+    this.onEvent = () => {}
+    this.onTouchStart = () => {}
+    this.onTouchEnd = () => {}
+    this.onTouchCancel = () => {}
+    this.onTouchMove = () => {}
 
     this.debounceMoveEnd
     this.debounceTime = 0.2
