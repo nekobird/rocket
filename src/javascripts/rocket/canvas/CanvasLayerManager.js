@@ -36,13 +36,6 @@ export class CanvasLayerManager {
     return this.layers[name]
   }
 
-  get(name) {
-    if (typeof this.layers[name] === 'undefined') {
-      this.create(name)
-    }
-    return this.layers[name]
-  }
-
   remove(name) {
     for (let i = 0; i < this.layerStackElement.children.length; i++) {
       let child = this.layerStackElement.children[i]
@@ -56,15 +49,20 @@ export class CanvasLayerManager {
     return false
   }
 
+  find(name) {
+    if (typeof this.layers[name] === 'undefined') {
+      this.create(name)
+    }
+    return this.layers[name]
+  }
+
   resize() {
     let height = 0
     let width = 0
 
     if (this.isFullScreen === true) {
-      height = ScreenModel.height
-      width = ScreenModel.width
-      this.layerStackElement.style.height = `${height}px`
-      this.layerStackElement.style.width = `${width}px`
+      this.layerStackElement.style.height = `${ScreenModel.height}px`
+      this.layerStackElement.style.width = `${ScreenModel.width}px`
     } else {
       height = this.layerStackElement.offsetHeight
       width = this.layerStackElement.offsetWidth
@@ -78,6 +76,8 @@ export class CanvasLayerManager {
 
     return this
   }
+
+  // LISTEN
 
   startListening() {
     window.addEventListener('resize', this.resize.bind(this))

@@ -101,7 +101,7 @@ export class ScrollEventHandler {
     return this
   }
 
-  // HANDLE
+  // HANDLERS
 
   handleScroll(event) {
     this.lastFiredEvent = event

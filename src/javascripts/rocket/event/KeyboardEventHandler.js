@@ -1,4 +1,5 @@
-// The *Down happens first, the *Press happens second (when text is entered), 
+// The *Down happens first,
+// the *Press happens second (when text is entered), 
 // and the *Up happens last (when text input is complete).
 
 export class KeyboardEventHandler {
@@ -18,7 +19,7 @@ export class KeyboardEventHandler {
     this.keyDownDuration
     this.keyPressTime
 
-    // HOOKS
+    // CALLBACKS
     this.determineKeyDown = () => {
       return true
     }
@@ -29,6 +30,8 @@ export class KeyboardEventHandler {
     this.onKeyDownEnd = () => {}
     this.onKeyPress = () => {}
   }
+
+  // HANDLERS
 
   handleKeyDown(event) {
     if (this.determineKeyDown(event.keyCode, event, this) === true) {

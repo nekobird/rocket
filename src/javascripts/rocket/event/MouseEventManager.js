@@ -6,11 +6,11 @@ export class MouseEventManager {
 
   constructor() {
 
-    this.onEvent = () => { }
-    this.onClick = () => { }
-    this.onDown = () => { }
-    this.onUp = () => { }
-    this.onMove = () => { }
+    this.onEvent = () => {}
+    this.onClick = () => {}
+    this.onDown = () => {}
+    this.onUp = () => {}
+    this.onMove = () => {}
 
     this.debounce
     this.debounceTime = 0.2
@@ -35,7 +35,7 @@ export class MouseEventManager {
     return this.handlers[name]
   }
 
-  // HANDLE
+  // HANDLERS
 
   handleClick(event) {
     this.onEvent(event)
@@ -75,7 +75,7 @@ export class MouseEventManager {
     }
   }
 
-  // LISTENERS
+  // LISTEN
 
   startListening() {
     this.debounce = Util.debounce(

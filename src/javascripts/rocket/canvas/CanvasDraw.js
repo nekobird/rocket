@@ -247,7 +247,7 @@ export class CanvasDraw {
     return this
   }
 
-  // TRANSFORMATIONS
+  // TRANSFORM
 
   rotate(angle) {
     this.context.rotate(angle)

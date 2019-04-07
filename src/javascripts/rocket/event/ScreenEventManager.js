@@ -66,7 +66,7 @@ export class ScreenEventManager {
     return this.handlers[name]
   }
 
-  // HANDLE
+  // HANDLERS
 
   handleResize(event) {
     if (this.isResizing === false) {

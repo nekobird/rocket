@@ -17,21 +17,20 @@ export class TouchEventHandler {
     this.isTouching = false
     this.isMoving = false
 
-    this.position
-    this.velocity
-    this.acceleration
+    this.position = new Vector2
+    this.velocity = new Vector2
+    this.acceleration = new Vector2
 
-    this.previousPosition
-    this.previousVelocity
+    this.previousPosition = new Vector2
+    this.previousVelocity = new Vector2
+    this.cancelPosition = new Vector2
 
-    this.touchStartPosition
-    this.touchEndPosition
+    this.touchStartPosition = new Vector2
+    this.touchEndPosition = new Vector2
 
-    this.moveStartPosition
-    this.moveEndPosition
-    this.movePosition
-
-    this.cancelPosition
+    this.movePosition = new Vector2
+    this.moveStartPosition = new Vector2
+    this.moveEndPosition = new Vector2
 
     this.touchStartTime
     this.touchEndTime
@@ -44,6 +43,7 @@ export class TouchEventHandler {
     this.moveEndTime
     this.moveDuration
 
+    // CALLBACKS
     this.determine = () => {
       return false
     }
@@ -62,26 +62,6 @@ export class TouchEventHandler {
     this.doubleTapCounter = 0
     this.doubleTapMaximumTouchTime = 500
     this.doubleTapMaximumDelayTime = 500
-
-    this.initialize()
-  }
-
-  initialize() {
-    this.acceleration = new Vector2
-    this.position = new Vector2
-    this.velocity = new Vector2
-
-    this.touchEndPosition = new Vector2
-    this.touchStartPosition = new Vector2
-
-    this.moveEndPosition = new Vector2
-    this.movePosition = new Vector2
-    this.moveStartPosition = new Vector2
-
-    this.previousPosition = new Vector2
-    this.previousVelocity = new Vector2
-    this.cancelPosition = new Vector2
-    return this
   }
 
   handleTouchStart(event, touch) {

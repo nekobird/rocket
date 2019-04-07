@@ -76,7 +76,7 @@ export class MouseEventHandler {
     this.dragEndPosition = new Vector2
   }
 
-  // HANDLE
+  // HANDLERS
 
   handleClick(event) {
     if (this.determineClick(event, this) === true) {

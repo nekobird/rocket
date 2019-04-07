@@ -16,7 +16,7 @@ export class KeyboardEventManager {
     this.downKeys = new Array
     this.lastKeyCode
 
-    // HOOKS
+    // CALLBACKS
     this.onEvent = () => {}
     this.onKeyDown = () => {}
     this.onKeyPress = () => {}
@@ -119,6 +119,8 @@ export class KeyboardEventManager {
       }
     }
   }
+
+  // LISTEN
 
   startListening() {
     window.addEventListener('keydown', this.handleKeyDown.bind(this))

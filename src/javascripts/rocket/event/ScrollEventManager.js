@@ -43,7 +43,7 @@ export class ScrollEventManager {
     return this.handlers[name]
   }
 
-  // HANDLE
+  // HANDLERS
 
   handleScroll(event) {
     for (let name in this.handlers) {

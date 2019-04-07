@@ -44,7 +44,7 @@ export class TouchEventManager {
     return false
   }
 
-  // HANDLE
+  // HANDLERS
 
   handleTouchStart(event) {
     this.onEvent(event)
