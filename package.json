@@ -1,5 +1,5 @@
 {
-  "name": "rocket",
+  "name": "@nekobird/rocket",
   "version": "0.0.1",
   "description": "Rocket UI Library",
   "main": "./src/rocket/Rocket.js",
