@@ -1,8 +1,8 @@
 {
   "name": "@nekobird/rocket",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Rocket UI Library",
-  "main": "./src/rocket/Rocket.js",
+  "main": "./src/javascripts/rocket/Rocket.js",
   "scripts": {
     "start": "parcel ./src/index.html",
     "build": "parcel build ./src/index.html --public-url ./"
