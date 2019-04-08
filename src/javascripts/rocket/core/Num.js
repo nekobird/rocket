@@ -29,7 +29,7 @@ export class Num {
     }
   }
 
-  // range can be a number or an array with two numbers [0, 10]
+  // Range can be a number or an array with two numbers [0, 10].
   static cycle(number, range) {
     if (typeof range === 'number') {
       range = [0, range]
