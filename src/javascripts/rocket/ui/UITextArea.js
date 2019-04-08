@@ -2,9 +2,16 @@ import {
   TextBoxModel
 } from '../Rocket'
 
+export const UITEXTAREA_EVENT_NAME_INPUT = Symbol('eventNameInput')
+export const UITEXTAREA_EVENT_NAME_KEYDOWN = Symbol('eventNameKeydown')
+export const UITEXTAREA_EVENT_INPUT = Symbol('eventInput')
+export const UITEXTAREA_EVENT_KEYDOWN = Symbol('eventKeydown')
+
 export class UITextArea {
 
   constructor(element, properties) {
+    this.textBoxModel = new TextBoxModel
+
     // FLAGS
     this.disableLineBreaks = false
     this.disableTabs = false
@@ -20,18 +27,19 @@ export class UITextArea {
     this.onPaste = () => {}
 
     // PROPERTIES
-    this._lastKeyCode
-
-    // Initialize TextBoxModel.
-    this._textBoxModel = new TextBoxModel
+    this.lastKeyCode
 
     // EVENT NAMES
-    this._eventInputName = 'UITextAreaOnInput'
-    this._eventKeydownName = 'UITextAreaOnKeydown'
+    this[UITEXTAREA_EVENT_NAME_INPUT] = 'UITextAreaOnInput'
+    this[UITEXTAREA_EVENT_NAME_KEYDOWN] = 'UITextAreaOnKeydown'
 
     // EVENTS
-    this._eventInput = new CustomEvent(this._eventInputName)
-    this._eventKeydown = new CustomEvent(this._eventKeydownName)
+    this[UITEXTAREA_EVENT_INPUT] = new CustomEvent(
+      this[UITEXTAREA_EVENT_NAME_INPUT]
+    )
+    this[UITEXTAREA_EVENT_KEYDOWN] = new CustomEvent(
+      this[UITEXTAREA_EVENT_NAME_KEYDOWN]
+    )
 
     this.element = element
     this.properties = properties
@@ -73,7 +81,7 @@ export class UITextArea {
   }
 
   grow() {
-    const height = this._textBoxModel.getTextBoxHeightFromElement(this.element)
+    const height = this.textBoxModel.getTextBoxHeightFromElement(this.element)
     this.element.style.height = `${height}px`
     return this
   }
@@ -140,7 +148,7 @@ export class UITextArea {
   handleInput(event) {
     this.onInput(this)
     this.processText()
-    window.dispatchEvent(this._eventInput)
+    window.dispatchEvent(this[UITEXTAREA_EVENT_INPUT])
     return this
   }
 
@@ -156,8 +164,8 @@ export class UITextArea {
     ) {
       event.preventDefault()
     }
-    this._lastKeyCode = keyCode
-    window.dispatchEvent(this._eventKeydown)
+    this.lastKeyCode = keyCode
+    window.dispatchEvent(this[UITEXTAREA_EVENT_KEYDOWN])
     return this
   }
 

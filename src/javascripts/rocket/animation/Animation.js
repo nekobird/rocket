@@ -30,7 +30,7 @@ export class Animation {
 
     this.iterationCount = 0
     this.iterationDelay = 0 // Delay before next iteration.
-    this.numberOfIterations = 1
+    this.numberOfIterations = 1 // number | 'infinite'
 
     this.exports = 0
 
@@ -185,9 +185,7 @@ export class Animation {
       this.endTime = now + endTimeDelta
 
       this.isPaused = false
-    }
-    // If it's not paused.
-    else {
+    } else {
       this.startTime = Date.now()
       this.endTime = this.startTime + (this.duration * 1000)
     }
@@ -203,7 +201,7 @@ export class Animation {
 
   // C
   loop() {
-    let frame = function () {
+    let frame = () => {
 
       // Tick, this also moves progress forward!
       this.tick()
@@ -250,9 +248,7 @@ export class Animation {
     } // End frame.
 
     // Go!
-    this.RAFID = window.requestAnimationFrame(
-      frame.bind(this)
-    )
+    this.RAFID = window.requestAnimationFrame(frame)
 
     return this
   }

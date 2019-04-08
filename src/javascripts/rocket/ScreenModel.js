@@ -18,25 +18,23 @@ let modelIsReady = false
 export class ScreenModel {
 
   constructor() {
-    this.create()
+    this.createModel()
   }
 
-  static get modelIsReady() {
-    return modelIsReady
-  }
+  // MODEL PROPERTIES
 
   static get width() {
-    this.startModel()
+    this.createModel()
     return modelElement.offsetWidth
   }
 
   static get height() {
-    this.startModel()
+    this.createModel()
     return modelElement.offsetHeight
   }
 
   static get diagonal() {
-    this.startModel()
+    this.createModel()
 
     const h = modelElement.offsetHeight
     const w = modelElement.offsetWidth
@@ -46,12 +44,16 @@ export class ScreenModel {
     )
   }
 
+  // MODEL
+
   static get modelElement() {
-    this.startModel()
+    this.createModel()
     return modelElement
   }
 
-  // MODEL
+  static get modelIsReady() {
+    return modelIsReady
+  }
 
   static get modelIsCreated() {
     if (
@@ -63,36 +65,27 @@ export class ScreenModel {
     return false
   }
 
-  static startModel() {
-    if (!this.modelIsCreated) {
-      this.create()
+  static createModel() {
+    if (modelIsReady === false) {
+      modelElement = document.createElement('DIV')
+      document.body.appendChild(modelElement)
+
+      for (let key in MODEL_ATTRIBUTES) {
+        modelElement.style[key] = MODEL_ATTRIBUTES[key]
+      }
+
+      modelIsReady = true
     }
     return this
   }
 
-  static create() {
-    // Create and append model element.
-    modelElement = document.createElement('DIV')
-    document.body.appendChild(modelElement)
-
-    // Apply model attributes.
-    for (let key in MODEL_ATTRIBUTES) {
-      modelElement.style[key] = MODEL_ATTRIBUTES[key]
-    }
-
-    modelIsReady = true
-    return this
-  }
-
-  static destroy() {
-    // Check if model is created.
-    if (this.modelIsCreated) {
-      // Remove model from DOM and destroy it.
+  static destroyModel() {
+    if (modelIsReady === true) {
       document.body.removeChild(modelElement)
       modelElement.remove()
-    }
 
-    modelIsReady = false
+      modelIsReady = false
+    }
     return this
   }
 

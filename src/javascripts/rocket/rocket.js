@@ -1,8 +1,11 @@
+// CORE
 export * from './core/Num'
 export * from './core/Util'
 
+// DOM
 export * from './dom/DOMUtil'
 
+// SCREEN
 export * from './ScreenModel'
 
 // COLOR
