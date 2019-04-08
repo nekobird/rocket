@@ -236,10 +236,7 @@ export class Animation {
           }
 
           // Toggle direction if it's alternating.
-          if (
-            this.alternate === true &&
-            this.iterationCount % 2 !== 0
-          ) {
+          if (this.alternate === true) {
             this.toggleDirection()
           }
 

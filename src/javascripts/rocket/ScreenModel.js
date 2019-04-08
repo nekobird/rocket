@@ -37,8 +37,10 @@ export class ScreenModel {
 
   static get diagonal() {
     this.startModel()
+
     const h = modelElement.offsetHeight
     const w = modelElement.offsetWidth
+
     return Math.abs(
       Math.sqrt(w * w + h * h)
     )
@@ -70,12 +72,14 @@ export class ScreenModel {
 
   static create() {
     // Create and append model element.
-    modelElement = document.createElement()
-    document.body.appendChild(this.element)
+    modelElement = document.createElement('DIV')
+    document.body.appendChild(modelElement)
+
     // Apply model attributes.
     for (let key in MODEL_ATTRIBUTES) {
       modelElement.style[key] = MODEL_ATTRIBUTES[key]
     }
+
     modelIsReady = true
     return this
   }
@@ -87,6 +91,7 @@ export class ScreenModel {
       document.body.removeChild(modelElement)
       modelElement.remove()
     }
+
     modelIsReady = false
     return this
   }

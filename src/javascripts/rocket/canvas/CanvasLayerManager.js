@@ -8,6 +8,7 @@ export class CanvasLayerManager {
   constructor(layerStackElement) {
     this.count = 0
     this.isFullScreen = false
+
     this.layerStackElement = layerStackElement
 
     this.layers = new Array
@@ -18,7 +19,7 @@ export class CanvasLayerManager {
   }
 
   create(name) {
-    const element = document.createElement(`CANVAS`)
+    let element = document.createElement(`CANVAS`)
     element = this.layerStackElement.appendChild(element)
     const canvasLayer = new CanvasLayer(element)
     this.layers[name] = canvasLayer

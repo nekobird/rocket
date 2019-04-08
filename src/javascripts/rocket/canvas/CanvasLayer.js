@@ -1,5 +1,5 @@
 import {
-  CanvasDraw
+  CanvasDraw,
 } from '../Rocket'
 
 export class CanvasLayer {

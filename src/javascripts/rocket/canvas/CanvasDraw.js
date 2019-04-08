@@ -76,9 +76,8 @@ export class CanvasDraw {
     )
   }
 
-  // Apply Gradient
   applyStyle(style) {
-    let computedStyleStyle = new Object
+    let computedStyle = new Object
 
     for (let key in this.defaultStyle) {
       computedStyle[key] = this.defaultStyle[key]
@@ -106,7 +105,9 @@ export class CanvasDraw {
   }
 
   clear() {
-    this.context.clearRect(0, 0, this.element.width, this.element.height)
+    this.context.clearRect(
+      0, 0, this.element.width, this.element.height
+    )
     return this
   }
 
@@ -159,7 +160,7 @@ export class CanvasDraw {
   shadow(offsetX, offsetY, blur, color) {
     let m = this.resolutionMultiplier
     if (color instanceof Color) {
-      color = color.getString('rgba')
+      color = color.rgbaString
     }
     this.context.shadowBlur = blur * m
     this.context.shadowColor = color
@@ -268,6 +269,8 @@ export class CanvasDraw {
     this.previousTranslation.equals(to)
     return this
   }
+
+  // STASH
 
   reset() {
     this.context.setTransform(1, 0, 0, 1, 0, 0)
