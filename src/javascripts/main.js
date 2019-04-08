@@ -12,15 +12,20 @@ import {
   Vector2,
 } from './rocket/Rocket'
 
+let SimplexNoise = require('simplex-noise')
+let simplex = new SimplexNoise()
 
 class Wave {
 
-  constructor() {
+  constructor(position) {
+    this.position = Vector2.equals(position)
     this.amplitude = 16
     this.bezierLength = 100
     this.numberOfPoints = 16
     this.width = 1000
+    this.seed = Math.random() * 100
 
+    this.templatePoints2 = new Array
     this.templatePoints = new Array
     this.points = new Array
     this.bezierControlPoints = new Array
@@ -31,10 +36,12 @@ class Wave {
 
   initializeVectors() {
     this.templatePoints = new Array
+    this.templatePoints2 = new Array
     this.points = new Array
     this.bezierControlPoints = new Array
     for (let i = 0; i < this.numberOfPoints; i++) {
       this.templatePoints[i] = new Vector2
+      this.templatePoints2[i] = new Vector2
       this.points[i] = new Vector2
     }
     this.points.forEach(() => {
@@ -50,17 +57,25 @@ class Wave {
       if (i % 2 === 0) {
         m = -1
       }
-      p.x = 200 + (i * segment)
-      p.y = 400 + (this.amplitude * m)
+      p.x = this.position.x + (i * segment)
+      p.y = this.position.y + (this.amplitude * m)
     })
+  }
+
+  filterTemplatePointn(n) {
+    this.templatePoints.forEach(point => {
+
+    }) 
   }
 
   filterWave(n) {
     this.templatePoints.forEach((point, i) => {
       this.points[i].equals(point)
       if (i % 2 === 0) {
+        this.points[i].x = point.x + (n * (this.amplitude * 2))
         this.points[i].y = point.y + (n * (this.amplitude * 2))
       } else {
+        this.points[i].x = point.x + (n * (this.amplitude * 2))
         this.points[i].y = point.y - (n * (this.amplitude * 2))
       }
     })
@@ -137,7 +152,7 @@ class Wave {
       noFill: true,
       fillColor: 'white',
       strokeWidth: 24,
-      strokeColor: 'white'
+      strokeColor: 'black'
     })
     layer.draw.end()
   }
@@ -147,18 +162,16 @@ class Wave {
 let el_layer_stack = document.getElementById('layer_stack')
 let manager = new CanvasLayerManager(el_layer_stack)
 
-manager.create('main')
+let l1 = manager.create('w1')
+let l2 = manager.create('w2')
+let l3 = manager.create('w3')
 
-let main = manager.find('main')
-main.draw.resolutionMultiplier = 2
-main.draw.resize(ScreenModel.width, ScreenModel.height)
+l1.draw.resolutionMultiplier = 2
+l1.draw.resize(ScreenModel.width, ScreenModel.height)
 
-let center = new Vector2(
-  ScreenModel.width / 2,
-  ScreenModel.height / 2
-)
-
-let wave = new Wave()
+let wave = new Wave(ScreenModel.centerPoint.moveBy(-500, -100))
+let wave2 = new Wave(ScreenModel.centerPoint.moveBy(-500, -50))
+let wave3 = new Wave(ScreenModel.centerPoint.moveBy(-500, 0))
 
 let animation = new Animation({
   duration: 2,
@@ -166,10 +179,38 @@ let animation = new Animation({
   alternate: true,
   timingFunction: Easings.QuadEaseInEaseOut,
   onTick: n => {
-    main.draw.clear()
-    wave.draw(main, n)
+    l1.draw.clear()
+    wave.draw(l1, n)
     // wave.drawTemplatePoints(main)
     // wave.drawPoints(main)
     // wave.drawBezierControlPoints(main)
+  }
+}).play()
+
+let animation2 = new Animation({
+  duration: 2.1,
+  numberOfIterations: 'infinite',
+  alternate: true,
+  timingFunction: Easings.QuadEaseInEaseOut,
+  onTick: n => {
+    l2.draw.clear()
+    wave2.draw(l2, n)
+    // wave.drawTemplatePoints(main)
+    // wave.drawPoints(main)
+    // wave.drawBezierControlPoints(main)
+  }
+}).play()
+
+let animation3 = new Animation({
+  duration: 2.2,
+  numberOfIterations: 'infinite',
+  alternate: true,
+  timingFunction: Easings.QuadEaseInEaseOut,
+  onTick: n => {
+    l3.draw.clear()
+    wave3.draw(l3, n)
+    // wave.drawTemplatePoints(main)
+    // wave.drawPoints(main)
+    wave3.drawBezierControlPoints(l3)
   }
 }).play()

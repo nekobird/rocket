@@ -28,14 +28,17 @@ export class ScreenModel {
   // MODEL PROPERTIES
 
   static get centerPoint() {
+    this.createModel()
     return new Vector2(this.centerX, this.centerY)
   }
 
   static get centerX() {
+    this.createModel()
     return modelElement.offsetWidth / 2
   }
 
   static get centerY() {
+    this.createModel()
     return modelElement.offsetHeight / 2
   }
 
@@ -61,10 +64,6 @@ export class ScreenModel {
   }
 
   // MODEL
-
-  static get centerPoint() {
-    return new Vector2
-  }
 
   static get modelElement() {
     this.createModel()

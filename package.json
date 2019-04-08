@@ -12,5 +12,8 @@
   "license": "ISC",
   "devDependencies": {
     "sass": "^1.17.4"
+  },
+  "dependencies": {
+    "simplex-noise": "^2.4.0"
   }
 }
