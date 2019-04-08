@@ -211,11 +211,8 @@ export class Animation {
         this.isAnimating === true &&
         this.isPaused === false
       ) {
-
         if (this.currentProgress < 1) {
-          // Loop again!
           this.loop()
-          // Break here!
           return
         } else {
           // End iteration.
@@ -223,33 +220,29 @@ export class Animation {
           this.callOnIterationEnd()
 
           // Stop animation if exceeds number of iterations.
+          // End animation if iteration count reach number of iterations.
           if (
             typeof this.numberOfIterations === 'number' &&
             this.iterationCount >= this.numberOfIterations
           ) {
-            // End animation if iteration count reach number of iterations.
             this.stop()
-            // Break function!
             return
-          }
-
-          // Toggle direction if it's alternating.
-          if (this.alternate === true) {
-            this.toggleDirection()
           }
 
           // Continue playing!
           // The cycle begins again.
+          // Toggle direction if it's alternating.
+          if (this.alternate === true) {
+            this.toggleDirection()
+          }
           this.play(this.iterationDelay)
         }
-
-      } // End if active, animating, and not paused.
+      }
 
     } // End frame.
 
     // Go!
     this.RAFID = window.requestAnimationFrame(frame)
-
     return this
   }
 

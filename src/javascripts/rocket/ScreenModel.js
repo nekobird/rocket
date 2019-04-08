@@ -1,3 +1,7 @@
+import {
+  Vector2,
+} from './Rocket'
+
 const MODEL_ATTRIBUTES = {
   border: 'none',
   boxSizing: 'border-box',
@@ -23,6 +27,14 @@ export class ScreenModel {
 
   // MODEL PROPERTIES
 
+  static get centerX() {
+    return modelElement.offsetWidth / 2
+  }
+
+  static get centerY() {
+    return modelElement.offsetHeight / 2
+  }
+
   static get width() {
     this.createModel()
     return modelElement.offsetWidth
@@ -45,6 +57,10 @@ export class ScreenModel {
   }
 
   // MODEL
+
+  static get centerPoint() {
+    return new Vector2
+  }
 
   static get modelElement() {
     this.createModel()

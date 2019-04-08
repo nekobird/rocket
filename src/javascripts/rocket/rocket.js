@@ -8,10 +8,6 @@ export * from './dom/DOMUtil'
 // SCREEN
 export * from './ScreenModel'
 
-// COLOR
-export * from './color/ConvertColor'
-export * from './color/Color'
-
 // TWO
 export * from './two/Vector2'
 export * from './two/Angle'
@@ -25,6 +21,10 @@ export * from './animation/Easings'
 export * from './canvas/CanvasDraw'
 export * from './canvas/CanvasLayer'
 export * from './canvas/CanvasLayerManager'
+
+// COLOR
+export * from './color/ConvertColor'
+export * from './color/Color'
 
 // EVENT
 export * from './event/ScrollEventHandler'
