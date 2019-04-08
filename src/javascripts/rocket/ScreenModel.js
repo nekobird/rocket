@@ -27,6 +27,10 @@ export class ScreenModel {
 
   // MODEL PROPERTIES
 
+  static get centerPoint() {
+    return new Vector2(this.centerX, this.centerY)
+  }
+
   static get centerX() {
     return modelElement.offsetWidth / 2
   }

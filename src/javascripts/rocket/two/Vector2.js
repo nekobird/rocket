@@ -112,7 +112,7 @@ export class Vector2 {
     if (typeof point === 'number') {
       this.y += point
     } else {
-      this.y += point.x
+      this.y += point.y
     }
     return this
   }
@@ -138,7 +138,7 @@ export class Vector2 {
     if (typeof point === 'number') {
       this.y -= point
     } else {
-      this.y += point.x
+      this.y -= point.y
     }
     return this
   }
