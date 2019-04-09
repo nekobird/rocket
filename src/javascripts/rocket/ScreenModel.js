@@ -1,4 +1,5 @@
 import {
+  Num,
   Vector2,
 } from './Rocket'
 
@@ -55,12 +56,10 @@ export class ScreenModel {
   static get diagonal() {
     this.createModel()
 
-    const h = modelElement.offsetHeight
     const w = modelElement.offsetWidth
-
-    return Math.abs(
-      Math.sqrt(w * w + h * h)
-    )
+    const h = modelElement.offsetHeight
+  
+    return Num.hypotenuse(w, h)
   }
 
   // MODEL
@@ -75,24 +74,17 @@ export class ScreenModel {
   }
 
   static get modelIsCreated() {
-    if (
+    return (
       typeof modelElement !== 'undefined' &&
       modelElement.nodeType === 1
-    ) {
-      return true
-    }
-    return false
+    )
   }
 
   static createModel() {
     if (modelIsReady === false) {
       modelElement = document.createElement('DIV')
       document.body.appendChild(modelElement)
-
-      for (let key in MODEL_ATTRIBUTES) {
-        modelElement.style[key] = MODEL_ATTRIBUTES[key]
-      }
-
+      Object.assign(modelElement.style, MODEL_ATTRIBUTES)
       modelIsReady = true
     }
     return this
@@ -102,7 +94,6 @@ export class ScreenModel {
     if (modelIsReady === true) {
       document.body.removeChild(modelElement)
       modelElement.remove()
-
       modelIsReady = false
     }
     return this

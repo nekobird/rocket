@@ -11,9 +11,6 @@
   "author": "Andrew Prasetya",
   "license": "ISC",
   "devDependencies": {
-    "sass": "^1.17.4"
-  },
-  "dependencies": {
-    "simplex-noise": "^2.4.0"
+    "sass": "^1.18.0"
   }
 }

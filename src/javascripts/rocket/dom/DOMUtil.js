@@ -85,16 +85,16 @@ export class DOMUtil {
 
   // Find descendant with ID.
   static findDescendantWithID(el, ID, isMoreThanOneResults = true) {
-    let identifierFn = element => {
-      return element.id === ID ? true : false
+    let identifierFn = _el => {
+      return _el.id === ID
     }
     return this.findDescendant(el, identifierFn, isMoreThanOneResults)
   }
 
   // Find descendant with given class name.
   static findDescendantWithClass(el, className, isMoreThanOneResults = true) {
-    let identifierFn = element => {
-      return element.classList.contains(className)
+    let identifierFn = _el => {
+      return _el.classList.contains(className)
     }
     return this.findDescendant(el, identifierFn, isMoreThanOneResults)
   }
@@ -125,56 +125,53 @@ export class DOMUtil {
   }
 
   static findSiblingWithClass(el, className, isMoreThanOneResults = true) {
-    let identifierFn = el => {
-      return el.classList.contains(className)
+    let identifierFn = _el => {
+      return _el.classList.contains(className)
     }
     return this.findSibling(el, identifierFn, isMoreThanOneResults)
   }
 
   static hasAncestor(el, ancestorEl) {
-    let identifierFn = element => {
-      return element === ancestorEl ? true : false
+    let identifierFn = _el => {
+      return _el === ancestorEl
     }
     return this.findAncestor(el, identifierFn, false)
   }
 
   static hasDescendant(el, descendantEl) {
-    let identifierFn = element => {
-      return element === descendantEl ? true : false
+    let identifierFn = _el => {
+      return _el === descendantEl
     }
     return this.findDescendant(el, identifierFn, false)
   }
 
   static getOffset(el) {
     let boundingBox = el.getBoundingClientRect()
-    return [window.scrollX + boundingBox.left, window.scrollY + boundingBox.top]
+    return [
+      window.scrollX + boundingBox.left,
+      window.scrollY + boundingBox.top
+    ]
   }
 
   static getSiblings(el) {
     let siblingEls = el.parentElement.children
-    return siblingEls.length > 0 ? siblingEls : false
+    return siblingEls.length > 0
   }
 
-  static isAnElement(element) {
-    if (
-      typeof element === 'object' &&
-      typeof element.nodeType === 'number' &&
-      element.nodeType === 1
-    ) {
-      return true
-    }
-    return false
+  static isAnElement(el) {
+    return (
+      typeof el === 'object' &&
+      typeof el.nodeType === 'number' &&
+      el.nodeType === 1
+    )
   }
 
-  static isElementNodeName(element, name) {
-    if (
-      typeof element === 'object' &&
-      typeof element.nodeName === 'string' &&
-      element.nodeName === name
-    ) {
-      return true
-    }
-    return false
+  static isElementNodeName(el, name) {
+    return (
+      typeof el === 'object' &&
+      typeof el.nodeName === 'string' &&
+      el.nodeName === name
+    )
   }
 
 }

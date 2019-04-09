@@ -165,21 +165,18 @@ export class TextBoxModel {
   }
 
   set style(style) {
-    for (let key in style) {
-      this.modelElement.style[key] = style[key]
+    if (typeof style === 'object') {
+      Object.assign(this.modelElement.style, style)
     }
   }
 
   applyModelAttributes() {
-    for (let key in MODEL_ATTRIBUTES) {
-      this.modelElement.style[key] = MODEL_ATTRIBUTES[key]
-    }
+    Object.assign(this.modelElement.style, MODEL_ATTRIBUTES)
     return this
   }
 
   applyBoxModelPropertiesFromElement(element) {
     let style = window.getComputedStyle(element, null)
-
     for (let name of STYLE_PROPERTIES) {
       this.modelElement.style[name] = style[name]
     }
@@ -188,7 +185,6 @@ export class TextBoxModel {
 
   applyFontPropertiesFromElement(element) {
     let style = window.getComputedStyle(element, null)
-
     for (let name of FONT_STYLE_PROPERTIES) {
       this.modelElement.style[name] = style[name]
     }

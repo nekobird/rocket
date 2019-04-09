@@ -162,7 +162,7 @@ export class Num {
       range = [0, range]
     }
 
-    return number >= range[0] && number <= range[1] ? true : false
+    return (number >= range[0] && number <= range[1])
   }
 
 }

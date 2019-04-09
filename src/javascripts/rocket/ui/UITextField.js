@@ -61,8 +61,8 @@ export class UITextField {
   }
 
   set properties(properties) {
-    for (let key in properties) {
-      this[key] = properties[key]
+    if (typeof properties === 'object') {
+      Object.assign(this, properties)
     }
   }
 

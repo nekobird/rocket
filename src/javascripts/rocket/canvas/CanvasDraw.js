@@ -33,16 +33,7 @@ export class CanvasDraw {
 
     this.previousTranslation = new Vector2
 
-    this._defaultStyle = {
-      fillColor: 'black',
-      noFill: false,
-      noStroke: false,
-      strokeCap: 'round', // round, square
-      strokeColor: 'black',
-      strokeJoin: 'round', // bevel, round, miter
-      strokeWidth: 0
-    }
-
+    this._defaultStyle = Object.assign({}, DEFAULT_STYLE)
     this.resize()
   }
 
@@ -51,8 +42,8 @@ export class CanvasDraw {
   }
 
   set defaultStyle(style) {
-    for (let key in style) {
-      this._defaultStyle[key] = style[key]
+    if (typeof style === 'object') {
+      Object.assign(this._defaultStyle, style)
     }
   }
 
@@ -62,7 +53,8 @@ export class CanvasDraw {
   createLinearGradient(from, to) {
     let m = this.resolutionMultiplier
     return this.context.createLinearGradient(
-      from.x * m, from.y * m, to.x * m, to.y * m
+      from.x * m, from.y * m,
+      to.x * m, to.y * m
     )
     // gradient.addColorStop(0, 'green')
     // gradient.addColorStop(1, 'white')
@@ -77,16 +69,9 @@ export class CanvasDraw {
   }
 
   applyStyle(style) {
-    let computedStyle = new Object
-
-    for (let key in this.defaultStyle) {
-      computedStyle[key] = this.defaultStyle[key]
-    }
-
-    if (typeof style !== 'undefined') {
-      for (let key in style) {
-        computedStyle[key] = style[key]
-      }
+    let computedStyle = Object.assign({}, this._defaultStyle)
+    if (typeof style === 'object') {
+      Object.assign(computedStyle, style)
     }
 
     this.context.fillStyle = computedStyle.fillColor
@@ -98,9 +83,11 @@ export class CanvasDraw {
     if (computedStyle.noFill === false) {
       this.context.fill()
     }
+
     if (computedStyle.noStroke === false) {
       this.context.stroke()
     }
+
     return this
   }
 
@@ -112,15 +99,16 @@ export class CanvasDraw {
   }
 
   resize(width, height) {
+    const m = this.resolutionMultiplier
     if (
       typeof height === 'number' &&
       typeof width === 'number'
     ) {
-      this.element.height = height * this.resolutionMultiplier
-      this.element.width = width * this.resolutionMultiplier
+      this.element.height = height * m
+      this.element.width = width * m
     } else {
-      this.element.height = this.element.offsetHeight * this.resolutionMultiplier
-      this.element.width = this.element.offsetWidth * this.resolutionMultiplier
+      this.element.height = this.element.offsetHeight * m
+      this.element.width = this.element.offsetWidth * m
     }
     return this
   }
@@ -183,7 +171,12 @@ export class CanvasDraw {
     let m = this.resolutionMultiplier
     this.save()
     this.begin()
-    this.context.arc(v.x * m, v.y * m, r * m, 0, 2 * Math.PI, false)
+    this.context.arc(
+      v.x * m, v.y * m,
+      r * m,
+      0, 2 * Math.PI,
+      false
+    )
     this.end()
     this.applyStyle(style)
     if (typeof insert !== 'undefined') {
@@ -193,26 +186,10 @@ export class CanvasDraw {
     return this
   }
 
-  // PATHS
-
-  arcTo(from, to, r) {
-    let m = this.resolutionMultiplier
-    this.context.arcTo(
-      from.x * m, from.y * m, to.x * m, to.y * m, r * m
-    )
-    return this
-  }
+  // PATH
 
   begin() {
     this.context.beginPath()
-    return this
-  }
-
-  bezierCurveTo(cp1, cp2, to) {
-    let m = this.resolutionMultiplier
-    this.context.bezierCurveTo(
-      cp1.x * m, cp1.y * m, cp2.x * m, cp2.y * m, to.x * m, to.y * m
-    )
     return this
   }
 
@@ -227,6 +204,12 @@ export class CanvasDraw {
     this.context.isPointInPath(point.x * m, point.y * m)
     return this
   }
+  
+  moveTo(to) {
+    let m = this.resolutionMultiplier
+    this.context.moveTo(to.x * m, to.y * m)
+    return this
+  }
 
   lineTo(to) {
     let m = this.resolutionMultiplier
@@ -234,21 +217,43 @@ export class CanvasDraw {
     return this
   }
 
-  moveTo(to) {
+  arcTo(from, to, r) {
     let m = this.resolutionMultiplier
-    this.context.moveTo(to.x * m, to.y * m)
+    this.context.arcTo(
+      from.x * m, from.y * m,
+      to.x * m, to.y * m,
+      r * m
+    )
+    return this
+  }
+
+  bezierCurveTo(cp1, cp2, to) {
+    let m = this.resolutionMultiplier
+    this.context.bezierCurveTo(
+      cp1.x * m, cp1.y * m,
+      cp2.x * m, cp2.y * m,
+      to.x * m, to.y * m
+    )
     return this
   }
 
   quadraticCurveTo(cp, to) {
     let m = this.resolutionMultiplier
     this.context.quadraticCurveTo(
-      cp.x * m, cp.y * m, to.x * m, to.y * m
+      cp.x * m, cp.y * m,
+      to.x * m, to.y * m
     )
     return this
   }
 
   // TRANSFORM
+
+  translate(to) {
+    let m = this.resolutionMultiplier
+    this.context.translate(to.x * m, to.y * m)
+    this.previousTranslation.equals(to)
+    return this
+  }
 
   rotate(angle) {
     this.context.rotate(angle)
@@ -260,13 +265,6 @@ export class CanvasDraw {
       h = w
     }
     this.context.scale(w, h)
-    return this
-  }
-
-  translate(to) {
-    let m = this.resolutionMultiplier
-    this.context.translate(to.x * m, to.y * m)
-    this.previousTranslation.equals(to)
     return this
   }
 

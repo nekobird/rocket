@@ -58,14 +58,14 @@ export class Animation {
     this.RAFID
     this.timeoutID
 
-    this.properties = properties
+    if (typeof properties === 'object') {
+      this.properties = properties
+    }
     return this
   }
 
   set properties(properties) {
-    for (let key in properties) {
-      this[key] = properties[key]
-    }
+    Object.assign(this, properties)
   }
 
   goToBeginning() {
@@ -176,7 +176,7 @@ export class Animation {
       this.direction = false
     }
 
-    // If it's paused.
+    // Handle pause.
     if (this.isPaused === true) {
       let startTimeDelta = this.pauseTime - this.startTime
       let endTimeDelta = this.endTime - this.pauseTime
@@ -307,8 +307,8 @@ export class Animation {
     if (typeof this.onStart === 'function') {
       this.onStart(this)
     } else if (this.onStart.constructor === Array) {
-      for (let onStart of this.onStart) {
-        onStart(this)
+      for (let callback of this.onStart) {
+        callback(this)
       }
     }
     return this
@@ -318,8 +318,8 @@ export class Animation {
     if (typeof this.onComplete === 'function') {
       this.onComplete(this)
     } else if (this.onComplete.constructor === Array) {
-      for (let onComplete of this.onComplete) {
-        onComplete(this)
+      for (let callback of this.onComplete) {
+        callback(this)
       }
     }
     return this
@@ -329,8 +329,8 @@ export class Animation {
     if (typeof this.onIterationStart === 'function') {
       this.onIterationStart(this)
     } else if (this.onIterationStart.constructor === Array) {
-      for (let onIterationStart of this.onIterationStart) {
-        onIterationStart(this)
+      for (let callback of this.onIterationStart) {
+        callback(this)
       }
     }
     return this
@@ -340,8 +340,8 @@ export class Animation {
     if (typeof this.onIterationComplete === 'function') {
       this.onIterationComplete(this)
     } else if (this.onIterationComplete.constructor === Array) {
-      for (let onIterationComplete of this.onIterationComplete) {
-        onIterationComplete(this)
+      for (let callback of this.onIterationComplete) {
+        callback(this)
       }
     }
     return this

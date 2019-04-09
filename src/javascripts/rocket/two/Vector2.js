@@ -69,7 +69,7 @@ export class Vector2 {
     return this
   }
 
-  clone() {
+  get clone() {
     return Vector2.equals(this)
   }
 

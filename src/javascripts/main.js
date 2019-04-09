@@ -12,9 +12,6 @@ import {
   Vector2,
 } from './rocket/Rocket'
 
-let SimplexNoise = require('simplex-noise')
-let simplex = new SimplexNoise()
-
 class Wave {
 
   constructor(position) {
@@ -87,10 +84,10 @@ class Wave {
     let c = 0
     let l = (this.width / this.numberOfPoints) / 2
     this.points.forEach((point, i) => {
-      this.bezierControlPoints[c] = point.clone().moveBy(l, 0)
+      this.bezierControlPoints[c] = point.clone.moveBy(l, 0)
       c++
       if (i + 1 <= this.points.length - 1) {
-        this.bezierControlPoints[c] = this.points[i + 1].clone().moveBy(-l, 0)
+        this.bezierControlPoints[c] = this.points[i + 1].clone.moveBy(-l, 0)
         c++
       }
     })

@@ -13,8 +13,9 @@ export class CanvasLayerManager {
 
     this.layers = new Array
 
-    this.startListening()
-    this.resize()
+    this
+      .startListening()
+      .resize()
     return this
   }
 
