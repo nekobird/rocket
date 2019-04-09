@@ -10,7 +10,7 @@ import {
   ScreenModel,
   UITextArea,
   Vector2,
-} from './rocket/Rocket'
+} from '../../rocket/Rocket'
 
 class Wave {
 
