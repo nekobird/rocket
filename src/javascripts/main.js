@@ -1,14 +1,14 @@
 import {
   Animation,
-  Easings,
   CanvasDraw,
   CanvasLayer,
   CanvasLayerManager,
-  KeyboardEventManager,
+  Easings,
   KeyboardEventHandler,
-  UITextArea,
-  ScreenModel,
+  KeyboardEventManager,
   Num,
+  ScreenModel,
+  UITextArea,
   Vector2,
 } from './rocket/Rocket'
 
@@ -65,7 +65,7 @@ class Wave {
   filterTemplatePointn(n) {
     this.templatePoints.forEach(point => {
 
-    }) 
+    })
   }
 
   filterWave(n) {

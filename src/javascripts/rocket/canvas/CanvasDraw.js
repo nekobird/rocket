@@ -90,8 +90,8 @@ export class CanvasDraw {
     }
 
     this.context.fillStyle = computedStyle.fillColor
-    // this.context.lineCap = computedStyle.strokeCap
-    // this.context.lineJoin = computedStyle.strokeJoin
+    this.context.lineCap = computedStyle.strokeCap
+    this.context.lineJoin = computedStyle.strokeJoin
     this.context.strokeStyle = computedStyle.strokeColor
     this.context.lineWidth = computedStyle.strokeWidth
 

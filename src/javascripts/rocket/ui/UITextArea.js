@@ -2,10 +2,10 @@ import {
   TextBoxModel
 } from '../Rocket'
 
-export const UITEXTAREA_EVENT_NAME_INPUT = Symbol('eventNameInput')
-export const UITEXTAREA_EVENT_NAME_KEYDOWN = Symbol('eventNameKeydown')
-export const UITEXTAREA_EVENT_INPUT = Symbol('eventInput')
-export const UITEXTAREA_EVENT_KEYDOWN = Symbol('eventKeydown')
+export const UITextArea_eventName_input = Symbol()
+export const UITextArea_eventName_keydown = Symbol()
+export const UITextArea_event_input = Symbol()
+export const UITextArea_event_keydown = Symbol()
 
 export class UITextArea {
 
@@ -30,15 +30,15 @@ export class UITextArea {
     this.lastKeyCode
 
     // EVENT NAMES
-    this[UITEXTAREA_EVENT_NAME_INPUT] = 'UITextAreaOnInput'
-    this[UITEXTAREA_EVENT_NAME_KEYDOWN] = 'UITextAreaOnKeydown'
+    this[UITextArea_eventName_input] = 'UITextArea_onInput'
+    this[UITextArea_eventName_keydown] = 'UITextArea_onKeydown'
 
     // EVENTS
-    this[UITEXTAREA_EVENT_INPUT] = new CustomEvent(
-      this[UITEXTAREA_EVENT_NAME_INPUT]
+    this[UITextArea_event_input] = new CustomEvent(
+      this[UITextArea_eventName_input]
     )
-    this[UITEXTAREA_EVENT_KEYDOWN] = new CustomEvent(
-      this[UITEXTAREA_EVENT_NAME_KEYDOWN]
+    this[UITextArea_event_keydown] = new CustomEvent(
+      this[UITextArea_eventName_keydown]
     )
 
     this.element = element
@@ -148,7 +148,7 @@ export class UITextArea {
   handleInput(event) {
     this.onInput(this)
     this.processText()
-    window.dispatchEvent(this[UITEXTAREA_EVENT_INPUT])
+    window.dispatchEvent(this[UITextArea_event_input])
     return this
   }
 
@@ -165,7 +165,7 @@ export class UITextArea {
       event.preventDefault()
     }
     this.lastKeyCode = keyCode
-    window.dispatchEvent(this[UITEXTAREA_EVENT_KEYDOWN])
+    window.dispatchEvent(this[UITextArea_event_keydown])
     return this
   }
 

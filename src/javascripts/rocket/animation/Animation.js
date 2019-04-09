@@ -8,9 +8,9 @@ import {
 // duration
 // exports
 // numberOfIterations: number | 'infinite'
-// onAnimationEnd
-// onAnimationStart
-// onIterationEnd
+// onComplete
+// onStart
+// onIterationComplete
 // onIterationStart
 // onTick
 // timingFunction
@@ -18,15 +18,15 @@ import {
 export class Animation {
 
   constructor(properties) {
-    this.alternate = false
-    this.delay = 0 // Delay before animation starts.
-    this.duration = 2 // In seconds.
-
     // STATES
     this.isActive = false
     this.isAnimating = false
     this.isPaused = false
     this.isReversed = false
+
+    this.alternate = false
+    this.delay = 0 // Delay before animation starts.
+    this.duration = 2 // In seconds.
 
     this.iterationCount = 0
     this.iterationDelay = 0 // Delay before next iteration.
@@ -39,15 +39,17 @@ export class Animation {
     }
 
     // HOOKS
-    this.onAnimationStart = () => {}
-    this.onAnimationEnd = () => {}
-    this.onIterationEnd = () => {}
+    this.onStart = () => {}
+    this.onComplete = () => {}
+
     this.onIterationStart = () => {}
+    this.onIterationComplete = () => {}
+
     this.callback = () => {}
     this.onTick = (n, fn, data) => {}
 
-    this.currentDirection = true
-    this.currentProgress
+    this.direction = true
+    this.progress
 
     this.startTime
     this.pauseTime
@@ -95,7 +97,7 @@ export class Animation {
     this.isAnimating = false
     this.isPaused = false
 
-    this.currentDirection = true
+    this.direction = true
 
     this.iterationCount = 0
 
@@ -103,7 +105,7 @@ export class Animation {
     this.pauseTime = 0
     this.endTime = 0
 
-    this.currentProgress = 0
+    this.progress = 0
     return this
   }
 
@@ -124,7 +126,7 @@ export class Animation {
   stop() {
     this
       .reset()
-      .callOnAnimationEnd()
+      .callOnComplete()
       .callback()
     return this
   }
@@ -133,7 +135,7 @@ export class Animation {
     this
       .reset()
       .goToEnd()
-      .callOnAnimationEnd()
+      .callOnComplete()
       .callback()
     return this
   }
@@ -142,14 +144,14 @@ export class Animation {
     this
       .reset()
       .goToBeginning()
-      .callOnAnimationEnd()
+      .callOnComplete()
       .callback()
     return this
   }
 
   // A
   play(delay) {
-    this.callOnAnimationStart()
+    this.callOnStart()
 
     // This is only called when it's not animating.
     this.isActive = true
@@ -171,7 +173,7 @@ export class Animation {
 
     // Set beginning direction.
     if (this.isReversed === true) {
-      this.currentDirection = false
+      this.direction = false
     }
 
     // If it's paused.
@@ -211,13 +213,13 @@ export class Animation {
         this.isAnimating === true &&
         this.isPaused === false
       ) {
-        if (this.currentProgress < 1) {
+        if (this.progress < 1) {
           this.loop()
           return
         } else {
           // End iteration.
           this.iterationCount++
-          this.callOnIterationEnd()
+          this.callOnIterationComplete()
 
           // Stop animation if exceeds number of iterations.
           // End animation if iteration count reach number of iterations.
@@ -248,16 +250,16 @@ export class Animation {
 
   // D
   tick() {
-    // Update currentProgress.
-    this.currentProgress = this.currentNValue
+    // Update progress.
+    this.progress = this.currentNValue
 
     // Modify N based on TimingFunction.
     let n = this.timingFunction(
-      this.currentProgress
+      this.progress
     )
 
     // Reverse N depending on current direction.
-    if (this.currentDirection === false) {
+    if (this.direction === false) {
       n = 1 - n
     }
 
@@ -295,29 +297,29 @@ export class Animation {
   }
 
   toggleDirection() {
-    this.currentDirection = !this.currentDirection
+    this.direction = !this.direction
     return this
   }
 
   // CALLBACKS
 
-  callOnAnimationStart() {
-    if (typeof this.onAnimationStart === 'function') {
-      this.onAnimationStart(this)
-    } else if (this.onAnimationStart.constructor === Array) {
-      for (let onAnimationStart of this.onAnimationStart) {
-        onAnimationStart(this)
+  callOnStart() {
+    if (typeof this.onStart === 'function') {
+      this.onStart(this)
+    } else if (this.onStart.constructor === Array) {
+      for (let onStart of this.onStart) {
+        onStart(this)
       }
     }
     return this
   }
 
-  callOnAnimationEnd() {
-    if (typeof this.onAnimationEnd === 'function') {
-      this.onAnimationEnd(this)
-    } else if (this.onAnimationEnd.constructor === Array) {
-      for (let onAnimationEnd of this.onAnimationEnd) {
-        onAnimationEnd(this)
+  callOnComplete() {
+    if (typeof this.onComplete === 'function') {
+      this.onComplete(this)
+    } else if (this.onComplete.constructor === Array) {
+      for (let onComplete of this.onComplete) {
+        onComplete(this)
       }
     }
     return this
@@ -334,12 +336,12 @@ export class Animation {
     return this
   }
 
-  callOnIterationEnd() {
-    if (typeof this.onIterationEnd === 'function') {
-      this.onIterationEnd(this)
-    } else if (this.onIterationEnd.constructor === Array) {
-      for (let onIterationEnd of this.onIterationEnd) {
-        onIterationEnd(this)
+  callOnIterationComplete() {
+    if (typeof this.onIterationComplete === 'function') {
+      this.onIterationComplete(this)
+    } else if (this.onIterationComplete.constructor === Array) {
+      for (let onIterationComplete of this.onIterationComplete) {
+        onIterationComplete(this)
       }
     }
     return this
