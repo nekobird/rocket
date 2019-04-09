@@ -1,5 +1,7 @@
 export class DOMUtil {
 
+  // ANCESTOR
+
   // Find ancestor element that match identifierFn.
   //
   // identifierFn
@@ -34,8 +36,8 @@ export class DOMUtil {
 
   // Find ancestor with given class name.
   static findAncestorWithClass(el, className, isMoreThanOneResults = true) {
-    let identifierFn = element => {
-      return element.classList.contains(className)
+    let identifierFn = _el => {
+      return _el.classList.contains(className)
     }
 
     return this.findAncestor(el, identifierFn, isMoreThanOneResults)
@@ -43,12 +45,21 @@ export class DOMUtil {
 
   // Find ancestor with given ID.
   static findAncestorWithID(el, ID, isMoreThanOneResults = true) {
-    let identifierFn = element => {
-      return element.id === ID ? true : false
+    let identifierFn = _el => {
+      return _el.id === ID ? true : false
     }
 
     return this.findAncestor(el, identifierFn, isMoreThanOneResults)
   }
+
+  static hasAncestor(el, ancestorEl) {
+    let identifierFn = _el => {
+      return _el === ancestorEl
+    }
+    return this.findAncestor(el, identifierFn, false)
+  }
+
+  // DESCENDANT
 
   // Find descendant that match the identifierFn.
   static findDescendant(el, identifierFn, isMoreThanOneResults = true) {
@@ -99,6 +110,20 @@ export class DOMUtil {
     return this.findDescendant(el, identifierFn, isMoreThanOneResults)
   }
 
+  static hasDescendant(el, descendantEl) {
+    let identifierFn = _el => {
+      return _el === descendantEl
+    }
+    return this.findDescendant(el, identifierFn, false)
+  }
+
+  // SIBLING
+
+  static getSiblings(el) {
+    let siblingEls = el.parentElement.children
+    return siblingEls.length > 0
+  }
+
   static findSibling(el, identifierFn, isMoreThanOneResults = true) {
     let results = this.getSiblings(el)
 
@@ -131,31 +156,12 @@ export class DOMUtil {
     return this.findSibling(el, identifierFn, isMoreThanOneResults)
   }
 
-  static hasAncestor(el, ancestorEl) {
-    let identifierFn = _el => {
-      return _el === ancestorEl
-    }
-    return this.findAncestor(el, identifierFn, false)
-  }
-
-  static hasDescendant(el, descendantEl) {
-    let identifierFn = _el => {
-      return _el === descendantEl
-    }
-    return this.findDescendant(el, identifierFn, false)
-  }
-
   static getOffset(el) {
     let boundingBox = el.getBoundingClientRect()
     return [
       window.scrollX + boundingBox.left,
       window.scrollY + boundingBox.top
     ]
-  }
-
-  static getSiblings(el) {
-    let siblingEls = el.parentElement.children
-    return siblingEls.length > 0
   }
 
   static isAnElement(el) {
