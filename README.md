@@ -1,2 +1,2 @@
 # Rocket 🚀
-## Library for creating fun UI's on the web
+## Library for creating fun UIs on the web
