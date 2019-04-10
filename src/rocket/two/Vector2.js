@@ -61,10 +61,10 @@ export class Vector2 {
 
   round(to = 0) {
     this.x = parseFloat(
-      (this.x).toFixed(to)
+      this.x.toFixed(to)
     )
     this.y = parseFloat(
-      (this.y).toFixed(to)
+      this.y.toFixed(to)
     )
     return this
   }
@@ -306,7 +306,7 @@ export class Vector2 {
       this.x += x
       this.y += y
     } else if (
-      typeof x !== 'undefined' &&
+      typeof x !== 'object' &&
       typeof y === 'undefined'
     ) {
       this.add(x)
@@ -322,7 +322,7 @@ export class Vector2 {
       this.x = x
       this.y = y
     } else if (
-      typeof x !== 'undefined' &&
+      typeof x !== 'object' &&
       typeof y === 'undefined'
     ) {
       this.equals(x)
