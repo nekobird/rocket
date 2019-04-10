@@ -25,7 +25,6 @@ const DEFAULT_STYLE = {
 export class CanvasDraw {
 
   constructor(element) {
-
     this.element = element
     this.context = this.element.getContext('2d')
 
@@ -204,7 +203,7 @@ export class CanvasDraw {
     this.context.isPointInPath(point.x * m, point.y * m)
     return this
   }
-  
+
   moveTo(to) {
     let m = this.resolutionMultiplier
     this.context.moveTo(to.x * m, to.y * m)

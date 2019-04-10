@@ -2,15 +2,17 @@ import {
   TextBoxModel
 } from '../Rocket'
 
-export const UITextArea_eventName_input = Symbol()
-export const UITextArea_eventName_keydown = Symbol()
-export const UITextArea_event_input = Symbol()
-export const UITextArea_event_keydown = Symbol()
+export const _UITextArea_eventName_input = Symbol()
+export const _UITextArea_eventName_keydown = Symbol()
+export const _UITextArea_event_input = Symbol()
+export const _UITextArea_event_keydown = Symbol()
+
+export const _textBoxModel = Symbol()
 
 export class UITextArea {
 
   constructor(element, properties) {
-    this.textBoxModel = new TextBoxModel
+    this[_textBoxModel] = new TextBoxModel
 
     // FLAGS
     this.disableLineBreaks = false
@@ -30,15 +32,15 @@ export class UITextArea {
     this.lastKeyCode
 
     // EVENT NAMES
-    this[UITextArea_eventName_input] = 'UITextArea_onInput'
-    this[UITextArea_eventName_keydown] = 'UITextArea_onKeydown'
+    this[_UITextArea_eventName_input] = 'UITextArea_onInput'
+    this[_UITextArea_eventName_keydown] = 'UITextArea_onKeydown'
 
     // EVENTS
-    this[UITextArea_event_input] = new CustomEvent(
-      this[UITextArea_eventName_input]
+    this[_UITextArea_event_input] = new CustomEvent(
+      this[_UITextArea_eventName_input]
     )
-    this[UITextArea_event_keydown] = new CustomEvent(
-      this[UITextArea_eventName_keydown]
+    this[_UITextArea_event_keydown] = new CustomEvent(
+      this[_UITextArea_eventName_keydown]
     )
 
     this.element = element
@@ -81,7 +83,7 @@ export class UITextArea {
   }
 
   grow() {
-    const height = this.textBoxModel.getTextBoxHeightFromElement(this.element)
+    const height = this[_textBoxModel].getTextBoxHeightFromElement(this.element)
     this.element.style.height = `${height}px`
     return this
   }
@@ -110,7 +112,9 @@ export class UITextArea {
     }
     // Trim element value if limit number of characters is a number.
     if (typeof this.limitNumberOfCharacters === 'number') {
-      this.element.value = this.element.value.substring(0, this.limitNumberOfCharacters)
+      this.element.value = this.element.value.substring(
+        0, this.limitNumberOfCharacters
+      )
     }
     // Replace tabs with spaces.
     // TODO: Fix this because it's not working as intended.
@@ -148,7 +152,7 @@ export class UITextArea {
   handleInput(event) {
     this.onInput(this)
     this.processText()
-    window.dispatchEvent(this[UITextArea_event_input])
+    window.dispatchEvent(this[_UITextArea_event_input])
     return this
   }
 
@@ -165,7 +169,7 @@ export class UITextArea {
       event.preventDefault()
     }
     this.lastKeyCode = keyCode
-    window.dispatchEvent(this[UITextArea_event_keydown])
+    window.dispatchEvent(this[_UITextArea_event_keydown])
     return this
   }
 

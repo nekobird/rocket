@@ -141,7 +141,6 @@ export class Num {
       }
     } else {
       let number = this.modulate(Math.random(), 1, range, false)
-
       return parseInt((number).toFixed(0))
     }
   }
@@ -149,11 +148,9 @@ export class Num {
   // Numbers are array
   static sum(numbers) {
     let sum = 0
-
     for (let number of numbers) {
       sum += number
     }
-
     return sum
   }
 
@@ -161,7 +158,6 @@ export class Num {
     if (typeof range === 'number') {
       range = [0, range]
     }
-
     return (number >= range[0] && number <= range[1])
   }
 
