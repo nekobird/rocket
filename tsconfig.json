@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "module": "es6",
+    "noImplicitAny": false,
+    "outDir": "build/",
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "sourceMap": true,
+  },
+  "include": [
+    "rocket/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/**"
+  ]
+}

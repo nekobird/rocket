@@ -9,12 +9,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
-  <link rel="stylesheet" type="text/css" href="stylesheets/main.sass">
+  <link rel="stylesheet" type="text/css" href="stylesheets/main.scss">
 </head>
 
 <body>
 
   <div class="site_content">
+
+    <div class="container">
+      <div class="switch" data-id="1">A</div>
+      <div class="switch" data-id="2">B</div>
+      <div class="switch" data-id="3">C</div>
+      <a class="js_open" data-target="1" href="javascript:void(0)">Open A</a>
+    </div>
 
     <div class="row">
       <div id="layer_stack">
@@ -35,7 +42,7 @@
 
   </div><!-- site_content -->
 
-  <script src="javascripts/main.js"></script>
+  <script src="javascripts/switcher.js"></script>
 </body>
 
 </html>

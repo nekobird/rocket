@@ -1,0 +1,45 @@
+$fontFamily_0: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+
+$base_fontFamily: $fontFamily_0;
+$base_fontSize: 16px;
+
+%normalize_fonts {
+  font-family: $base_fontFamily;
+  font-size: $base_fontSize;
+}
+
+html {
+  @extend %normalize_fonts;
+}
+
+.row {
+  min-height: 320px;
+  width: 100vw;
+}
+
+#textarea_grow_demo {
+  @extend %normalize_fonts;
+  $line_height: 24px;
+  $padding: 20px;
+  appearance: none;
+  background: black;
+  border: 20px solid hsl(0, 0, 90);
+  box-sizing: border-box;
+  font-size: 18px;
+  line-height: $line_height;
+  min-height: $padding * 2 + $line_height;
+  padding: $padding;
+  resize: none;
+  width: 100vw;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+#layer_stack {
+  background: linear-gradient(45deg, hsl(190, 100, 90), hsl(40, 100, 90));
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+}
