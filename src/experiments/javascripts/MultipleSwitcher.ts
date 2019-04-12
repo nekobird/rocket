@@ -1,6 +1,6 @@
 import {
   DOMUtil
-} from '../../rocket/Rocket'
+} from '../../../rocket/Rocket'
 
 interface Config {
   activeClassName?: string,

@@ -1,4 +1,3 @@
 import {
   BinarySwitcher
 } from './BinarySwitcher'
-
