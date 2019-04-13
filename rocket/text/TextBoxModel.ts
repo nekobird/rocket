@@ -63,9 +63,9 @@ export class TextBoxModel {
 
   private modelElement: HTMLElement
 
-  constructor() {}
+  constructor() { }
 
-  getTextBoxHeightFromElement(element: HTMLElement, text?: string) {
+  public getTextBoxHeightFromElement(element: HTMLElement, text?: string): number {
     // Create and prepare model to measure height.
     this
       .destroy()
@@ -82,19 +82,20 @@ export class TextBoxModel {
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
-      text = this.getTextFromElement(element)
+      text = TextBoxModel.getTextFromElement(element)
     }
     this.modelText = text
 
     // Set offset for when boxSizing is set to border-box.
-    let offset = 0
-    let style = window.getComputedStyle(element, null)
-    if (style['boxSizing'] === 'border-box') {
-      offset = this.getElementVerticalBorderHeight(element)
+    let offset: number = 0
+    let style: CSSStyleDeclaration = window.getComputedStyle(element)
+    if (style.getPropertyValue('boxSizing') === 'border-box') {
+      offset = TextBoxModel.getElementVerticalBorderHeight(element)
     } else {
       // Minus vertical padding.
-      let padding = parseInt(style['paddingTop'])
-      padding += parseInt(style['paddingBottom'])
+      let padding: number =
+        parseInt(style.getPropertyValue('paddingTop')) +
+        parseInt(style.getPropertyValue('paddingBottom'))
       offset -= padding
     }
 
@@ -102,7 +103,7 @@ export class TextBoxModel {
     return this.modelElement.scrollHeight + offset
   }
 
-  getTextBoxWidthFromElement(element, text?: string) {
+  public getTextBoxWidthFromElement(element: HTMLElement, text?: string): number {
     // Create and prepare model to measure width.
     this
       .destroy()
@@ -126,7 +127,7 @@ export class TextBoxModel {
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
-      text = this.getTextFromElement(element)
+      text = TextBoxModel.getTextFromElement(element)
     }
     this.modelText = text
 
@@ -134,8 +135,8 @@ export class TextBoxModel {
     let offset = 0
     let style = window.getComputedStyle(element, null)
     if (style['boxSizing'] === 'border-box') {
-      offset = this.getElementHorizontalBorderWidth(element)
-      offset += this.getElementHorizontalPaddingWidth(element)
+      offset = TextBoxModel.getElementHorizontalBorderWidth(element)
+      offset += TextBoxModel.getElementHorizontalPaddingWidth(element)
     }
 
     // Return calculated width value.
@@ -144,11 +145,11 @@ export class TextBoxModel {
 
   // MODEL
 
-  set modelFontSize(fontSize) {
+  set modelFontSize(fontSize: number) {
     this.modelElement.style.fontSize = `${fontSize}px`
   }
 
-  set modelText(text) {
+  set modelText(text: string) {
     if (
       this.modelElement instanceof HTMLTextAreaElement ||
       this.modelElement instanceof HTMLInputElement ||
@@ -164,49 +165,44 @@ export class TextBoxModel {
     }
   }
 
-  set style(style) {
-    if (typeof style === 'object') {
-      Object.assign(this.modelElement.style, style)
-    }
+  set style(style: object) {
+    Object.assign(this.modelElement.style, style)
   }
 
-  applyModelAttributes() {
+  public applyModelAttributes(): TextBoxModel {
     Object.assign(this.modelElement.style, MODEL_ATTRIBUTES)
     return this
   }
 
-  applyBoxModelPropertiesFromElement(element) {
-    let style = window.getComputedStyle(element, null)
+  public applyBoxModelPropertiesFromElement(element: HTMLElement): TextBoxModel {
+    let style: CSSStyleDeclaration = window.getComputedStyle(element)
     for (let name of STYLE_PROPERTIES) {
-      this.modelElement.style[name] = style[name]
+      this.modelElement.style[name] = style.getPropertyValue(name)
     }
     return this
   }
 
-  applyFontPropertiesFromElement(element) {
-    let style = window.getComputedStyle(element, null)
+  public applyFontPropertiesFromElement(element: HTMLElement): TextBoxModel {
+    let style: CSSStyleDeclaration = window.getComputedStyle(element)
     for (let name of FONT_STYLE_PROPERTIES) {
-      this.modelElement.style[name] = style[name]
+      this.modelElement.style[name] = style.getPropertyValue(name)
     }
     return this
   }
 
-  create(type = undefined) {
+  public create(type = undefined): TextBoxModel {
     type = typeof type === 'string' ? type : 'TEXTAREA'
-
     this.modelElement = document.createElement(type)
-
     document.body.appendChild(this.modelElement)
     return this
   }
 
-  destroy() {
+  public destroy(): TextBoxModel {
     if (
       typeof this.modelElement !== 'undefined' &&
       this.modelElement.nodeType === 1
     ) {
       document.body.removeChild(this.modelElement)
-
       this.modelElement.remove()
     }
     return this
@@ -214,54 +210,61 @@ export class TextBoxModel {
 
   // ELEMENT
 
-  getElementFontSize(element) {
-    let style = window.getComputedStyle(element, null)
-
-    return parseFloat(style['font-size'])
+  public static getElementFontSize(element: HTMLElement): number {
+    let style: CSSStyleDeclaration = window.getComputedStyle(element)
+    return parseFloat(style.getPropertyValue('font-size'))
   }
 
-  getTextFromElement(element) {
+  public static getTextFromElement(element: HTMLElement): string {
     if (
       element instanceof HTMLTextAreaElement ||
       element instanceof HTMLInputElement ||
       element.nodeName === 'INPUT' ||
       element.nodeName === 'TEXTAREA'
     ) {
-      return element.value
+      return (<HTMLTextAreaElement | HTMLInputElement>element).value
     }
     return element.textContent
   }
 
-  getElementHorizontalBorderWidth(element) {
-    let style = window.getComputedStyle(element, null)
-    let width = parseFloat(style['borderLeftWidth'])
-    return width + parseFloat(style['borderRightWidth'])
+  public static getElementHorizontalBorderWidth(element: HTMLElement) {
+    let style: CSSStyleDeclaration = window.getComputedStyle(element)
+    let width: number =
+      parseFloat(style.getPropertyValue('borderLeftWidth')) +
+      parseFloat(style.getPropertyValue('borderRightWidth'))
+    return width
   }
 
-  getElementHorizontalPaddingWidth(element) {
-    let style = window.getComputedStyle(element, null)
-    let width = parseFloat(style['paddingLeft'])
-    return width + parseFloat(style['paddingRight'])
+  public static getElementHorizontalPaddingWidth(element: HTMLElement): number {
+    let style: CSSStyleDeclaration = window.getComputedStyle(element)
+    let width: number =
+      parseFloat(style.getPropertyValue('paddingLeft')) +
+      parseFloat(style.getPropertyValue('paddingRight'))
+    return width
   }
 
-  getElementLineHeight(element) {
-    let style = window.getComputedStyle(element, null)
-    return parseFloat(style['line-height'])
+  public static getElementLineHeight(element: HTMLElement): number {
+    let style: CSSStyleDeclaration = window.getComputedStyle(element)
+    return parseFloat(style.getPropertyValue('line-height'))
   }
 
-  getElementVerticalBorderHeight(element) {
-    let style = window.getComputedStyle(element, null)
-    let height = parseFloat(style['borderBottomWidth'])
-    return height + parseFloat(style['borderTopWidth'])
+  public static getElementVerticalBorderHeight(element: HTMLElement): number {
+    let style: CSSStyleDeclaration = window.getComputedStyle(element)
+    let height: number =
+      parseFloat(style.getPropertyValue('borderBottomWidth')) +
+      parseFloat(style.getPropertyValue('borderTopWidth'))
+    return height
   }
 
-  getElementVerticalPaddingHeight(element) {
-    let style = window.getComputedStyle(element, null)
-    let height = parseFloat(style['paddingBottom'])
-    return height + parseFloat(style['paddingTop'])
+  public static getElementVerticalPaddingHeight(element: HTMLElement): number {
+    let style: CSSStyleDeclaration = window.getComputedStyle(element)
+    let height: number =
+      parseFloat(style.getPropertyValue('paddingBottom')) +
+      parseFloat(style.getPropertyValue('paddingTop'))
+    return height
   }
 
-  setElementFontSize(element, fontSize) {
+  public setElementFontSize(element: HTMLElement, fontSize: number): TextBoxModel {
     element.style.fontSize = `${fontSize}px`
     return this
   }

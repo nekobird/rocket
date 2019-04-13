@@ -15,7 +15,7 @@ interface Config {
   onPaste?: Function,
 }
 
-export const _UITextArea_eventName_input: symbol = Symbol()
+export const _UITextArea_eventName_input: unique symbol = Symbol()
 export const _UITextArea_eventName_keydown: symbol = Symbol()
 export const _UITextArea_event_input: symbol = Symbol()
 export const _UITextArea_event_keydown: symbol = Symbol()
@@ -35,10 +35,10 @@ export class UITextArea {
   public removeMultipleWhitespaces: boolean = false
 
   // CALLBACKS
-  onBlur: Function = () => {}
-  onFocus: Function = () => {}
-  onInput: Function = () => {}
-  onPaste: Function = () => {}
+  onBlur: Function = () => { }
+  onFocus: Function = () => { }
+  onInput: Function = () => { }
+  onPaste: Function = () => { }
 
   // PROPERTIES
   public lastKeyCode: number

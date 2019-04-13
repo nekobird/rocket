@@ -46,10 +46,10 @@ const COLOR_INPUT_REGEX = {
 
 export class Color {
 
-  private r: number = 0
-  private g: number = 0
-  private b: number = 0
-  private a: number = 1
+  public r: number = 0
+  public g: number = 0
+  public b: number = 0
+  public a: number = 1
 
   constructor(input?) {
     if (typeof input !== 'undefined') {

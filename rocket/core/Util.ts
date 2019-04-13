@@ -4,24 +4,21 @@ import {
 
 export class Util {
 
-  static cycle(array) {
-    let index = -1
-
+  static cycle(array: any[]): Function {
+    let index: number = -1
     return () => {
       index++
-
       if (index > array.length - 1) {
         index = 0
       }
-
       return array[index]
     }
   }
 
   // Returns a debouncer function that no matter the frequency of calls
   // will only be invoked after the given delay timeout (in seconds).
-  static debounce(delay, fn) {
-    let timeout
+  static debounce(delay: number, fn: Function): Function {
+    let timeout: number
 
     return function (...args) {
       clearTimeout(timeout)
@@ -33,7 +30,7 @@ export class Util {
   }
 
   // Delay given function call given number of second(s).
-  static delay(time, fn) {
+  static delay(time: number, fn: Function) {
     return setTimeout(fn, time * 1000)
   }
 
@@ -49,15 +46,13 @@ export class Util {
     clearInterval(id)
   }
 
-  static match(string, _with) {
+  static match(string: string, _with: RegExp): string | RegExpMatchArray | false {
     let value = String(string).match(_with)
-
     if (value === null) {
       return false
     } else if (value.length === 1) {
       return value[0]
     }
-
     return value
   }
 

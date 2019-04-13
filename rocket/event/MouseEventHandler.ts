@@ -4,60 +4,77 @@ import {
 
 export class MouseEventHandler {
 
+  public name: string
+
+  public lastFiredEvent: MouseEvent
+
+  public isDown: boolean = false
+  public isMoving: boolean = false
+  public isDragging: boolean = false
+
+  public clickCount: number = 0
+  public clickTime: number = 0
+
+  public downStartTime: number
+  public downEndTime: number
+  public downDuration: number
+
+  public moveStartTime: number
+  public moveEndTime: number
+  public moveDuration: number
+
+  public dragStartTime: number
+  public dragEndTime: number
+  public dragDuration: number
+
+  public doubleClickCounter: number = 0
+  public doubleClickMaximumDelayTime: number = 500
+
+  public determineClick: Function = (Point, context) => {
+    return true
+  }
+  public determineDown = (Point, context) => {
+    return true
+  }
+  public determineMove = (Point, context) => {
+    return true
+  }
+  public determineDrag = (Point, context) => {
+    return true
+  }
+
+  public onClick = (Point, context) => { }
+  public onDoubleClick = (Point, context) => { }
+
+  public onDownStart = (Point, context) => { }
+  public onDownEnd = (Point, context) => { }
+
+  public onMoveStart = (Point, context) => { }
+  public onMove = (Point, context) => { }
+  public onMoveEnd = (Point, context) => { }
+
+  public onDragStart = (Point, context) => { }
+  public onDrag = (Point, context) => { }
+  public onDragEnd = (Point, context) => { }
+
+  public position: Vector2
+  public velocity: Vector2
+  public acceleration: Vector2
+
+  public previousVelocity: Vector2
+  public previousPosition: Vector2
+
+  public clickPosition: Vector2
+  public downEndPosition: Vector2
+  public downStartPosition: Vector2
+
+  public moveEndPosition: Vector2
+  public moveStartPosition: Vector2
+
+  public dragStartPosition: Vector2
+  public dragEndPosition: Vector2
+
   constructor() {
-    this.name
-
-    this.lastFiredEvent
-
-    this.isDown = false
-    this.isMoving = false
-    this.isDragging = false
-
-    this.clickCount = 0
-    this.clickTime = 0
-
-    this.downStartTime
-    this.downEndTime
-    this.downDuration
-
-    this.moveStartTime
-    this.moveEndTime
-    this.moveDuration
-
-    this.dragStartTime
-    this.dragEndTime
-    this.dragDuration
-
-    this.doubleClickCounter = 0
-    this.doubleClickMaximumDelayTime = 500
-
-    this.determineClick = () => {
-      return true
-    }
-    this.determineDown = () => {
-      return true
-    }
-    this.determineMove = () => {
-      return true
-    }
-    this.determineDrag = () => {
-      return true
-    }
-
-    this.onClick = () => {}
-    this.onDoubleClick = () => {}
-
-    this.onDownStart = () => {}
-    this.onDownEnd = () => {}
-
-    this.onMoveStart = () => {}
-    this.onMove = () => {}
-    this.onMoveEnd = () => {}
-
-    this.onDragStart = () => {}
-    this.onDrag = () => {}
-    this.onDragEnd = () => {}
-
     this.position = new Vector2
     this.velocity = new Vector2
     this.acceleration = new Vector2
@@ -157,7 +174,7 @@ export class MouseEventHandler {
     ) {
       this.moveStartTime = Date.now()
       this.isMoving = true
-      this.onMoveStart(event)
+      this.onMoveStart(event, this)
     } else if (this.isMoving === true) {
       this.onMove(point, this)
     }

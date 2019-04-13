@@ -42,9 +42,9 @@ export class Num {
       return 0
     }
 
-    let da = this.getNumberLineDistance(min, max)
-    let db
-    let c
+    let da: number = this.getNumberLineDistance(min, max)
+    let db: number
+    let c: number
 
     if (number > max) {
       db = this.getNumberLineDistance(number, max)
@@ -113,8 +113,8 @@ export class Num {
       to = [0, to]
     }
 
-    let percent = (number - from[0]) / (from[1] - from[0])
-    let result
+    let percent: number = (number - from[0]) / (from[1] - from[0])
+    let result: number
 
     if (to[1] > to[0]) {
       result = percent * (to[1] - to[0]) + to[0]
@@ -147,7 +147,7 @@ export class Num {
 
   // Numbers are array
   static sum(numbers: number[]): number {
-    let sum = 0
+    let sum: number = 0
     for (let number of numbers) {
       sum += number
     }

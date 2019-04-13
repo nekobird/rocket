@@ -4,19 +4,19 @@ import {
 
 export class MouseEventManager {
 
+  public onEvent = (event) => { }
+  public onClick = (event) => { }
+  public onDown = (event) => { }
+  public onUp = (event) => { }
+  public onMove = (event) => { }
+
+  public debounce
+  public debounceTime = 0.2
+
+  public handlers
+
   constructor() {
-
-    this.onEvent = () => {}
-    this.onClick = () => {}
-    this.onDown = () => {}
-    this.onUp = () => {}
-    this.onMove = () => {}
-
-    this.debounce
-    this.debounceTime = 0.2
-
     this.handlers = {}
-
     this.startListening()
   }
 
@@ -81,11 +81,11 @@ export class MouseEventManager {
     this.debounce = Util.debounce(
       this.debounceTime, this.handleMoveEnd.bind(this)
     )
-    window.addEventListener('click', this.handleClick.bind(this))
-    window.addEventListener('mousedown', this.handleDown.bind(this))
-    window.addEventListener('mouseup', this.handleUp.bind(this))
-    window.addEventListener('mousemove', this.handleMove.bind(this))
-    window.addEventListener('mousemove', this.debounce.bind(this))
+    window.addEventListener('click', this.handleClick)
+    window.addEventListener('mousedown', this.handleDown)
+    window.addEventListener('mouseup', this.handleUp)
+    window.addEventListener('mousemove', this.handleMove)
+    window.addEventListener('mousemove', this.debounce)
     return this
   }
 

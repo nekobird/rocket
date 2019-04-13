@@ -3,6 +3,11 @@ import {
   Vector2,
 } from './Rocket'
 
+export interface Size {
+  height: number,
+  width: number
+}
+
 const MODEL_ATTRIBUTES = {
   border: 'none',
   boxSizing: 'border-box',
@@ -58,7 +63,7 @@ export class ScreenModel {
 
     const w = modelElement.offsetWidth
     const h = modelElement.offsetHeight
-  
+
     return Num.hypotenuse(w, h)
   }
 

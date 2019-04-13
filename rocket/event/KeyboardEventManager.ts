@@ -3,50 +3,60 @@
 // The exception is webkit, which has an extra event in there:
 // keydown, keypress, textInput, keyup
 
+import {
+  KeyboardEventHandler
+} from '../Rocket'
+
+interface Handler {
+  manager: KeyboardEventManager,
+  name: string,
+}
+
 export class KeyboardEventManager {
 
+  public isDown: boolean = false
+  public isDisabled: boolean = false
+
+  public altKeyIsDown: boolean = false
+  public ctrlKeyIsDown: boolean = false
+  public shiftKeyIsDown: boolean = false
+
+  public downKeys: number[]
+  public lastKeyCode: number
+
+  // CALLBACKS
+  public onEvent = (event, context) => { }
+  public onKeyDown = (event, context) => { }
+  public onKeyPress = () => { }
+  public onKeyUp = () => { }
+
+  public handlers: KeyboardEventHandler[]
+
   constructor() {
-    this.isDown = false
-    this.isDisabled = false
-
-    this.altKeyIsDown = false
-    this.ctrlKeyIsDown = false
-    this.shiftKeyIsDown = false
-
-    this.downKeys = new Array
-    this.lastKeyCode
-
-    // CALLBACKS
-    this.onEvent = () => {}
-    this.onKeyDown = () => {}
-    this.onKeyPress = () => {}
-    this.onKeyUp = () => {}
-
-    this.handlers = {}
-
+    // this.handlers = {}
     this.startListening()
   }
 
-  register(name, handler) {
+  public register(name: string, handler: Handler) {
     this.handlers[name] = handler
     this.handlers[name].name = name
     this.handlers[name].manager = this
     return this
   }
 
-  remove(name) {
+  public remove(name: string) {
     this.handlers[name].manager = undefined
     delete this.handlers[name]
     return this
   }
 
-  find(name) {
+  public find(name: string) {
     return this.handlers[name]
   }
 
   // HANDLERS
 
-  handleKeyDown(event) {
+  public handleKeyDown(event: KeyboardEvent) {
     this.downKeys.push(event.keyCode)
 
     // SHIFT
@@ -75,7 +85,7 @@ export class KeyboardEventManager {
     }
   }
 
-  handleKeyPress(event) {
+  public handleKeyPress = (event: KeyboardEvent) => {
     this.lastKeyCode = event.keyCode
 
     if (this.isDisabled === false) {
@@ -87,7 +97,7 @@ export class KeyboardEventManager {
     }
   }
 
-  handleKeyUp(event) {
+  public handleKeyUp = (event: KeyboardEvent) => {
     let downKeyIndex = this.downKeys.indexOf(event.keyCode)
 
     if (downKeyIndex !== -1) {
@@ -122,14 +132,14 @@ export class KeyboardEventManager {
 
   // LISTEN
 
-  startListening() {
-    window.addEventListener('keydown', this.handleKeyDown.bind(this))
-    window.addEventListener('keypress', this.handleKeyPress.bind(this))
-    window.addEventListener('keyup', this.handleKeyUp.bind(this))
+  public startListening() {
+    window.addEventListener('keydown', this.handleKeyDown)
+    window.addEventListener('keypress', this.handleKeyPress)
+    window.addEventListener('keyup', this.handleKeyUp)
     return this
   }
 
-  stopListening() {
+  public stopListening() {
     window.removeEventListener('keydown', this.handleKeyDown)
     window.removeEventListener('keypress', this.handleKeyPress)
     window.removeEventListener('keyup', this.handleKeyUp)

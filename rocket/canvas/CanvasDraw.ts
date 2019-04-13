@@ -1,18 +1,20 @@
 import {
   Color,
+  Point,
   Vector2,
 } from '../Rocket'
 
-// CanvasDrawStyle
-// fillColor
-// noFill
-// noStroke
-// strokeCap
-// strokeColor
-// strokeJoin
-// strokeWidth
+interface CanvasDrawStyle {
+  fillColor?: string | Color,
+  noFill?: boolean,
+  noStroke?: boolean,
+  strokeCap?: 'square' | 'round',
+  strokeColor?: string | Color,
+  strokeJoin?: 'bevel' | 'round' | 'miter',
+  strokeWidth?: number,
+}
 
-const DEFAULT_STYLE = {
+const DEFAULT_STYLE: CanvasDrawStyle = {
   fillColor: 'black',
   noFill: false,
   noStroke: false,
@@ -24,33 +26,40 @@ const DEFAULT_STYLE = {
 
 export class CanvasDraw {
 
-  constructor(element) {
+  public element: HTMLCanvasElement
+
+  public context
+  public resolutionMultiplier: number
+  public previousTranslation: Vector2
+
+  private _defaultStyle: object
+
+  constructor(element: HTMLCanvasElement) {
     this.element = element
+
     this.context = this.element.getContext('2d')
 
     this.resolutionMultiplier = window.devicePixelRatio
-
     this.previousTranslation = new Vector2
 
     this._defaultStyle = Object.assign({}, DEFAULT_STYLE)
-    this.resize()
+
+    // this.resize()
   }
 
   get defaultStyle() {
     return this._defaultStyle
   }
 
-  set defaultStyle(style) {
-    if (typeof style === 'object') {
-      Object.assign(this._defaultStyle, style)
-    }
+  set defaultStyle(style: CanvasDrawStyle) {
+    Object.assign(this._defaultStyle, style)
   }
 
   // GRADIENTS
   // https://www.w3schools.com/tags/canvas_createlineargradient.asp
   // https://www.w3schools.com/tags/canvas_arcto.asp
-  createLinearGradient(from, to) {
-    let m = this.resolutionMultiplier
+  public createLinearGradient(from: Vector2, to: Vector2): CanvasGradient {
+    let m: number = this.resolutionMultiplier
     return this.context.createLinearGradient(
       from.x * m, from.y * m,
       to.x * m, to.y * m
@@ -59,16 +68,18 @@ export class CanvasDraw {
     // gradient.addColorStop(1, 'white')
   }
 
-  createRadialGradient(from, fromRadius, to, toRadius) {
-    let m = this.resolutionMultiplier
+  public createRadialGradient(from: Vector2, fromRadius: number, to: Vector2, toRadius: number): CanvasGradient {
+    let m: number = this.resolutionMultiplier
     return this.context.createRadialGradient(
       from.x * m, from.y * m, fromRadius * m,
       to.x * m, to.y * m, toRadius * m
     )
   }
 
-  applyStyle(style) {
-    let computedStyle = Object.assign({}, this._defaultStyle)
+  public applyStyle(style: CanvasDrawStyle): CanvasDraw {
+
+    let computedStyle: any = Object.assign({}, this._defaultStyle)
+
     if (typeof style === 'object') {
       Object.assign(computedStyle, style)
     }
@@ -90,15 +101,16 @@ export class CanvasDraw {
     return this
   }
 
-  clear() {
+  public clear() {
     this.context.clearRect(
-      0, 0, this.element.width, this.element.height
+      0, 0,
+      this.element.width, this.element.height
     )
     return this
   }
 
-  resize(width, height) {
-    const m = this.resolutionMultiplier
+  public resize(width?: number, height?: number): CanvasDraw {
+    const m: number = this.resolutionMultiplier
     if (
       typeof height === 'number' &&
       typeof width === 'number'
@@ -114,37 +126,40 @@ export class CanvasDraw {
 
   // TODO: Need to optimize this.
   // Perhaps get a snapshot of all the pixel data.
-  getPixelColor(point) {
-    let m = this.resolutionMultiplier
-    let imageData = this.context.getImageData(
-      point.x * m, point.y * m, this.element.width, this.element.height
+  public getPixelColor(point: Point): Color {
+    let m: number = this.resolutionMultiplier
+    let imageData: ImageData = this.context.getImageData(
+      point.x * m, point.y * m,
+      this.element.width, this.element.height
     )
     let data = imageData.data
-    let color = new Color()
-    color.r = data[0] / 255
-    color.g = data[1] / 255
-    color.b = data[2] / 255
-    color.a = data[3] / 255
+    let color: Color = new Color()
+    color.rgba = [
+      data[0] / 255,
+      data[1] / 255,
+      data[2] / 255,
+      data[3] / 255
+    ]
     return color
   }
 
-  putPixelColor(point, color) {
+  public putPixelColor(point: Point, color: Color) {
     let m = this.resolutionMultiplier
     let pixel = this.context.getImageData(point.x * m, point.y * m, 1, 1)
     let data = pixel.data
-    data[0] = color.r * 255
-    data[1] = color.g * 255
-    data[2] = color.b * 255
-    data[3] = color.a * 255
+    data[0] = color.red * 255
+    data[1] = color.green * 255
+    data[2] = color.blue * 255
+    data[3] = color.alpha * 255
     return this.context.putImageData(pixel, 0, 0)
   }
 
-  clip() {
+  public clip() {
     this.context.clip()
     return this
   }
 
-  shadow(offsetX, offsetY, blur, color) {
+  public shadow(offsetX, offsetY, blur, color) {
     let m = this.resolutionMultiplier
     if (color instanceof Color) {
       color = color.rgbaString
@@ -156,7 +171,7 @@ export class CanvasDraw {
     return this
   }
 
-  image(img, st, sw, sh, dt, dw, dh) {
+  public image(img, st, sw, sh, dt, dw, dh) {
     let m = this.resolutionMultiplier
     this.context.drawImage(
       img, st.x, st.y, sw, sh, dt.x * m, dt.y * m, dw * m, dh * m
@@ -247,19 +262,19 @@ export class CanvasDraw {
 
   // TRANSFORM
 
-  translate(to) {
-    let m = this.resolutionMultiplier
+  public translate(to: Point): CanvasDraw {
+    let m: number = this.resolutionMultiplier
     this.context.translate(to.x * m, to.y * m)
     this.previousTranslation.equals(to)
     return this
   }
 
-  rotate(angle) {
+  public rotate(angle: number): CanvasDraw {
     this.context.rotate(angle)
     return this
   }
 
-  scale(w, h) {
+  public scale(w: number, h?: number): CanvasDraw {
     if (typeof h !== 'number') {
       h = w
     }
@@ -269,17 +284,17 @@ export class CanvasDraw {
 
   // STASH
 
-  reset() {
+  public reset() {
     this.context.setTransform(1, 0, 0, 1, 0, 0)
     return this
   }
 
-  save() {
+  public save() {
     this.context.save()
     return this
   }
 
-  restore() {
+  public restore() {
     this.context.restore()
     return this
   }

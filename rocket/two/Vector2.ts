@@ -3,18 +3,24 @@ import {
   Num,
 } from '../Rocket'
 
+export interface Point {
+  x: number,
+  y: number,
+  [key: string]: any,
+}
+
 export class Vector2 {
 
+  public x: number = 0
+  public y: number = 0
+
   constructor(...args) {
-    this.x = 0
-    this.y = 0
-
+    // @ts-ignore
     this.setPoint(...args)
-
     return this
   }
 
-  setPoint(x, y) {
+  setPoint(x: number | Point, y?: number): Vector2 {
     if (
       typeof x === 'number' &&
       typeof y === 'number'
@@ -25,41 +31,36 @@ export class Vector2 {
       this.x = 0
       this.y = 0
     } else {
-      this.equals(x)
+      this.equals(<Point>x)
     }
 
     return this
   }
 
-  set magnitude(mag) {
-    if (typeof mag === 'number') {
-      this
-        .normalize()
-        .multiply(mag)
-    }
+  set magnitude(mag: number) {
+    this
+      .normalize()
+      .multiply(mag)
   }
 
-  get magnitude() {
+  get magnitude(): number {
     return Num.hypotenuse(this.x, this.y)
   }
 
-  equals(point) {
+  public equals(point: Point): Vector2 {
     this.x = point.x
     this.y = point.y
     return this
   }
 
-  isEqualTo(point) {
-    if (
+  public isEqualTo(point: Point): boolean {
+    return (
       this.x === point.x &&
       this.y === point.y
-    ) {
-      return true
-    }
-    return false
+    )
   }
 
-  round(to = 0) {
+  public round(to: number = 0): Vector2 {
     this.x = parseFloat(
       this.x.toFixed(to)
     )
@@ -69,23 +70,23 @@ export class Vector2 {
     return this
   }
 
-  get clone() {
+  get clone(): Vector2 {
     return Vector2.equals(this)
   }
 
-  get array() {
+  get array(): [number, number] {
     return [this.x, this.y]
   }
 
-  get string() {
+  get string(): string {
     return `x: ${this.x}, y: ${this.y}`
   }
 
-  get average() {
+  get average(): number {
     return (Math.abs(this.x) + Math.abs(this.y)) / 2
   }
 
-  absolute() {
+  public absolute(): Vector2 {
     this.x = Math.abs(this.x)
     this.y = Math.abs(this.y)
     return this
@@ -93,13 +94,13 @@ export class Vector2 {
 
   // ADD
 
-  add(point) {
+  add(point: Point): Vector2 {
     this.x += point.x
     this.y += point.y
     return this
   }
 
-  addX(point) {
+  addX(point: number | Point): Vector2 {
     if (typeof point === 'number') {
       this.x += point
     } else {
@@ -108,7 +109,7 @@ export class Vector2 {
     return this
   }
 
-  addY(point) {
+  addY(point: number | Point): Vector2 {
     if (typeof point === 'number') {
       this.y += point
     } else {
@@ -375,7 +376,7 @@ export class Vector2 {
     return this
   }
 
-  lerp(point, time) {
+  public lerp(point: Point, time: number): Vector2 {
     this.x = Num.modulate(time, 1, [this.x, point.x], false)
     this.y = Num.modulate(time, 1, [this.y, point.y], false)
     return this
@@ -383,19 +384,19 @@ export class Vector2 {
 
   // ZERO
 
-  zero() {
+  public zero(): Vector2 {
     this.x = 0
     this.y = 0
     return this
   }
 
-  get isZero() {
-    return this.x === 0 && this.y === 0 ? true : false
+  get isZero(): boolean {
+    return (this.x === 0 && this.y === 0)
   }
 
   // STATIC
 
-  static projectFrom(from, direction, by) {
+  static projectFrom(from: Vector2, direction: Vector2, by: Vector2): Vector2 {
     let to = Vector2
       .equals(direction)
       .normalize()
@@ -403,39 +404,39 @@ export class Vector2 {
     return Vector2.add(from, to)
   }
 
-  static get zero() {
+  static get zero(): Vector2 {
     return new Vector2(0, 0)
   }
 
-  static get random() {
+  static get random(): Vector2 {
     return new Vector2(Math.random(), Math.random())
   }
 
-  static equals(point) {
+  static equals(point: Point): Vector2 {
     return new Vector2(point.x, point.y)
   }
 
-  static add(a, b) {
+  static add(a: Point, b: Point): Vector2 {
     return new Vector2(a).add(b)
   }
 
-  static subtract(a, b) {
+  static subtract(a: Point, b: Point): Vector2 {
     return new Vector2(a.x, a.y).subtract(b)
   }
 
-  static multiply(v, n) {
+  static multiply(v: Point, n: number): Vector2 {
     return new Vector2(v.x, v.y).multiply(n)
   }
 
-  static divide(v, n) {
+  static divide(v: Point, n: number): Vector2 {
     return new Vector2(v.x, v.y).divide(n)
   }
 
-  static normalize(v) {
+  static normalize(v: Point): Vector2 {
     return new Vector2(v.x, v.y).normalize()
   }
 
-  static getMidPointBetween(a, b) {
+  static getMidPointBetween(a: Point, b: Point): Vector2 {
     let x = a.x - b.x
     let y = a.y - b.y
     x /= 2
@@ -445,14 +446,14 @@ export class Vector2 {
     return new Vector2(x, y)
   }
 
-  static getDistanceBetween(a, b) {
+  static getDistanceBetween(a: Point, b: Point): number {
     return Vector2
       .subtract(a, b)
       .magnitude
   }
 
-  static splitAtAngle(target, angle, by) {
-    let results = new Array
+  static splitAtAngle(target: Point, angle: number, by: number): Vector2[] {
+    let results: Vector2[] = []
     results[0] = Vector2
       .equals(target)
       .moveRadiallyBy(angle, -by)

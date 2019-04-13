@@ -1,41 +1,44 @@
+import {
+  KeyboardEventManager
+} from "./KeyboardEventManager"
+
 // The *Down happens first,
 // the *Press happens second (when text is entered), 
 // and the *Up happens last (when text input is complete).
 
 export class KeyboardEventHandler {
 
+  public name: string
+  public manager: KeyboardEventManager
+
+  public lastFiredEvent: Event
+  public lastKeyCode: number
+
+  public isDown: boolean = false
+
+  public keyDownStartTime: number
+  public keyDownEndTime: number
+  public keyDownDuration: number
+  public keyPressTime: number
+
+  // CALLBACKS
+  public determineKeyDown: Function = () => {
+    return true
+  }
+  public determineKeyPress: Function = () => {
+    return true
+  }
+  public onKeyDownStart: Function | Function[] = () => { }
+  public onKeyDownEnd: Function | Function[] = () => { }
+  public onKeyPress: Function | Function[] = () => { }
+
   constructor() {
-
-    this.name
-    this.manager
-
-    this.lastFiredEvent
-    this.lastKeyCode
-
-    this.isDown = false
-
-    this.keyDownStartTime
-    this.keyDownEndTime
-    this.keyDownDuration
-    this.keyPressTime
-
-    // CALLBACKS
-    this.determineKeyDown = () => {
-      return true
-    }
-    this.determineKeyPress = () => {
-      return true
-    }
-    this.onKeyDownStart = () => {}
-    this.onKeyDownEnd = () => {}
-    this.onKeyPress = () => {}
   }
 
   // HANDLERS
 
-  handleKeyDown(event) {
+  public handleKeyDown(event: KeyboardEvent) {
     if (this.determineKeyDown(event.keyCode, event, this) === true) {
-
       this.keyDownStartTime = Date.now()
       this.lastFiredEvent = event
       this.lastKeyCode = event.keyCode
@@ -52,9 +55,8 @@ export class KeyboardEventHandler {
     }
   }
 
-  handleKeyPress(event) {
+  public handleKeyPress(event: KeyboardEvent) {
     if (this.determineKeyPress(event.keyCode, event, this) === true) {
-
       this.keyPressTime = Date.now()
       this.lastFiredEvent = event
       this.lastKeyCode = event.keyCode
@@ -70,7 +72,7 @@ export class KeyboardEventHandler {
     }
   }
 
-  handleKeyUp(event) {
+  public handleKeyUp(event: KeyboardEvent) {
     if (this.isDown === true) {
 
       this.keyDownEndTime = Date.now()

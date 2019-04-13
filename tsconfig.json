@@ -2,6 +2,7 @@
   "compilerOptions": {
     "allowJs": true,
     "module": "es6",
+    "target": "es2018",
     "noImplicitAny": false,
     "outDir": "build/",
     "preserveConstEnums": true,

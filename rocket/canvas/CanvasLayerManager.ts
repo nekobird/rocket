@@ -5,32 +5,32 @@ import {
 
 export class CanvasLayerManager {
 
-  constructor(layerStackElement) {
-    this.count = 0
-    this.isFullScreen = false
+  public count: number = 0
+  public isFullScreen: boolean = false
 
+  public layerStackElement: HTMLElement
+  public layers: CanvasLayer[]
+
+  constructor(layerStackElement: HTMLElement) {
     this.layerStackElement = layerStackElement
-
-    this.layers = new Array
-
+    this.layers = []
     this
       .startListening()
       .resize()
     return this
   }
 
-  create(name) {
-    let element = document.createElement(`CANVAS`)
+  public create(name: string) {
+    let element: HTMLCanvasElement = <HTMLCanvasElement>document.createElement(`CANVAS`)
     element = this.layerStackElement.appendChild(element)
-    const canvasLayer = new CanvasLayer(element)
-    this.layers[name] = canvasLayer
+    this.layers[name] = new CanvasLayer(element)
     this.count++
     this.resize()
     return this.layers[name]
   }
 
-  register(name, canvasLayer) {
-    let element = this.layerStackElement.appendChild(canvasLayer.element)
+  public register(name: string, canvasLayer: CanvasLayer): CanvasLayer {
+    let element: HTMLCanvasElement = this.layerStackElement.appendChild(canvasLayer.element)
     canvasLayer.updateElement(element)
     this.layers[name] = canvasLayer
     this.count++
@@ -38,9 +38,9 @@ export class CanvasLayerManager {
     return this.layers[name]
   }
 
-  remove(name) {
+  public remove(name: string): boolean {
     for (let i = 0; i < this.layerStackElement.children.length; i++) {
-      let child = this.layerStackElement.children[i]
+      let child: Element = this.layerStackElement.children[i]
       if (child === this.layers[name].element) {
         this.layerStackElement.removeChild(child)
         delete this.layers[name]
@@ -51,16 +51,16 @@ export class CanvasLayerManager {
     return false
   }
 
-  find(name) {
+  public find(name: string): HTMLCanvasElement {
     if (typeof this.layers[name] === 'undefined') {
       this.create(name)
     }
     return this.layers[name]
   }
 
-  resize() {
-    let height = 0
-    let width = 0
+  public resize = () => {
+    let height: number = 0
+    let width: number = 0
 
     if (this.isFullScreen === true) {
       this.layerStackElement.style.height = `${ScreenModel.height}px`
@@ -81,12 +81,12 @@ export class CanvasLayerManager {
 
   // LISTEN
 
-  startListening() {
-    window.addEventListener('resize', this.resize.bind(this))
+  public startListening(): CanvasLayerManager {
+    window.addEventListener('resize', this.resize)
     return this
   }
 
-  stopListening() {
+  public stopListening(): CanvasLayerManager {
     window.removeEventListener('resize', this.resize)
     return this
   }

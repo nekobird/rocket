@@ -4,30 +4,34 @@ import {
 
 export class CanvasLayer {
 
-  constructor(element) {
+  public element: HTMLCanvasElement
+  public draw: CanvasDraw
+
+  constructor(element: HTMLCanvasElement) {
     this.element = element
     this.element.style.position = 'absolute'
     this.element.style.left = '0px'
     this.element.style.top = '0px'
+
     this.draw = new CanvasDraw(this.element)
   }
 
-  set zIndex(zIndex) {
+  set zIndex(zIndex: number) {
     this.element.style.zIndex = zIndex.toString()
   }
 
-  updateElement(element) {
+  public updateElement(element: HTMLCanvasElement): CanvasLayer {
     this.element = element
     this.draw.element = element
     return this
   }
 
-  show() {
+  public show(): CanvasLayer {
     this.element.style.display = `block`
     return this
   }
 
-  hide() {
+  public hide(): CanvasLayer {
     this.element.style.display = `none`
     return this
   }

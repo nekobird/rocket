@@ -1,22 +1,66 @@
 import {
+  TouchPoint,
   Vector2,
 } from '../Rocket'
 
 export class TouchEventHandler {
 
+  public name: string
+
+  public identity
+
+  public lastFiredEvent: TouchEvent
+
+  public touch
+  public touchCount: number
+
+  public isTouching: boolean = false
+  public isMoving: boolean = false
+
+  public position: Vector2
+  public velocity: Vector2
+  public acceleration: Vector2
+
+  public previousPosition: Vector2
+  public previousVelocity: Vector2
+  public cancelPosition: Vector2
+
+  public touchStartPosition: Vector2
+  public touchEndPosition: Vector2
+
+  public movePosition: Vector2
+  public moveStartPosition: Vector2
+  public moveEndPosition: Vector2
+
+  public touchStartTime: number
+  public touchEndTime: number
+  public touchDuration: number
+
+  public cancelTime: number
+  public previousTapTime: number
+
+  public moveStartTime: number
+  public moveEndTime: number
+  public moveDuration: number
+
+  public determine: Function
+
+  public onDoubleTap: Function
+
+  public onTouchStart: Function
+  public onTouchEnd: Function
+
+  public onCancel: Function
+
+  public onMoveStart: Function
+  public onMove: Function
+  public onMoveEnd: Function
+
+  public doubleTapCounter: number = 0
+  public doubleTapMaximumTouchTime: number = 500
+  public doubleTapMaximumDelayTime: number = 500
+
   constructor() {
-    this.name
-
-    this.identity
-
-    this.lastFiredEvent
-
-    this.touch
-    this.touchCount
-
-    this.isTouching = false
-    this.isMoving = false
-
     this.position = new Vector2
     this.velocity = new Vector2
     this.acceleration = new Vector2
@@ -32,32 +76,21 @@ export class TouchEventHandler {
     this.moveStartPosition = new Vector2
     this.moveEndPosition = new Vector2
 
-    this.touchStartTime
-    this.touchEndTime
-    this.touchDuration
-
-    this.cancelTime
-    this.previousTapTime
-
-    this.moveStartTime
-    this.moveEndTime
-    this.moveDuration
-
     // CALLBACKS
-    this.determine = () => {
+    this.determine = (point, context) => {
       return false
     }
 
-    this.onDoubleTap = () => {}
+    this.onDoubleTap = (point: TouchPoint, context) => { }
 
-    this.onTouchStart = () => {}
-    this.onTouchEnd = () => {}
+    this.onTouchStart = () => { }
+    this.onTouchEnd = () => { }
 
-    this.onCancel = () => {}
+    this.onCancel = () => { }
 
-    this.onMoveStart = () => {}
-    this.onMove = () => {}
-    this.onMoveEnd = () => {}
+    this.onMoveStart = () => { }
+    this.onMove = () => { }
+    this.onMoveEnd = () => { }
 
     this.doubleTapCounter = 0
     this.doubleTapMaximumTouchTime = 500

@@ -6,29 +6,30 @@ import {
 
 export class ScrollEventManager {
 
+  public debounce
+  public debounceTime = 0.2
+
+  public isScrolling = false
+
+  public onEvent = () => { }
+  public onScrollStart = () => { }
+  public onScroll = () => { }
+  public onScrollEnd = () => { }
+
+  public handlers
+
   constructor() {
-    this.debounce
-    this.debounceTime = 0.2
-
-    this.isScrolling = false
-
-    this.onEvent = () => {}
-    this.onScrollStart = () => {}
-    this.onScroll = () => {}
-    this.onScrollEnd = () => {}
-
     this.handlers = {}
-
     this.startListening()
   }
 
-  register(name, handler) {
+  public register(name: string, handler: ScrollEventHandler) {
     this.handlers[name] = handler
     this.handlers[name].name = name
     return this
   }
 
-  remove(name) {
+  public remove(name: string) {
     this.handlers[name].element.removeEventListener(
       'scroll', this.handleScroll
     )
@@ -39,19 +40,19 @@ export class ScrollEventManager {
     return this
   }
 
-  find(name) {
+  public find(name: string) {
     return this.handlers[name]
   }
 
   // HANDLERS
 
-  handleScroll(event) {
+  public handleScroll(event) {
     for (let name in this.handlers) {
       this.handlers[name].handleScroll(event)
     }
   }
 
-  handleScrollEnd() {
+  public handleScrollEnd() {
     for (let name in this.handlers) {
       this.handlers[name].handleScroll(event)
     }
@@ -59,7 +60,7 @@ export class ScrollEventManager {
 
   // LISTEN
 
-  startListening() {
+  public startListening() {
     for (let name in this.handlers) {
       this.handlers[name].debounce = Util.debounce(
         this.debounceTime, this.handlers[name].handleScrollEnd.bind(this)
@@ -74,7 +75,7 @@ export class ScrollEventManager {
     return this
   }
 
-  stopListening() {
+  public stopListening() {
     for (let name in this.handlers) {
       this.handlers[name].element.removeEventListener(
         'scroll', this.handleScroll

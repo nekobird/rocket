@@ -4,20 +4,20 @@ import {
 
 export class Angle {
 
-  static toDegrees(radians) {
+  static toDegrees(radians: number): number {
     return radians * (180 / Math.PI)
   }
 
-  static toRadians(degrees) {
+  static toRadians(degrees: number): number {
     return degrees * (Math.PI / 180)
   }
 
-  static deltaClockwise(from, to, direction = false) {
-    let sign = 1
-    let range = from - Math.PI
+  static deltaClockwise(from: number, to: number, direction: boolean = false): number {
+    let sign: number = 1
+    let range: number = from - Math.PI
 
     if (range < 0) {
-      let offset = Num.cycle(range, Math.PI * 2)
+      let offset: number = Num.cycle(range, Math.PI * 2)
       if (
         to < from ||
         to >= offset
@@ -35,7 +35,7 @@ export class Angle {
       sign = 1
     }
 
-    let result = 0
+    let result: number = 0
 
     if (from > to) {
       result = from - to
@@ -46,9 +46,9 @@ export class Angle {
     return result * sign
   }
 
-  static deltaCounterclockwise(from, to, direction = false) {
-    let sign = 1
-    let range = from + Math.PI
+  static deltaCounterclockwise(from: number, to: number, direction: boolean = false): number {
+    let sign: number = 1
+    let range: number = from + Math.PI
 
     if (range > Math.PI * 2) {
       let offset = Num.cycle(range, Math.PI * 2)
@@ -70,7 +70,7 @@ export class Angle {
       sign = 1
     }
 
-    let result = 0
+    let result: number = 0
 
     if (from > to) {
       result = from - to
@@ -81,8 +81,8 @@ export class Angle {
     return result * sign
   }
 
-  static differenceClockwise(from, to) {
-    let result = 0
+  static differenceClockwise(from: number, to: number) {
+    let result: number = 0
 
     if (from > to) {
       result = (Math.PI * 2) - from + to
@@ -94,8 +94,8 @@ export class Angle {
   }
 
 
-  static differenceCounterclockwise(from, to) {
-    let result = 0
+  static differenceCounterclockwise(from: number, to: number) {
+    let result: number = 0
 
     if (from > to) {
       result = from - to

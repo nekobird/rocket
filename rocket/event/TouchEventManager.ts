@@ -4,18 +4,19 @@ import {
 
 export class TouchEventManager {
 
+  public onEvent = (event) => { }
+  public onTouchStart = (event) => { }
+  public onTouchEnd = (event) => { }
+  public onTouchCancel = (event) => { }
+  public onTouchMove = (event) => { }
+
+  public debounceMoveEnd
+  public debounceTime = 0.2
+
+  public handlers = {}
+
   constructor() {
-    this.onEvent = () => {}
-    this.onTouchStart = () => {}
-    this.onTouchEnd = () => {}
-    this.onTouchCancel = () => {}
-    this.onTouchMove = () => {}
-
-    this.debounceMoveEnd
-    this.debounceTime = 0.2
-
     this.handlers = {}
-
     this.startListening()
     return this
   }

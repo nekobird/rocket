@@ -1,4 +1,5 @@
 import {
+  Point,
   Vector2,
 } from '../Rocket'
 
@@ -9,31 +10,29 @@ export class Geo2Util {
   // positive  = /
   // 0         = horizontal
   // undefined = vertical
-  static getSlopeOfLine(ls, le) {
+  static getSlopeOfLine(ls: Point, le: Point): number | false {
     if (le.x === ls.x) {
-      return false;
+      return false
     } else {
-      let rise = le.y - ls.y;
-      let run = le.x - ls.x;
-
-      return rise / run;
+      let rise: number = le.y - ls.y
+      let run: number = le.x - ls.x
+      return rise / run
     }
   }
 
-  static checkIfTwoLineSegmentsAreParallel(ls1, le1, ls2, le2) {
-    let s1 = Geo2Util.getSlopeOfLine(ls1, le1);
-    let s2 = Geo2Util.getSlopeOfLine(ls2, le2);
-
-    return s1 === s2 ? true : false;
+  static checkIfTwoLineSegmentsAreParallel(ls1: Point, le1: Point, ls2: Point, le2: Point): boolean {
+    let s1: number | false = Geo2Util.getSlopeOfLine(ls1, le1)
+    let s2: number | false = Geo2Util.getSlopeOfLine(ls2, le2)
+    return s1 === s2
   }
 
   // Two lines will always intersect unless they are parallel.
   // Check if two line segments intersect each other.
   static checkIfTwoLineSegmentsIntersect(ls1, le1, ls2, le2) {
-    let pi = Geo2Util.getPointOfIntersectionBetweenTwoLineSegments(ls1, le1, ls2, le2);
+    let pi = Geo2Util.getPointOfIntersectionBetweenTwoLineSegments(ls1, le1, ls2, le2)
 
     if (pi === false) {
-      return false;
+      return false
     }
 
     if (
@@ -46,10 +45,9 @@ export class Geo2Util {
       pi.y > Math.max(ls2.y, le2.y) ||
       pi.y < Math.min(ls2.y, le2.y)
     ) {
-      return false;
-    } else {
-      return true;
+      return false
     }
+    return true
   }
 
   static getPointOfIntersectionBetweenTwoLineSegments(ls1, le1, ls2, le2) {
@@ -94,7 +92,7 @@ export class Geo2Util {
       iy = m1 * ix + yi1;
     }
 
-    return new Vector2(ix, iy);
+    return new Vector2(ix, iy)
   }
 
 }
