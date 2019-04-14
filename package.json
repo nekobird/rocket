@@ -1,13 +1,15 @@
 {
   "name": "@nekobird/rocket",
-  "version": "0.0.5",
+  "version": "0.0.9",
   "description": "Rocket UI Library",
-  "main": "./build/Rocket.js",
+  "main": "build/Rocket.js",
+  "types": "build/Rocket.d.ts",
   "scripts": {
     "start": "parcel ./src/index.html ./src/experiments/index.html",
     "startDocumentation": "parcel ./documentation/index.html",
     "build": "parcel build ./src/index.html --public-url ./",
-    "buildRocket": "tsc -t es6"
+    "buildRocket": "tsc -t es6",
+    "prepare": "npm run buildRocket"
   },
   "keywords": [],
   "author": "Andrew Prasetya",
@@ -15,5 +17,6 @@
   "devDependencies": {
     "sass": "^1.18.0",
     "typescript": "^3.4.3"
-  }
+  },
+  "files": ["build/**/*"]
 }
