@@ -5,44 +5,130 @@
   <title>Rocket | Experiments</title>
 
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible"
+        content="IE=edge">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css">
-  <link rel="stylesheet" type="text/css" href="stylesheets/main.scss">
+  <link rel="stylesheet"
+        type="text/css"
+        href="stylesheets/main.scss">
 </head>
 
 <body>
 
   <div class="site_content">
 
-    <div class="container">
-      <div class="switch" data-id="1">A</div>
-      <div class="switch" data-id="2">B</div>
-      <div class="switch" data-id="3">C</div>
-      <a class="js_open" data-target="1" href="javascript:void(0)">Open A</a>
+    <div class="poly_item __active"
+         data-group="a"
+         data-id="one">Poly One</div>
+
+    <div class="poly_item"
+         data-group="a"
+         data-id="two">Poly Two</div>
+
+    <div class="poly_item"
+         data-group="a"
+         data-id="three">Poly Three</div>
+
+    <div class="sequence_item"
+         data-group="a"
+         data-id="one">
+      <h2>Sequence One</h2>
+    </div>
+    <div class="sequence_item"
+         data-group="a"
+         data-id="two">
+      <h2>Sequence Two</h2>
+    </div>
+    <div class="sequence_item"
+         data-group="a"
+         data-id="three">
+      <h2>Sequence Three</h2>
     </div>
 
-    <div class="row">
-      <div id="layer_stack">
-      </div>
+    <div class="sequence_item"
+         data-group="b"
+         data-id="one">
+      <h2>B Sequence One</h2>
+    </div>
+    <div class="sequence_item"
+         data-group="b"
+         data-id="two">
+      <h2>B Sequence Two</h2>
+    </div>
+    <div class="sequence_item"
+         data-group="b"
+         data-id="three">
+      <h2>B Sequence Three</h2>
     </div>
 
-    <div class="row">
-      <div class="inner">
-        <h2>Something</h2>
-      </div>
-    </div>
+    <a class="js_goBack"
+       data-group="a"
+       href="javascript:void(0)">goBack</a>
+    <a class="js_goForward"
+       data-group="a"
+       href="javascript:void(0)">goForward</a>
 
-    <div class="row">
-      <div class="inner">
-        <textarea id="textarea_grow_demo" class="textarea"></textarea>
-      </div>
-    </div>
+    <a class="js_jump"
+       data-group="a"
+       data-target="one"
+       href="javascript:void(0)">One</a>
+    <a class="js_jump"
+       data-group="a"
+       data-target="two"
+       href="javascript:void(0)">Two</a>
+    <a class="js_jump"
+       data-group="a"
+       data-target="three"
+       href="javascript:void(0)">Three</a>
 
+    <a class="js_goBack"
+       data-group="b"
+       href="javascript:void(0)">goBack</a>
+    <a class="js_goForward"
+       data-group="b"
+       href="javascript:void(0)">goForward</a>
+
+    <a class="js_jump"
+       data-group="b"
+       data-target="one"
+       href="javascript:void(0)">One</a>
+    <a class="js_jump"
+       data-group="b"
+       data-target="two"
+       href="javascript:void(0)">Two</a>
+    <a class="js_jump"
+       data-group="b"
+       data-target="three"
+       href="javascript:void(0)">Three</a>
+
+    <div class="controls">
+      <a class="js_toggle"
+         data-group="a"
+         data-target="one"
+         href="javascript:void(0)">One</a>
+      <a class="js_toggle"
+         data-group="a"
+         data-target="two"
+         href="javascript:void(0)">Two</a>
+      <a class="js_toggle"
+         data-group="a"
+         data-target="three"
+         href="javascript:void(0)">Three</a>
+      <a class="js_activateAll"
+         data-group="a"
+         href="javascript:void(0)">Open All</a>
+      <a class="js_deactivateAll"
+         data-group="a"
+         href="javascript:void(0)">Close All</a>
+      <a class="js_toggleAll"
+         data-group="a"
+         href="javascript:void(0)">Toggle All</a>
+    </div>
   </div><!-- site_content -->
 
-  <script src="javascripts/switcher.js"></script>
+  <script src="javascripts/switcher.ts"></script>
 </body>
 
 </html>

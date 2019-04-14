@@ -33,7 +33,7 @@ export class Animation {
 
   public iterationCount: number = 0
 
-  public exports: any = 0
+  public exports: any = undefined
 
   public timingFunction: Function = t => {
     return t

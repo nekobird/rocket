@@ -4,7 +4,6 @@ export class Num {
     if (numbers.length < 2) {
       throw new Error('num.average expects at least 2 numbers')
     }
-
     return this.sum(numbers) / numbers.length
   }
 
@@ -12,14 +11,11 @@ export class Num {
     if (typeof range === 'number') {
       range = [0, range]
     }
-
     if (range[0] === range[1]) {
       return 0
     }
-
     let max = Math.max(range[0], range[1])
     let min = Math.min(range[0], range[1])
-
     if (number > max) {
       return max
     } else if (number < min) {

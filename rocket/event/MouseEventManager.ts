@@ -11,7 +11,7 @@ export class MouseEventManager {
   public onMove = (event) => { }
 
   public debounce
-  public debounceTime = 0.2
+  public debounceTime: number = 0.2
 
   public handlers
 
@@ -20,24 +20,24 @@ export class MouseEventManager {
     this.startListening()
   }
 
-  register(name, handler) {
+  public register(name: string, handler): MouseEventManager {
     this.handlers[name] = handler
     this.handlers[name].name = name
     return this
   }
 
-  remove(name) {
+  public remove(name: string): MouseEventManager {
     delete this.handlers[name]
     return this
   }
 
-  find(name) {
+  public find(name: string) {
     return this.handlers[name]
   }
 
   // HANDLERS
 
-  handleClick(event) {
+  handleClick(event: MouseEvent) {
     this.onEvent(event)
     this.onClick(event)
     for (let name in this.handlers) {
@@ -45,7 +45,7 @@ export class MouseEventManager {
     }
   }
 
-  handleDown(event) {
+  handleDown(event: MouseEvent) {
     this.onEvent(event)
     this.onDown(event)
     for (let name in this.handlers) {
@@ -53,7 +53,7 @@ export class MouseEventManager {
     }
   }
 
-  handleUp(event) {
+  handleUp(event: MouseEvent) {
     this.onEvent(event)
     this.onUp(event)
     for (let name in this.handlers) {
@@ -61,7 +61,7 @@ export class MouseEventManager {
     }
   }
 
-  handleMove(event) {
+  handleMove(event: MouseEvent) {
     this.onEvent(event)
     this.onMove(event)
     for (let name in this.handlers) {
@@ -77,7 +77,7 @@ export class MouseEventManager {
 
   // LISTEN
 
-  startListening() {
+  public startListening(): MouseEventManager {
     this.debounce = Util.debounce(
       this.debounceTime, this.handleMoveEnd.bind(this)
     )
@@ -89,7 +89,7 @@ export class MouseEventManager {
     return this
   }
 
-  stopListening() {
+  public stopListening(): MouseEventManager {
     window.removeEventListener('click', this.handleClick)
     window.removeEventListener('mousedown', this.handleDown)
     window.removeEventListener('mouseup', this.handleUp)

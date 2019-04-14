@@ -37,20 +37,20 @@ export class KeyboardEventManager {
     this.startListening()
   }
 
-  public register(name: string, handler: Handler) {
+  public register(name: string, handler: Handler): KeyboardEventManager {
     this.handlers[name] = handler
     this.handlers[name].name = name
     this.handlers[name].manager = this
     return this
   }
 
-  public remove(name: string) {
+  public remove(name: string): KeyboardEventManager {
     this.handlers[name].manager = undefined
     delete this.handlers[name]
     return this
   }
 
-  public find(name: string) {
+  public find(name: string): KeyboardEventManager {
     return this.handlers[name]
   }
 
@@ -98,7 +98,7 @@ export class KeyboardEventManager {
   }
 
   public handleKeyUp = (event: KeyboardEvent) => {
-    let downKeyIndex = this.downKeys.indexOf(event.keyCode)
+    const downKeyIndex: number = this.downKeys.indexOf(event.keyCode)
 
     if (downKeyIndex !== -1) {
       this.downKeys.splice(downKeyIndex, 1)
@@ -132,14 +132,14 @@ export class KeyboardEventManager {
 
   // LISTEN
 
-  public startListening() {
+  public startListening(): KeyboardEventManager {
     window.addEventListener('keydown', this.handleKeyDown)
     window.addEventListener('keypress', this.handleKeyPress)
     window.addEventListener('keyup', this.handleKeyUp)
     return this
   }
 
-  public stopListening() {
+  public stopListening(): KeyboardEventManager {
     window.removeEventListener('keydown', this.handleKeyDown)
     window.removeEventListener('keypress', this.handleKeyPress)
     window.removeEventListener('keyup', this.handleKeyUp)

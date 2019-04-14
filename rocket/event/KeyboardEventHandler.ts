@@ -32,8 +32,7 @@ export class KeyboardEventHandler {
   public onKeyDownEnd: Function | Function[] = () => { }
   public onKeyPress: Function | Function[] = () => { }
 
-  constructor() {
-  }
+  constructor() { }
 
   // HANDLERS
 
@@ -74,7 +73,6 @@ export class KeyboardEventHandler {
 
   public handleKeyUp(event: KeyboardEvent) {
     if (this.isDown === true) {
-
       this.keyDownEndTime = Date.now()
       this.keyDownDuration = this.keyDownEndTime - this.keyDownStartTime
       this.lastFiredEvent = event

@@ -1,4 +1,5 @@
 import {
+  Point,
   TouchPoint,
   Vector2,
 } from '../Rocket'
@@ -77,7 +78,7 @@ export class TouchEventHandler {
     this.moveEndPosition = new Vector2
 
     // CALLBACKS
-    this.determine = (point, context) => {
+    this.determine = (point: Point, context) => {
       return false
     }
 
@@ -118,7 +119,7 @@ export class TouchEventHandler {
       if (this.isMoving === true) {
         this.handleTouchMoveEnd()
       }
-      let point = new Vector2(touch.clientX, touch.clientY)
+      const point: Vector2 = new Vector2(touch.clientX, touch.clientY)
       this.touchEndPosition.equals(point)
       this.touchEndTime = Date.now()
       this.touchDuration = this.touchEndTime - this.touchStartTime

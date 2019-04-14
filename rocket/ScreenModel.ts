@@ -60,10 +60,8 @@ export class ScreenModel {
 
   static get diagonal(): number {
     this.createModel()
-
-    const w = modelElement.offsetWidth
-    const h = modelElement.offsetHeight
-
+    const w: number = modelElement.offsetWidth
+    const h: number = modelElement.offsetHeight
     return Num.hypotenuse(w, h)
   }
 

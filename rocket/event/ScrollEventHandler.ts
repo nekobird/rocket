@@ -33,7 +33,7 @@ export class ScrollEventHandler {
   public _previousPosition: Vector2
   public _previousVelocity: Vector2
 
-  constructor(element) {
+  constructor(element: HTMLElement | Window) {
     this.element = element
 
     this._position = new Vector2

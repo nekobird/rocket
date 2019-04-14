@@ -28,8 +28,8 @@ export class Geo2Util {
 
   // Two lines will always intersect unless they are parallel.
   // Check if two line segments intersect each other.
-  static checkIfTwoLineSegmentsIntersect(ls1, le1, ls2, le2) {
-    let pi = Geo2Util.getPointOfIntersectionBetweenTwoLineSegments(ls1, le1, ls2, le2)
+  static checkIfTwoLineSegmentsIntersect(ls1: Point, le1: Point, ls2: Point, le2: Point): boolean {
+    const pi: Point | false = Geo2Util.getPointOfIntersectionBetweenTwoLineSegments(ls1, le1, ls2, le2)
 
     if (pi === false) {
       return false
@@ -50,46 +50,46 @@ export class Geo2Util {
     return true
   }
 
-  static getPointOfIntersectionBetweenTwoLineSegments(ls1, le1, ls2, le2) {
+  static getPointOfIntersectionBetweenTwoLineSegments(ls1: Point, le1: Point, ls2: Point, le2: Point): Vector2 | false {
     if (Geo2Util.checkIfTwoLineSegmentsAreParallel(ls1, le1, ls2, le2) === true) {
-      return false;
+      return false
     }
 
-    let ix = 0;
-    let iy = 0;
+    let ix: number = 0
+    let iy: number = 0
 
     // Get slope.
-    let m1 = Geo2Util.getSlopeOfLine(ls1, le1);
-    let m2 = Geo2Util.getSlopeOfLine(ls2, le2);
+    let m1: number | false = Geo2Util.getSlopeOfLine(ls1, le1)
+    let m2: number | false = Geo2Util.getSlopeOfLine(ls2, le2)
 
-    let yi1;
-    let yi2;
+    let yi1
+    let yi2
 
     if (
       m1 === false &&
       typeof m2 === 'number'
     ) {
-      ix = ls1.x;
-      yi2 = -1 * m2 * ls2.x + ls2.y;
-      iy = m2 * ix + yi2;
+      ix = ls1.x
+      yi2 = -1 * m2 * ls2.x + ls2.y
+      iy = m2 * ix + yi2
     } else if (
       m2 === false &&
       typeof m1 === 'number'
     ) {
-      ix = ls2.x;
-      yi1 = -1 * m1 * ls1.x + ls1.y;
-      iy = m1 * ix + yi1;
+      ix = ls2.x
+      yi1 = -1 * m1 * ls1.x + ls1.y
+      iy = m1 * ix + yi1
     } else if (
       typeof m1 === 'number' &&
       typeof m2 === 'number'
     ) {
       // Get y-intercept
       // b = -m * x + y
-      yi1 = -1 * m1 * ls1.x + ls1.y;
-      yi2 = -1 * m2 * ls2.x + ls2.y;
+      yi1 = -1 * m1 * ls1.x + ls1.y
+      yi2 = -1 * m2 * ls2.x + ls2.y
       // Complete line equations
-      ix = (yi1 - yi2) / (m2 - m1);
-      iy = m1 * ix + yi1;
+      ix = (yi1 - yi2) / (m2 - m1)
+      iy = m1 * ix + yi1
     }
 
     return new Vector2(ix, iy)

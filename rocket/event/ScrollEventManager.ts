@@ -7,14 +7,14 @@ import {
 export class ScrollEventManager {
 
   public debounce
-  public debounceTime = 0.2
+  public debounceTime: number = 0.2
 
-  public isScrolling = false
+  public isScrolling: boolean = false
 
-  public onEvent = () => { }
-  public onScrollStart = () => { }
-  public onScroll = () => { }
-  public onScrollEnd = () => { }
+  public onEvent: Function = () => { }
+  public onScrollStart: Function = () => { }
+  public onScroll: Function = () => { }
+  public onScrollEnd: Function = () => { }
 
   public handlers
 
@@ -29,7 +29,7 @@ export class ScrollEventManager {
     return this
   }
 
-  public remove(name: string) {
+  public remove(name: string): ScrollEventManager {
     this.handlers[name].element.removeEventListener(
       'scroll', this.handleScroll
     )
@@ -46,7 +46,7 @@ export class ScrollEventManager {
 
   // HANDLERS
 
-  public handleScroll(event) {
+  public handleScroll(event: ScrollEventHandler) {
     for (let name in this.handlers) {
       this.handlers[name].handleScroll(event)
     }
@@ -60,7 +60,7 @@ export class ScrollEventManager {
 
   // LISTEN
 
-  public startListening() {
+  public startListening(): ScrollEventManager {
     for (let name in this.handlers) {
       this.handlers[name].debounce = Util.debounce(
         this.debounceTime, this.handlers[name].handleScrollEnd.bind(this)
@@ -75,7 +75,7 @@ export class ScrollEventManager {
     return this
   }
 
-  public stopListening() {
+  public stopListening(): ScrollEventManager {
     for (let name in this.handlers) {
       this.handlers[name].element.removeEventListener(
         'scroll', this.handleScroll

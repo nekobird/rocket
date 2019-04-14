@@ -4,29 +4,30 @@ import {
   ScreenModel,
 } from '../Rocket'
 
-// SCREEN HANDLER
-// name
-// event
-// isResizing
-// determine
-// onResize
-// onResizeEnd
-// onResizeStart
+interface ScreenHandler {
+  name?: string,
+  event?: Event,
+  isResizing?: boolean,
+  determine?: Function,
+  onResize?: Function,
+  onResizeEnd?: Function,
+  onResizeStart?: Function,
+}
 
 export class ScreenEventManager {
 
   public debounce
   public debounceTime: number = 0.2
 
-  public isResizing = false
+  public isResizing: boolean = false
 
   public onResizeStart: Function = () => { }
   public onResize: Function = () => { }
   public onResizeEnd: Function = () => { }
 
-  public resizeStartTime
-  public resizeEndTime
-  public resizeDuration
+  public resizeStartTime: number
+  public resizeEndTime: number
+  public resizeDuration: number
 
   public startSize
   public currentSize
@@ -48,7 +49,7 @@ export class ScreenEventManager {
   }
 
   // Copies handler?
-  public register(name: string, handler) {
+  public register(name: string, handler): ScreenEventManager {
     this.handlers[name] = new Object
     let _handler = this.handlers[name]
     _handler.name = name
@@ -59,7 +60,7 @@ export class ScreenEventManager {
     return this
   }
 
-  public remove(name: string) {
+  public remove(name: string): ScreenEventManager {
     delete this.handlers[name]
     return this
   }
@@ -122,14 +123,14 @@ export class ScreenEventManager {
 
   // LISTEN
 
-  public startListening() {
+  public startListening(): ScreenEventManager {
     this.debounce = Util.debounce(this.debounceTime, this.handleResizeEnd)
     window.addEventListener('resize', this.handleResize)
     window.addEventListener('resize', this.debounce)
     return this
   }
 
-  public stopListening() {
+  public stopListening(): ScreenEventManager {
     window.removeEventListener('resize', this.handleResize)
     window.removeEventListener('resize', this.debounce)
     return this

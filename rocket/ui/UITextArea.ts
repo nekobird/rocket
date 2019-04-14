@@ -35,16 +35,15 @@ export class UITextArea {
   public removeMultipleWhitespaces: boolean = false
 
   // CALLBACKS
-  onBlur: Function = () => { }
-  onFocus: Function = () => { }
-  onInput: Function = () => { }
-  onPaste: Function = () => { }
+  public onBlur: Function = () => { }
+  public onFocus: Function = () => { }
+  public onInput: Function = () => { }
+  public onPaste: Function = () => { }
 
   // PROPERTIES
   public lastKeyCode: number
 
-  constructor(element?: HTMLElement, config?) {
-
+  constructor(element?: HTMLTextAreaElement, config?: Config) {
     this[_textBoxModel] = new TextBoxModel
 
     // EVENT NAMES
@@ -59,16 +58,18 @@ export class UITextArea {
       this[_UITextArea_eventName_keydown]
     )
 
+    this.element = element
     this.config = config
 
     this.initialize()
     return this
   }
 
-  initialize() {
-    this.filterInput()
-    this.grow()
-    this.startListening()
+  public initialize(): UITextArea {
+    this
+      .filterInput()
+      .grow()
+      .startListening()
     return this
   }
 
@@ -81,8 +82,8 @@ export class UITextArea {
   }
 
   get selectedText(): string {
-    let start = this.element.selectionStart
-    let end = this.element.selectionEnd
+    const start: number = this.element.selectionStart
+    const end: number = this.element.selectionEnd
     return this.value.substring(start, end)
   }
 
@@ -91,18 +92,19 @@ export class UITextArea {
     this.processText()
   }
 
-  grow() {
-    const height = this[_textBoxModel].getTextBoxHeightFromElement(this.element)
+  public grow(): UITextArea {
+    const height: number =
+      this[_textBoxModel].getTextBoxHeightFromElement(this.element)
     this.element.style.height = `${height}px`
     return this
   }
 
-  destroy() {
+  public destroy(): UITextArea {
     this.stopListening()
     return this
   }
 
-  filterInput() {
+  public filterInput(): UITextArea {
     // Remove new lines.
     if (this.disableLineBreaks === true) {
       this.element.value = this.element.value.replace(/[\r\n]+/g, '')
@@ -131,16 +133,16 @@ export class UITextArea {
     return this
   }
 
-  insertString(string) {
-    let start = this.element.selectionStart
-    let end = this.element.selectionEnd
-    let text = this.element.value
+  public insertString(string: string): UITextArea {
+    const start: number = this.element.selectionStart
+    const end: number = this.element.selectionEnd
+    const text: string = this.element.value
     this.element.value = text.substring(0, start) + string + text.substring(end)
     this.element.selectionEnd = start + string.length
     return this
   }
 
-  processText() {
+  public processText(): UITextArea {
     this.filterInput()
     this.grow()
     return this
@@ -150,23 +152,20 @@ export class UITextArea {
 
   private handleBlur = () => {
     this.isInFocus = false
-    return this
   }
 
   private handleFocus = () => {
     this.isInFocus = true
-    return this
   }
 
   private handleInput = event => {
     this.onInput(this)
     this.processText()
     window.dispatchEvent(this[_UITextArea_event_input])
-    return this
   }
 
   private handleKeydown = event => {
-    let keyCode = event.keyCode
+    const keyCode: number = event.keyCode
     if (keyCode === 9) {
       this.insertString('\t')
       event.preventDefault()
@@ -179,18 +178,16 @@ export class UITextArea {
     }
     this.lastKeyCode = keyCode
     window.dispatchEvent(this[_UITextArea_event_keydown])
-    return this
   }
 
   private handlePaste = event => {
     this.onPaste(this)
     this.processText()
-    return this
   }
 
   // LISTEN
 
-  startListening() {
+  private startListening() {
     this.element.addEventListener('blur', this.handleBlur)
     this.element.addEventListener('focus', this.handleFocus)
     this.element.addEventListener('input', this.handleInput)
@@ -200,7 +197,7 @@ export class UITextArea {
     return this
   }
 
-  stopListening() {
+  private stopListening() {
     this.element.removeEventListener('blur', this.handleBlur)
     this.element.removeEventListener('focus', this.handleFocus)
     this.element.removeEventListener('input', this.handleInput)

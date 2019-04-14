@@ -347,9 +347,11 @@ export class Color {
   // CYAN
 
   set cyan(cyan: number) {
-    const cmyk = ConvertColor.RGBToCMYK([this.r, this.g, this.b])
+    const cmyk: ColorArray4 = ConvertColor.RGBToCMYK(
+      [this.r, this.g, this.b]
+    )
     cmyk[0] = cyan
-    const rgb = ConvertColor.CMYKToRGB(cmyk)
+    const rgb: ColorArray3 = ConvertColor.CMYKToRGB(cmyk)
     this.r = rgb[0]
     this.g = rgb[1]
     this.b = rgb[2]
@@ -362,7 +364,9 @@ export class Color {
   // MAGENTA
 
   set magenta(magenta: number) {
-    const cmyk = ConvertColor.RGBToCMYK([this.r, this.g, this.b])
+    const cmyk = ConvertColor.RGBToCMYK(
+      [this.r, this.g, this.b]
+    )
     cmyk[1] = magenta
     const rgb = ConvertColor.CMYKToRGB(cmyk)
     this.r = rgb[0]
@@ -377,7 +381,9 @@ export class Color {
   // YELLOW
 
   set yellow(yellow: number) {
-    const cmyk = ConvertColor.RGBToCMYK([this.r, this.g, this.b])
+    const cmyk: ColorArray4 = ConvertColor.RGBToCMYK(
+      [this.r, this.g, this.b]
+    )
     cmyk[2] = yellow
     const rgb = ConvertColor.CMYKToRGB(cmyk)
     this.r = rgb[0]
@@ -402,51 +408,59 @@ export class Color {
   // HUE
 
   set hue(degrees: number) {
-    const hsl = ConvertColor.RGBToHSL([this.r, this.g, this.b])
+    const hsl: ColorArray3 = ConvertColor.RGBToHSL(
+      [this.r, this.g, this.b]
+    )
     hsl[0] = Math.abs(Math.round(Num.cycle(degrees, 359)))
-    const rgb = ConvertColor.HSLToRGB(hsl)
+    const rgb: ColorArray3 = ConvertColor.HSLToRGB(hsl)
     this.r = rgb[0]
     this.g = rgb[1]
     this.b = rgb[2]
   }
 
   get hue(): number {
-    let hsl = ConvertColor.RGBToHSL([this.r, this.g, this.b])
+    const hsl: ColorArray3 = ConvertColor.RGBToHSL(
+      [this.r, this.g, this.b]
+    )
     return Math.round(hsl[0])
   }
 
   // SATURATION
 
   set saturation(saturation: number) {
-    let hsl = ConvertColor.RGBToHSL([this.r, this.g, this.b])
+    const hsl: ColorArray3 = ConvertColor.RGBToHSL(
+      [this.r, this.g, this.b]
+    )
     hsl[1] = Num.cycle(saturation, 1)
-    let rgb = ConvertColor.HSLToRGB(hsl)
+    const rgb: ColorArray3 = ConvertColor.HSLToRGB(hsl)
     this.r = rgb[0]
     this.g = rgb[1]
     this.b = rgb[2]
   }
 
   get saturation(): number {
-    let hsl = ConvertColor.RGBToHSL([this.r, this.g, this.b])
+    const hsl: ColorArray3 = ConvertColor.RGBToHSL(
+      [this.r, this.g, this.b]
+    )
     return hsl[1]
   }
 
   // VALUE
 
   set value(value: number) {
-    let hsv = ConvertColor.RGBToHSV([this.r, this.g, this.b])
-    if (typeof value === 'number') {
-      value = Num.cycle(value, 1)
-      hsv[2] = value
-      let rgb = ConvertColor.HSVToRGB(hsv)
-      this.r = rgb[0]
-      this.g = rgb[1]
-      this.b = rgb[2]
-    }
+    const hsv: ColorArray3 = ConvertColor.RGBToHSV(
+      [this.r, this.g, this.b]
+    )
+    value = Num.cycle(value, 1)
+    hsv[2] = value
+    const rgb: ColorArray3 = ConvertColor.HSVToRGB(hsv)
+    this.r = rgb[0]
+    this.g = rgb[1]
+    this.b = rgb[2]
   }
 
   get value(): number {
-    let hsv = ConvertColor.RGBToHSV(
+    const hsv: ColorArray3 = ConvertColor.RGBToHSV(
       [this.r, this.g, this.b]
     )
     return hsv[2]
@@ -495,9 +509,9 @@ export class Color {
   }
 
   static triadic(color: Color): Color[] {
-    let colora = color.clone.hueRotate(-120)
-    let colorc = color.clone.hueRotate(120)
-    return [colora, color, colorc]
+    let color_a = color.clone.hueRotate(-120)
+    let color_c = color.clone.hueRotate(120)
+    return [color_a, color, color_c]
   }
 
   static complement(color: Color): Color {
@@ -505,23 +519,23 @@ export class Color {
   }
 
   static splitComplements(color: Color): Color[] {
-    let colora = color.clone.hueRotate(-150)
-    let colorc = color.clone.hueRotate(150)
-    return [colora, color, colorc]
+    let color_a = color.clone.hueRotate(-150)
+    let color_c = color.clone.hueRotate(150)
+    return [color_a, color, color_c]
   }
 
   static analogous(color: Color): Color[] {
-    let colora = color.clone.hueRotate(-30)
-    let colorc = color.clone.hueRotate(30)
-    return [colora, color, colorc]
+    let color_a = color.clone.hueRotate(-30)
+    let color_c = color.clone.hueRotate(30)
+    return [color_a, color, color_c]
   }
 
-  static lerp(color1: Color, color2: Color, t: number): Color {
-    let color = Color.equals(color1)
-    color.r = Num.lerp(color1.r, color2.r, t)
-    color.g = Num.lerp(color1.g, color2.g, t)
-    color.b = Num.lerp(color1.b, color2.b, t)
-    color.a = Num.lerp(color1.a, color2.a, t)
+  static lerp(color_a: Color, color_b: Color, t: number): Color {
+    let color = Color.equals(color_a)
+    color.r = Num.lerp(color_a.r, color_b.r, t)
+    color.g = Num.lerp(color_a.g, color_b.g, t)
+    color.b = Num.lerp(color_a.b, color_b.b, t)
+    color.a = Num.lerp(color_a.a, color_b.a, t)
     return color
   }
 

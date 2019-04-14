@@ -4,7 +4,7 @@
   "description": "Rocket UI Library",
   "main": "./build/Rocket.js",
   "scripts": {
-    "start": "parcel ./src/index.html ./src/documentation/index.html",
+    "start": "parcel ./src/index.html ./src/experiments/index.html",
     "startDocumentation": "parcel ./documentation/index.html",
     "build": "parcel build ./src/index.html --public-url ./",
     "buildRocket": "tsc -t es6"

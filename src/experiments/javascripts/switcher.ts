@@ -1,3 +1,19 @@
 import {
-  BinarySwitcher
-} from './BinarySwitcher'
+  HTMLSequenceController,
+  HTMLPolyController,
+
+} from '../../../rocket/Rocket'
+
+let polyCon = new HTMLPolyController({
+  selector_item: '.poly_item',
+  className_active: '__active',
+  className_js_activate: 'js_open',
+})
+
+let seqSwitcher = new HTMLSequenceController({
+  selector_item: '.sequence_item',
+  className_active: '__active',
+  className_js_previous: 'js_goBack',
+  className_js_next: 'js_goForward',
+  className_js_jump: 'js_jump',
+})

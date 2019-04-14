@@ -94,13 +94,13 @@ export class Vector2 {
 
   // ADD
 
-  add(point: Point): Vector2 {
+  public add(point: Point): Vector2 {
     this.x += point.x
     this.y += point.y
     return this
   }
 
-  addX(point: number | Point): Vector2 {
+  public addX(point: number | Point): Vector2 {
     if (typeof point === 'number') {
       this.x += point
     } else {
@@ -109,7 +109,7 @@ export class Vector2 {
     return this
   }
 
-  addY(point: number | Point): Vector2 {
+  public addY(point: number | Point): Vector2 {
     if (typeof point === 'number') {
       this.y += point
     } else {
@@ -120,13 +120,13 @@ export class Vector2 {
 
   // SUBTRACT
 
-  subtract(point) {
+  public subtract(point: Point): Vector2 {
     this.x -= point.x
     this.y -= point.y
     return this
   }
 
-  subtractX(point) {
+  public subtractX(point: number | Point): Vector2 {
     if (typeof point === 'number') {
       this.x -= point
     } else {
@@ -135,7 +135,7 @@ export class Vector2 {
     return this
   }
 
-  subtractY(point) {
+  public subtractY(point: number | Point): Vector2 {
     if (typeof point === 'number') {
       this.y -= point
     } else {
@@ -146,62 +146,62 @@ export class Vector2 {
 
   // MULTIPLY
 
-  multiply(by) {
+  public multiply(by: number): Vector2 {
     this.x *= by
     this.y *= by
     return this
   }
 
-  multiplyX(by) {
+  public multiplyX(by: number): Vector2 {
     this.x *= by
     return this
   }
 
-  multiplyY(by) {
+  public multiplyY(by: number): Vector2 {
     this.y *= by
     return this
   }
 
   // DIVIDE
 
-  divide(by) {
+  public divide(by: number): Vector2 {
     by = by === 0 ? 1 : by
     this.x /= by
     this.y /= by
     return this
   }
 
-  divideX(by) {
+  public divideX(by: number): Vector2 {
     by = by === 0 ? 1 : by
     this.x /= by
     return this
   }
 
-  divideY(by) {
+  public divideY(by: number): Vector2 {
     by = by === 0 ? 1 : by
     this.y /= by
     return this
   }
 
-  constrain(constrain) {
+  public constrain(constrain: number): Vector2 {
     this.x = Num.constrain(this.x, constrain)
     this.y = Num.constrain(this.y, constrain)
     return this
   }
 
-  dot(point) {
+  public dot(point: Point): number {
     return this.x * point.x + this.y * point.y
   }
 
-  normalize() {
-    let mag = Math.abs(this.magnitude)
+  public normalize(): Vector2 {
+    let mag: number = Math.abs(this.magnitude)
     mag = mag === 0 ? 1 : mag
     this.x /= mag
     this.y /= mag
     return this
   }
 
-  getDistanceTo(to) {
+  public getDistanceTo(to: Point): number {
     return Vector2
       .subtract(this, to)
       .magnitude
@@ -210,36 +210,36 @@ export class Vector2 {
   // ANGLE
 
   get angle() {
-    let m = Math.abs(
+    let m: number = Math.abs(
       Math.sqrt(this.x * this.x + this.y * this.y)
     )
-    let angle = Math.acos(this.x / m)
+    let angle: number = Math.acos(this.x / m)
     if (this.y < 0) {
       angle = Math.PI + (Math.PI - angle)
     }
     return Num.cycle(angle, Math.PI * 2)
   }
 
-  getAngleFrom(from) {
-    let x = (this.x - from.x)
-    let y = (this.y - from.y)
-    let m = Math.abs(
+  public getAngleFrom(from: Point): number {
+    const x: number = (this.x - from.x)
+    const y: number = (this.y - from.y)
+    const m: number = Math.abs(
       Math.sqrt(x * x + y * y)
     )
-    let angle = Math.acos(x / m)
+    let angle: number = Math.acos(x / m)
     if (y < 0) {
       angle = Math.PI + (Math.PI - angle)
     }
     return angle
   }
 
-  getAngleTo(to) {
-    let x = (to.x - this.x)
-    let y = (to.y - this.y)
-    let m = Math.abs(
+  public getAngleTo(to: Point): number {
+    const x: number = (to.x - this.x)
+    const y: number = (to.y - this.y)
+    const m: number = Math.abs(
       Math.sqrt(x * x + y * y)
     )
-    let angle = Math.acos(x / m)
+    let angle: number = Math.acos(x / m)
     if (y < 0) {
       angle = Math.PI + (Math.PI - angle)
     }
@@ -248,9 +248,9 @@ export class Vector2 {
 
   // ROTATE
 
-  rotateBy(by) {
-    let angle = this.angle + by
-    let m = Math.abs(
+  public rotateBy(by: number): Vector2 {
+    const angle: number = this.angle + by
+    const m: number = Math.abs(
       Math.sqrt(this.x * this.x + this.y * this.y)
     )
     this.x = Math.cos(angle) * m
@@ -258,9 +258,9 @@ export class Vector2 {
     return this
   }
 
-  rotateTo(angle) {
+  public rotateTo(angle: number): Vector2 {
     angle = Num.cycle(angle, Math.PI * 2)
-    let m = Math.abs(
+    const m: number = Math.abs(
       Math.sqrt(this.x * this.x + this.y * this.y)
     )
     this.x = Math.cos(angle) * m
@@ -268,28 +268,28 @@ export class Vector2 {
     return this
   }
 
-  rotateByFrom(by, from) {
+  public rotateByFrom(by: number, from: Point): Vector2 {
     by = Num.cycle(by, Math.PI * 2)
-    let x = this.x - from.x
-    let y = this.y - from.y
-    let m = Math.abs(
+    const x: number = this.x - from.x
+    const y: number = this.y - from.y
+    const m: number = Math.abs(
       Math.sqrt(x * x + y * y)
     )
-    let a = Math.acos(x / m)
+    let a: number = Math.acos(x / m)
     if (y < 0) {
       a = Math.PI + (Math.PI - a)
     }
-    let finalAngle = Num.cycle(a + by, Math.PI * 2)
+    const finalAngle: number = Num.cycle(a + by, Math.PI * 2)
     this.x = from.x + Math.cos(finalAngle) * m
     this.y = from.y + Math.sin(finalAngle) * m
     return this
   }
 
-  rotateToFrom(to, from) {
+  public rotateToFrom(to: number, from: Point): Vector2 {
     to = Num.cycle(to, Math.PI * 2)
-    let x = this.x - from.x
-    let y = this.y - from.y
-    let m = Math.abs(
+    const x: number = this.x - from.x
+    const y: number = this.y - from.y
+    const m: number = Math.abs(
       Math.sqrt(x * x + y * y)
     )
     this.x = from.x + Math.cos(to) * m
@@ -299,7 +299,7 @@ export class Vector2 {
 
   // MOVE
 
-  moveBy(x, y) {
+  public moveBy(x: number | Point, y?: number): Vector2 {
     if (
       typeof x === 'number' &&
       typeof y === 'number'
@@ -307,15 +307,15 @@ export class Vector2 {
       this.x += x
       this.y += y
     } else if (
-      typeof x !== 'object' &&
+      typeof x === 'object' &&
       typeof y === 'undefined'
     ) {
-      this.add(x)
+      this.add(<Point>x)
     }
     return this
   }
 
-  moveTo(x, y) {
+  public moveTo(x: number | Point, y?: number) {
     if (
       typeof x === 'number' &&
       typeof y === 'number'
@@ -323,30 +323,30 @@ export class Vector2 {
       this.x = x
       this.y = y
     } else if (
-      typeof x !== 'object' &&
+      typeof x === 'object' &&
       typeof y === 'undefined'
     ) {
-      this.equals(x)
+      this.equals(<Point>x)
     }
     return this
   }
 
-  moveRadiallyBy(angle, by) {
+  public moveRadiallyBy(angle: number, by: number): Vector2 {
     angle = Num.cycle(angle, Math.PI * 2)
     this.x += Math.cos(angle) * by
     this.y += Math.sin(angle) * by
     return this
   }
 
-  moveRadiallyTo(angle, by) {
+  public moveRadiallyTo(angle: number, by: number): Vector2 {
     angle = Num.cycle(angle, Math.PI * 2)
     this.x = Math.cos(angle) * by
     this.y = Math.sin(angle) * by
     return this
   }
 
-  scaleBy(by) {
-    let magnitude = Math.abs(Math.sqrt(this.x * this.x + this.y * this.y))
+  public scaleBy(by: number): Vector2 {
+    let magnitude: number = Math.abs(Math.sqrt(this.x * this.x + this.y * this.y))
     magnitude = magnitude === 0 ? 1 : magnitude
     this.x /= magnitude
     this.y /= magnitude
@@ -355,9 +355,9 @@ export class Vector2 {
     return this
   }
 
-  scaleByFrom(by, from) {
-    let sub = Vector2.subtract(this, from)
-    let m = sub.magnitude
+  public scaleByFrom(by: number, from: Point): Vector2 {
+    const sub: Vector2 = Vector2.subtract(this, from)
+    const m: number = sub.magnitude
     sub
       .normalize()
       .multiply(m * by)
@@ -366,8 +366,8 @@ export class Vector2 {
     return this
   }
 
-  limit(by) {
-    let mag = this.magnitude
+  public limit(by: number): Vector2 {
+    const mag: number = this.magnitude
     if (mag > by) {
       this
         .normalize()
@@ -396,8 +396,8 @@ export class Vector2 {
 
   // STATIC
 
-  static projectFrom(from: Vector2, direction: Vector2, by: Vector2): Vector2 {
-    let to = Vector2
+  static projectFrom(from: Point, direction: Point, by: number): Vector2 {
+    const to: Vector2 = Vector2
       .equals(direction)
       .normalize()
       .multiply(by)
@@ -437,8 +437,8 @@ export class Vector2 {
   }
 
   static getMidPointBetween(a: Point, b: Point): Vector2 {
-    let x = a.x - b.x
-    let y = a.y - b.y
+    let x: number = a.x - b.x
+    let y: number = a.y - b.y
     x /= 2
     y /= 2
     x += b.x
@@ -463,16 +463,16 @@ export class Vector2 {
     return results
   }
 
-  static scaleByFrom(vector, to, from) {
-    let result = Vector2.equals(vector)
+  static scaleByFrom(vector: Point, to: number, from: Point): Vector2 {
+    let result: Vector2 = Vector2.equals(vector)
     return result.scaleByFrom(to, from)
   }
 
-  static getDisplacement(from, to) {
+  static getDisplacement(from: Point, to: Point): Vector2 {
     return Vector2.subtract(to, from)
   }
 
-  static getDirection(from, to) {
+  static getDirection(from: Point, to: Point): Vector2 {
     return Vector2
       .subtract(to, from)
       .normalize()
@@ -480,96 +480,96 @@ export class Vector2 {
 
   // COMPARISON
 
-  static isEqual(a, b) {
-    return a.x === a.x && a.y === b.y ? true : false
+  static isEqual(a: Point, b: Point): boolean {
+    return (a.x === a.x && a.y === b.y)
   }
 
   // ANGLES
 
-  static angleIsInProximity(a, b, tolerance) {
-    let d1 = Angle.differenceClockwise(a, b)
-    let d2 = Angle.differenceCounterclockwise(a, b)
-    let d = Math.min(d1, d2)
-    return d <= tolerance ? true : false
+  static angleIsInProximity(a: number, b: number, tolerance: number): boolean {
+    const d1: number = Angle.differenceClockwise(a, b)
+    const d2: number = Angle.differenceCounterclockwise(a, b)
+    const d: number = Math.min(d1, d2)
+    return d <= tolerance
   }
 
-  static getAngleBetween2Points(a, b) {
-    let a1 = Vector2.equals(a).angle
-    let a2 = Vector2.equals(b).angle
-    let b1 = Angle.differenceClockwise(a1, a2)
-    let b2 = Angle.differenceCounterclockwise(a1, a2)
+  static getAngleBetween2Points(a: Point, b: Point): number {
+    const a1: number = Vector2.equals(a).angle
+    const a2: number = Vector2.equals(b).angle
+    const b1: number = Angle.differenceClockwise(a1, a2)
+    const b2: number = Angle.differenceCounterclockwise(a1, a2)
     return Math.min(b1, b2)
   }
 
-  static getAngleBetween3Points(a, b, c) {
-    let va = Vector2.equals(a)
-    let vb = Vector2.equals(b)
-    let vc = Vector2.equals(c)
-    let a1 = vb.getAngleTo(va)
-    let a2 = vb.getAngleTo(vc)
-    let b1 = Angle.differenceClockwise(a1, a2)
-    let b2 = Angle.differenceCounterclockwise(a1, a2)
+  static getAngleBetween3Points(a: Point, b: Point, c: Point): number {
+    const va: Vector2 = Vector2.equals(a)
+    const vb: Vector2 = Vector2.equals(b)
+    const vc: Vector2 = Vector2.equals(c)
+    const a1: number = vb.getAngleTo(va)
+    const a2: number = vb.getAngleTo(vc)
+    const b1: number = Angle.differenceClockwise(a1, a2)
+    const b2: number = Angle.differenceCounterclockwise(a1, a2)
     return Math.min(b1, b2)
   }
 
   // TRIANGLE
 
-  static getBasePointOfTriangle(v1, v2, v3) {
-    let a1 = v1.getAngleTo(v3)
-    let a2 = v1.getAngleTo(v2)
-    let a = Math.abs(a1 - a2)
-    let h = v1.getDistanceTo(v2)
-    let bh = Math.sin(a) * h
-    let ml = Math.atan(a) / bh
-    let fv = Vector2.equals(v1)
+  static getBasePointOfTriangle(v1: Point, v2: Point, v3: Point): Vector2 {
+    const a1: number = v1.getAngleTo(v3)
+    const a2: number = v1.getAngleTo(v2)
+    const a: number = Math.abs(a1 - a2)
+    const h: number = v1.getDistanceTo(v2)
+    const bh = Math.sin(a) * h
+    const ml = Math.atan(a) / bh
+    const fv = Vector2.equals(v1)
     return fv.moveRadiallyBy(a1, ml)
   }
 
   // GROUP
 
-  static addGroupBy(group, by) {
+  static addGroupBy(group: Vector2[], by: Point): Vector2[] {
     for (let point of group) {
       point.add(by)
     }
     return group
   }
 
-  static subtractGroupBy(group, by) {
+  static subtractGroupBy(group: Vector2[], by: Point): Vector2[] {
     for (let point of group) {
       point.subtract(by)
     }
     return group
   }
 
-  static multiplyGroupBy(group, by) {
+  static multiplyGroupBy(group: Vector2[], by: number): Vector2[] {
     for (let point of group) {
       point.multiply(by)
     }
     return group
   }
 
-  static divideGroupBy(group, by) {
+  static divideGroupBy(group: Vector2[], by: number): Vector2[] {
     for (let point of group) {
       point.divide(by)
     }
     return group
   }
 
-  static scaleGroupByFrom(group, by, from) {
+  static scaleGroupByFrom(group: Vector2[], by: number, from: Point): Vector2[] {
     for (let point of group) {
       point.scaleByFrom(by, from)
     }
     return group
   }
 
-  static rotateGroupToFrom(group, to, from) {
+  static rotateGroupToFrom(group: Vector2[], to: number, from: Point): Vector2[] {
     for (let point of group) {
       point.rotateToFrom(to, from)
     }
     return group
   }
 
-  static rotateGroupByFrom(group, by, from) {
+  static rotateGroupByFrom(group: Vector2[], by: number, from: Point): Vector2[] {
     for (let point of group) {
       point.rotateByFrom(by, from)
     }
