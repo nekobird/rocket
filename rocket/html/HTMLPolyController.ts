@@ -151,10 +151,10 @@ export class HTMLPolyController {
       resolve()
     })
   }
+
   public before_action: Callback = (action, context) => {
 
   }
-
   public after_action: Callback = (action, context) => {
 
   }

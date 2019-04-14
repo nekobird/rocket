@@ -1,17 +1,20 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "module": "es6",
-    "target": "es2018",
+    // "allowJs": true,
+    "declaration": true,
+    "module": "commonjs",
     "noImplicitAny": false,
     "outDir": "build/",
     "preserveConstEnums": true,
     "removeComments": true,
     "sourceMap": true,
+    // "strict": true,
+    "target": "es2018",
   },
   "include": [
     "rocket/*"
   ],
+  "prepare": "npm run buildRocket",
   "exclude": [
     "node_modules",
     "src/**"
