@@ -20,8 +20,8 @@ interface Config {
   condition_next?: ConditionHook,
   condition_jump?: ConditionHook,
 
-  before_action?: Callback,
-  after_action?: Callback,
+  before_action?: BeforeActionCallback,
+  after_action?: AfterActionCallback,
 }
 
 type ActionName = 'previous' | 'next' | 'jump'
@@ -70,17 +70,25 @@ interface ConditionHook {
   ): boolean
 }
 
-interface Callback {
+interface BeforeActionCallback {
   (
     action: Action,
     context?: HTMLSequenceController,
-  ): Promise<any> | void
+  ): Promise<any>
+}
+
+interface AfterActionCallback {
+  (
+    action: Action,
+    context?: HTMLSequenceController,
+  ): void
 }
 
 export class HTMLSequenceController {
 
   private isReady: boolean = false
   private isTransitioning: boolean = false
+  private isNestedAction: boolean = false
 
   // Selector
   public selector_item: string = '.item'
@@ -133,8 +141,8 @@ export class HTMLSequenceController {
     })
   }
 
-  public before_action: Callback = (action, context) => { }
-  public after_action: Callback = (action, context) => { }
+  public before_action: BeforeActionCallback = (action, context) => { return Promise.resolve() }
+  public after_action: AfterActionCallback = (action, context) => { }
 
   constructor(config: Config) {
     this.config = config
@@ -230,6 +238,7 @@ export class HTMLSequenceController {
 
   public previous(groupName: string): Promise<any> {
     return new Promise(resolve => {
+      if (this.isTransitioning === true) { this.isNestedAction = true }
       this.hub_action(
         this.composeAction('previous', groupName),
         () => { resolve() }
@@ -239,6 +248,7 @@ export class HTMLSequenceController {
 
   public next(groupName: string): Promise<any> {
     return new Promise(resolve => {
+      if (this.isTransitioning === true) { this.isNestedAction = true }
       this.hub_action(
         this.composeAction('next', groupName),
         () => { resolve() }
@@ -248,6 +258,7 @@ export class HTMLSequenceController {
 
   public jump(groupName: string, id: string): Promise<any> {
     return new Promise(resolve => {
+      if (this.isTransitioning === true) { this.isNestedAction = true }
       this.hub_action(
         this.composeAction('next', groupName, id),
         () => { resolve() }
@@ -272,19 +283,23 @@ export class HTMLSequenceController {
           return this.after_activate(action, this)
         })
         .then(() => {
-          this.isTransitioning = false
-          this.after_action(action, this)
-          if (typeof callback === 'function') {
-            callback()
+          this.endAction(callback)
+          if (this.isNestedAction === false) {
+            this.after_action(action, this)
           }
         })
         .catch(error => {
-          this.isTransitioning = false
+          this.endAction(callback)
         })
     } else {
-      this.isTransitioning = false
+      this.endAction(callback)
     }
     return this
+  }
+
+  private endAction(callback?: Function) {
+    this.isTransitioning = false
+    if (typeof callback === 'function') { callback() }
   }
 
   private item_deactivate(action: Action): HTMLSequenceController {
@@ -373,13 +388,28 @@ export class HTMLSequenceController {
   private hub_action(action: Action, callback?: Function): HTMLSequenceController {
     // Update action
     this[`setActionTarget_${action.name}`](action)
-    Promise
-      .resolve(this.before_action(action, this))
+
+    let preAction: Promise<any>
+
+    if (this.isNestedAction === false) {
+      preAction = new Promise(resolve => {
+        this.isNestedAction = true
+        this.before_action(action, this)
+          .then(() => {
+            this.isNestedAction = false
+            resolve()
+          })
+      })
+    } else {
+      preAction = Promise.resolve()
+    }
+
+    preAction
       .then(() => {
         this.completeAction(action, callback)
       })
       .catch(() => {
-        this.isTransitioning = false
+        this.endAction(callback)
       })
     return this
   }
@@ -405,7 +435,7 @@ export class HTMLSequenceController {
           this.composeActionFromTrigger(actionName, trigger)
         )
       } else {
-        this.isTransitioning = false
+        this.endAction()
       }
     }
     return this

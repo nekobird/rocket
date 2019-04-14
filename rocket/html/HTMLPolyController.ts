@@ -28,8 +28,8 @@ interface Config {
   after_activate?: Hook,
   after_deactivate?: Hook,
 
-  before_action?: Callback,
-  after_action?: Callback,
+  before_action?: BeforeActionCallback,
+  after_action?: AfterActionCallback,
 
   onClickOutside?: ListenToHook,
   onKeydown?: ListenToHook,
@@ -57,11 +57,18 @@ interface ListenToHook {
   ): void
 }
 
-interface Callback {
+interface BeforeActionCallback {
   (
     action: Action,
     context?: HTMLPolyController,
-  ): Promise<any> | void
+  ): Promise<any>
+}
+
+interface AfterActionCallback {
+  (
+    action: Action,
+    context?: HTMLPolyController,
+  ): void
 }
 
 interface Groups {
@@ -93,6 +100,7 @@ export class HTMLPolyController {
 
   private isReady: boolean = false
   private isTransitioning: boolean = false
+  private isNestedAction: boolean = false
 
   public listenTo_clickOutside: boolean = false
   public listenTo_keydown: boolean = false
@@ -173,8 +181,8 @@ export class HTMLPolyController {
     })
   }
 
-  public before_action: Callback = (action, context) => { }
-  public after_action: Callback = (action, context) => { }
+  public before_action: BeforeActionCallback = (action, context) => { return Promise.resolve() }
+  public after_action: AfterActionCallback = (action, context) => { }
 
   constructor(config: Config) {
     this.config = config
@@ -336,14 +344,13 @@ export class HTMLPolyController {
           return this[`after_${actionName}`](action, this)
         })
         .then(() => {
-          this.isTransitioning = false
-          this.after_action(action, this)
-          if (typeof callback === 'function') {
-            callback()
+          this.endAction(callback)
+          if (this.isNestedAction === false) {
+            this.after_action(action, this)
           }
         })
     } else {
-      this.isTransitioning = false
+      this.endAction(callback)
     }
     return this
   }
@@ -356,7 +363,7 @@ export class HTMLPolyController {
         this.handleAction_activation('activate', action, callback)
       }
     } else {
-      this.isTransitioning = false
+      this.endAction(callback)
     }
     return this
   }
@@ -387,7 +394,7 @@ export class HTMLPolyController {
         }
       }
     } else {
-      this.isTransitioning = false
+      this.endAction(callback)
     }
     return this
   }
@@ -423,11 +430,34 @@ export class HTMLPolyController {
     }
   }
 
+  private endAction(callback?: Function): HTMLPolyController {
+    if (this.isNestedAction === false) {
+      this.isTransitioning = false
+      if (typeof callback === 'function') { callback() }
+    }
+    return this
+  }
+
   // 4) DIRECT ACTIONS INTO A SINGLE HUB TO DISTRIBUTE
 
   private hub_action(action: Action, callback?: Function): HTMLPolyController {
-    Promise
-      .resolve(this.before_action(action, this))
+
+    let preAction: Promise<any>
+
+    if (this.isNestedAction === false) {
+      preAction = new Promise(resolve => {
+        this.isNestedAction = true
+        this.before_action(action, this)
+          .then(() => {
+            this.isNestedAction = false
+            resolve()
+          })
+      })
+    } else {
+      preAction = Promise.resolve()
+    }
+
+    preAction
       .then(() => {
         if (
           action.name === 'activate' ||
@@ -441,7 +471,7 @@ export class HTMLPolyController {
         }
       })
       .catch(() => {
-        this.isTransitioning = false
+        this.endAction(callback)
       })
     return this
   }
@@ -464,7 +494,7 @@ export class HTMLPolyController {
           this.composeActionFromTrigger(actionName, trigger)
         )
       } else {
-        this.isTransitioning = false
+        this.endAction()
       }
     }
     return this

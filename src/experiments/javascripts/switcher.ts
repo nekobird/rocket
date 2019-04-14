@@ -8,6 +8,14 @@ let polyCon = new HTMLPolyController({
   selector_item: '.poly_item',
   className_active: '__active',
   className_js_activate: 'js_open',
+
+  before_action: () => {
+    return new Promise(resolve => {
+      console.log("BeforeAction")
+      resolve()
+    })
+  }
+
 })
 
 let seqSwitcher = new HTMLSequenceController({
