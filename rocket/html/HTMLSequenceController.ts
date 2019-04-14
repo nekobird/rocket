@@ -133,10 +133,8 @@ export class HTMLSequenceController {
     })
   }
 
-  public before_action: Callback = (action, context) => {
-  }
-  public after_action: Callback = (action, context) => {
-  }
+  public before_action: Callback = (action, context) => { }
+  public after_action: Callback = (action, context) => { }
 
   constructor(config: Config) {
     this.config = config
@@ -230,24 +228,36 @@ export class HTMLSequenceController {
     return this.groups[groupName]
   }
 
-  public previous(groupName: string): HTMLSequenceController {
-    this.hub_action(this.composeAction('previous', groupName))
-    return this
+  public previous(groupName: string): Promise<any> {
+    return new Promise(resolve => {
+      this.hub_action(
+        this.composeAction('previous', groupName),
+        () => { resolve() }
+      )
+    })
   }
 
-  public next(groupName: string): HTMLSequenceController {
-    this.hub_action(this.composeAction('next', groupName))
-    return this
+  public next(groupName: string): Promise<any> {
+    return new Promise(resolve => {
+      this.hub_action(
+        this.composeAction('next', groupName),
+        () => { resolve() }
+      )
+    })
   }
 
-  public jump(groupName: string, id: string): HTMLSequenceController {
-    this.hub_action(this.composeAction('next', groupName, id))
-    return this
+  public jump(groupName: string, id: string): Promise<any> {
+    return new Promise(resolve => {
+      this.hub_action(
+        this.composeAction('next', groupName, id),
+        () => { resolve() }
+      )
+    })
   }
 
   // 5) COMPLETE ACTION
 
-  private completeAction(action: Action): HTMLSequenceController {
+  private completeAction(action: Action, callback?: Function): HTMLSequenceController {
     if (
       action.group.activeItem !== action.nextItem &&
       this[`condition_${action.name}`](action, this) === true
@@ -263,11 +273,16 @@ export class HTMLSequenceController {
         })
         .then(() => {
           this.isTransitioning = false
-          return this.after_action(action, this)
+          this.after_action(action, this)
+          if (typeof callback === 'function') {
+            callback()
+          }
         })
         .catch(error => {
-          // TODO: reset back to before?
+          this.isTransitioning = false
         })
+    } else {
+      this.isTransitioning = false
     }
     return this
   }
@@ -355,15 +370,16 @@ export class HTMLSequenceController {
 
   // 4) ACTION HUB
 
-  private hub_action(action: Action): HTMLSequenceController {
+  private hub_action(action: Action, callback?: Function): HTMLSequenceController {
     // Update action
     this[`setActionTarget_${action.name}`](action)
     Promise
-      .resolve(
-        this.before_action(action, this)
-      )
+      .resolve(this.before_action(action, this))
       .then(() => {
-        this.completeAction(action)
+        this.completeAction(action, callback)
+      })
+      .catch(() => {
+        this.isTransitioning = false
       })
     return this
   }
@@ -372,8 +388,8 @@ export class HTMLSequenceController {
 
   private hub_event(event: Event, actionName: ActionName): HTMLSequenceController {
     if (
-      this.isReady === true
-      // this.isTransitioning === false
+      this.isReady === true &&
+      this.isTransitioning === false
     ) {
       this.isTransitioning = true
       const trigger = DOMUtil.findAncestorWithClass(
@@ -388,6 +404,8 @@ export class HTMLSequenceController {
         this.hub_action(
           this.composeActionFromTrigger(actionName, trigger)
         )
+      } else {
+        this.isTransitioning = false
       }
     }
     return this

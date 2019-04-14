@@ -3,6 +3,9 @@ import {
 } from '../Rocket'
 
 interface Config {
+  listenTo_clickOutside?: boolean,
+  listenTo_keydown?: boolean,
+
   selector_item?: string,
 
   className_active?: string,
@@ -27,6 +30,9 @@ interface Config {
 
   before_action?: Callback,
   after_action?: Callback,
+
+  onClickOutside?: ListenToHook,
+  onKeydown?: ListenToHook,
 }
 
 interface Hook {
@@ -187,34 +193,58 @@ export class HTMLPolyController {
     return this.groups[groupName]
   }
 
-  public activate(groupName: string, id: string): HTMLPolyController {
-    this.hub_action(this.composeAction('activate', groupName, id))
-    return this
+  public activate(groupName: string, id: string): Promise<any> {
+    return new Promise(resolve => {
+      this.hub_action(
+        this.composeAction('activate', groupName, id),
+        () => { resolve() }
+      )
+    })
   }
 
-  public deactivate(groupName: string, id: string): HTMLPolyController {
-    this.hub_action(this.composeAction('deactivate', groupName, id))
-    return this
+  public deactivate(groupName: string, id: string): Promise<any> {
+    return new Promise(resolve => {
+      this.hub_action(
+        this.composeAction('deactivate', groupName, id),
+        () => { resolve() }
+      )
+    })
   }
 
-  public toggle(groupName: string, id: string): HTMLPolyController {
-    this.hub_action(this.composeAction('toggle', groupName, id))
-    return this
+  public toggle(groupName: string, id: string): Promise<any> {
+    return new Promise(resolve => {
+      this.hub_action(
+        this.composeAction('toggle', groupName, id),
+        () => { resolve() }
+      )
+    })
   }
 
-  public activateAll(groupName: string): HTMLPolyController {
-    this.hub_action(this.composeAction('activateAll', groupName))
-    return this
+  public activateAll(groupName: string): Promise<any> {
+    return new Promise(resolve => {
+      this.hub_action(
+        this.composeAction('activateAll', groupName),
+        () => { resolve() }
+      )
+    })
   }
 
-  public deactivateAll(groupName: string): HTMLPolyController {
-    this.hub_action(this.composeAction('deactivateAll', groupName))
-    return this
+  public deactivateAll(groupName: string): Promise<any> {
+    return new Promise(resolve => {
+      this.hub_action(
+        this.composeAction('deactivateAll', groupName),
+        () => { resolve() }
+      )
+    })
   }
 
-  public toggleAll(groupName: string): HTMLPolyController {
-    this.hub_action(this.composeAction('toggleAll', groupName))
-    return this
+  public toggleAll(groupName: string): Promise<any> {
+    return new Promise(resolve => {
+      this.hub_action(
+        this.composeAction('toggleAll', groupName),
+        () => { resolve() }
+      )
+    })
   }
 
   // INITIALIZE
@@ -298,7 +328,7 @@ export class HTMLPolyController {
 
   // 5) HANDLE ACTIONS
 
-  private handleAction_activation(actionName: 'activate' | 'deactivate', action: Action): HTMLPolyController {
+  private handleAction_activation(actionName: 'activate' | 'deactivate', action: Action, callback?: Function): HTMLPolyController {
     if (this[`condition_${actionName}`](action, this) === true) {
       this[`before_${actionName}`](action, this)
         .then(() => {
@@ -308,24 +338,34 @@ export class HTMLPolyController {
         .then(() => {
           this.isTransitioning = false
           this.after_action(action, this)
+          if (typeof callback === 'function') {
+            callback()
+          }
         })
+    } else {
+      this.isTransitioning = false
     }
     return this
   }
 
-  private handleAction_toggle(action: Action): HTMLPolyController {
+  private handleAction_toggle(action: Action, callback?: Function): HTMLPolyController {
     if (this.condition_toggle(action, this) === true) {
       if (action.targetItem.classList.contains(this.className_active) === true) {
-        this.handleAction_activation('deactivate', action)
+        this.handleAction_activation('deactivate', action, callback)
       } else {
-        this.handleAction_activation('activate', action)
+        this.handleAction_activation('activate', action, callback)
       }
+    } else {
+      this.isTransitioning = false
     }
     return this
   }
 
-  private handleAction_activationAll(action: Action): HTMLPolyController {
-    if (this[`condition_${action.name}`](action, this) === true) {
+  private handleAction_activationAll(action: Action, callback?: Function): HTMLPolyController {
+    if (
+      this[`condition_${action.name}`](action, this) === true &&
+      action.group.items.length > 0
+    ) {
       for (let i: number = 0; i < action.group.items.length; i++) {
         let item = action.group.items[i]
         // Action Creation
@@ -336,16 +376,18 @@ export class HTMLPolyController {
         // Handle Action
         if (action.name === 'activateAll') {
           if (item.classList.contains(this.className_active) === false) {
-            this.handleAction_activation('activate', individualAction)
+            this.handleAction_activation('activate', individualAction, callback)
           }
         } else if (action.name === 'deactivateAll') {
           if (item.classList.contains(this.className_active) === true) {
-            this.handleAction_activation('deactivate', individualAction)
+            this.handleAction_activation('deactivate', individualAction, callback)
           }
         } else if (action.name === 'toggleAll') {
-          this.handleAction_toggle(individualAction)
+          this.handleAction_toggle(individualAction, callback)
         }
       }
+    } else {
+      this.isTransitioning = false
     }
     return this
   }
@@ -383,22 +425,23 @@ export class HTMLPolyController {
 
   // 4) DIRECT ACTIONS INTO A SINGLE HUB TO DISTRIBUTE
 
-  private hub_action(action: Action): HTMLPolyController {
+  private hub_action(action: Action, callback?: Function): HTMLPolyController {
     Promise
-      .resolve(
-        this.before_action(action, this)
-      )
+      .resolve(this.before_action(action, this))
       .then(() => {
         if (
           action.name === 'activate' ||
           action.name === 'deactivate'
         ) {
-          this.handleAction_activation(action.name, action)
+          this.handleAction_activation(action.name, action, callback)
         } else if (action.name === 'toggle') {
-          this.handleAction_toggle(action)
+          this.handleAction_toggle(action, callback)
         } else {
-          this.handleAction_activationAll(action)
+          this.handleAction_activationAll(action, callback)
         }
+      })
+      .catch(() => {
+        this.isTransitioning = false
       })
     return this
   }
@@ -420,6 +463,8 @@ export class HTMLPolyController {
         this.hub_action(
           this.composeActionFromTrigger(actionName, trigger)
         )
+      } else {
+        this.isTransitioning = false
       }
     }
     return this
@@ -448,7 +493,10 @@ export class HTMLPolyController {
   }
 
   private eventHandler_clickOutside = (event: Event) => {
-    if (this.listenTo_clickOutside === true) {
+    if (
+      this.listenTo_clickOutside === true &&
+      this.isTransitioning === false
+    ) {
       Object.keys(this.groups).forEach(groupName => {
         let group: Group = this.groups[groupName]
         if (
@@ -462,7 +510,10 @@ export class HTMLPolyController {
   }
 
   private eventHandler_keydown = (event: Event) => {
-    if (this.listenTo_keydown === true) {
+    if (
+      this.listenTo_keydown === true &&
+      this.isTransitioning === false
+    ) {
       Object.keys(this.groups).forEach(groupName => {
         let group: Group = this.groups[groupName]
         this.onKeydown(event, group, this)
