@@ -45,6 +45,7 @@ interface ConditionHook {
 
 interface ListenToHook {
   (
+    event: Event,
     group: Group,
     context: HTMLPolyController
   ): void
@@ -140,8 +141,8 @@ export class HTMLPolyController {
   }
 
   // LISTEN TO HOOK
-  public onClickOutside: ListenToHook = (group, context) => { }
-  public onKeydown: ListenToHook = (group, context) => { }
+  public onClickOutside: ListenToHook = (event, group, context) => { }
+  public onKeydown: ListenToHook = (event, group, context) => { }
 
   // HOOK
   public before_activate: Hook = (action, context) => {
@@ -454,7 +455,7 @@ export class HTMLPolyController {
           group.isActive == true &&
           DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItems) === false
         ) {
-          this.onClickOutside(group, this)
+          this.onClickOutside(event, group, this)
         }
       })
     }
@@ -464,7 +465,7 @@ export class HTMLPolyController {
     if (this.listenTo_keydown === true) {
       Object.keys(this.groups).forEach(groupName => {
         let group: Group = this.groups[groupName]
-        this.onKeydown(group, this)
+        this.onKeydown(event, group, this)
       })
     }
   }
