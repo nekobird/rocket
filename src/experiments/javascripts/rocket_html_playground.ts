@@ -9,10 +9,14 @@ let polyCon = new HTMLPolyController({
   className_active: '__active',
   className_js_activate: 'js_open',
 
-  before_action: () => {
+  before_action: (action, context) => {
+    console.log(action)
     return new Promise(resolve => {
-      console.log("BeforeAction")
-      resolve()
+      context
+        .deactivateAll(action.groupName)
+        .then(() => {
+          resolve()
+        })
     })
   }
 

@@ -102,6 +102,11 @@ export class HTMLPolyController {
   private isTransitioning: boolean = false
   private isNestedAction: boolean = false
 
+  // GROUPS
+  private groups: Groups = {}
+
+  // PUBLIC
+
   public listenTo_clickOutside: boolean = false
   public listenTo_keydown: boolean = false
 
@@ -129,9 +134,6 @@ export class HTMLPolyController {
   private els_js_activateAll: NodeListOf<HTMLElement>
   private els_js_deactivateAll: NodeListOf<HTMLElement>
   private els_js_toggleAll: NodeListOf<HTMLElement>
-
-  // GROUPS
-  private groups: Groups = {}
 
   // CONDITION HOOK
   public condition_activate: ConditionHook = (action, context) => {
@@ -195,6 +197,24 @@ export class HTMLPolyController {
 
   get groupCount(): number {
     return Object.keys(this.groups).length
+  }
+
+  public itemIsActive(groupName: string, id: string): boolean {
+    const item: HTMLElement = document.querySelector(
+      `${this.selector_item}[data-group="${groupName}"][data-id="${id}"]`
+    )
+    if (item !== null && item instanceof HTMLElement) {
+      return item.classList.contains(this.className_active)
+    }
+    return false
+  }
+
+  public groupIsActive(groupName: string): boolean {
+    const group: Group = this.groups[groupName]
+    if (typeof group !== 'undefined') {
+      return group.isActive
+    }
+    return false
   }
 
   public getGroupProperties(groupName: string): Group {
@@ -433,8 +453,8 @@ export class HTMLPolyController {
   private endAction(callback?: Function): HTMLPolyController {
     if (this.isNestedAction === false) {
       this.isTransitioning = false
-      if (typeof callback === 'function') { callback() }
     }
+    if (typeof callback === 'function') { callback() }
     return this
   }
 

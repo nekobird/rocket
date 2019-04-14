@@ -232,6 +232,24 @@ export class HTMLSequenceController {
     return Object.keys(this.groups).length
   }
 
+  public itemIsActive(groupName: string, id: string): boolean {
+    const item: HTMLElement = document.querySelector(
+      `${this.selector_item}[data-name="${groupName}"][data-id="${id}"]`
+    )
+    if (item !== null && item instanceof HTMLElement) {
+      return item.classList.contains(this.className_active)
+    }
+    return false
+  }
+
+  public groupIsActive(groupName: string): boolean {
+    const group: Group = this.groups[groupName]
+    if (typeof group !== 'undefined') {
+      return group.isActive
+    }
+    return false
+  }
+
   public getGroupProperties(groupName: string): Group {
     return this.groups[groupName]
   }
