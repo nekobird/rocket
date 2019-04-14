@@ -42,24 +42,27 @@ export class DOMUtil {
 
   // Find ancestor with given class name.
   static findAncestorWithClass(element: HTMLElement, className: string, isMoreThanOneResults: boolean = true): DOMUtilResult {
-    let identifierFn: IdentifierFn = _el => {
-      return _el.classList.contains(className)
+    let identifierFn: IdentifierFn = _element => {
+      return _element.classList.contains(className)
     }
     return this.findAncestor(element, identifierFn, isMoreThanOneResults)
   }
 
   // Find ancestor with given ID.
   static findAncestorWithID(element: HTMLElement, ID: string, isMoreThanOneResults: boolean = true): DOMUtilResult {
-    let identifierFn: IdentifierFn = _el => {
-      return _el.id === ID ? true : false
+    const identifierFn: IdentifierFn = _element => {
+      return _element.id === ID
     }
-
     return this.findAncestor(element, identifierFn, isMoreThanOneResults)
   }
 
-  static hasAncestor(element: HTMLElement, ancestorEl: HTMLElement): DOMUtilResult {
-    let identifierFn: IdentifierFn = _el => {
-      return _el === ancestorEl
+  static hasAncestor(element: HTMLElement, ancestors: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>): DOMUtilResult {
+    const identifierFn: IdentifierFn = _element => {
+      if (typeof ancestors[Symbol.iterator] === 'function') {
+        return Array.from(<NodeListOf<HTMLElement>>ancestors).indexOf(_element) !== -1
+      } else {
+        return _element === ancestors
+      }
     }
     return this.findAncestor(element, identifierFn, false)
   }
@@ -69,11 +72,9 @@ export class DOMUtil {
   // Find descendant that match the identifierFn.
   static findDescendant(element: HTMLElement, identifierFn: IdentifierFn, isMoreThanOneResults: boolean = true): DOMUtilResult {
     let results: HTMLElement[] = []
-
     if (identifierFn(element)) {
       results.push(element)
     }
-
     let inspectDescendant: Function = (inspectEl: HTMLElement) => {
       let children: HTMLCollection = inspectEl.children
       if (children.length > 0) {
@@ -90,9 +91,7 @@ export class DOMUtil {
         }
       }
     }
-
     inspectDescendant(element)
-
     if (results.length > 0) {
       return isMoreThanOneResults === true ? results : results[0]
     }
@@ -101,23 +100,27 @@ export class DOMUtil {
 
   // Find descendant with ID.
   static findDescendantWithID(element: HTMLElement, ID: string, isMoreThanOneResults: boolean = true): DOMUtilResult {
-    let identifierFn: IdentifierFn = _el => {
-      return _el.id === ID
+    const identifierFn: IdentifierFn = _element => {
+      return _element.id === ID
     }
     return this.findDescendant(element, identifierFn, isMoreThanOneResults)
   }
 
   // Find descendant with given class name.
   static findDescendantWithClass(element: HTMLElement, className: string, isMoreThanOneResults: boolean = true): DOMUtilResult {
-    let identifierFn: IdentifierFn = _el => {
-      return _el.classList.contains(className)
+    const identifierFn: IdentifierFn = _element => {
+      return _element.classList.contains(className)
     }
     return this.findDescendant(element, identifierFn, isMoreThanOneResults)
   }
 
-  static hasDescendant(element: HTMLElement, descendantEl: HTMLElement): DOMUtilResult {
-    let identifierFn: IdentifierFn = _el => {
-      return _el === descendantEl
+  static hasDescendant(element: HTMLElement, descendants: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>): DOMUtilResult {
+    const identifierFn: IdentifierFn = _element => {
+      if (typeof descendants[Symbol.iterator] === 'function') {
+        return Array.from(<NodeListOf<HTMLElement>>descendants).indexOf(_element) !== -1
+      } else {
+        return _element === descendants
+      }
     }
     return this.findDescendant(element, identifierFn, false)
   }
@@ -152,14 +155,14 @@ export class DOMUtil {
   }
 
   static findSiblingWithClass(element: HTMLElement, className: string, isMoreThanOneResults: boolean = true): DOMUtilResult {
-    let identifierFn: IdentifierFn = _element => {
+    const identifierFn: IdentifierFn = _element => {
       return _element.classList.contains(className)
     }
     return this.findSibling(element, identifierFn, isMoreThanOneResults)
   }
 
   static getOffset(element: HTMLElement): number[] {
-    let boundingBox: DOMRect | ClientRect = element.getBoundingClientRect()
+    const boundingBox: DOMRect | ClientRect = element.getBoundingClientRect()
     return [
       window.scrollX + boundingBox.left,
       window.scrollY + boundingBox.top

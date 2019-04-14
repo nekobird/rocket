@@ -4,36 +4,44 @@ import {
 
 export class UITextField {
 
+  // FLAGS
+  public allowDecimals: boolean = false
+  public disableTabs: boolean = false
+  public isEmpty: boolean = false
+  public isInFocus: boolean = false
+  public isShowingValuePlaceholder: boolean = false
+  public limitNumberOfCharacters: boolean = false
+  public numbersOnly: boolean = false
+  public removeLeadingWhitespaces: boolean = false
+  public removeMultipleWhitespaces: boolean = false
+
+  public placeholder
+
+  private _valuePlaceholder
+  private _value
+
+  // CALLBACKS
+  public onBlur
+  public onFocus
+  public onInput
+  public onPaste
+
+  // EVENT NAMES
+  public _eventBlurName: string = 'UITextFieldOnBlur'
+  public _eventFocusName: string = 'UITextFieldOnFocus'
+  public _eventInputName: string = 'UITextFieldOnInput'
+  public _eventKeydownName: string = 'UITextFieldOnKeydown'
+  public _eventPasteName: string = 'UITextFieldOnPaste'
+
+  // EVENTS
+  private _eventBlur
+  private _eventFocus
+  private _eventInput
+  private _eventKeydown
+
+  public element
+
   constructor(element, properties) {
-    // FLAGS
-    this.allowDecimals = false
-    this.disableTabs = false
-    this.isEmpty = false
-    this.isInFocus = false
-    this.isShowingValuePlaceholder = false
-    this.limitNumberOfCharacters = false
-    this.numbersOnly = false
-    this.removeLeadingWhitespaces = false
-    this.removeMultipleWhitespaces = false
-
-    this.placeholder
-    this._valuePlaceholder
-    this._value
-
-    // CALLBACKS
-    this.onBlur
-    this.onFocus
-    this.onInput
-    this.onPaste
-
-    // EVENT NAMES
-    this._eventBlurName = 'UITextFieldOnBlur'
-    this._eventFocusName = 'UITextFieldOnFocus'
-    this._eventInputName = 'UITextFieldOnInput'
-    this._eventKeydownName = 'UITextFieldOnKeydown'
-    this._eventPasteName = 'UITextFieldOnPaste'
-
-    // EVENTS
     this._eventBlur = new CustomEvent(this._eventBlurName)
     this._eventFocus = new CustomEvent(this._eventFocusName)
     this._eventInput = new CustomEvent(this._eventInputName)
@@ -55,7 +63,7 @@ export class UITextField {
       this.element.value = this._valuePlaceholder
     }
     this.filterInput()
-    this._processValuePlaceholder()
+    this.processValuePlaceholder()
     this.startListening()
     return this
   }
@@ -81,7 +89,7 @@ export class UITextField {
     return this._value
   }
 
-  _processValuePlaceholder() {
+  private processValuePlaceholder() {
     if (
       this.isInFocus === false &&
       this.element.value === ''
@@ -123,13 +131,13 @@ export class UITextField {
     return this
   }
 
-  get selectedText() {
-    this.element.value.substring(
+  get selectedText(): string {
+    return this.element.value.substring(
       this.element.selectionStart, this.element.selectionEnd
     )
   }
 
-  insertString(string) {
+  insertString(string: string): UITextField {
     let start = this.element.selectionStart
     let end = this.element.selectionEnd
     // Set input value to:
@@ -143,35 +151,35 @@ export class UITextField {
 
   // HANDLE
 
-  _handleBlur() {
+  private eventHandle_blur() {
     this.isInFocus = false
-    this._processValuePlaceholder()
+    this.processValuePlaceholder()
     this.onBlur(this)
     window.dispatchEvent(this._eventBlur)
     return this
   }
 
-  _handleFocus() {
+  private eventHandle_focus() {
     this.isInFocus = true
-    this._processValuePlaceholder()
+    this.processValuePlaceholder()
     window.dispatchEvent(this._eventFocus)
     this.onFocus(this)
     return this
   }
 
-  _handleInput() {
+  private eventHandle_input() {
     this.filterInput()
     window.dispatchEvent(this._eventInput)
     this.onInput(this)
     return this
   }
 
-  _handleKeydown(event) {
+  private eventHandle_keydown(event) {
     window.dispatchEvent(this._eventKeydown)
     return this
   }
 
-  _handlePaste(event) {
+  private eventHandle_paste(event) {
     this.filterInput()
     this.onPaste(this)
     return this
@@ -180,20 +188,20 @@ export class UITextField {
   // LISTENING
 
   startListening() {
-    this.element.addEventListener('blur', this._handleBlur)
-    this.element.addEventListener('focus', this._handleFocus)
-    this.element.addEventListener('input', this._handleInput)
-    this.element.addEventListener('keydown', this._handleKeydown)
-    this.element.addEventListener('paste', this._handlePaste)
+    this.element.addEventListener('blur', this.eventHandle_blur)
+    this.element.addEventListener('focus', this.eventHandle_focus)
+    this.element.addEventListener('input', this.eventHandle_input)
+    this.element.addEventListener('keydown', this.eventHandle_keydown)
+    this.element.addEventListener('paste', this.eventHandle_paste)
     return this
   }
 
   stopListening() {
-    this.element.removeEventListener('blur', this._handleBlur)
-    this.element.removeEventListener('focus', this._handleFocus)
-    this.element.removeEventListener('input', this._handleInput)
-    this.element.removeEventListener('keydown', this._handleKeydown)
-    this.element.removeEventListener('paste', this._handlePaste)
+    this.element.removeEventListener('blur', this.eventHandle_blur)
+    this.element.removeEventListener('focus', this.eventHandle_focus)
+    this.element.removeEventListener('input', this.eventHandle_input)
+    this.element.removeEventListener('keydown', this.eventHandle_keydown)
+    this.element.removeEventListener('paste', this.eventHandle_paste)
     return this
   }
 

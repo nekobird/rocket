@@ -2,18 +2,33 @@ import {
   Num,
 } from '../Rocket'
 
+interface AnimationTimingFunction {
+  (t: number): number
+}
+
+interface AnimationTickFunction {
+  (n: number, context: Animation, data?: any): void
+}
+
 interface AnimationConfig {
-  alternate: boolean,
-  delay: number,
-  duration: number,
-  exports: any,
-  numberOfIterations: number | 'infinite',
-  onComplete: Function | Array<Function>,
-  onStart: Function | Array<Function>,
-  onIterationComplete: Function | Array<Function>,
-  onIterationStart: Function | Array<Function>,
-  onTick: Function | Array<Function>,
-  timingFunction: Function,
+  alternate?: boolean,
+  delay?: number,
+  duration?: number,
+  exports?: any,
+
+  numberOfIterations?: number | 'infinite',
+
+  timingFunction?: AnimationTimingFunction,
+
+  onStart?: Function | Array<Function>,
+  onComplete?: Function | Array<Function>,
+
+  onIterationStart?: Function | Array<Function>,
+  onIterationComplete?: Function | Array<Function>,
+
+  onTick?: AnimationTickFunction | AnimationTickFunction[],
+
+  callback?: Function,
 }
 
 export class Animation {
@@ -35,7 +50,7 @@ export class Animation {
 
   public exports: any = undefined
 
-  public timingFunction: Function = t => {
+  public timingFunction: Function = (t: number): number => {
     return t
   }
 
@@ -72,9 +87,7 @@ export class Animation {
     if (typeof this.onTick === 'function') {
       this.onTick(0, this, undefined)
     } else if (this.onTick.constructor === Array) {
-      for (let onTick of this.onTick) {
-        onTick(0, this, undefined)
-      }
+      this.onTick.forEach(tick => { tick(0, this, undefined) })
     }
     return this
   }
@@ -83,9 +96,7 @@ export class Animation {
     if (typeof this.onTick === 'function') {
       this.onTick(1, this, undefined)
     } else if (this.onTick.constructor === Array) {
-      for (let onTick of this.onTick) {
-        onTick(1, this, undefined)
-      }
+      this.onTick.forEach(tick => { tick(1, this, undefined) })
     }
     return this
   }
@@ -125,7 +136,7 @@ export class Animation {
 
   public stop(): Animation {
     this.reset()
-    this.callOnComplete()
+    this.call_onComplete()
     this.callback()
     return this
   }
@@ -134,7 +145,7 @@ export class Animation {
     this
       .reset()
       .goToEnd()
-      .callOnComplete()
+      .call_onComplete()
       .callback()
     return this
   }
@@ -143,16 +154,16 @@ export class Animation {
     this
       .reset()
       .goToBeginning()
-      .callOnComplete()
+      .call_onComplete()
       .callback()
     return this
   }
 
   // A
   public play(delay: number): Animation {
-    this.callOnStart()
+    this.call_onStart()
 
-    // This is only called when it's not animating.
+    // This is only called when it's not animating
     this.isActive = true
 
     if (typeof delay !== 'number') {
@@ -166,21 +177,21 @@ export class Animation {
     return this
   }
 
-  // B, Similar to play but without the delay :D.
+  // B, Similar to play but without the delay :D
   public start(): Animation {
     this.isActive = true
 
-    // Set beginning direction.
+    // Set beginning direction
     if (this.isReversed === true) {
       this.direction = false
     }
 
-    // Handle pause.
+    // Handle pause
     if (this.isPaused === true) {
-      let startTimeDelta = this.pauseTime - this.startTime
-      let endTimeDelta = this.endTime - this.pauseTime
+      const startTimeDelta = this.pauseTime - this.startTime
+      const endTimeDelta = this.endTime - this.pauseTime
 
-      let now = Date.now()
+      const now = Date.now()
 
       this.startTime = now - startTimeDelta
       this.endTime = now + endTimeDelta
@@ -193,9 +204,9 @@ export class Animation {
 
     this.isAnimating = true
 
-    this.callOnIterationStart()
+    this.call_onIterationStart()
 
-    // Begin loop.
+    // Begin loop
     this.loop()
     return this
   }
@@ -218,7 +229,7 @@ export class Animation {
         } else {
           // End iteration.
           this.iterationCount++
-          this.callOnIterationComplete()
+          this.call_onIterationComplete()
 
           // Stop animation if exceeds number of iterations.
           // End animation if iteration count reach number of iterations.
@@ -233,9 +244,7 @@ export class Animation {
           // Continue playing!
           // The cycle begins again.
           // Toggle direction if it's alternating.
-          if (this.alternate === true) {
-            this.toggleDirection()
-          }
+          if (this.alternate === true) { this.toggleDirection() }
           this.play(this.iterationDelay)
         }
       }
@@ -262,25 +271,19 @@ export class Animation {
       n = 1 - n
     }
 
-    // Tick.
+    // Tick
     if (typeof this.onTick === 'function') {
-      this.onTick(
-        n, this.iterationCount, this.exports
-      )
+      this.onTick(n, this.iterationCount, this.exports)
     } else if (this.onTick.constructor === Array) {
-      for (let onTick of this.onTick) {
-        onTick(
-          n, this.iterationCount, this.exports
-        )
-      }
+      this.onTick.forEach(tick => tick(n, this.iterationCount, this.exports))
     }
 
     return this
   }
 
-  // HELPERS
+  // HELPER
 
-  // Get current N value.
+  // Get current N value
   get currentNValue(): number {
     return Num.modulate(
       Date.now(),
@@ -289,59 +292,51 @@ export class Animation {
     )
   }
 
-  clearSessions(): Animation {
+  private clearSessions(): Animation {
     clearTimeout(this.timeoutID)
     window.cancelAnimationFrame(this.RAFID)
     return this
   }
 
-  toggleDirection(): Animation {
+  private toggleDirection(): Animation {
     this.direction = !this.direction
     return this
   }
 
-  // CALLBACKS
+  // CALLBACK
 
-  private callOnStart(): Animation {
+  private call_onStart(): Animation {
     if (typeof this.onStart === 'function') {
       this.onStart(this)
     } else if (this.onStart.constructor === Array) {
-      for (let callback of this.onStart) {
-        callback(this)
-      }
+      this.onStart.forEach(callback => callback(this))
     }
     return this
   }
 
-  private callOnComplete(): Animation {
+  private call_onComplete(): Animation {
     if (typeof this.onComplete === 'function') {
       this.onComplete(this)
     } else if (this.onComplete.constructor === Array) {
-      for (let callback of this.onComplete) {
-        callback(this)
-      }
+      this.onComplete.forEach(callback => callback(this))
     }
     return this
   }
 
-  private callOnIterationStart(): Animation {
+  private call_onIterationStart(): Animation {
     if (typeof this.onIterationStart === 'function') {
       this.onIterationStart(this)
     } else if (this.onIterationStart.constructor === Array) {
-      for (let callback of this.onIterationStart) {
-        callback(this)
-      }
+      this.onIterationStart.forEach(callback => callback(this))
     }
     return this
   }
 
-  private callOnIterationComplete(): Animation {
+  private call_onIterationComplete(): Animation {
     if (typeof this.onIterationComplete === 'function') {
       this.onIterationComplete(this)
     } else if (this.onIterationComplete.constructor === Array) {
-      for (let callback of this.onIterationComplete) {
-        callback(this)
-      }
+      this.onIterationComplete.forEach(callback => callback(this))
     }
     return this
   }

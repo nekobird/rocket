@@ -48,7 +48,6 @@ export * from './text/TextBoxModel'
 // UI
 export * from './ui/UITextArea'
 export * from './ui/UITextField'
-export * from './ui/UIModal'
 
 // HTML
 export * from './html/HTMLPolyController'

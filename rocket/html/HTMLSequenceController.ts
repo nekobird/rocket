@@ -230,12 +230,12 @@ export class HTMLSequenceController {
     return this.groups[groupName]
   }
 
-  public next(groupName: string): HTMLSequenceController {
-    this.hub_action(this.composeAction('next', groupName))
+  public previous(groupName: string): HTMLSequenceController {
+    this.hub_action(this.composeAction('previous', groupName))
     return this
   }
 
-  public previous(groupName: string): HTMLSequenceController {
+  public next(groupName: string): HTMLSequenceController {
     this.hub_action(this.composeAction('next', groupName))
     return this
   }

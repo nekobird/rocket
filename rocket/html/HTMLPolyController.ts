@@ -43,6 +43,13 @@ interface ConditionHook {
   ): boolean
 }
 
+interface ListenToHook {
+  (
+    group: Group,
+    context: HTMLPolyController
+  ): void
+}
+
 interface Callback {
   (
     action: Action,
@@ -80,10 +87,13 @@ export class HTMLPolyController {
   private isReady: boolean = false
   private isTransitioning: boolean = false
 
-  // Selector
+  public listenTo_clickOutside: boolean = false
+  public listenTo_keydown: boolean = false
+
+  // SELECTOR
   public selector_item: string = '.item'
 
-  // Class names
+  // CLASS NAME
   public className_active: string = '__active'
 
   public className_js_activate: string = 'js_activate'
@@ -94,7 +104,7 @@ export class HTMLPolyController {
   public className_js_deactivateAll: string = 'js_deactivateAll'
   public className_js_toggleAll: string = 'js_toggleAll'
 
-  // HTML Elements
+  // HTML ELEMENT
   private els_item: NodeListOf<HTMLElement>
 
   private els_js_activate: NodeListOf<HTMLElement>
@@ -105,10 +115,10 @@ export class HTMLPolyController {
   private els_js_deactivateAll: NodeListOf<HTMLElement>
   private els_js_toggleAll: NodeListOf<HTMLElement>
 
-  // Groups
+  // GROUPS
   private groups: Groups = {}
 
-  // Conditional Hooks
+  // CONDITION HOOK
   public condition_activate: ConditionHook = (action, context) => {
     return true
   }
@@ -129,7 +139,11 @@ export class HTMLPolyController {
     return true
   }
 
-  // Hooks
+  // LISTEN TO HOOK
+  public onClickOutside: ListenToHook = (group, context) => { }
+  public onKeydown: ListenToHook = (group, context) => { }
+
+  // HOOK
   public before_activate: Hook = (action, context) => {
     return new Promise(resolve => {
       resolve()
@@ -152,12 +166,8 @@ export class HTMLPolyController {
     })
   }
 
-  public before_action: Callback = (action, context) => {
-
-  }
-  public after_action: Callback = (action, context) => {
-
-  }
+  public before_action: Callback = (action, context) => { }
+  public after_action: Callback = (action, context) => { }
 
   constructor(config: Config) {
     this.config = config
@@ -436,6 +446,29 @@ export class HTMLPolyController {
     this.hub_event(event, 'toggleAll')
   }
 
+  private eventHandler_clickOutside = (event: Event) => {
+    if (this.listenTo_clickOutside === true) {
+      Object.keys(this.groups).forEach(groupName => {
+        let group: Group = this.groups[groupName]
+        if (
+          group.isActive == true &&
+          DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItems) === false
+        ) {
+          this.onClickOutside(group, this)
+        }
+      })
+    }
+  }
+
+  private eventHandler_keydown = (event: Event) => {
+    if (this.listenTo_keydown === true) {
+      Object.keys(this.groups).forEach(groupName => {
+        let group: Group = this.groups[groupName]
+        this.onKeydown(group, this)
+      })
+    }
+  }
+
   // 1) LISTEN TO EVENTS
 
   private startListening(): HTMLPolyController {
@@ -458,6 +491,9 @@ export class HTMLPolyController {
     Array.from(this.els_js_toggleAll).forEach(element => {
       element.addEventListener('click', this.eventHandler_click_toggleAll)
     })
+
+    window.addEventListener('click', this.eventHandler_clickOutside)
+    window.addEventListener('keydown', this.eventHandler_keydown)
     return this
   }
 
@@ -481,6 +517,9 @@ export class HTMLPolyController {
     Array.from(this.els_js_toggleAll).forEach(element => {
       element.removeEventListener('click', this.eventHandler_click_toggleAll)
     })
+
+    window.removeEventListener('click', this.eventHandler_clickOutside)
+    window.removeEventListener('keydown', this.eventHandler_keydown)
     return this
   }
 
