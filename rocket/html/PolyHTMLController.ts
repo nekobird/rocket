@@ -221,6 +221,8 @@ export class PolyHTMLController {
     return this.groups[groupName]
   }
 
+  // ACTION
+
   public activate(groupName: string, id: string): Promise<any> {
     return new Promise(resolve => {
       this.hub_action(
