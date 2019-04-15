@@ -6,88 +6,82 @@ import {
 // the *Press happens second (when text is entered), 
 // and the *Up happens last (when text input is complete).
 
-export class KeyboardEventHandler {
+interface ConditionHook {
+  (
+    keyCode: number,
+    event: KeyboardEvent,
+    context: KeyboardEventHandler
+  ): boolean
+}
 
+type ActionName = 'keydown' | 'keypress' | 'keyup'
+
+interface KeyboardEventAction {
+  name: ActionName
+  keyCode: number,
+  event: KeyboardEvent,
+}
+
+export class KeyboardEventHandler {
   public name: string
   public manager: KeyboardEventManager
 
-  public lastFiredEvent: Event
-  public lastKeyCode: number
-
-  public isDown: boolean = false
-
-  public keyDownStartTime: number
-  public keyDownEndTime: number
-  public keyDownDuration: number
-  public keyPressTime: number
-
-  // CALLBACKS
-  public determineKeyDown: Function = () => {
+  // CONDITION
+  public condition_keydown: ConditionHook = () => {
     return true
   }
-  public determineKeyPress: Function = () => {
+  public condition_keypress: ConditionHook = () => {
     return true
   }
-  public onKeyDownStart: Function | Function[] = () => { }
-  public onKeyDownEnd: Function | Function[] = () => { }
-  public onKeyPress: Function | Function[] = () => { }
+
+  // CALLBACK
+  public onKeydownStart: Function | Function[] = () => { }
+  public onKeydownEnd: Function | Function[] = () => { }
+  public onKeypress: Function | Function[] = () => { }
 
   constructor() { }
 
-  // HANDLERS
+  // HANDLE
 
-  public handleKeyDown(event: KeyboardEvent) {
-    if (this.determineKeyDown(event.keyCode, event, this) === true) {
-      this.keyDownStartTime = Date.now()
-      this.lastFiredEvent = event
-      this.lastKeyCode = event.keyCode
-      this.isDown = true
-
-      // Call onKeyDownStart.
-      if (typeof this.onKeyDownStart === 'function') {
-        this.onKeyDownStart(event.keyCode, event, this)
-      } else if (this.onKeyDownStart.constructor === Array) {
-        this.onKeyDownStart.forEach(callback => {
+  public handle_keydown(action: KeyboardEventAction): KeyboardEventHandler {
+    if (this.condition_keydown(event.keyCode, event, this) === true) {
+      if (typeof this.onKeydownStart === 'function') {
+        this.onKeydownStart(event.keyCode, event, this)
+      } else if (this.onKeydownStart.constructor === Array) {
+        this.onKeydownStart.forEach(callback => {
           callback(event.keyCode, event, this)
         })
       }
     }
+    return this
   }
 
-  public handleKeyPress(event: KeyboardEvent) {
-    if (this.determineKeyPress(event.keyCode, event, this) === true) {
-      this.keyPressTime = Date.now()
-      this.lastFiredEvent = event
-      this.lastKeyCode = event.keyCode
+  public handle_keypress(action: KeyboardEventAction): KeyboardEventHandler {
+    if (this.condition_keypress(event.keyCode, event, this) === true) {
 
-      // Call onKeyPress
-      if (typeof this.onKeyPress === 'function') {
-        this.onKeyPress(event.keyCode, event, this)
-      } else if (this.onKeyPress.constructor === Array) {
-        this.onKeyPress.forEach(callback => {
+
+      if (typeof this.onKeypress === 'function') {
+        this.onKeypress(event.keyCode, event, this)
+      } else if (this.onKeypress.constructor === Array) {
+        this.onKeypress.forEach(callback => {
           callback(event.keyCode, event, this)
         })
       }
     }
+    return this
   }
 
-  public handleKeyUp(event: KeyboardEvent) {
+  public handle_keyUp(action: KeyboardEventAction): KeyboardEventHandler {
     if (this.isDown === true) {
-      this.keyDownEndTime = Date.now()
-      this.keyDownDuration = this.keyDownEndTime - this.keyDownStartTime
-      this.lastFiredEvent = event
-      this.lastKeyCode = event.keyCode
-      this.isDown = false
-
-      // Call onKeyDownEnd AKA keyUp
-      if (typeof this.onKeyDownEnd === 'function') {
-        this.onKeyDownEnd(event.keyCode, event, this)
-      } else if (this.onKeyDownEnd.constructor === Array) {
-        this.onKeyDownEnd.forEach(callback => {
+      if (typeof this.onKeydownEnd === 'function') {
+        this.onKeydownEnd(event.keyCode, event, this)
+      } else if (this.onKeydownEnd.constructor === Array) {
+        this.onKeydownEnd.forEach(callback => {
           callback(event.keyCode, event, this)
         })
       }
     }
+    return this
   }
 
 }

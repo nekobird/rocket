@@ -7,8 +7,11 @@ import {
 interface ScreenHandler {
   name?: string,
   event?: Event,
+
   isResizing?: boolean,
+
   determine?: Function,
+
   onResize?: Function,
   onResizeEnd?: Function,
   onResizeStart?: Function,
@@ -25,15 +28,15 @@ export class ScreenEventManager {
   public onResize: Function = () => { }
   public onResizeEnd: Function = () => { }
 
-  public resizeStartTime: number
-  public resizeEndTime: number
-  public resizeDuration: number
+  public time_resizeStart: number
+  public time_resizeEnd: number
+  public duration: number
 
-  public startSize
-  public currentSize
-  public endSize
+  public size_start: Size
+  public size_current: Size
+  public size_end: Size
 
-  public handlers
+  public handlers: ScreenHandler[]
 
   constructor() {
     this.handlers = []
@@ -49,14 +52,11 @@ export class ScreenEventManager {
   }
 
   // Copies handler?
-  public register(name: string, handler): ScreenEventManager {
-    this.handlers[name] = new Object
-    let _handler = this.handlers[name]
-    _handler.name = name
-    _handler.isResizing = false
-    for (let key in handler) {
-      _handler[key] = handler[key]
-    }
+  public register(name: string, handler: ScreenHandler): ScreenEventManager {
+    this.handlers[name] = Object.assign({
+      name: name,
+      isResizing: false,
+    }, handler)
     return this
   }
 
@@ -65,18 +65,18 @@ export class ScreenEventManager {
     return this
   }
 
-  public find(name: string) {
+  public find(name: string): ScreenHandler {
     return this.handlers[name]
   }
 
   // HANDLERS
 
-  public handleResize(event: Event) {
+  public eventHandler_resize(event: Event): ScreenEventManager {
     if (this.isResizing === false) {
-      this.resizeStartTime = Date.now()
+      this.time_resizeStart = Date.now()
 
-      this.currentSize = this.size
-      this.startSize = this.size
+      this.size_current = this.size
+      this.size_start = this.size
 
       this.isResizing = true
 
@@ -90,7 +90,7 @@ export class ScreenEventManager {
         }
       }
     } else {
-      this.currentSize = this.size
+      this.size_current = this.size
 
       this.onResize(this, event)
       for (let handler of this.handlers) {
@@ -100,38 +100,40 @@ export class ScreenEventManager {
         }
       }
     }
+    return this
   }
 
-  public handleResizeEnd() {
-    this.resizeEndTime = Date.now()
-    this.resizeDuration = this.resizeEndTime - this.resizeStartTime
+  public eventHandler_resizeEnd(): ScreenEventManager {
+    this.time_resizeEnd = Date.now()
+    this.duration = this.time_resizeEnd - this.time_resizeStart
 
-    this.currentSize = this.size
-    this.endSize = this.size
+    this.size_current = this.size
+    this.size_end = this.size
 
     this.isResizing = false
 
     this.onResizeEnd(this)
-    for (let handler of this.handlers) {
+    this.handlers.forEach(handler => {
       if (handler.isResizing === true) {
         handler.isResizing = false
         handler.event = event
         handler.onResizeEnd(this, this.handlers[handler.name])
       }
-    }
+    })
+    return this
   }
 
   // LISTEN
 
   public startListening(): ScreenEventManager {
-    this.debounce = Util.debounce(this.debounceTime, this.handleResizeEnd)
-    window.addEventListener('resize', this.handleResize)
+    this.debounce = Util.debounce(this.debounceTime, this.eventHandler_resizeEnd)
+    window.addEventListener('resize', this.eventHandler_resize)
     window.addEventListener('resize', this.debounce)
     return this
   }
 
   public stopListening(): ScreenEventManager {
-    window.removeEventListener('resize', this.handleResize)
+    window.removeEventListener('resize', this.eventHandler_resize)
     window.removeEventListener('resize', this.debounce)
     return this
   }

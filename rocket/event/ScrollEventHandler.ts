@@ -3,6 +3,13 @@ import {
   Vector2,
 } from '../Rocket'
 
+interface ConditionHook {
+  (
+    event: Event,
+    context: ScrollEventHandler
+  ): boolean
+}
+
 export class ScrollEventHandler {
 
   public name: string
@@ -11,11 +18,12 @@ export class ScrollEventHandler {
 
   public isScrolling: boolean = false
 
-  public scrollStartTime: number
-  public scrollEndTime: number
-  public scrollDuration: number
+  public time_scrollStart: number
+  public time_scrollEnd: number
 
-  public determineScroll: Function = () => {
+  public duration: number
+
+  public condition_scroll: ConditionHook = () => {
     return true
   }
 
@@ -26,6 +34,7 @@ export class ScrollEventHandler {
   public debounce: Function
 
   public element: HTMLElement | Window
+
   public _position: Vector2
   public _velocity: Vector2
   public _acceleration: Vector2
@@ -44,7 +53,7 @@ export class ScrollEventHandler {
     this._previousVelocity = new Vector2
   }
 
-  get position() {
+  get position(): Vector2 {
     if (this.element === window) {
       return new Vector2(
         window.scrollX,
@@ -67,7 +76,7 @@ export class ScrollEventHandler {
     this.update()
   }
 
-  get top() {
+  get top(): number {
     if (this.element === window) {
       return window.scrollY
     } else {
@@ -84,7 +93,7 @@ export class ScrollEventHandler {
     this.update()
   }
 
-  get left() {
+  get left(): number {
     if (this.element === window) {
       return window.scrollX
     } else {
@@ -92,7 +101,7 @@ export class ScrollEventHandler {
     }
   }
 
-  scrollTo(to: Point) {
+  set scrollTo(to: Point) {
     if (this.element === window) {
       window.scrollTo(to.x, to.y)
     } else {
@@ -100,10 +109,9 @@ export class ScrollEventHandler {
       (<HTMLElement>this.element).scrollTop = to.y
     }
     this.update()
-    return this
   }
 
-  update() {
+  public update() {
     let currentPosition: Vector2 = this.position
     let currentVelocity: Vector2 = Vector2.subtract(
       this._position, currentPosition
@@ -116,9 +124,9 @@ export class ScrollEventHandler {
     return this
   }
 
-  // HANDLERS
+  // HANDLE
 
-  handleScroll(event) {
+  public handle_scroll(event: Event): ScrollEventHandler {
     this.lastFiredEvent = event
 
     this._position.equals(this.position)
@@ -130,8 +138,8 @@ export class ScrollEventHandler {
     )
 
     if (this.isScrolling === false) {
-      if (this.determineScroll(event, this) === true) {
-        this.scrollStartTime = Date.now()
+      if (this.condition_scroll(event, this) === true) {
+        this.time_scrollStart = Date.now()
 
         this.isScrolling = true
 
@@ -146,17 +154,19 @@ export class ScrollEventHandler {
 
     this._previousPosition.equals(this._position)
     this._previousVelocity.equals(this._velocity)
+    return this
   }
 
-  handleScrollEnd() {
+  public handle_scrollEnd(): ScrollEventHandler {
     if (this.isScrolling === true) {
-      this.scrollEndTime = Date.now()
-      this.scrollDuration = this.scrollEndTime - this.scrollStartTime
+      this.time_scrollEnd = Date.now()
+      this.duration = this.time_scrollEnd - this.time_scrollStart
 
       this.isScrolling = false
 
       this.onScrollEnd(this._position, this)
     }
+    return this
   }
 
 }

@@ -1,19 +1,36 @@
 import {
+  TouchEventHandler,
   Util,
 } from '../Rocket'
 
+interface TouchEventHandlers {
+  [name: string]: TouchEventHandler,
+}
+
+interface EventCallback {
+  (
+    event: TouchEvent,
+    context: TouchEventManager,
+  ): void
+}
+
 export class TouchEventManager {
 
-  public onEvent = (event) => { }
-  public onTouchStart = (event) => { }
-  public onTouchEnd = (event) => { }
-  public onTouchCancel = (event) => { }
-  public onTouchMove = (event) => { }
+  // CALLBACKS
+  public onEvent: EventCallback = (event, context) => { }
 
-  public debounceMoveEnd
-  public debounceTime = 0.2
+  public onTouchStart: EventCallback = (event, context) => { }
+  public onTouchMove: EventCallback = (event, context) => { }
+  public onTouchEnd: EventCallback = (event, context) => { }
 
-  public handlers = {}
+  public onTouchCancel: EventCallback = (event, context) => { }
+
+  // DEBOUNCE
+  private debounce_moveEnd: Function
+  private debounce_wait: number = 0.2
+
+  // HANDLER
+  private handlers: TouchEventHandlers = {}
 
   constructor() {
     this.handlers = {}
@@ -21,101 +38,103 @@ export class TouchEventManager {
     return this
   }
 
-  register(name, handler) {
+  // PUBLIC
+
+  public register(name: string, handler: TouchEventHandler) {
     this.handlers[name] = handler
     this.handlers[name].name = name
     return this
   }
 
-  remove(name) {
+  public remove(name: string): TouchEventManager {
     delete this.handlers[name]
     return this
   }
 
-  find(name) {
+  public find(name: string): TouchEventHandler {
     return this.handlers[name]
   }
 
-  isTouchIdentityTaken(identity) {
-    for (let name in this.handlers) {
+  public isTouchIdentityTaken(identity: number): boolean {
+    Object.keys(this.handlers).forEach(name => {
       if (this.handlers[name].identity === identity) {
         return true
       }
-    }
+    })
     return false
   }
 
-  // HANDLERS
+  // EVENT HANDLER
 
-  handleTouchStart(event) {
-    this.onEvent(event)
-    this.onTouchStart(event)
-    for (let touch of event.targetTouches) {
-      for (let name in this.handlers) {
+  private eventHandler_touchStart = (event: TouchEvent) => {
+    this.onEvent(event, this)
+    this.onTouchStart(event, this)
+    Array.from(event.targetTouches).forEach((touch: Touch) => {
+      Object.keys(this.handlers).forEach(name => {
         if (this.isTouchIdentityTaken(touch.identifier) === false) {
-          this.handlers[name].handleTouchStart(event, touch)
+          this.handlers[name].handle_touchStart(event, touch)
         }
-      }
-    }
+      })
+    })
   }
 
-  handleTouchEnd(event) {
-    this.onEvent(event)
-    this.onTouchEnd(event)
-    for (let name in this.handlers) {
+  private eventHandler_touchEnd = (event: TouchEvent) => {
+    this.onEvent(event, this)
+    this.onTouchEnd(event, this)
+    Object.keys(this.handlers).forEach(name => {
       for (let touch of event.changedTouches) {
         if (this.handlers[name].identity === touch.identifier) {
-          this.handlers[name].handleTouchEnd(event, touch)
+          this.handlers[name].handle_touchEnd(event, touch)
         }
       }
-    }
+    })
   }
 
-  handleTouchCancel(event) {
-    this.onEvent(event)
-    this.onTouchCancel(event)
-    for (let name in this.handlers) {
+  private eventHandler_touchCancel = (event: TouchEvent) => {
+    this.onEvent(event, this)
+    this.onTouchCancel(event, this)
+    Object.keys(this.handlers).forEach(name => {
       for (let touch of event.changedTouches) {
-        this.handlers[name].handleTouchMove(event, touch)
+        this.handlers[name].handle_move(event, touch)
       }
-    }
+    })
   }
 
-  handleTouchMove(event) {
-    this.onEvent(event)
-    this.onTouchMove(event)
-    for (let name in this.handlers) {
+  private eventHandler_move = (event: TouchEvent) => {
+    this.onEvent(event, this)
+    this.onTouchMove(event, this)
+    Object.keys(this.handlers).forEach(name => {
       for (let touch of event.touches) {
-        this.handlers[name].handleTouchMove(event, touch)
+        this.handlers[name].handle_move(event, touch)
       }
-    }
+    })
   }
 
-  handleTouchMoveEnd() {
-    for (let name in this.handlers) {
-      this.handlers[name].handleTouchMoveEnd()
-    }
+  private eventHandler_moveEnd = () => {
+    Object.keys(this.handlers).forEach(name => {
+      this.handlers[name].handle_moveEnd()
+    })
   }
 
   // LISTEN
 
-  startListening() {
-    this.debounceMoveEnd = Util.debounce(
-      this.debounceTime, this.handleTouchMoveEnd.bind(this)
+  public startListening() {
+    this.debounce_moveEnd = Util.debounce(
+      this.debounce_wait, this.eventHandler_moveEnd
     )
-    window.addEventListener('touchstart', this.handleTouchStart.bind(this))
-    window.addEventListener('touchmove', this.handleTouchMove.bind(this))
-    window.addEventListener('touchmove', this.debounceMoveEnd.bind(this))
-    window.addEventListener('touchend', this.handleTouchEnd.bind(this))
-    window.addEventListener('touchcancel', this.handleTouchCancel.bind(this))
+    window.addEventListener('touchstart', this.eventHandler_touchStart)
+    window.addEventListener('touchmove', this.eventHandler_move)
+    window.addEventListener('touchmove', <EventListener>this.debounce_moveEnd)
+    window.addEventListener('touchend', this.eventHandler_touchEnd)
+    window.addEventListener('touchcancel', this.eventHandler_touchCancel)
   }
 
-  stopListening() {
-    window.removeEventListener('touchstart', this.handleTouchStart)
-    window.removeEventListener('touchmove', this.handleTouchMove)
-    window.removeEventListener('touchmove', this.debounceMoveEnd)
-    window.removeEventListener('touchend', this.handleTouchEnd)
-    window.removeEventListener('touchcancel', this.handleTouchCancel)
+  public stopListening() {
+    window.removeEventListener('touchstart', this.eventHandler_touchStart)
+    window.removeEventListener('touchmove', this.eventHandler_move)
+    window.removeEventListener('touchmove', <EventListener>this.debounce_moveEnd)
+    window.removeEventListener('touchend', this.eventHandler_touchEnd)
+    window.removeEventListener('touchcancel', this.eventHandler_touchCancel)
   }
 
 }

@@ -1,6 +1,11 @@
 import {
+  MouseEventHandler,
   Util,
 } from '../Rocket'
+
+interface MouseEventHandlers {
+  [name: string]: MouseEventHandler
+}
 
 export class MouseEventManager {
 
@@ -10,17 +15,17 @@ export class MouseEventManager {
   public onUp = (event) => { }
   public onMove = (event) => { }
 
-  public debounce
+  public debounce: Function
   public debounceTime: number = 0.2
 
-  public handlers
+  public handlers: MouseEventHandlers
 
   constructor() {
     this.handlers = {}
     this.startListening()
   }
 
-  public register(name: string, handler): MouseEventManager {
+  public register(name: string, handler: MouseEventHandler): MouseEventManager {
     this.handlers[name] = handler
     this.handlers[name].name = name
     return this
@@ -31,70 +36,70 @@ export class MouseEventManager {
     return this
   }
 
-  public find(name: string) {
+  public find(name: string): MouseEventHandler {
     return this.handlers[name]
   }
 
-  // HANDLERS
+  // EVENT HANDLER
 
-  handleClick(event: MouseEvent) {
+  eventHandler_mouseClick(event: MouseEvent) {
     this.onEvent(event)
     this.onClick(event)
-    for (let name in this.handlers) {
+    Object.keys(this.handlers).forEach(name => {
       this.handlers[name].handleClick(event)
-    }
+    })
   }
 
-  handleDown(event: MouseEvent) {
+  eventHandler_mouseDown(event: MouseEvent) {
     this.onEvent(event)
     this.onDown(event)
-    for (let name in this.handlers) {
+    Object.keys(this.handlers).forEach(name => {
       this.handlers[name].handleDown(event)
-    }
+    })
   }
 
-  handleUp(event: MouseEvent) {
+  eventHandler_mouseUp(event: MouseEvent) {
     this.onEvent(event)
     this.onUp(event)
-    for (let name in this.handlers) {
+    Object.keys(this.handlers).forEach(name => {
       this.handlers[name].handleUp(event)
-    }
+    })
   }
 
-  handleMove(event: MouseEvent) {
+  eventHandler_mouseMove(event: MouseEvent) {
     this.onEvent(event)
     this.onMove(event)
-    for (let name in this.handlers) {
+    Object.keys(this.handlers).forEach(name => {
       this.handlers[name].handleMove(event)
-    }
+    })
   }
 
-  handleMoveEnd() {
-    for (let name in this.handlers) {
+  eventHandler_mouseMoveEnd() {
+    Object.keys(this.handlers).forEach(name => {
       this.handlers[name].handleMoveEnd()
-    }
+    })
   }
 
   // LISTEN
 
   public startListening(): MouseEventManager {
     this.debounce = Util.debounce(
-      this.debounceTime, this.handleMoveEnd.bind(this)
+      this.debounceTime, this.eventHandler_mouseMoveEnd.bind(this)
     )
-    window.addEventListener('click', this.handleClick)
-    window.addEventListener('mousedown', this.handleDown)
-    window.addEventListener('mouseup', this.handleUp)
-    window.addEventListener('mousemove', this.handleMove)
-    window.addEventListener('mousemove', this.debounce)
+    window.addEventListener('click', this.eventHandler_mouseClick)
+    window.addEventListener('mousedown', this.eventHandler_mouseDown)
+    window.addEventListener('mouseup', this.eventHandler_mouseUp)
+    window.addEventListener('mousemove', this.eventHandler_mouseMove)
+    window.addEventListener('mousemove', <EventListener>this.debounce)
     return this
   }
 
   public stopListening(): MouseEventManager {
-    window.removeEventListener('click', this.handleClick)
-    window.removeEventListener('mousedown', this.handleDown)
-    window.removeEventListener('mouseup', this.handleUp)
-    window.removeEventListener('mousemove', this.handleMove)
-    window.removeEventListener('mousemove', this.debounce)
+    window.removeEventListener('click', this.eventHandler_mouseClick)
+    window.removeEventListener('mousedown', this.eventHandler_mouseDown)
+    window.removeEventListener('mouseup', this.eventHandler_mouseUp)
+    window.removeEventListener('mousemove', this.eventHandler_mouseMove)
+    window.removeEventListener('mousemove', <EventListener>this.debounce)
     return this
   }
 

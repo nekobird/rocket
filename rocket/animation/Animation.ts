@@ -20,11 +20,11 @@ interface AnimationConfig {
 
   timingFunction?: AnimationTimingFunction,
 
-  onStart?: Function | Array<Function>,
-  onComplete?: Function | Array<Function>,
+  onStart?: Function | Function[],
+  onComplete?: Function | Function[],
 
-  onIterationStart?: Function | Array<Function>,
-  onIterationComplete?: Function | Array<Function>,
+  onIterationStart?: Function | Function[],
+  onIterationComplete?: Function | Function[],
 
   onTick?: AnimationTickFunction | AnimationTickFunction[],
 
@@ -55,14 +55,14 @@ export class Animation {
   }
 
   // HOOKS
-  public onStart: Function | Array<Function> = () => { }
-  public onComplete: Function | Array<Function> = () => { }
+  public onStart: Function | Function[] = () => { }
+  public onComplete: Function | Function[] = () => { }
 
-  public onIterationStart: Function | Array<Function> = () => { }
-  public onIterationComplete: Function | Array<Function> = () => { }
+  public onIterationStart: Function | Function[] = () => { }
+  public onIterationComplete: Function | Function[] = () => { }
 
   public callback: Function = () => { }
-  public onTick: Function | Array<Function> = (n, fn, data) => { }
+  public onTick: Function | Function[] = (n, fn, data) => { }
 
   private direction: boolean = true
   private progress: number

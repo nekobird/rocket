@@ -30,32 +30,32 @@ export class MouseEventHandler {
   public doubleClickCounter: number = 0
   public doubleClickMaximumDelayTime: number = 500
 
-  public determineClick: Function = (Point, context) => {
+  public determineClick: Function = (point, context) => {
     return true
   }
-  public determineDown: Function = (Point, context) => {
+  public determineDown: Function = (point, context) => {
     return true
   }
-  public determineMove: Function = (Point, context) => {
+  public determineMove: Function = (point, context) => {
     return true
   }
-  public determineDrag: Function = (Point, context) => {
+  public determineDrag: Function = (point, context) => {
     return true
   }
 
-  public onClick: Function = (Point, context) => { }
-  public onDoubleClick: Function = (Point, context) => { }
+  public onClick: Function = (point, context) => { }
+  public onDoubleClick: Function = (point, context) => { }
 
-  public onDownStart: Function = (Point, context) => { }
-  public onDownEnd: Function = (Point, context) => { }
+  public onDownStart: Function = (point, context) => { }
+  public onDownEnd: Function = (point, context) => { }
 
-  public onMoveStart: Function = (Point, context) => { }
-  public onMove: Function = (Point, context) => { }
-  public onMoveEnd: Function = (Point, context) => { }
+  public onMoveStart: Function = (point, context) => { }
+  public onMove: Function = (point, context) => { }
+  public onMoveEnd: Function = (point, context) => { }
 
-  public onDragStart: Function = (Point, context) => { }
-  public onDrag: Function = (Point, context) => { }
-  public onDragEnd: Function = (Point, context) => { }
+  public onDragStart: Function = (point, context) => { }
+  public onDrag: Function = (point, context) => { }
+  public onDragEnd: Function = (point, context) => { }
 
   public position: Vector2
   public velocity: Vector2

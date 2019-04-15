@@ -59,32 +59,32 @@ interface Groups {
 interface Hook {
   (
     action: Action,
-    context?: HTMLSequenceController,
+    context?: SequenceHTMLController,
   ): Promise<any>
 }
 
 interface ConditionHook {
   (
     action: Action,
-    context?: HTMLSequenceController,
+    context?: SequenceHTMLController,
   ): boolean
 }
 
 interface BeforeActionCallback {
   (
     action: Action,
-    context?: HTMLSequenceController,
+    context?: SequenceHTMLController,
   ): Promise<any>
 }
 
 interface AfterActionCallback {
   (
     action: Action,
-    context?: HTMLSequenceController,
+    context?: SequenceHTMLController,
   ): void
 }
 
-export class HTMLSequenceController {
+export class SequenceHTMLController {
 
   private isReady: boolean = false
   private isTransitioning: boolean = false
@@ -151,7 +151,7 @@ export class HTMLSequenceController {
 
   // INITIALIZE
 
-  public initialize(): HTMLSequenceController {
+  public initialize(): SequenceHTMLController {
     this
       .initialize_elements()
       .initialize_groupObjects()
@@ -160,7 +160,7 @@ export class HTMLSequenceController {
     return this
   }
 
-  private initialize_elements(): HTMLSequenceController {
+  private initialize_elements(): SequenceHTMLController {
     this.els_item = document.querySelectorAll(this.selector_item)
     this.els_js_previous = document.querySelectorAll(`.${this.className_js_previous}`)
     this.els_js_next = document.querySelectorAll(`.${this.className_js_next}`)
@@ -168,7 +168,7 @@ export class HTMLSequenceController {
     return this
   }
 
-  private initialize_groupObjects(): HTMLSequenceController {
+  private initialize_groupObjects(): SequenceHTMLController {
     // Initialize Groups
     Array.from(this.els_item).forEach(element => {
       const groupName: string = element.dataset.group
@@ -190,7 +190,7 @@ export class HTMLSequenceController {
     return this
   }
 
-  private initialize_activeItems(): HTMLSequenceController {
+  private initialize_activeItems(): SequenceHTMLController {
     if (this.groupCount > 0) {
       Object.keys(this.groups).forEach(groupName => {
         const group: Group = this.groups[groupName]
@@ -286,7 +286,7 @@ export class HTMLSequenceController {
 
   // 5) COMPLETE ACTION
 
-  private completeAction(action: Action, callback?: Function): HTMLSequenceController {
+  private completeAction(action: Action, callback?: Function): SequenceHTMLController {
     if (
       action.group.activeItem !== action.nextItem &&
       this[`condition_${action.name}`](action, this) === true
@@ -320,7 +320,7 @@ export class HTMLSequenceController {
     if (typeof callback === 'function') { callback() }
   }
 
-  private item_deactivate(action: Action): HTMLSequenceController {
+  private item_deactivate(action: Action): SequenceHTMLController {
     Array.from(action.group.items).forEach(item => {
       item.classList.remove(this.className_active)
     })
@@ -330,7 +330,7 @@ export class HTMLSequenceController {
     return this
   }
 
-  private item_activate(action: Action): HTMLSequenceController {
+  private item_activate(action: Action): SequenceHTMLController {
     action.nextItem.classList.add(this.className_active)
     action.group.activeItem = action.nextItem
     action.group.activeIndex = action.nextItemIndex
@@ -403,7 +403,7 @@ export class HTMLSequenceController {
 
   // 4) ACTION HUB
 
-  private hub_action(action: Action, callback?: Function): HTMLSequenceController {
+  private hub_action(action: Action, callback?: Function): SequenceHTMLController {
     // Update action
     this[`setActionTarget_${action.name}`](action)
 
@@ -434,7 +434,7 @@ export class HTMLSequenceController {
 
   // 3) EVENT HUB
 
-  private hub_event(event: Event, actionName: ActionName): HTMLSequenceController {
+  private hub_event(event: Event, actionName: ActionName): SequenceHTMLController {
     if (
       this.isReady === true &&
       this.isTransitioning === false
@@ -473,7 +473,7 @@ export class HTMLSequenceController {
 
   // 1) LISTEN
 
-  private startListening(): HTMLSequenceController {
+  private startListening(): SequenceHTMLController {
     Array.from(this.els_js_next).forEach(element => {
       element.addEventListener('click', this.eventHandler_click_next)
     })
@@ -486,7 +486,7 @@ export class HTMLSequenceController {
     return this
   }
 
-  public stopListening(): HTMLSequenceController {
+  public stopListening(): SequenceHTMLController {
     Array.from(this.els_js_next).forEach(element => {
       element.removeEventListener('click', this.eventHandler_click_next)
     })

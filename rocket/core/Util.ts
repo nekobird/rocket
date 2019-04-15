@@ -38,7 +38,7 @@ export class Util {
     clearTimeout(id)
   }
 
-  static repeat(interval, fn) {
+  static repeat(interval: number, fn: Function) {
     return setInterval(fn, interval * 1000)
   }
 
@@ -56,14 +56,14 @@ export class Util {
     return value
   }
 
-  static randomChoice(array) {
+  static randomChoice(array: any[]): any {
     let index = Num.random(array.length - 1, true)
     return array[index]
   }
 
-  static throttle(threshold, fn) {
+  static throttle(threshold: number, fn: Function): Function {
     let timeout
-    let last
+    let last: number
 
     threshold = 1000 * threshold
 
@@ -86,7 +86,7 @@ export class Util {
     }
   }
 
-  static toHex(n) {
+  static toHex(n: string): string {
     return parseInt(n).toString(16).toUpperCase()
   }
 

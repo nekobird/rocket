@@ -38,14 +38,14 @@ interface Config {
 interface Hook {
   (
     action: Action,
-    context?: HTMLPolyController,
+    context?: PolyHTMLController,
   ): Promise<any>
 }
 
 interface ConditionHook {
   (
     action: Action,
-    context?: HTMLPolyController,
+    context?: PolyHTMLController,
   ): boolean
 }
 
@@ -53,21 +53,21 @@ interface ListenToHook {
   (
     event: Event,
     group: Group,
-    context: HTMLPolyController
+    context: PolyHTMLController
   ): void
 }
 
 interface BeforeActionCallback {
   (
     action: Action,
-    context?: HTMLPolyController,
+    context?: PolyHTMLController,
   ): Promise<any>
 }
 
 interface AfterActionCallback {
   (
     action: Action,
-    context?: HTMLPolyController,
+    context?: PolyHTMLController,
   ): void
 }
 
@@ -96,7 +96,7 @@ interface Action {
   trigger?: HTMLElement,
 }
 
-export class HTMLPolyController {
+export class PolyHTMLController {
 
   private isReady: boolean = false
   private isTransitioning: boolean = false
@@ -276,7 +276,7 @@ export class HTMLPolyController {
   }
 
   // INITIALIZE
-  public initialize(): HTMLPolyController {
+  public initialize(): PolyHTMLController {
     this
       .initialize_elements()
       .initialize_groupObjects()
@@ -285,7 +285,7 @@ export class HTMLPolyController {
     return this
   }
 
-  private initialize_elements(): HTMLPolyController {
+  private initialize_elements(): PolyHTMLController {
     this.els_item = document.querySelectorAll(this.selector_item)
 
     this.els_js_activate = document.querySelectorAll(`.${this.className_js_activate}`)
@@ -298,7 +298,7 @@ export class HTMLPolyController {
     return this
   }
 
-  private initialize_groupObjects(): HTMLPolyController {
+  private initialize_groupObjects(): PolyHTMLController {
     // Initialize Groups
     Array.from(this.els_item).forEach(item => {
       const groupName: string = item.dataset.group
@@ -316,7 +316,7 @@ export class HTMLPolyController {
     return this
   }
 
-  private initialize_activeItems(): HTMLPolyController {
+  private initialize_activeItems(): PolyHTMLController {
     if (this.groupCount > 0) {
 
       Object.keys(this.groups).forEach(groupName => {
@@ -337,14 +337,14 @@ export class HTMLPolyController {
 
   // ACTION
 
-  private item_activate(action: Action): HTMLPolyController {
+  private item_activate(action: Action): PolyHTMLController {
     action.targetItem.classList.add(this.className_active)
     action.group.activeItems.push(action.targetItem)
     action.group.isActive = true
     return this
   }
 
-  private item_deactivate(action: Action): HTMLPolyController {
+  private item_deactivate(action: Action): PolyHTMLController {
     action.targetItem.classList.remove(this.className_active)
     const index: number = action.group.activeItems.indexOf(action.targetItem)
     action.group.activeItems.slice(index, 1)
@@ -356,7 +356,7 @@ export class HTMLPolyController {
 
   // 5) HANDLE ACTIONS
 
-  private handleAction_activation(actionName: 'activate' | 'deactivate', action: Action, callback?: Function): HTMLPolyController {
+  private handleAction_activation(actionName: 'activate' | 'deactivate', action: Action, callback?: Function): PolyHTMLController {
     if (this[`condition_${actionName}`](action, this) === true) {
       this[`before_${actionName}`](action, this)
         .then(() => {
@@ -375,7 +375,7 @@ export class HTMLPolyController {
     return this
   }
 
-  private handleAction_toggle(action: Action, callback?: Function): HTMLPolyController {
+  private handleAction_toggle(action: Action, callback?: Function): PolyHTMLController {
     if (this.condition_toggle(action, this) === true) {
       if (action.targetItem.classList.contains(this.className_active) === true) {
         this.handleAction_activation('deactivate', action, callback)
@@ -388,7 +388,7 @@ export class HTMLPolyController {
     return this
   }
 
-  private handleAction_activationAll(action: Action, callback?: Function): HTMLPolyController {
+  private handleAction_activationAll(action: Action, callback?: Function): PolyHTMLController {
     if (
       this[`condition_${action.name}`](action, this) === true &&
       action.group.items.length > 0
@@ -450,7 +450,7 @@ export class HTMLPolyController {
     }
   }
 
-  private endAction(callback?: Function): HTMLPolyController {
+  private endAction(callback?: Function): PolyHTMLController {
     if (this.isNestedAction === false) {
       this.isTransitioning = false
     }
@@ -460,7 +460,7 @@ export class HTMLPolyController {
 
   // 4) DIRECT ACTIONS INTO A SINGLE HUB TO DISTRIBUTE
 
-  private hub_action(action: Action, callback?: Function): HTMLPolyController {
+  private hub_action(action: Action, callback?: Function): PolyHTMLController {
 
     let preAction: Promise<any>
 
@@ -498,7 +498,7 @@ export class HTMLPolyController {
 
   // 3) DIRECT EVENTS INTO A CENTRAL HUB
 
-  private hub_event(event: Event, actionName: ActionName): HTMLPolyController {
+  private hub_event(event: Event, actionName: ActionName): PolyHTMLController {
     if (this.isReady === true) {
       this.isTransitioning = true
       const trigger = DOMUtil.findAncestorWithClass(
@@ -573,7 +573,7 @@ export class HTMLPolyController {
 
   // 1) LISTEN TO EVENTS
 
-  private startListening(): HTMLPolyController {
+  private startListening(): PolyHTMLController {
     Array.from(this.els_js_activate).forEach(element => {
       element.addEventListener('click', this.eventHandler_click_activate)
     })
@@ -599,7 +599,7 @@ export class HTMLPolyController {
     return this
   }
 
-  public stopListening(): HTMLPolyController {
+  public stopListening(): PolyHTMLController {
     Array.from(this.els_js_activate).forEach(element => {
       element.removeEventListener('click', this.eventHandler_click_activate)
     })
