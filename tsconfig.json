@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    // "allowJs": true,
     "declaration": true,
     "module": "commonjs",
     "noImplicitAny": false,
     "outDir": "build/",
     "preserveConstEnums": true,
     "removeComments": true,
-    "sourceMap": true,
-    // "strict": true,
+    "sourceMap": false,
     "target": "es2018",
+    // "allowJs": true,
+    // "strict": true,
   },
   "include": [
     "rocket/*"

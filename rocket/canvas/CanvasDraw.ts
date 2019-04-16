@@ -47,7 +47,7 @@ export class CanvasDraw {
     // this.resize()
   }
 
-  get defaultStyle() {
+  get defaultStyle(): CanvasDrawStyle {
     return this._defaultStyle
   }
 
@@ -64,8 +64,6 @@ export class CanvasDraw {
       from.x * m, from.y * m,
       to.x * m, to.y * m
     )
-    // gradient.addColorStop(0, 'green')
-    // gradient.addColorStop(1, 'white')
   }
 
   public createRadialGradient(from: Vector2, fromRadius: number, to: Vector2, toRadius: number): CanvasGradient {
@@ -77,7 +75,6 @@ export class CanvasDraw {
   }
 
   public applyStyle(style: CanvasDrawStyle): CanvasDraw {
-
     let computedStyle: any = Object.assign({}, this._defaultStyle)
 
     if (typeof style === 'object') {
@@ -101,7 +98,7 @@ export class CanvasDraw {
     return this
   }
 
-  public clear() {
+  public clear(): CanvasDraw {
     this.context.clearRect(
       0, 0,
       this.element.width, this.element.height
@@ -154,12 +151,12 @@ export class CanvasDraw {
     return this.context.putImageData(pixel, 0, 0)
   }
 
-  public clip() {
+  public clip(): CanvasDraw {
     this.context.clip()
     return this
   }
 
-  public shadow(offsetX, offsetY, blur, color) {
+  public shadow(offsetX, offsetY, blur, color): CanvasDraw {
     let m = this.resolutionMultiplier
     if (color instanceof Color) {
       color = color.rgbaString
@@ -171,7 +168,7 @@ export class CanvasDraw {
     return this
   }
 
-  public image(img, st, sw, sh, dt, dw, dh) {
+  public image(img, st, sw, sh, dt, dw, dh): CanvasDraw {
     let m = this.resolutionMultiplier
     this.context.drawImage(
       img, st.x, st.y, sw, sh, dt.x * m, dt.y * m, dw * m, dh * m
@@ -181,7 +178,7 @@ export class CanvasDraw {
 
   // SHAPES
 
-  circle(v, r, style, insert) {
+  public circle(v: Point, r: number, style: CanvasDrawStyle, insert): CanvasDraw {
     let m = this.resolutionMultiplier
     this.save()
     this.begin()
@@ -202,37 +199,36 @@ export class CanvasDraw {
 
   // PATH
 
-  begin() {
+  public begin(): CanvasDraw {
     this.context.beginPath()
     return this
   }
 
-  end() {
+  public end(): CanvasDraw {
     this.context.closePath()
     return this
   }
 
   // https://www.w3schools.com/tags/canvas_ispointinpath.asp
-  isPointInPath(point) {
-    let m = this.resolutionMultiplier
-    this.context.isPointInPath(point.x * m, point.y * m)
-    return this
+  public isPointInPath(point: Point): boolean {
+    let m: number = this.resolutionMultiplier
+    return this.context.isPointInPath(point.x * m, point.y * m)
   }
 
-  moveTo(to) {
-    let m = this.resolutionMultiplier
+  public moveTo(to: Point): CanvasDraw {
+    let m: number = this.resolutionMultiplier
     this.context.moveTo(to.x * m, to.y * m)
     return this
   }
 
-  lineTo(to) {
-    let m = this.resolutionMultiplier
+  public lineTo(to: Point): CanvasDraw {
+    let m: number = this.resolutionMultiplier
     this.context.lineTo(to.x * m, to.y * m)
     return this
   }
 
-  arcTo(from, to, r) {
-    let m = this.resolutionMultiplier
+  public arcTo(from: Point, to: Point, r): CanvasDraw {
+    let m: number = this.resolutionMultiplier
     this.context.arcTo(
       from.x * m, from.y * m,
       to.x * m, to.y * m,
@@ -241,8 +237,8 @@ export class CanvasDraw {
     return this
   }
 
-  bezierCurveTo(cp1, cp2, to) {
-    let m = this.resolutionMultiplier
+  public bezierCurveTo(cp1: Point, cp2: Point, to: Point): CanvasDraw {
+    let m: number = this.resolutionMultiplier
     this.context.bezierCurveTo(
       cp1.x * m, cp1.y * m,
       cp2.x * m, cp2.y * m,
@@ -251,8 +247,8 @@ export class CanvasDraw {
     return this
   }
 
-  quadraticCurveTo(cp, to) {
-    let m = this.resolutionMultiplier
+  public quadraticCurveTo(cp: Point, to: Point): CanvasDraw {
+    let m: number = this.resolutionMultiplier
     this.context.quadraticCurveTo(
       cp.x * m, cp.y * m,
       to.x * m, to.y * m
@@ -284,17 +280,17 @@ export class CanvasDraw {
 
   // STASH
 
-  public reset() {
+  public reset(): CanvasDraw {
     this.context.setTransform(1, 0, 0, 1, 0, 0)
     return this
   }
 
-  public save() {
+  public save(): CanvasDraw {
     this.context.save()
     return this
   }
 
-  public restore() {
+  public restore(): CanvasDraw {
     this.context.restore()
     return this
   }

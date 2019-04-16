@@ -1,7 +1,7 @@
 import {
+  ConvertColor,
   Num,
   Util,
-  ConvertColor
 } from '../Rocket'
 
 type ColorArray4 = [number, number, number, number]
@@ -104,7 +104,7 @@ export class Color {
 
   // STRINGS
   set rgbString(input: string) {
-    let rgb = input.match(/(\d+)/g).map(v => {
+    let rgb: number[] = input.match(/(\d+)/g).map(v => {
       return Num.cycle(parseFloat(v) / 255, 1)
     })
     this.r = rgb[0]
@@ -189,7 +189,7 @@ export class Color {
   // HEX
 
   set hex(hex: string) {
-    let rgb = ConvertColor.HEXToRGB(hex)
+    let rgb: ColorArray3 = ConvertColor.HEXToRGB(hex)
     this.r = rgb[0]
     this.g = rgb[1]
     this.b = rgb[2]
@@ -209,7 +209,7 @@ export class Color {
   }
 
   get rgb255(): ColorArray3 {
-    const rgb = [this.r, this.g, this.b]
+    const rgb: ColorArray3 = [this.r, this.g, this.b]
     return <ColorArray3>rgb.map(v => {
       return Math.round(v * 255)
     })
@@ -252,7 +252,7 @@ export class Color {
   // HSL
 
   set hsl(hsl: ColorArray3) {
-    const rgb = ConvertColor.HSLToRGB(hsl)
+    const rgb: ColorArray3 = ConvertColor.HSLToRGB(hsl)
     this.r = rgb[0]
     this.g = rgb[1]
     this.b = rgb[2]
@@ -364,18 +364,20 @@ export class Color {
   // MAGENTA
 
   set magenta(magenta: number) {
-    const cmyk = ConvertColor.RGBToCMYK(
+    const cmyk: ColorArray4 = ConvertColor.RGBToCMYK(
       [this.r, this.g, this.b]
     )
     cmyk[1] = magenta
-    const rgb = ConvertColor.CMYKToRGB(cmyk)
+    const rgb: ColorArray3 = ConvertColor.CMYKToRGB(cmyk)
     this.r = rgb[0]
     this.g = rgb[1]
     this.b = rgb[2]
   }
 
   get magenta(): number {
-    return ConvertColor.RGBToCMYK([this.r, this.g, this.b])[1]
+    return ConvertColor.RGBToCMYK(
+      [this.r, this.g, this.b]
+    )[1]
   }
 
   // YELLOW
@@ -385,14 +387,16 @@ export class Color {
       [this.r, this.g, this.b]
     )
     cmyk[2] = yellow
-    const rgb = ConvertColor.CMYKToRGB(cmyk)
+    const rgb: ColorArray3 = ConvertColor.CMYKToRGB(cmyk)
     this.r = rgb[0]
     this.g = rgb[1]
     this.b = rgb[2]
   }
 
   get yellow(): number {
-    return ConvertColor.RGBToCMYK([this.r, this.g, this.b])[2]
+    return ConvertColor.RGBToCMYK(
+      [this.r, this.g, this.b]
+    )[2]
   }
 
   // ALPHA
@@ -451,8 +455,7 @@ export class Color {
     const hsv: ColorArray3 = ConvertColor.RGBToHSV(
       [this.r, this.g, this.b]
     )
-    value = Num.cycle(value, 1)
-    hsv[2] = value
+    hsv[2] = Num.cycle(value, 1)
     const rgb: ColorArray3 = ConvertColor.HSVToRGB(hsv)
     this.r = rgb[0]
     this.g = rgb[1]
@@ -501,14 +504,14 @@ export class Color {
   // STATIC
 
   static isColor(color: Color): boolean {
-    return color instanceof Color ? true : false
+    return color instanceof Color
   }
 
   static equals(color: Color): Color {
     return new Color(color)
   }
 
-  static triadic(color: Color): Color[] {
+  static triadic(color: Color): [Color, Color, Color] {
     let color_a = color.clone.hueRotate(-120)
     let color_c = color.clone.hueRotate(120)
     return [color_a, color, color_c]
@@ -518,20 +521,20 @@ export class Color {
     return color.clone.hueRotate(180)
   }
 
-  static splitComplements(color: Color): Color[] {
-    let color_a = color.clone.hueRotate(-150)
-    let color_c = color.clone.hueRotate(150)
+  static splitComplements(color: Color): [Color, Color, Color] {
+    let color_a: Color = color.clone.hueRotate(-150)
+    let color_c: Color = color.clone.hueRotate(150)
     return [color_a, color, color_c]
   }
 
-  static analogous(color: Color): Color[] {
-    let color_a = color.clone.hueRotate(-30)
-    let color_c = color.clone.hueRotate(30)
+  static analogous(color: Color): [Color, Color, Color] {
+    let color_a: Color = color.clone.hueRotate(-30)
+    let color_c: Color = color.clone.hueRotate(30)
     return [color_a, color, color_c]
   }
 
   static lerp(color_a: Color, color_b: Color, t: number): Color {
-    let color = Color.equals(color_a)
+    let color: Color = Color.equals(color_a)
     color.r = Num.lerp(color_a.r, color_b.r, t)
     color.g = Num.lerp(color_a.g, color_b.g, t)
     color.b = Num.lerp(color_a.b, color_b.b, t)

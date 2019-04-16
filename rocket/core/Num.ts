@@ -14,15 +14,14 @@ export class Num {
     if (range[0] === range[1]) {
       return 0
     }
-    let max = Math.max(range[0], range[1])
-    let min = Math.min(range[0], range[1])
+    let max: number = Math.max(range[0], range[1])
+    let min: number = Math.min(range[0], range[1])
     if (number > max) {
       return max
     } else if (number < min) {
       return min
-    } else {
-      return number
     }
+    return number
   }
 
   // Range can be a number or an array with two numbers [0, 10].
@@ -50,9 +49,8 @@ export class Num {
       db = this.getNumberLineDistance(number, min)
       c = max - db % da
       return c === max ? min : c
-    } else {
-      return number
     }
+    return number
   }
 
   // Get number-line distance between two numbers
@@ -144,9 +142,9 @@ export class Num {
   // Numbers are array
   static sum(numbers: number[]): number {
     let sum: number = 0
-    for (let number of numbers) {
+    numbers.forEach(number => {
       sum += number
-    }
+    })
     return sum
   }
 

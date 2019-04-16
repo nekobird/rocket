@@ -20,7 +20,7 @@ export class Vector2 {
     return this
   }
 
-  setPoint(x: number | Point, y?: number): Vector2 {
+  public setPoint(x: number | Point, y?: number): Vector2 {
     if (
       typeof x === 'number' &&
       typeof y === 'number'
@@ -528,52 +528,45 @@ export class Vector2 {
   // GROUP
 
   static addGroupBy(group: Vector2[], by: Point): Vector2[] {
-    for (let point of group) {
-      point.add(by)
-    }
-    return group
+    return group.map(point => {
+      return point.add(by)
+    })
   }
 
   static subtractGroupBy(group: Vector2[], by: Point): Vector2[] {
-    for (let point of group) {
-      point.subtract(by)
-    }
-    return group
+    return group.map(point => {
+      return point.subtract(by)
+    })
   }
 
   static multiplyGroupBy(group: Vector2[], by: number): Vector2[] {
-    for (let point of group) {
-      point.multiply(by)
-    }
-    return group
+    return group.map(point => {
+      return point.multiply(by)
+    })
   }
 
   static divideGroupBy(group: Vector2[], by: number): Vector2[] {
-    for (let point of group) {
-      point.divide(by)
-    }
-    return group
+    return group.map(point => {
+      return point.divide(by)
+    })
   }
 
   static scaleGroupByFrom(group: Vector2[], by: number, from: Point): Vector2[] {
-    for (let point of group) {
-      point.scaleByFrom(by, from)
-    }
-    return group
+    return group.map(point => {
+      return point.scaleByFrom(by, from)
+    })
   }
 
   static rotateGroupToFrom(group: Vector2[], to: number, from: Point): Vector2[] {
-    for (let point of group) {
-      point.rotateToFrom(to, from)
-    }
-    return group
+    return group.map(point => {
+      return point.rotateToFrom(to, from)
+    })
   }
 
   static rotateGroupByFrom(group: Vector2[], by: number, from: Point): Vector2[] {
-    for (let point of group) {
-      point.rotateByFrom(by, from)
-    }
-    return group
+    return group.map(point => {
+      return point.rotateByFrom(by, from)
+    })
   }
 
 }

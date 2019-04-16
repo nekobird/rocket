@@ -20,7 +20,7 @@ export class CanvasLayerManager {
     return this
   }
 
-  public create(name: string) {
+  public create(name: string): CanvasLayer {
     let element: HTMLCanvasElement = <HTMLCanvasElement>document.createElement(`CANVAS`)
     element = this.layerStackElement.appendChild(element)
     this.layers[name] = new CanvasLayer(element)
@@ -70,11 +70,11 @@ export class CanvasLayerManager {
       width = this.layerStackElement.offsetWidth
     }
 
-    for (let name in this.layers) {
-      this.layers[name].element.style.height = `${height}px`
-      this.layers[name].element.style.width = `${width}px`
-      this.layers[name].draw.resize()
-    }
+    this.layers.forEach(layer => {
+      layer.element.style.height = `${height}px`
+      layer.element.style.width = `${width}px`
+      layer.draw.resize()
+    })
 
     return this
   }

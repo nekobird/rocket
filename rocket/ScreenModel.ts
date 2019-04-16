@@ -5,7 +5,7 @@ import {
 
 export interface Size {
   height: number,
-  width: number
+  width: number,
 }
 
 const MODEL_ATTRIBUTES = {

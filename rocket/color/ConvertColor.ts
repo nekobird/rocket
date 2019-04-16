@@ -39,7 +39,7 @@ export class ConvertColor {
 
   // RGB 1, 1, 1
   static HEXToRGB(hex: string): ColorArray3 {
-    let rgb = [0, 0, 0]
+    let rgb: ColorArray3 = [0, 0, 0]
     let r, g, b
     if (hex.length === 7) {
       r = hex.substr(1, 2)
@@ -167,7 +167,7 @@ export class ConvertColor {
 
     let cMax = Math.max.apply(this, rgb)
     let cMin = Math.min.apply(this, rgb)
-    let delta = cMax - cMin
+    let delta: number = cMax - cMin
     let hsv: ColorArray3 = [0, 0, 0]
 
     if (delta === 0) {
