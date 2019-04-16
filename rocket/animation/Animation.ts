@@ -1,6 +1,6 @@
 import {
   Num,
-} from '../Rocket'
+} from '../rocket'
 
 import {
   AnimationTimingFunction,

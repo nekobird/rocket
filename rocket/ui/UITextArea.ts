@@ -1,6 +1,6 @@
 import {
   TextBoxModel,
-} from '../Rocket'
+} from '../rocket'
 
 interface Config {
   disableLineBreaks?: boolean,

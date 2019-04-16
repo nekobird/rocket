@@ -1,6 +1,6 @@
 import {
   DOMUtil,
-} from '../../Rocket'
+} from '../../rocket'
 
 import {
   Groups

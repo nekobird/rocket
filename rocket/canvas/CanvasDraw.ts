@@ -2,7 +2,7 @@ import {
   Color,
   Point,
   Vector2,
-} from '../Rocket'
+} from '../rocket'
 
 interface CanvasDrawStyle {
   fillColor?: string | Color,

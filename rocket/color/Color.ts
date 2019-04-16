@@ -2,7 +2,7 @@ import {
   ConvertColor,
   Num,
   Util,
-} from '../Rocket'
+} from '../rocket'
 
 type ColorArray4 = [number, number, number, number]
 type ColorArray3 = [number, number, number]

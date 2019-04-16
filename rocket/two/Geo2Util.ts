@@ -1,7 +1,7 @@
 import {
   Point,
   Vector2,
-} from '../Rocket'
+} from '../rocket'
 
 export class Geo2Util {
 

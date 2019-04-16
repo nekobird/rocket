@@ -1,7 +1,7 @@
 import {
   Angle,
   Num,
-} from '../Rocket'
+} from '../rocket'
 
 export interface Point {
   x: number,

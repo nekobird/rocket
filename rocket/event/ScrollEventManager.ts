@@ -2,7 +2,7 @@ import {
   ScrollEventHandler,
   Util,
   Vector2,
-} from '../Rocket'
+} from '../rocket'
 
 interface ScrollEventHandlers {
   [name: string]: ScrollEventHandler

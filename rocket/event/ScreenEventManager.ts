@@ -2,7 +2,7 @@ import {
   Size,
   Util,
   ScreenModel,
-} from '../Rocket'
+} from '../rocket'
 
 interface ScreenHandler {
   name?: string,

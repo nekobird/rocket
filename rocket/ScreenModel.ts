@@ -1,7 +1,7 @@
 import {
   Num,
   Vector2,
-} from './Rocket'
+} from './rocket'
 
 export interface Size {
   height: number,

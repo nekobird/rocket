@@ -2,7 +2,7 @@ import {
   Point,
   TouchPoint,
   Vector2,
-} from '../Rocket'
+} from '../rocket'
 
 interface ConditionHook {
   (

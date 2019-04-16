@@ -1,12 +1,12 @@
 // CORE
-export * from './core/Num'
-export * from './core/Util'
+export * from './core/num'
+export * from './core/util'
 
 // DOM
 export * from './dom/DOMUtil'
 
 // SCREEN
-export * from './ScreenModel'
+export * from './screenModel'
 
 // TWO
 export * from './two/Vector2'
@@ -23,8 +23,8 @@ export * from './canvas/CanvasLayer'
 export * from './canvas/CanvasLayerManager'
 
 // COLOR
-export * from './color/ConvertColor'
-export * from './color/Color'
+export * from './color/convertColor'
+export * from './color/color'
 
 // EVENT
 export * from './event/ScrollEventHandler'

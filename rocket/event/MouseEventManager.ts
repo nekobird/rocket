@@ -1,7 +1,7 @@
 import {
   MouseEventHandler,
   Util,
-} from '../Rocket'
+} from '../rocket'
 
 interface MouseEventHandlers {
   [name: string]: MouseEventHandler

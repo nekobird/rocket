@@ -1,7 +1,7 @@
 import {
   TouchEventHandler,
   Util,
-} from '../Rocket'
+} from '../rocket'
 
 interface TouchEventHandlers {
   [name: string]: TouchEventHandler,

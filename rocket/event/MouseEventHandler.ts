@@ -1,6 +1,6 @@
 import {
   Vector2,
-} from '../Rocket'
+} from '../rocket'
 
 export class MouseEventHandler {
 

@@ -5,7 +5,7 @@
 
 import {
   KeyboardEventHandler
-} from '../Rocket'
+} from '../rocket'
 
 interface Handler {
   manager: KeyboardEventManager,

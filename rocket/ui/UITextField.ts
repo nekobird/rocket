@@ -1,6 +1,6 @@
 import {
   DOMUtil,
-} from '../Rocket'
+} from '../rocket'
 
 export class UITextField {
 
@@ -37,7 +37,7 @@ export class UITextField {
   private _eventBlur
   private _eventFocus
   private _eventInput
-  private _eventKeydown
+  private _eventKeydownw
 
   public element
 

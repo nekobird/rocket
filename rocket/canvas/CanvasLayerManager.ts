@@ -1,7 +1,7 @@
 import {
   CanvasLayer,
   ScreenModel,
-} from '../Rocket'
+} from '../rocket'
 
 export class CanvasLayerManager {
 

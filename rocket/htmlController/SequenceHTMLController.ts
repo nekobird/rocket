@@ -1,6 +1,6 @@
 import {
   DOMUtil,
-} from '../Rocket'
+} from '../rocket'
 
 interface Config {
   selector_item?: string,
