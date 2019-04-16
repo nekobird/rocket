@@ -50,5 +50,5 @@ export * from './ui/UITextArea'
 export * from './ui/UITextField'
 
 // HTML
-export * from './html/PolyHTMLController'
-export * from './html/SequenceHTMLController'
+export * from './htmlController/polyHtmlController/polyHtmlController'
+export * from './htmlController/SequenceHTMLController'

@@ -1,100 +1,10 @@
 import {
   DOMUtil,
-} from '../Rocket'
+} from '../../Rocket'
 
-interface Config {
-  listenTo_clickOutside?: boolean,
-  listenTo_keydown?: boolean,
-
-  selector_item?: string,
-
-  className_active?: string,
-  className_js_activate?: string,
-  className_js_deactivate?: string,
-  className_js_toggle?: string,
-  className_js_activateAll?: string,
-  className_js_deactivateAll?: string,
-  className_js_toggleAll?: string,
-
-  condition_activate?: ConditionHook,
-  condition_deactivate?: ConditionHook,
-  condition_toggle?: ConditionHook,
-  condition_activateAll?: ConditionHook,
-  condition_deactivateAll?: ConditionHook,
-  condition_toggleAll?: ConditionHook,
-
-  before_activate?: Hook,
-  before_deactivate?: Hook,
-  after_activate?: Hook,
-  after_deactivate?: Hook,
-
-  before_action?: BeforeActionCallback,
-  after_action?: AfterActionCallback,
-
-  onClickOutside?: ListenToHook,
-  onKeydown?: ListenToHook,
-}
-
-interface Hook {
-  (
-    action: Action,
-    context?: PolyHTMLController,
-  ): Promise<any>
-}
-
-interface ConditionHook {
-  (
-    action: Action,
-    context?: PolyHTMLController,
-  ): boolean
-}
-
-interface ListenToHook {
-  (
-    event: Event,
-    group: Group,
-    context: PolyHTMLController
-  ): void
-}
-
-interface BeforeActionCallback {
-  (
-    action: Action,
-    context?: PolyHTMLController,
-  ): Promise<any>
-}
-
-interface AfterActionCallback {
-  (
-    action: Action,
-    context?: PolyHTMLController,
-  ): void
-}
-
-interface Groups {
-  [groupName: string]: Group,
-}
-
-interface Group {
-  name: string,
-  items: NodeListOf<HTMLElement>,
-  activeItems?: HTMLElement[],
-  isActive: boolean,
-}
-
-type ActionName = 'activate' | 'activateAll' | 'deactivate' | 'deactivateAll' | 'toggle' | 'toggleAll'
-
-interface Action {
-  name?: ActionName,
-
-  groupName: string,
-  group?: Group,
-
-  targetId?: string,
-  targetItem?: HTMLElement,
-
-  trigger?: HTMLElement,
-}
+import {
+  Groups
+} from './interfaces/index'
 
 export class PolyHTMLController {
 
@@ -124,16 +34,7 @@ export class PolyHTMLController {
   public className_js_deactivateAll: string = 'js_deactivateAll'
   public className_js_toggleAll: string = 'js_toggleAll'
 
-  // HTML ELEMENT
-  private els_item: NodeListOf<HTMLElement>
 
-  private els_js_activate: NodeListOf<HTMLElement>
-  private els_js_deactivate: NodeListOf<HTMLElement>
-  private els_js_toggle: NodeListOf<HTMLElement>
-
-  private els_js_activateAll: NodeListOf<HTMLElement>
-  private els_js_deactivateAll: NodeListOf<HTMLElement>
-  private els_js_toggleAll: NodeListOf<HTMLElement>
 
   // CONDITION HOOK
   public condition_activate: ConditionHook = (action, context) => {
@@ -512,8 +413,8 @@ export class PolyHTMLController {
         typeof trigger !== 'undefined' &&
         trigger instanceof HTMLElement
       ) {
-        this.hub_action(
-          this.composeActionFromTrigger(actionName, trigger)
+        this.hub_actioDOMUtil
+        this.composeActionFromTrigger(actionName, trigger)
         )
       } else {
         this.endAction()
@@ -522,109 +423,4 @@ export class PolyHTMLController {
     return this
   }
 
-  // 2) HANDLE EVENTS
-
-  private eventHandler_click_activate = (event: Event) => {
-    this.hub_event(event, 'activate')
-  }
-  private eventHandler_click_deactivate = (event: Event) => {
-    this.hub_event(event, 'deactivate')
-  }
-  private eventHandler_click_toggle = (event: Event) => {
-    this.hub_event(event, 'toggle')
-  }
-
-  private eventHandler_click_activateAll = (event: Event) => {
-    this.hub_event(event, 'activateAll')
-  }
-  private eventHandler_click_deactivateAll = (event: Event) => {
-    this.hub_event(event, 'deactivateAll')
-  }
-  private eventHandler_click_toggleAll = (event: Event) => {
-    this.hub_event(event, 'toggleAll')
-  }
-
-  private eventHandler_clickOutside = (event: Event) => {
-    if (
-      this.listenTo_clickOutside === true &&
-      this.isTransitioning === false
-    ) {
-      Object.keys(this.groups).forEach(groupName => {
-        let group: Group = this.groups[groupName]
-        if (
-          group.isActive == true &&
-          DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItems) === false
-        ) {
-          this.onClickOutside(event, group, this)
-        }
-      })
-    }
-  }
-
-  private eventHandler_keydown = (event: Event) => {
-    if (
-      this.listenTo_keydown === true &&
-      this.isTransitioning === false
-    ) {
-      Object.keys(this.groups).forEach(groupName => {
-        let group: Group = this.groups[groupName]
-        this.onKeydown(event, group, this)
-      })
-    }
-  }
-
-  // 1) LISTEN TO EVENTS
-
-  private startListening(): PolyHTMLController {
-    Array.from(this.els_js_activate).forEach(element => {
-      element.addEventListener('click', this.eventHandler_click_activate)
-    })
-    Array.from(this.els_js_deactivate).forEach(element => {
-      element.addEventListener('click', this.eventHandler_click_deactivate)
-    })
-    Array.from(this.els_js_toggle).forEach(element => {
-      element.addEventListener('click', this.eventHandler_click_toggle)
-    })
-
-    Array.from(this.els_js_activateAll).forEach(element => {
-      element.addEventListener('click', this.eventHandler_click_activateAll)
-    })
-    Array.from(this.els_js_deactivateAll).forEach(element => {
-      element.addEventListener('click', this.eventHandler_click_deactivateAll)
-    })
-    Array.from(this.els_js_toggleAll).forEach(element => {
-      element.addEventListener('click', this.eventHandler_click_toggleAll)
-    })
-
-    window.addEventListener('click', this.eventHandler_clickOutside)
-    window.addEventListener('keydown', this.eventHandler_keydown)
-    return this
-  }
-
-  public stopListening(): PolyHTMLController {
-    Array.from(this.els_js_activate).forEach(element => {
-      element.removeEventListener('click', this.eventHandler_click_activate)
-    })
-    Array.from(this.els_js_deactivate).forEach(element => {
-      element.removeEventListener('click', this.eventHandler_click_deactivate)
-    })
-    Array.from(this.els_js_toggle).forEach(element => {
-      element.removeEventListener('click', this.eventHandler_click_toggle)
-    })
-
-    Array.from(this.els_js_activateAll).forEach(element => {
-      element.removeEventListener('click', this.eventHandler_click_activateAll)
-    })
-    Array.from(this.els_js_deactivateAll).forEach(element => {
-      element.removeEventListener('click', this.eventHandler_click_deactivateAll)
-    })
-    Array.from(this.els_js_toggleAll).forEach(element => {
-      element.removeEventListener('click', this.eventHandler_click_toggleAll)
-    })
-
-    window.removeEventListener('click', this.eventHandler_clickOutside)
-    window.removeEventListener('keydown', this.eventHandler_keydown)
-    return this
-  }
-
-}
+} DOMUtil
