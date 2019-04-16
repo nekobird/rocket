@@ -10,8 +10,8 @@ export * from './screenModel'
 
 // TWO
 export * from './two/vector2'
-export * from './two/Angle'
-export * from './two/Geo2Util'
+export * from './two/angle'
+export * from './two/geo2Util'
 
 // ANIMATION
 export * from './animation/Animation'
@@ -43,7 +43,7 @@ export * from './event/TouchPoint'
 export * from './event/ScreenEventManager'
 
 // TEXT
-export * from './text/TextBoxModel'
+export * from './text/textBoxModel'
 
 // UI
 export * from './ui/uiTextArea'
