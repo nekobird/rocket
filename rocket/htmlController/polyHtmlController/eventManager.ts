@@ -1,10 +1,31 @@
 export class polyHtmlControllerEventManager {
 
+  private controller
 
   constructor(htmlController: HtmlController) {
-    this.htmlController = htmlController
+    this.controller = htmlController
   }
-
+  private hub_event(event: Event, actionName: ActionName): PolyHTMLController {
+    if (this.isReady === true) {
+      this.isTransitioning = true
+      const trigger = DOMUtil.findAncestorWithClass(
+        <HTMLElement>event.target,
+        this[`className_js_${actionName}`],
+        false
+      )
+      if (
+        typeof trigger !== 'undefined' &&
+        trigger instanceof HTMLElement
+      ) {
+        this.hub_actioDOMUtil
+        this.composeActionFromTrigger(actionName, trigger)
+        )
+      } else {
+        this.endAction()
+      }
+    }
+    return this
+  }
 
   // 2) HANDLE EVENTS
 

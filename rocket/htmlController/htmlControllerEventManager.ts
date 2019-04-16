@@ -3,6 +3,8 @@ export class polyHtmlControllerEventManager {
 
   private controller: HTMLController
 
+  private eventMap
+
   constructor(controller: HTMLController) {
     this.controller = controller
   }

@@ -1,37 +1,31 @@
-namespace HTMLControllerElementManager {
+export type ElementInput = HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>
 
-  export interface ElementManager {
+export interface ElementMapEntry {
+  name: string,
+  selector: string,
+  elements: Elements,
+}
+
+export interface Elements {
+  [name: string]: ElementInput
+}
+export class HTMLControllerElementManager {
+
+  private HTMLController: HTMLController
+
+  private elementMap: ElementMapEntry[]
+
+  constructor(controller: HTMLController) {
+    this.elementMap = []
+    this.HTMLController = controller
+  }
+
+  public initialize() {
 
   }
 
-}
-
-namespace HTMLControllerElementManager {
-  export type Elements = string
-}
-
-
-namespace HTMLController {
-
-  export class ElementManager {
-
-    private HTMLController: HTMLController
-
-    private elementsMap
-    private elements
-
-    constructor(controller: HTMLController) {
-      this.HTMLController = controller
-    }
-
-    public initialize() {
-
-    }
-
-    public updateElements() {
-      this.elements.forEach(element)
-    }
-
+  public updateElements() {
+    this.elements.forEach(element)
   }
 
 }

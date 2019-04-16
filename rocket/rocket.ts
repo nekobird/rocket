@@ -7,11 +7,14 @@ export * from './dom/domUtil'
 
 // SCREEN
 export * from './screenModel'
+export * from './size'
 
 // TWO
-export * from './two/vector2'
 export * from './two/angle'
 export * from './two/geo2Util'
+export * from './two/point'
+export * from './two/vector2'
+export * from './two/vector2Group'
 
 // ANIMATION
 export * from './animation/Animation'

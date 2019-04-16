@@ -1,22 +1,16 @@
 import {
   Angle,
   Num,
+  Point,
 } from '../rocket'
-
-export interface Point {
-  x: number,
-  y: number,
-  [key: string]: any,
-}
 
 export class Vector2 {
 
   public x: number = 0
   public y: number = 0
 
-  constructor(...args) {
-    // @ts-ignore
-    this.setPoint(...args)
+  constructor(x?: number | Point, y?: number) {
+    this.setPoint(x, y)
     return this
   }
 
@@ -33,7 +27,6 @@ export class Vector2 {
     } else {
       this.equals(<Point>x)
     }
-
     return this
   }
 
@@ -523,50 +516,6 @@ export class Vector2 {
     const ml = Math.atan(a) / bh
     const fv = Vector2.equals(v1)
     return fv.moveRadiallyBy(a1, ml)
-  }
-
-  // GROUP
-
-  static addGroupBy(group: Vector2[], by: Point): Vector2[] {
-    return group.map(point => {
-      return point.add(by)
-    })
-  }
-
-  static subtractGroupBy(group: Vector2[], by: Point): Vector2[] {
-    return group.map(point => {
-      return point.subtract(by)
-    })
-  }
-
-  static multiplyGroupBy(group: Vector2[], by: number): Vector2[] {
-    return group.map(point => {
-      return point.multiply(by)
-    })
-  }
-
-  static divideGroupBy(group: Vector2[], by: number): Vector2[] {
-    return group.map(point => {
-      return point.divide(by)
-    })
-  }
-
-  static scaleGroupByFrom(group: Vector2[], by: number, from: Point): Vector2[] {
-    return group.map(point => {
-      return point.scaleByFrom(by, from)
-    })
-  }
-
-  static rotateGroupToFrom(group: Vector2[], to: number, from: Point): Vector2[] {
-    return group.map(point => {
-      return point.rotateToFrom(to, from)
-    })
-  }
-
-  static rotateGroupByFrom(group: Vector2[], by: number, from: Point): Vector2[] {
-    return group.map(point => {
-      return point.rotateByFrom(by, from)
-    })
   }
 
 }
