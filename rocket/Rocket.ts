@@ -3,13 +3,13 @@ export * from './core/num'
 export * from './core/util'
 
 // DOM
-export * from './dom/DOMUtil'
+export * from './dom/domUtil'
 
 // SCREEN
 export * from './screenModel'
 
 // TWO
-export * from './two/Vector2'
+export * from './two/vector2'
 export * from './two/Angle'
 export * from './two/Geo2Util'
 
@@ -46,8 +46,8 @@ export * from './event/ScreenEventManager'
 export * from './text/TextBoxModel'
 
 // UI
-export * from './ui/UITextArea'
-export * from './ui/UITextField'
+export * from './ui/uiTextArea'
+export * from './ui/uiTextField'
 
 // HTML
 export * from './htmlController/polyHtmlController/polyHtmlController'

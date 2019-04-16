@@ -6,9 +6,11 @@ interface Config {
   disableLineBreaks?: boolean,
   disableTabs?: boolean,
   isInFocus?: boolean,
+
   limitNumberOfCharacters?: boolean,
   removeLeadingWhitespaces?: boolean,
   removeMultipleWhitespaces?: boolean,
+
   onBlur?: Function,
   onFocus?: Function,
   onInput?: Function,

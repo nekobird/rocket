@@ -37,7 +37,7 @@ export class UITextField {
   private _eventBlur
   private _eventFocus
   private _eventInput
-  private _eventKeydownw
+  private _eventKeydown
 
   public element
 
