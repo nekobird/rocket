@@ -1,24 +1,50 @@
+import {
+  Group
+} from './groupManager'
+
+import {
+  Config
+} from './config'
+
+import {
+  PolyController
+} from './polyController';
+
+export type ActionName = 'activate' | 'activateAll' | 'deactivate' | 'deactivateAll' | 'toggle' | 'toggleAll'
+
+export interface Action {
+  name?: ActionName,
+
+  groupName: string,
+  group?: Group,
+
+  targetId?: string,
+  targetItem?: HTMLElement,
+
+  trigger?: HTMLElement,
+}
+
 export class ActionManager {
 
-  public actionIsRunning: boolean = false
+  public isRunning: boolean = false
+  public isNested: boolean = false
 
-  private controller
+  private controller: PolyController
 
-  constructor() {
-
+  constructor(controller: PolyController) {
+    this.controller = controller
   }
 
-
-  private hub_action(action: Action, callback?: Function): PolyHTMLController {
-
+  private hubAction(action: Action, callback?: Function) {
     let preAction: Promise<void>
+    let config: Config = this.controller.config
 
-    if (this.isNestedAction === false) {
+    if (this.isNested === false) {
       preAction = new Promise(resolve => {
-        this.isNestedAction = true
-        this.before_action(action, this)
+        this.isNested = true
+        config.beforeAction(action, this)
           .then(() => {
-            this.isNestedAction = false
+            this.isNested = false
             resolve()
           })
       })
@@ -45,15 +71,15 @@ export class ActionManager {
     return this
   }
 
-  private item_activate(action: Action): PolyHTMLController {
-    action.targetItem.classList.add(this.className_active)
+  private item_activate(action: Action) {
+    action.targetItem.classList.add(this.controller.config.className.itemActive)
     action.group.activeItems.push(action.targetItem)
     action.group.isActive = true
     return this
   }
 
-  private item_deactivate(action: Action): PolyHTMLController {
-    action.targetItem.classList.remove(this.className_active)
+  private item_deactivate(action: Action) {
+    action.targetItem.classList.remove(this.controller.config.className.itemActive)
     const index: number = action.group.activeItems.indexOf(action.targetItem)
     action.group.activeItems.slice(index, 1)
     if (action.group.activeItems.length === 0) {
@@ -64,7 +90,7 @@ export class ActionManager {
 
   // 5) HANDLE ACTIONS
 
-  private handleAction_activation(actionName: 'activate' | 'deactivate', action: Action, callback?: Function): PolyHTMLController {
+  private handleAction_activation(actionName: 'activate' | 'deactivate', action: Action, callback?: Function) {
     if (this[`condition_${actionName}`](action, this) === true) {
       this[`before_${actionName}`](action, this)
         .then(() => {
@@ -73,8 +99,8 @@ export class ActionManager {
         })
         .then(() => {
           this.endAction(callback)
-          if (this.isNestedAction === false) {
-            this.after_action(action, this)
+          if (this.isNested === false) {
+            this.controller.config.afterAction(action, this)
           }
         })
     } else {
@@ -83,9 +109,9 @@ export class ActionManager {
     return this
   }
 
-  private handleAction_toggle(action: Action, callback?: Function): PolyHTMLController {
-    if (this.condition_toggle(action, this) === true) {
-      if (action.targetItem.classList.contains(this.className_active) === true) {
+  private handleAction_toggle(action: Action, callback?: Function) {
+    if (this.conditionToggle(action, this) === true) {
+      if (action.targetItem.classList.contains(this.classNameActive) === true) {
         this.handleAction_activation('deactivate', action, callback)
       } else {
         this.handleAction_activation('activate', action, callback)
@@ -96,7 +122,7 @@ export class ActionManager {
     return this
   }
 
-  private handleAction_activationAll(action: Action, callback?: Function): PolyHTMLController {
+  private handleAction_activationAll(action: Action, callback?: Function) {
     if (
       this[`condition_${action.name}`](action, this) === true &&
       action.group.items.length > 0
@@ -110,11 +136,11 @@ export class ActionManager {
         }, action)
         // Handle Action
         if (action.name === 'activateAll') {
-          if (item.classList.contains(this.className_active) === false) {
+          if (item.classList.contains(this.className.itemActive) === false) {
             this.handleAction_activation('activate', individualAction, callback)
           }
         } else if (action.name === 'deactivateAll') {
-          if (item.classList.contains(this.className_active) === true) {
+          if (item.classList.contains(this.className.itemActive) === true) {
             this.handleAction_activation('deactivate', individualAction, callback)
           }
         } else if (action.name === 'toggleAll') {
@@ -138,11 +164,12 @@ export class ActionManager {
   }
 
   private composeAction(actionName: ActionName, groupName: string, id?: string): Action {
+    let config = this.controller.config.selector.items
     let action: Action = this.createAction(actionName, groupName)
     if (typeof id === 'string') {
       action.targetId = id
       action.targetItem = document.querySelector(
-        `${this.selector_item}[data-group="${groupName}"][data-id="${id}"]`
+        `${this.controller.config.selector.items}[data-group="${groupName}"][data-id="${id}"]`
       )
     }
     return action
@@ -159,7 +186,7 @@ export class ActionManager {
   }
 
   private endAction(callback?: Function): ActionManager {
-    if (this.isNestedAction === false) {
+    if (this.isNested === false) {
       this.isTransitioning = false
     }
     if (typeof callback === 'function') { callback() }

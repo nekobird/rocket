@@ -1,10 +1,10 @@
-import { PolyHTMLController } from '../polyHTMLController'
+import { PolyController } from '../polyController'
 import { Group } from './group'
 
 export interface ListenToHook {
   (
     event: Event,
     group: Group,
-    context: PolyHTMLController
+    context: PolyController,
   ): void
 }

@@ -1,9 +1,9 @@
-import { PolyHTMLController } from '../polyHTMLController'
+import { PolyController } from '../polyController'
 import { Action } from './action'
 
 export interface BeforeActionCallback {
   (
     action: Action,
-    context?: PolyHTMLController,
+    context?: PolyController,
   ): Promise<any>
 }

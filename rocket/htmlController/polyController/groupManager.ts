@@ -1,20 +1,39 @@
-export class polyHtmlControllerGroups {
+import {
+  PolyController,
+} from './polyController'
 
-  // GROUPS
+export interface Groups {
+  [groupName: string]: Group,
+}
+
+export interface Group {
+  name: string,
+  items: NodeListOf<HTMLElement>,
+  activeItems?: HTMLElement[],
+  isActive: boolean,
+}
+
+export class GroupManager {
+
   private groups: Groups = {}
 
-  private controller
+  private controller: PolyController
 
-  constructor(controller) {
-
+  constructor(controller: PolyController) {
+    this.controller = controller
   }
 
   get groupCount(): number {
     return Object.keys(this.groups).length
   }
-  private initialize() {
+
+  public getGroupProperties(groupName: string): Group {
+    return this.groups[groupName]
+  }
+
+  private initialize(): GroupManager {
     // Initialize Groups
-    const items = this.controller.elements.get('items')
+    const items = this.controller.elementManager.getElement('items')
     Array.from(items.elements.forEach(item => {
       const groupName: string = item.dataset.group
       const items: NodeListOf<HTMLElement> = document.querySelectorAll(
@@ -31,22 +50,20 @@ export class polyHtmlControllerGroups {
     return this
   }
 
-  private initializeActiveItems(): PolyHTMLController {
+  private initializeActiveItems(): GroupManager {
     if (this.groupCount > 0) {
-
       Object.keys(this.groups).forEach(groupName => {
         const group: Group = this.groups[groupName]
-
         Array.from(group.items).forEach((item, index) => {
-          if (item.classList.contains(this.className_active)) {
+          if (item.classList.contains(this.classNameActive)) {
             group.activeItems.push(item)
             group.isActive = true
           }
         })
       })
-
       this.isReady = true
     }
     return this
   }
+
 }
