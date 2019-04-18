@@ -15,15 +15,15 @@ export interface Group {
 
 export class GroupManager {
 
-  private groups: Groups = {}
-
   private controller: PolyController
+
+  public groups: Groups = {}
 
   constructor(controller: PolyController) {
     this.controller = controller
   }
 
-  get groupCount(): number {
+  public get groupCount(): number {
     return Object.keys(this.groups).length
   }
 
@@ -31,22 +31,22 @@ export class GroupManager {
     return this.groups[groupName]
   }
 
-  private initialize(): GroupManager {
-    // Initialize Groups
-    const items = this.controller.elementManager.getElement('items')
-    Array.from(items.elements.forEach(item => {
-      const groupName: string = item.dataset.group
-      const items: NodeListOf<HTMLElement> = document.querySelectorAll(
-        `${items.selector}[data-group="${groupName}"]`
-      )
-      // Initialize Group
-      this.groups[groupName] = {
-        name: groupName,
-        items: items.elements,
-        activeItems: [],
-        isActive: false,
-      }
-    })
+  public initialize(): GroupManager {
+    const items = this.controller.elementManager.getEntry('items')
+    if (items) {
+      items.elements.forEach(item => {
+        const groupName: string = item.dataset.group
+        const elementsItems: NodeListOf<HTMLElement> = document.querySelectorAll(
+          `${this.controller.config.selector.items}[data-group="${groupName}"]`
+        )
+        this.groups[groupName] = {
+          name: groupName,
+          items: elementsItems,
+          activeItems: [],
+          isActive: false,
+        }
+      })
+    }
     return this
   }
 
@@ -55,13 +55,13 @@ export class GroupManager {
       Object.keys(this.groups).forEach(groupName => {
         const group: Group = this.groups[groupName]
         Array.from(group.items).forEach((item, index) => {
-          if (item.classList.contains(this.classNameActive)) {
+          if (item.classList.contains(this.controller.config.className.itemActive)) {
             group.activeItems.push(item)
             group.isActive = true
           }
         })
       })
-      this.isReady = true
+      this.controller.isReady = true
     }
     return this
   }

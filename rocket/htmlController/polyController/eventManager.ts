@@ -4,7 +4,11 @@ import {
 
 import {
   ActionName
-} from './types'
+} from './actionManager'
+
+import {
+  ElementMapEntry, ElementMap
+} from './elementManager'
 
 import {
   PolyController
@@ -15,22 +19,25 @@ export interface EventMap {
 }
 
 export interface EventMapEntry {
-  elementName: string,
-  eventType: string,
-  handler: Function,
-  action: string,
+  elementName: string, // element name associated to an element in ElementManager
+  eventType: string, // event string
+  handler: Function, // event handler function
+  action: string, // action string to be passed to ActionHub
 }
 
 export class EventManager {
+
   private uppercaseFirstLetter(string: string): string {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
-  private eventMap
-  private controller
+
+  private eventMap: EventMap
+
+  private controller: PolyController
 
   constructor(controller: PolyController) {
-    this.eventMap = {}
     this.controller = controller
+    this.eventMap = {}
   }
 
   private initialize() {
@@ -38,16 +45,25 @@ export class EventManager {
   }
 
   private mapListenerToEventHandler() {
-    Array.from(this.eventMap).forEach(eventMap => {
-      eventMap.target.addEventListener(eventMap.event, eventMap.handler)
+    Object.keys(this.eventMap).forEach(name => {
+      const entry: ElementMapEntry = this.controller.elementManager.getEntry[
+        this.eventMap[name].elementName
+      ]
+      entry.elements.forEach(element => {
+        element.addEventListener(
+          this.eventMap[name].eventType,
+          <EventListener>this.eventMap[name].handler
+        )
+      })
     })
+    return this
   }
 
   private initializeEventMap() {
     Object.keys(this.eventMap).forEach(name => {
-      let actionName: string = this.eventMap[name].action
+      let actionName: ActionName = this.eventMap[name].action
       this.eventMap[name].handler = (event: Event) => {
-        this.hubEvent(event, actionName)
+        this.eventHub(event, actionName)
       }
     })
   }
@@ -62,10 +78,10 @@ export class EventManager {
     })
   }
 
-  private hubEvent(event: Event, actionName: ActionName) {
+  private eventHub(event: Event, actionName: ActionName) {
     this.controller.elementManager.getEntry('js')
     if (this.controller.isReady === true) {
-      this.controller.isTransitioning = true
+      this.controller.actionManager.isRunning = true
       const trigger = DOMUtil.findAncestorWithClass(
         <HTMLElement>event.target,
         this[`className_js_${actionName}`],
@@ -75,43 +91,43 @@ export class EventManager {
         typeof trigger !== 'undefined' &&
         trigger instanceof HTMLElement
       ) {
-        this.controller.actionManager.hubAction
-        this.controller.actionManager.composeActionFromTrigger(actionName, trigger)
+        this.controller.actionManager.hubAction(
+          this.controller.actionManager.composeActionFromEvent(actionName, trigger)
         )
       } else {
-        this.endAction()
+        this.controller.actionManager.endAction()
       }
     }
     return this
   }
 
-  private eventHandler_clickOutside = (event: Event) => {
-    if (
-      this.controller.config.listenToClickOutside === true &&
-      this.isTransitioning === false
-    ) {
-      Object.keys(this.controller.groups).forEach(groupName => {
-        let group: Group = this.controller.groups[groupName]
-        if (
-          group.isActive == true &&
-          DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItems) === false
-        ) {
-          this.controller.config.onClickOutside(event, group, this)
-        }
-      })
-    }
-  }
+  // private eventHandler_clickOutside = (event: Event) => {
+  //   if (
+  //     this.controller.config.listenToClickOutside === true &&
+  //     this.isTransitioning === false
+  //   ) {
+  //     Object.keys(this.controller.groups).forEach(groupName => {
+  //       let group: Group = this.controller.groups[groupName]
+  //       if (
+  //         group.isActive == true &&
+  //         DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItems) === false
+  //       ) {
+  //         this.controller.config.onClickOutside(event, group, this)
+  //       }
+  //     })
+  //   }
+  // }
 
-  private eventHandler_keydown = (event: Event) => {
-    if (
-      this.listenTo_keydown === true &&
-      this.isTransitioning === false
-    ) {
-      Object.keys(this.groups).forEach(groupName => {
-        let group: Group = this.groups[groupName]
-        this.onKeydown(event, group, this)
-      })
-    }
-  }
+  // private eventHandler_keydown = (event: Event) => {
+  //   if (
+  //     this.controller.config.listenToKeydown === true &&
+  //     this.isTransitioning === false
+  //   ) {
+  //     Object.keys(this.controller.groupManager.groups).forEach(groupName => {
+  //       let group: Group = this.controller.groupManager.groups[groupName]
+  //       this.controller.config.onKeydown(event, group, this)
+  //     })
+  //   }
+  // }
 
 }

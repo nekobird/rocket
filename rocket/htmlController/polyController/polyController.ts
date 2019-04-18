@@ -3,10 +3,6 @@ import {
 } from '../../rocket'
 
 import {
-  Groups
-} from './interfaces/index'
-
-import {
   Config,
   DEFAULT_CONFIG,
 } from './config'
@@ -20,6 +16,7 @@ import {
 } from './eventManager'
 
 import {
+  Group,
   GroupManager,
 } from './groupManager'
 
@@ -29,14 +26,15 @@ import {
 
 export class PolyController {
 
-  private isReady: boolean = false
+  public isReady: boolean = false
 
-  private config: Config
-  private actionManager: ActionManager
+  public config: Config
 
-  private elementManager: ElementManager
-  private groupManager: GroupManager
-  private eventManager: EventManager
+  public elementManager: ElementManager
+  public groupManager: GroupManager
+  public actionManager: ActionManager
+
+  public eventManager: EventManager
 
   constructor(config: Config) {
     this.config = Object.assign({}, DEFAULT_CONFIG)
@@ -49,14 +47,19 @@ export class PolyController {
   }
 
   private initialize() {
-    this.actionManager.initialize(this)
-    this.elementManager.initialize(this)
-    this.groupManager.initialize(this)
-    this.eventManager.initialize(this)
+    this.elementManager = new ElementManager(this)
+    this.groupManager = new GroupManager(this)
+    this.actionManager = new ActionManager(this)
+    this.eventManager = new EventManager(this)
+
+    this.mapConfigToElement()
+    this.elementManager.loadElements()
+
+    this.groupManager.initialize()
   }
 
-  private mapConfigToElements() {
-    let map = {
+  private mapConfigToElement() {
+    return {
       'items': this.config.selector.items,
       'jsActivate': `.${this.config.className.jsActivate}`,
       'jsDeactivate': `.${this.config.className.jsDeactivate}`,
@@ -65,7 +68,17 @@ export class PolyController {
       'jsDeactivateAll': `.${this.config.className.jsDeactivateAll}`,
       'jsToggleAll': `.${this.config.className.jsToggleAll}`,
     }
-    this.elementManager.mapElementSelector(map)
+  }
+
+  private mapActionToEvent() {
+    return {
+      jsActivate: ['click', 'touch'],
+      jsDeactivate: ['click', 'touch'],
+      jsToggle: ['click', 'touch'],
+      jsActivateAll: ['click', 'touch'],
+      jsDeactivateAll: ['click', 'touch'],
+      jsToggleAll: ['click', 'touch'],
+    }
   }
 
   public itemIsActive(groupName: string, id: string): boolean {
@@ -90,8 +103,8 @@ export class PolyController {
 
   public activate(groupName: string, id: string): Promise<any> {
     return new Promise(resolve => {
-      this.hubAction(
-        this.composeAction('activate', groupName, id),
+      this.actionManager.hubAction(
+        this.actionManager.composeAction('activate', groupName, id),
         () => { resolve() }
       )
     })
@@ -99,8 +112,8 @@ export class PolyController {
 
   public deactivate(groupName: string, id: string): Promise<any> {
     return new Promise(resolve => {
-      this.hubAction(
-        this.composeAction('deactivate', groupName, id),
+      this.actionManager.hubAction(
+        this.actionManager.composeAction('deactivate', groupName, id),
         () => { resolve() }
       )
     })
@@ -108,8 +121,8 @@ export class PolyController {
 
   public toggle(groupName: string, id: string): Promise<any> {
     return new Promise(resolve => {
-      this.hubAction(
-        this.composeAction('toggle', groupName, id),
+      this.actionManager.hubAction(
+        this.actionManager.composeAction('toggle', groupName, id),
         () => { resolve() }
       )
     })
@@ -117,8 +130,8 @@ export class PolyController {
 
   public activateAll(groupName: string): Promise<any> {
     return new Promise(resolve => {
-      this.hubAction(
-        this.composeAction('activateAll', groupName),
+      this.actionManager.hubAction(
+        this.actionManager.composeAction('activateAll', groupName),
         () => { resolve() }
       )
     })
@@ -126,8 +139,8 @@ export class PolyController {
 
   public deactivateAll(groupName: string): Promise<any> {
     return new Promise(resolve => {
-      this.hubAction(
-        this.composeAction('deactivateAll', groupName),
+      this.actionManager.hubAction(
+        this.actionManager.composeAction('deactivateAll', groupName),
         () => { resolve() }
       )
     })
@@ -135,8 +148,8 @@ export class PolyController {
 
   public toggleAll(groupName: string): Promise<any> {
     return new Promise(resolve => {
-      this.hubAction(
-        this.composeAction('toggleAll', groupName),
+      this.actionManager.hubAction(
+        this.actionManager.composeAction('toggleAll', groupName),
         () => { resolve() }
       )
     })

@@ -59,7 +59,7 @@ export class DOMUtil {
   static hasAncestor(element: HTMLElement, ancestors: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>): DOMUtilResult {
     const identifierFn: IdentifierFn = _element => {
       if (typeof ancestors[Symbol.iterator] === 'function') {
-        return Array.from(<NodeListOf<HTMLElement>>ancestors).indexOf(_element) !== -1
+        return [...<NodeListOf<HTMLElement>>ancestors].indexOf(_element) !== -1
       } else {
         return _element === ancestors
       }
@@ -117,7 +117,7 @@ export class DOMUtil {
   static hasDescendant(element: HTMLElement, descendants: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>): DOMUtilResult {
     const identifierFn: IdentifierFn = _element => {
       if (typeof descendants[Symbol.iterator] === 'function') {
-        return Array.from(<NodeListOf<HTMLElement>>descendants).indexOf(_element) !== -1
+        return [...<NodeListOf<HTMLElement>>descendants].indexOf(_element) !== -1
       } else {
         return _element === descendants
       }

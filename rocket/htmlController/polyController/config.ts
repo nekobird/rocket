@@ -10,8 +10,9 @@ import {
   PolyController
 } from './polyController';
 
-
 export interface Config {
+  listenToClickOutside: false,
+  listenToKeydown: false,
   selector: {
     items: string
   },
@@ -23,7 +24,40 @@ export interface Config {
     jsActivateAll: string,
     jsDeactivateAll: string,
     jsToggleAll: string,
-  }
+  },
+  conditionActivate: ConditionHook,
+  conditionDeactivate: ConditionHook,
+  conditionToggle: ConditionHook,
+  conditionActivateAll: ConditionHook,
+  conditionDeactivateAll: ConditionHook,
+  conditionToggleAll: ConditionHook,
+  beforeActivate: BeforeActionCallback,
+  afterActivate: AfterActionCallback,
+  beforeDeactivate: BeforeActionCallback,
+  afterDeactivate: AfterActionCallback,
+  beforeAction: BeforeActionCallback,
+  afterAction: AfterActionCallback,
+}
+
+// Add maps here...
+
+export const map = {
+  'items': this.config.selector.items,
+  'jsActivate': `.${this.config.className.jsActivate}`,
+  'jsDeactivate': `.${this.config.className.jsDeactivate}`,
+  'jsToggle': `.${this.config.className.jsToggle}`,
+  'jsActivateAll': `.${this.config.className.jsActivateAll}`,
+  'jsDeactivateAll': `.${this.config.className.jsDeactivateAll}`,
+  'jsToggleAll': `.${this.config.className.jsToggleAll}`,
+}
+
+export const mapActionToEvent = {
+  jsActivate: ['click', 'touch'],
+  jsDeactivate: ['click', 'touch'],
+  jsToggle: ['click', 'touch'],
+  jsActivateAll: ['click', 'touch'],
+  jsDeactivateAll: ['click', 'touch'],
+  jsToggleAll: ['click', 'touch'],
 }
 
 export const DEFAULT_CONFIG: Config = {
@@ -83,8 +117,10 @@ export const DEFAULT_CONFIG: Config = {
       resolve()
     })
   },
+
   beforeAction: (action, context) => { return Promise.resolve() },
   afterAction: (action, context) => { },
-  onClickOutside: (event, group, context) => { },
-  onKeydown: (event, group, context) => { },
+
+  // onClickOutside: (event, group, context) => { },
+  // onKeydown: (event, group, context) => { },
 }

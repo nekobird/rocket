@@ -1,3 +1,7 @@
+import {
+  PolyController
+} from './polyController';
+
 export interface ElementSelectorMap {
   [name: string]: string
 }
@@ -13,9 +17,12 @@ export interface ElementMapEntry {
 
 export class ElementManager {
 
+  private controller: PolyController
+
   private elementMap: ElementMap
 
-  constructor() {
+  constructor(controller: PolyController) {
+    this.controller = controller
     this.elementMap = {}
   }
 

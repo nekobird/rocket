@@ -35,14 +35,14 @@ export class ActionManager {
     this.controller = controller
   }
 
-  private hubAction(action: Action, callback?: Function) {
+  public hubAction(action: Action, callback?: Function) {
     let preAction: Promise<void>
     let config: Config = this.controller.config
 
     if (this.isNested === false) {
       preAction = new Promise(resolve => {
         this.isNested = true
-        config.beforeAction(action, this)
+        config.beforeAction(action, this.controller)
           .then(() => {
             this.isNested = false
             resolve()
@@ -72,7 +72,8 @@ export class ActionManager {
   }
 
   private item_activate(action: Action) {
-    action.targetItem.classList.add(this.controller.config.className.itemActive)
+    let config: Config = this.controller.config
+    action.targetItem.classList.add(config.className.itemActive)
     action.group.activeItems.push(action.targetItem)
     action.group.isActive = true
     return this
@@ -100,7 +101,7 @@ export class ActionManager {
         .then(() => {
           this.endAction(callback)
           if (this.isNested === false) {
-            this.controller.config.afterAction(action, this)
+            this.controller.config.afterAction(action, this.controller)
           }
         })
     } else {
@@ -110,8 +111,8 @@ export class ActionManager {
   }
 
   private handleAction_toggle(action: Action, callback?: Function) {
-    if (this.conditionToggle(action, this) === true) {
-      if (action.targetItem.classList.contains(this.classNameActive) === true) {
+    if (this.controller.config.conditionToggle(action, this.controller) === true) {
+      if (action.targetItem.classList.contains(this.controller.config.className.itemActive) === true) {
         this.handleAction_activation('deactivate', action, callback)
       } else {
         this.handleAction_activation('activate', action, callback)
@@ -136,11 +137,11 @@ export class ActionManager {
         }, action)
         // Handle Action
         if (action.name === 'activateAll') {
-          if (item.classList.contains(this.className.itemActive) === false) {
+          if (item.classList.contains(this.controller.config.className.itemActive) === false) {
             this.handleAction_activation('activate', individualAction, callback)
           }
         } else if (action.name === 'deactivateAll') {
-          if (item.classList.contains(this.className.itemActive) === true) {
+          if (item.classList.contains(this.controller.config.className.itemActive) === true) {
             this.handleAction_activation('deactivate', individualAction, callback)
           }
         } else if (action.name === 'toggleAll') {
@@ -159,11 +160,11 @@ export class ActionManager {
     return {
       name: actionName,
       groupName: groupName,
-      group: this.groups[groupName],
+      group: this.controller.groupManager.groups[groupName],
     }
   }
 
-  private composeAction(actionName: ActionName, groupName: string, id?: string): Action {
+  public composeAction(actionName: ActionName, groupName: string, id?: string): Action {
     let config = this.controller.config.selector.items
     let action: Action = this.createAction(actionName, groupName)
     if (typeof id === 'string') {
@@ -175,7 +176,7 @@ export class ActionManager {
     return action
   }
 
-  private composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action {
+  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action {
     const groupName: string = trigger.dataset.group
     let whitelist: string[] = ['activate', 'deactivate', 'toggle']
     if (whitelist.indexOf(actionName) !== -1) {
@@ -185,11 +186,13 @@ export class ActionManager {
     }
   }
 
-  private endAction(callback?: Function): ActionManager {
+  public endAction(callback?: Function): ActionManager {
     if (this.isNested === false) {
-      this.isTransitioning = false
+      this.isRunning = false
     }
-    if (typeof callback === 'function') { callback() }
+    if (typeof callback === 'function') {
+      callback()
+    }
     return this
   }
 
