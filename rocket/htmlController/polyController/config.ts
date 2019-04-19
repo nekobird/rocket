@@ -1,125 +1,163 @@
 import {
-  AfterActionCallback,
-  BeforeActionCallback,
-  ConditionHook,
-  Hook,
-  ListenToHook,
-} from './interfaces/index'
+  PolyController
+} from '../../rocket';
 
 import {
-  PolyController
-} from './polyController';
+  Group
+} from './groupManager';
+
+import {
+  Action
+} from './actionManager'
+
+import {
+  EventEntry
+} from './eventManager';
+
+// INTERFACE
+export interface BeforeActionCallback {
+  (
+    action: Action,
+    context?: PolyController,
+  ): Promise<any>
+}
+
+export interface AfterActionCallback {
+  (
+    action: Action,
+    context?: PolyController,
+  ): void
+}
+
+export interface Hook {
+  (
+    action: Action,
+    context?: PolyController,
+  ): Promise<any>
+}
+
+export interface ConditionHook {
+  (
+    action: Action,
+    context?: PolyController,
+  ): boolean
+}
+
+export interface ListenToHook {
+  (
+    event: Event,
+    group: Group,
+    context: PolyController,
+  ): void
+}
 
 export interface Config {
-  listenToClickOutside: false,
-  listenToKeydown: false,
-  selector: {
-    items: string
+  listenToClickOutside?: false,
+  listenToKeydown?: false,
+
+  selectorItems?: string,
+
+  classNameItemActive?: string,
+  classNameJsActivate?: string,
+  classNameJsDeactivate?: string,
+  classNameJsToggle?: string,
+  classNameJsActivateAll?: string,
+  classNameJsDeactivateAll?: string,
+  classNameJsToggleAll?: string,
+
+  conditionActivate?: ConditionHook,
+  conditionDeactivate?: ConditionHook,
+  conditionToggle?: ConditionHook,
+
+  conditionActivateAll?: ConditionHook,
+  conditionDeactivateAll?: ConditionHook,
+  conditionToggleAll?: ConditionHook,
+
+  beforeDeactivate?: BeforeActionCallback,
+  afterDeactivate?: AfterActionCallback,
+
+  beforeActivate?: BeforeActionCallback,
+  afterActivate?: AfterActionCallback,
+
+  beforeAction?: BeforeActionCallback,
+  afterAction?: AfterActionCallback,
+}
+
+export const EVENT_ENTRY_LIST: EventEntry[] = [
+  {
+    name: 'activate',
+    action: 'activate',
+    target: 'jsActivate',
+    event: ['click', 'touch'],
+    listener: undefined,
   },
-  className: {
-    itemActive: string,
-    jsActivate: string,
-    jsDeactivate: string,
-    jsToggle: string,
-    jsActivateAll: string,
-    jsDeactivateAll: string,
-    jsToggleAll: string,
+  {
+    name: 'deactivate',
+    action: 'deactivate',
+    target: 'jsDeactivate',
+    event: ['click', 'touch'],
+    listener: undefined,
   },
-  conditionActivate: ConditionHook,
-  conditionDeactivate: ConditionHook,
-  conditionToggle: ConditionHook,
-  conditionActivateAll: ConditionHook,
-  conditionDeactivateAll: ConditionHook,
-  conditionToggleAll: ConditionHook,
-  beforeActivate: BeforeActionCallback,
-  afterActivate: AfterActionCallback,
-  beforeDeactivate: BeforeActionCallback,
-  afterDeactivate: AfterActionCallback,
-  beforeAction: BeforeActionCallback,
-  afterAction: AfterActionCallback,
-}
-
-// Add maps here...
-
-export const map = {
-  'items': this.config.selector.items,
-  'jsActivate': `.${this.config.className.jsActivate}`,
-  'jsDeactivate': `.${this.config.className.jsDeactivate}`,
-  'jsToggle': `.${this.config.className.jsToggle}`,
-  'jsActivateAll': `.${this.config.className.jsActivateAll}`,
-  'jsDeactivateAll': `.${this.config.className.jsDeactivateAll}`,
-  'jsToggleAll': `.${this.config.className.jsToggleAll}`,
-}
-
-export const mapActionToEvent = {
-  jsActivate: ['click', 'touch'],
-  jsDeactivate: ['click', 'touch'],
-  jsToggle: ['click', 'touch'],
-  jsActivateAll: ['click', 'touch'],
-  jsDeactivateAll: ['click', 'touch'],
-  jsToggleAll: ['click', 'touch'],
-}
+  {
+    name: 'toggle',
+    action: 'toggle',
+    target: 'jsToggle',
+    event: ['click', 'touch'],
+    listener: undefined,
+  },
+  {
+    name: 'activateAll',
+    action: 'activateAll',
+    target: 'jsActivateAll',
+    event: ['click', 'touch'],
+    listener: undefined,
+  },
+  {
+    name: 'deactivateAll',
+    action: 'deactivateAll',
+    target: 'jsDeactivateAll',
+    event: ['click', 'touch'],
+    listener: undefined,
+  },
+  {
+    name: 'toggleAll',
+    action: 'toggleAll',
+    target: 'jsToggleAll',
+    event: ['click', 'touch'],
+    listener: undefined,
+  },
+]
 
 export const DEFAULT_CONFIG: Config = {
   listenToClickOutside: false,
   listenToKeydown: false,
 
-  selector: {
-    items: '.item',
-  },
+  selectorItems: '.item',
 
-  className: {
-    itemActive: '__active',
-    jsActivate: 'js_activate',
-    jsDeactivate: 'js_deactivate',
-    jsToggle: 'js_toggle',
-    jsActivateAll: 'js_activateAll',
-    jsDeactivateAll: 'js_deactivateAll',
-    jsToggleAll: 'js_toggleAll',
-  },
+  classNameItemActive: '__active',
+  classNameJsActivate: 'js_activate',
+  classNameJsDeactivate: 'js_deactivate',
+  classNameJsToggle: 'js_toggle',
+  classNameJsActivateAll: 'js_activateAll',
+  classNameJsDeactivateAll: 'js_deactivateAll',
+  classNameJsToggleAll: 'js_toggleAll',
 
-  conditionActivate: (action, context) => {
-    return true
-  },
-  conditionDeactivate: (action, context) => {
-    return true
-  },
-  conditionToggle: (action, context) => {
-    return true
-  },
-  conditionActivateAll: (action, context) => {
-    return true
-  },
-  conditionDeactivateAll: (action, context) => {
-    return true
-  },
-  conditionToggleAll: (action, context) => {
-    return true
-  },
 
-  beforeActivate: (action, context) => {
-    return new Promise(resolve => {
-      resolve()
-    })
-  },
-  afterActivate: (action, context) => {
-    return new Promise(resolve => {
-      resolve()
-    })
-  },
-  beforeDeactivate: (action, context) => {
-    return new Promise(resolve => {
-      resolve()
-    })
-  },
-  afterDeactivate: (action, context) => {
-    return new Promise(resolve => {
-      resolve()
-    })
-  },
+  conditionActivate: (action, context) => { return true },
+  conditionDeactivate: (action, context) => { return true },
+  conditionToggle: (action, context) => { return true },
+  conditionActivateAll: (action, context) => { return true },
+  conditionDeactivateAll: (action, context) => { return true },
+  conditionToggleAll: (action, context) => { return true },
+
+  beforeDeactivate: (action, context) => { return Promise.resolve() },
+  afterDeactivate: (action, context) => { return Promise.resolve() },
+
+  beforeActivate: (action, context) => { return Promise.resolve() },
+  afterActivate: (action, context) => { return Promise.resolve() },
 
   beforeAction: (action, context) => { return Promise.resolve() },
-  afterAction: (action, context) => { },
+  afterAction: (action, context) => { return Promise.resolve() },
 
   // onClickOutside: (event, group, context) => { },
   // onKeydown: (event, group, context) => { },

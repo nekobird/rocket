@@ -2,13 +2,17 @@ import {
   PolyController,
 } from './polyController'
 
+import {
+  ElementEntry, ElementManager
+} from './elementManager';
+
 export interface Groups {
   [groupName: string]: Group,
 }
 
 export interface Group {
   name: string,
-  items: NodeListOf<HTMLElement>,
+  items: HTMLElement[],
   activeItems?: HTMLElement[],
   isActive: boolean,
 }
@@ -16,34 +20,32 @@ export interface Group {
 export class GroupManager {
 
   private controller: PolyController
-
   public groups: Groups = {}
 
   constructor(controller: PolyController) {
     this.controller = controller
   }
 
-  public get groupCount(): number {
-    return Object.keys(this.groups).length
+  public initialize() {
+    this
+      .initializeGroups()
+      .initializeActiveItems()
+    return this
   }
 
-  public getGroupProperties(groupName: string): Group {
-    return this.groups[groupName]
-  }
-
-  public initialize(): GroupManager {
-    const items = this.controller.elementManager.getEntry('items')
+  public initializeGroups(): GroupManager {
+    const items: ElementEntry | false = this.controller.elementManager.getElementEntry('items')
     if (items) {
       items.elements.forEach(item => {
         const groupName: string = item.dataset.group
-        const elementsItems: NodeListOf<HTMLElement> = document.querySelectorAll(
-          `${this.controller.config.selector.items}[data-group="${groupName}"]`
-        )
+        const elementsItems: HTMLElement[] = Array.from(document.querySelectorAll(
+          `${this.controller.config.selectorItems}[data-group="${groupName}"]`
+        ))
         this.groups[groupName] = {
-          name: groupName,
-          items: elementsItems,
           activeItems: [],
           isActive: false,
+          items: elementsItems,
+          name: groupName,
         }
       })
     }
@@ -55,7 +57,7 @@ export class GroupManager {
       Object.keys(this.groups).forEach(groupName => {
         const group: Group = this.groups[groupName]
         Array.from(group.items).forEach((item, index) => {
-          if (item.classList.contains(this.controller.config.className.itemActive)) {
+          if (item.classList.contains(this.controller.config.classNameItemActive)) {
             group.activeItems.push(item)
             group.isActive = true
           }
@@ -64,6 +66,14 @@ export class GroupManager {
       this.controller.isReady = true
     }
     return this
+  }
+
+  public get groupCount(): number {
+    return Object.keys(this.groups).length
+  }
+
+  public getGroupProperties(groupName: string): Group {
+    return this.groups[groupName]
   }
 
 }

@@ -1,6 +1,7 @@
 // CORE
 export * from './core/num'
 export * from './core/util'
+export * from './core/stringUtil'
 
 // DOM
 export * from './dom/domUtil'

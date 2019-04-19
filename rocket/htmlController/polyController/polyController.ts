@@ -43,7 +43,7 @@ export class PolyController {
   }
 
   public setConfig(config: Config) {
-    Object.assign(this, config)
+    Object.assign(this.config, config)
   }
 
   private initialize() {
@@ -52,41 +52,17 @@ export class PolyController {
     this.actionManager = new ActionManager(this)
     this.eventManager = new EventManager(this)
 
-    this.mapConfigToElement()
-    this.elementManager.loadElements()
-
+    this.elementManager.initialize()
     this.groupManager.initialize()
-  }
-
-  private mapConfigToElement() {
-    return {
-      'items': this.config.selector.items,
-      'jsActivate': `.${this.config.className.jsActivate}`,
-      'jsDeactivate': `.${this.config.className.jsDeactivate}`,
-      'jsToggle': `.${this.config.className.jsToggle}`,
-      'jsActivateAll': `.${this.config.className.jsActivateAll}`,
-      'jsDeactivateAll': `.${this.config.className.jsDeactivateAll}`,
-      'jsToggleAll': `.${this.config.className.jsToggleAll}`,
-    }
-  }
-
-  private mapActionToEvent() {
-    return {
-      jsActivate: ['click', 'touch'],
-      jsDeactivate: ['click', 'touch'],
-      jsToggle: ['click', 'touch'],
-      jsActivateAll: ['click', 'touch'],
-      jsDeactivateAll: ['click', 'touch'],
-      jsToggleAll: ['click', 'touch'],
-    }
+    this.eventManager.initialize()
   }
 
   public itemIsActive(groupName: string, id: string): boolean {
     const item: HTMLElement = document.querySelector(
-      `${this.config.selector.items}[data-group="${groupName}"][data-id="${id}"]`
+      `${this.config.selectorItems}[data-group="${groupName}"][data-id="${id}"]`
     )
     if (item !== null && item instanceof HTMLElement) {
-      return item.classList.contains(this.config.className.itemActive)
+      return item.classList.contains(this.config.classNameItemActive)
     }
     return false
   }

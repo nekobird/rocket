@@ -1,31 +1,14 @@
 import {
-  HTMLSequenceController,
-  HTMLPolyController,
-
+  PolyController,
 } from '../../../rocket/Rocket'
 
-let polyCon = new HTMLPolyController({
-  selector_item: '.poly_item',
-  className_active: '__active',
-  className_js_activate: 'js_open',
-
-  before_action: (action, context) => {
-    console.log(action)
-    return new Promise(resolve => {
-      context
-        .deactivateAll(action.groupName)
-        .then(() => {
-          resolve()
-        })
-    })
+let polyCon = new PolyController({
+  selectorItems: '.poly_item',
+  classNameItemActive: '__active',
+  classNameJsActivate: 'js_open',
+  classNameJsDeactivate: 'js_close',
+  beforeAction: (action, context) => {
+    console.log(context)
+    return Promise.resolve()
   }
-
-})
-
-let seqSwitcher = new HTMLSequenceController({
-  selector_item: '.sequence_item',
-  className_active: '__active',
-  className_js_previous: 'js_goBack',
-  className_js_next: 'js_goForward',
-  className_js_jump: 'js_jump',
 })

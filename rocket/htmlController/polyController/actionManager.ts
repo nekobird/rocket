@@ -1,14 +1,18 @@
 import {
-  Group
-} from './groupManager'
+  StringUtil,
+} from '../../rocket'
+
+import {
+  PolyController
+} from './polyController';
 
 import {
   Config
 } from './config'
 
 import {
-  PolyController
-} from './polyController';
+  Group
+} from './groupManager'
 
 export type ActionName = 'activate' | 'activateAll' | 'deactivate' | 'deactivateAll' | 'toggle' | 'toggleAll'
 
@@ -42,7 +46,8 @@ export class ActionManager {
     if (this.isNested === false) {
       preAction = new Promise(resolve => {
         this.isNested = true
-        config.beforeAction(action, this.controller)
+        config
+          .beforeAction(action, this.controller)
           .then(() => {
             this.isNested = false
             resolve()
@@ -58,11 +63,11 @@ export class ActionManager {
           action.name === 'activate' ||
           action.name === 'deactivate'
         ) {
-          this.handleAction_activation(action.name, action, callback)
+          this.handleActionActivation(action.name, action, callback)
         } else if (action.name === 'toggle') {
-          this.handleAction_toggle(action, callback)
+          this.handleActionToggle(action, callback)
         } else {
-          this.handleAction_activationAll(action, callback)
+          this.handleActionActivationAll(action, callback)
         }
       })
       .catch(() => {
@@ -71,16 +76,16 @@ export class ActionManager {
     return this
   }
 
-  private item_activate(action: Action) {
-    let config: Config = this.controller.config
-    action.targetItem.classList.add(config.className.itemActive)
+  private itemActivate(action: Action) {
+    const config: Config = this.controller.config
+    action.targetItem.classList.add(config.classNameItemActive)
     action.group.activeItems.push(action.targetItem)
     action.group.isActive = true
     return this
   }
 
-  private item_deactivate(action: Action) {
-    action.targetItem.classList.remove(this.controller.config.className.itemActive)
+  private itemDeactivate(action: Action) {
+    action.targetItem.classList.remove(this.controller.config.classNameItemActive)
     const index: number = action.group.activeItems.indexOf(action.targetItem)
     action.group.activeItems.slice(index, 1)
     if (action.group.activeItems.length === 0) {
@@ -91,17 +96,19 @@ export class ActionManager {
 
   // 5) HANDLE ACTIONS
 
-  private handleAction_activation(actionName: 'activate' | 'deactivate', action: Action, callback?: Function) {
-    if (this[`condition_${actionName}`](action, this) === true) {
-      this[`before_${actionName}`](action, this)
+  private handleActionActivation(actionName: 'activate' | 'deactivate', action: Action, callback?: Function) {
+    let actionNameString: string = StringUtil.upperCaseFirstLetter(actionName)
+    let config: Config = this.controller.config
+    if (config[`condition${actionNameString}`](action, this) === true) {
+      config[`before${actionNameString}`](action, this)
         .then(() => {
-          this[`item_${actionName}`](action)
-          return this[`after_${actionName}`](action, this)
+          this[`item${actionNameString}`](action)
+          return config[`after${actionNameString}`](action, this)
         })
         .then(() => {
           this.endAction(callback)
           if (this.isNested === false) {
-            this.controller.config.afterAction(action, this.controller)
+            config.afterAction(action, this.controller)
           }
         })
     } else {
@@ -110,12 +117,12 @@ export class ActionManager {
     return this
   }
 
-  private handleAction_toggle(action: Action, callback?: Function) {
+  private handleActionToggle(action: Action, callback?: Function) {
     if (this.controller.config.conditionToggle(action, this.controller) === true) {
-      if (action.targetItem.classList.contains(this.controller.config.className.itemActive) === true) {
-        this.handleAction_activation('deactivate', action, callback)
+      if (action.targetItem.classList.contains(this.controller.config.classNameItemActive) === true) {
+        this.handleActionActivation('deactivate', action, callback)
       } else {
-        this.handleAction_activation('activate', action, callback)
+        this.handleActionActivation('activate', action, callback)
       }
     } else {
       this.endAction(callback)
@@ -123,9 +130,11 @@ export class ActionManager {
     return this
   }
 
-  private handleAction_activationAll(action: Action, callback?: Function) {
+  private handleActionActivationAll(action: Action, callback?: Function) {
+    let actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
+    let config: Config = this.controller.config
     if (
-      this[`condition_${action.name}`](action, this) === true &&
+      config[`condition${actionNameString}`](action, this) === true &&
       action.group.items.length > 0
     ) {
       for (let i: number = 0; i < action.group.items.length; i++) {
@@ -137,15 +146,15 @@ export class ActionManager {
         }, action)
         // Handle Action
         if (action.name === 'activateAll') {
-          if (item.classList.contains(this.controller.config.className.itemActive) === false) {
-            this.handleAction_activation('activate', individualAction, callback)
+          if (item.classList.contains(config.classNameItemActive) === false) {
+            this.handleActionActivation('activate', individualAction, callback)
           }
         } else if (action.name === 'deactivateAll') {
-          if (item.classList.contains(this.controller.config.className.itemActive) === true) {
-            this.handleAction_activation('deactivate', individualAction, callback)
+          if (item.classList.contains(config.classNameItemActive) === true) {
+            this.handleActionActivation('deactivate', individualAction, callback)
           }
         } else if (action.name === 'toggleAll') {
-          this.handleAction_toggle(individualAction, callback)
+          this.handleActionToggle(individualAction, callback)
         }
       }
     } else {
@@ -165,12 +174,11 @@ export class ActionManager {
   }
 
   public composeAction(actionName: ActionName, groupName: string, id?: string): Action {
-    let config = this.controller.config.selector.items
     let action: Action = this.createAction(actionName, groupName)
     if (typeof id === 'string') {
       action.targetId = id
       action.targetItem = document.querySelector(
-        `${this.controller.config.selector.items}[data-group="${groupName}"][data-id="${id}"]`
+        `${this.controller.config.selectorItems}[data-group="${groupName}"][data-id="${id}"]`
       )
     }
     return action

@@ -98,7 +98,9 @@ export class Num {
     return (1 - t) * from + t * to
   }
 
-  static modulate(number: number, from: number | number[], to: number | number[], constrain: boolean): number {
+  static modulate(
+    number: number, from: number | number[], to: number | number[], constrain: boolean
+  ): number {
     if (typeof from === 'number') {
       from = [0, from]
     }

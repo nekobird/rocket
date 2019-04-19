@@ -19,7 +19,6 @@ export class Util {
   // will only be invoked after the given delay timeout (in seconds).
   static debounce(delay: number, fn: Function): Function {
     let timeout: number
-
     return function (...args) {
       clearTimeout(timeout)
       let context = this

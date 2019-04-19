@@ -59,7 +59,7 @@ export class CanvasDraw {
   // https://www.w3schools.com/tags/canvas_createlineargradient.asp
   // https://www.w3schools.com/tags/canvas_arcto.asp
   public createLinearGradient(from: Vector2, to: Vector2): CanvasGradient {
-    let m: number = this.resolutionMultiplier
+    const m: number = this.resolutionMultiplier
     return this.context.createLinearGradient(
       from.x * m, from.y * m,
       to.x * m, to.y * m
@@ -67,7 +67,7 @@ export class CanvasDraw {
   }
 
   public createRadialGradient(from: Vector2, fromRadius: number, to: Vector2, toRadius: number): CanvasGradient {
-    let m: number = this.resolutionMultiplier
+    const m: number = this.resolutionMultiplier
     return this.context.createRadialGradient(
       from.x * m, from.y * m, fromRadius * m,
       to.x * m, to.y * m, toRadius * m
@@ -124,7 +124,7 @@ export class CanvasDraw {
   // TODO: Need to optimize this.
   // Perhaps get a snapshot of all the pixel data.
   public getPixelColor(point: Point): Color {
-    let m: number = this.resolutionMultiplier
+    const m: number = this.resolutionMultiplier
     let imageData: ImageData = this.context.getImageData(
       point.x * m, point.y * m,
       this.element.width, this.element.height
@@ -141,7 +141,7 @@ export class CanvasDraw {
   }
 
   public putPixelColor(point: Point, color: Color) {
-    let m = this.resolutionMultiplier
+    const m = this.resolutionMultiplier
     let pixel = this.context.getImageData(point.x * m, point.y * m, 1, 1)
     let data = pixel.data
     data[0] = color.red * 255
@@ -157,7 +157,7 @@ export class CanvasDraw {
   }
 
   public shadow(offsetX, offsetY, blur, color): CanvasDraw {
-    let m = this.resolutionMultiplier
+    const m = this.resolutionMultiplier
     if (color instanceof Color) {
       color = color.rgbaString
     }
@@ -169,7 +169,7 @@ export class CanvasDraw {
   }
 
   public image(img, st, sw, sh, dt, dw, dh): CanvasDraw {
-    let m = this.resolutionMultiplier
+    const m = this.resolutionMultiplier
     this.context.drawImage(
       img, st.x, st.y, sw, sh, dt.x * m, dt.y * m, dw * m, dh * m
     )
@@ -179,7 +179,7 @@ export class CanvasDraw {
   // SHAPES
 
   public circle(v: Point, r: number, style: CanvasDrawStyle, insert): CanvasDraw {
-    let m = this.resolutionMultiplier
+    const m = this.resolutionMultiplier
     this.save()
     this.begin()
     this.context.arc(
@@ -211,24 +211,24 @@ export class CanvasDraw {
 
   // https://www.w3schools.com/tags/canvas_ispointinpath.asp
   public isPointInPath(point: Point): boolean {
-    let m: number = this.resolutionMultiplier
+    const m: number = this.resolutionMultiplier
     return this.context.isPointInPath(point.x * m, point.y * m)
   }
 
   public moveTo(to: Point): CanvasDraw {
-    let m: number = this.resolutionMultiplier
+    const m: number = this.resolutionMultiplier
     this.context.moveTo(to.x * m, to.y * m)
     return this
   }
 
   public lineTo(to: Point): CanvasDraw {
-    let m: number = this.resolutionMultiplier
+    const m: number = this.resolutionMultiplier
     this.context.lineTo(to.x * m, to.y * m)
     return this
   }
 
   public arcTo(from: Point, to: Point, r): CanvasDraw {
-    let m: number = this.resolutionMultiplier
+    const m: number = this.resolutionMultiplier
     this.context.arcTo(
       from.x * m, from.y * m,
       to.x * m, to.y * m,
@@ -238,7 +238,7 @@ export class CanvasDraw {
   }
 
   public bezierCurveTo(cp1: Point, cp2: Point, to: Point): CanvasDraw {
-    let m: number = this.resolutionMultiplier
+    const m: number = this.resolutionMultiplier
     this.context.bezierCurveTo(
       cp1.x * m, cp1.y * m,
       cp2.x * m, cp2.y * m,
@@ -248,7 +248,7 @@ export class CanvasDraw {
   }
 
   public quadraticCurveTo(cp: Point, to: Point): CanvasDraw {
-    let m: number = this.resolutionMultiplier
+    const m: number = this.resolutionMultiplier
     this.context.quadraticCurveTo(
       cp.x * m, cp.y * m,
       to.x * m, to.y * m
@@ -259,7 +259,7 @@ export class CanvasDraw {
   // TRANSFORM
 
   public translate(to: Point): CanvasDraw {
-    let m: number = this.resolutionMultiplier
+    const m: number = this.resolutionMultiplier
     this.context.translate(to.x * m, to.y * m)
     this.previousTranslation.equals(to)
     return this

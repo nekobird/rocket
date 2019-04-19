@@ -1,92 +1,153 @@
 import {
-  DOMUtil
+  DOMUtil,
+  StringUtil,
 } from '../../rocket'
 
 import {
-  ActionName
+  EVENT_ENTRY_LIST,
+} from '../polyController/config'
+
+import {
+  ActionName,
 } from './actionManager'
 
 import {
-  ElementMapEntry, ElementMap
+  ElementEntry,
+  ElementEntries,
 } from './elementManager'
 
 import {
-  PolyController
+  PolyController,
 } from './polyController'
 
-export interface EventMap {
-  [name: string]: EventMapEntry
+import {
+  Config
+} from './config'
+
+export interface EventEntries {
+  [name: string]: EventEntry
 }
 
-export interface EventMapEntry {
-  elementName: string, // element name associated to an element in ElementManager
-  eventType: string, // event string
-  handler: Function, // event handler function
-  action: string, // action string to be passed to ActionHub
+export interface EventEntry {
+  name: string,
+  target: string | HTMLElement | HTMLElement[] | Document | Window,
+  event: string | string[],
+  action: ActionName,
+  listener: EventListener | Function,
+  useCapture?: boolean
 }
+
+export type EventEntryList = EventEntry[]
 
 export class EventManager {
 
-  private uppercaseFirstLetter(string: string): string {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-  }
-
-  private eventMap: EventMap
-
   private controller: PolyController
+  private eventEntries: EventEntries
 
   constructor(controller: PolyController) {
     this.controller = controller
-    this.eventMap = {}
+    this.eventEntries = {}
   }
 
-  private initialize() {
-    this.initializeEventMap()
+  public initialize(): EventManager {
+    this
+      .initializeEventEntriesFromConfig()
+      .listen()
+    return this
   }
 
-  private mapListenerToEventHandler() {
-    Object.keys(this.eventMap).forEach(name => {
-      const entry: ElementMapEntry = this.controller.elementManager.getEntry[
-        this.eventMap[name].elementName
-      ]
-      entry.elements.forEach(element => {
-        element.addEventListener(
-          this.eventMap[name].eventType,
-          <EventListener>this.eventMap[name].handler
-        )
-      })
+  private initializeEventEntriesFromConfig(): EventManager {
+    EVENT_ENTRY_LIST.forEach(eventEntry => {
+      this.addEventEntry(eventEntry)
     })
     return this
   }
 
-  private initializeEventMap() {
-    Object.keys(this.eventMap).forEach(name => {
-      let actionName: ActionName = this.eventMap[name].action
-      this.eventMap[name].handler = (event: Event) => {
-        this.eventHub(event, actionName)
+  private listenerFactory(action: ActionName): EventListener {
+    return (event: Event) => {
+      this.eventHub(event, action)
+    }
+  }
+
+  private listen(): EventManager {
+    Object.keys(this.eventEntries).forEach(name => {
+
+      const eventEntry: EventEntry = this.eventEntries[name]
+
+      let targets = undefined
+
+      if (typeof eventEntry.target === 'string') {
+        const elements = this.controller.elementManager.getElements(eventEntry.target)
+        if (elements !== false) {
+          targets = elements
+        }
+      } else {
+        targets = eventEntry.target
       }
-    })
+
+      if (typeof targets !== 'undefined') {
+        const useCapture: boolean =
+          (typeof eventEntry.useCapture === 'undefined') ? false : eventEntry.useCapture
+
+        if (typeof eventEntry.listener === 'undefined') {
+          eventEntry.listener = this.listenerFactory(eventEntry.action)
+        }
+
+        if (Array.isArray(targets)) {
+          targets.forEach(target => {
+            this.addEventListenerToTarget(target, eventEntry, useCapture)
+          })
+        } else {
+          this.addEventListenerToTarget(targets, eventEntry, useCapture)
+        }
+      }
+
+    }) // End eventEntries loop
+    return this
   }
 
-  private initializeEventListener() {
-    Object.keys(this.eventMap).forEach(name => {
-      let elementName = this.eventMap[name].elementName
-      let elementEntry = this.controller.elementManager.getEntry(elementName)
-      elementEntry.elements.forEach(element => {
-        element.addEventListener(this.eventMap[name].eventType, this.eventMap[name].handler)
+  private addEventListenerToTarget(
+    target: HTMLElement | Window | Document, eventEntry: EventEntry, useCapture: boolean
+  ) {
+    if (Array.isArray(eventEntry.event)) {
+      eventEntry.event.forEach(event => {
+        target.addEventListener(
+          event, <EventListener>eventEntry.listener, useCapture
+        )
       })
-    })
+    } else if (typeof eventEntry.event === 'string') {
+      target.addEventListener(
+        eventEntry.event, <EventListener>eventEntry.listener, useCapture
+      )
+    }
+    return this
   }
 
-  private eventHub(event: Event, actionName: ActionName) {
-    this.controller.elementManager.getEntry('js')
+  public addEventEntry(entry: EventEntry): EventManager {
+    if (typeof this.eventEntries[entry.name] === 'object') {
+      this.eventEntries[entry.name] = Object.assign(this.eventEntries[name], entry)
+    } else {
+      this.eventEntries[entry.name] = { ...entry }
+    }
+    return this
+  }
+
+  public removeEventEntry(name: string): EventManager {
+    return this
+  }
+
+  private eventHub(event: Event, actionName: ActionName): EventManager {
+
     if (this.controller.isReady === true) {
       this.controller.actionManager.isRunning = true
+
+      const eventName: string = StringUtil.upperCaseFirstLetter(actionName)
       const trigger = DOMUtil.findAncestorWithClass(
         <HTMLElement>event.target,
-        this[`className_js_${actionName}`],
+        this.controller.config[`classNameJs${eventName}`],
         false
       )
+
       if (
         typeof trigger !== 'undefined' &&
         trigger instanceof HTMLElement
