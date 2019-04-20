@@ -8,9 +8,7 @@ import {
   POLY_DEFAULT_CONFIG,
   POLY_EVENT_ENTRY_LIST,
   PolyActionManager,
-  PolyActionName,
   PolyConfig,
-  PolyAction,
   PolyGroup,
   PolyGroupManager,
 } from '../index'

@@ -8,10 +8,8 @@ import {
   SEQUENCE_DEFAULT_CONFIG,
   SEQUENCE_EVENT_ENTRY_LIST,
   SequenceActionManager,
-  SequenceActionName,
-  SequenceAction,
-  SequenceGroup,
   SequenceConfig,
+  SequenceGroup,
   SequenceGroupManager,
 } from '../index'
 
