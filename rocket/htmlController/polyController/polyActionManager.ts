@@ -3,8 +3,9 @@ import {
 } from '../../rocket'
 
 import {
-  ActionManager,
+  Action,
   ActionName,
+  ActionManager,
   PolyConfig,
   PolyGroup,
   PolyController,
@@ -23,7 +24,7 @@ export interface PolyAction {
 
 export const POLY_ACTIONS: string[] = ['activateAll', 'deactivateAll', 'toggleAll']
 
-export class PolyActionManager implements ActionManager<PolyAction> {
+export class PolyActionManager implements ActionManager<PolyAction, PolyActionName> {
 
   public isRunning: boolean = false
   public isNested: boolean = false
@@ -36,52 +37,6 @@ export class PolyActionManager implements ActionManager<PolyAction> {
 
   public isPolyAction(actionName: PolyActionName): boolean {
     return POLY_ACTIONS.indexOf(actionName) === -1 ? false : true
-  }
-
-  public actionHub(action: PolyAction, callback?: Function): this {
-    let config: PolyConfig = this.controller.config
-
-    let preAction: Promise<void>
-    if (this.isNested === false) {
-      preAction = new Promise(resolve => {
-        this.isNested = true
-        config
-          .beforeAction(action, this.controller)
-          .then(() => {
-            this.isNested = false
-            resolve()
-          })
-          .catch(() => {
-            this.isNested = false
-          })
-      })
-    } else {
-      preAction = Promise.resolve()
-    }
-
-    preAction
-      .then(() => {
-        if (
-          action.name === 'activate' ||
-          action.name === 'deactivate'
-        ) {
-          return this.handleActionActivation(action.name, action, callback)
-        } else if (action.name === 'toggle') {
-          return this.handleActionToggle(action, callback)
-        } else {
-          return this.handleActionActivationAll(action, callback)
-        }
-      })
-      .then(() => {
-        this.endAction(callback)
-        if (this.isNested === false) {
-          config.afterAction(action, this.controller)
-        }
-      })
-      .catch(() => {
-        this.endAction(callback)
-      })
-    return this
   }
 
   private itemActivate(action: PolyAction): this {
@@ -234,7 +189,7 @@ export class PolyActionManager implements ActionManager<PolyAction> {
     return action
   }
 
-  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): PolyAction {
+  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action {
     const groupName: string = trigger.dataset.group
     let whitelist: string[] = ['activate', 'deactivate', 'toggle']
     if (whitelist.indexOf(actionName) !== -1) {
@@ -244,9 +199,57 @@ export class PolyActionManager implements ActionManager<PolyAction> {
     }
   }
 
+  // ACTION HUB
+
+  public actionHub(action: Action, callback?: Function): this {
+    let config: PolyConfig = this.controller.config
+
+    let preAction: Promise<void>
+    if (this.isNested === false) {
+      preAction = new Promise(resolve => {
+        this.isNested = true
+        config
+          .beforeAction(<PolyAction>action, this.controller)
+          .then(() => {
+            this.isNested = false
+            resolve()
+          })
+          .catch(() => {
+            this.isNested = false
+          })
+      })
+    } else {
+      preAction = Promise.resolve()
+    }
+
+    preAction
+      .then(() => {
+        if (
+          action.name === 'activate' ||
+          action.name === 'deactivate'
+        ) {
+          return this.handleActionActivation(action.name, action, callback)
+        } else if (action.name === 'toggle') {
+          return this.handleActionToggle(action, callback)
+        } else {
+          return this.handleActionActivationAll(<PolyAction>action, callback)
+        }
+      })
+      .then(() => {
+        this.endAction(callback)
+        if (this.isNested === false) {
+          config.afterAction(<PolyAction>action, this.controller)
+        }
+      })
+      .catch(() => {
+        this.endAction(callback)
+      })
+    return this
+  }
+
   // HELPER
 
-  private checkIfValidActionName(actionName: ActionName): boolean {
+  private checkIfValidActionName(actionName: string): boolean {
     const validNames = ['activate', 'activateAll', 'deactivate', 'deactivateAll', 'toggle', 'toggleAll']
     return validNames.indexOf(actionName) !== -1
   }

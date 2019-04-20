@@ -48,7 +48,7 @@ export const MONO_DEFAULT_CONFIG: MonoConfig = {
   afterAction: (action, context) => { },
 }
 
-export const MONO_EVENT_ENTRY_LIST: EventEntry<MonoActionName>[] = [
+export const MONO_EVENT_ENTRY_LIST: EventEntry[] = [
   {
     name: 'activate',
     action: 'activate',

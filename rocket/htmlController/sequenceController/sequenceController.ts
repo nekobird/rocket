@@ -5,6 +5,7 @@ import {
   SEQUENCE_EVENT_ENTRY_LIST,
   SequenceActionManager,
   SequenceActionName,
+  SequenceAction,
   SequenceConfig,
   SequenceGroupManager,
 } from '../index'
@@ -18,7 +19,7 @@ export class SequenceController {
   public elementManager: ElementManager
   public groupManager: SequenceGroupManager
   public actionManager: SequenceActionManager
-  public eventManager: EventManager<SequenceActionName>
+  public eventManager: EventManager<SequenceAction, SequenceActionName>
 
   constructor(config: SequenceConfig) {
     this

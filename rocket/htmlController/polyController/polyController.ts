@@ -6,6 +6,7 @@ import {
   PolyActionManager,
   PolyActionName,
   PolyConfig,
+  PolyAction,
   PolyGroup,
   PolyGroupManager,
 } from '../index'
@@ -17,7 +18,7 @@ export class PolyController {
   public config: PolyConfig
 
   public elementManager: ElementManager
-  public eventManager: EventManager<PolyActionName>
+  public eventManager: EventManager
 
   public groupManager: PolyGroupManager
   public actionManager: PolyActionManager

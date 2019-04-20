@@ -7,6 +7,7 @@ import {
   MonoActionName,
   MonoConfig,
   MonoGroupManager,
+  MonoAction,
 } from '../index'
 
 export class MonoController {
@@ -16,7 +17,7 @@ export class MonoController {
   public config: MonoConfig
 
   public elementManager: ElementManager
-  public eventManager: EventManager<MonoActionName>
+  public eventManager: EventManager
 
   public groupManager: MonoGroupManager
   public actionManager: MonoActionManager

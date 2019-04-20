@@ -3,6 +3,8 @@ import {
 } from '../../rocket'
 
 import {
+  Action,
+  ActionName,
   ActionManager,
   MonoConfig,
   MonoGroup,
@@ -22,7 +24,7 @@ export interface MonoAction {
   trigger?: HTMLElement,
 }
 
-export class MonoActionManager implements ActionManager<MonoAction> {
+export class MonoActionManager implements ActionManager<MonoAction, MonoActionName> {
 
   private controller: MonoController
 
@@ -118,10 +120,10 @@ export class MonoActionManager implements ActionManager<MonoAction> {
     return action
   }
 
-  public composeActionFromEvent(actionName: MonoActionName, trigger: HTMLElement): MonoAction {
+  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action {
     const groupName: string = trigger.dataset.group
     const action: MonoAction = this.composeAction(
-      actionName, groupName, trigger.dataset.target
+      <MonoActionName>actionName, groupName, trigger.dataset.target
     )
     action.trigger = trigger
     return action
@@ -138,7 +140,7 @@ export class MonoActionManager implements ActionManager<MonoAction> {
 
   // 1) ACTION HUB
 
-  public actionHub(action: MonoAction, callback?: Function): this {
+  public actionHub(action: Action, callback?: Function): this {
 
     const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
     this[`setActionTarget${actionNameString}`](action)
@@ -150,7 +152,7 @@ export class MonoActionManager implements ActionManager<MonoAction> {
       preAction = new Promise(resolve => {
         this.isNested = true
         config
-          .beforeAction(action, this.controller)
+          .beforeAction(<MonoAction>action, this.controller)
           .then(() => {
             this.isNested = false
             resolve()
@@ -161,7 +163,7 @@ export class MonoActionManager implements ActionManager<MonoAction> {
     }
 
     preAction
-      .then(() => { return this.completeAction(action) })
+      .then(() => { return this.completeAction(<MonoAction>action) })
       .catch(() => { this.endAction(callback) })
     return this
   }

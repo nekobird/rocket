@@ -55,7 +55,7 @@ export const SEQUENCE_DEFAULT_CONFIG: SequenceConfig = {
   afterAction: (action, context) => { },
 }
 
-export const SEQUENCE_EVENT_ENTRY_LIST: EventEntry<SequenceActionName>[] = [
+export const SEQUENCE_EVENT_ENTRY_LIST: EventEntry[] = [
   {
     name: 'previous',
     action: 'previous',

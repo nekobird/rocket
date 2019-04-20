@@ -3,6 +3,7 @@ import {
 } from '../../rocket'
 
 import {
+  Action,
   ActionName,
   ActionManager,
   SequenceConfig,
@@ -23,7 +24,7 @@ export interface SequenceAction {
   trigger?: HTMLElement,
 }
 
-export class SequenceActionManager implements ActionManager<SequenceAction> {
+export class SequenceActionManager implements ActionManager<SequenceAction, SequenceActionName> {
 
   private controller: SequenceController
 
@@ -162,9 +163,9 @@ export class SequenceActionManager implements ActionManager<SequenceAction> {
     return action
   }
 
-  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): SequenceAction {
+  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action {
     const groupName: string = trigger.dataset.group
-    const action: SequenceAction = this.createAction(actionName, groupName)
+    const action: SequenceAction = this.createAction(<SequenceActionName>actionName, groupName)
     if (typeof trigger.dataset.target === 'string') {
       action.nextItemId = trigger.dataset.target
     }
@@ -174,7 +175,7 @@ export class SequenceActionManager implements ActionManager<SequenceAction> {
 
   // 1) ACTION HUB
 
-  public actionHub(action: SequenceAction, callback?: Function): this {
+  public actionHub(action: Action, callback?: Function): this {
     const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
     this[`setActionTarget${actionNameString}`](action)
 
@@ -185,7 +186,7 @@ export class SequenceActionManager implements ActionManager<SequenceAction> {
       preAction = new Promise(resolve => {
         this.isNested = true
         config
-          .beforeAction(action, this.controller)
+          .beforeAction(<SequenceAction>action, this.controller)
           .then(() => {
             this.isNested = false
             resolve()
@@ -197,7 +198,7 @@ export class SequenceActionManager implements ActionManager<SequenceAction> {
 
     preAction
       .then(() => {
-        this.completeAction(action, callback)
+        this.completeAction(<SequenceAction>action, callback)
       })
       .catch(() => {
         this.endAction(callback)

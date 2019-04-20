@@ -4,29 +4,30 @@ import {
 } from '../rocket'
 
 import {
+  Action,
   ActionName,
   HTMLController,
 } from './index'
 
-export interface EventEntries<T> {
-  [name: string]: EventEntry<T>
+export interface EventEntries {
+  [name: string]: EventEntry
 }
 
-export interface EventEntry<T> {
+export interface EventEntry {
   name: string,
   target: string | HTMLElement | HTMLElement[] | Document | Window,
   event: string | string[],
-  action: T,
+  action: ActionName,
   listener: EventListener | Function,
   useCapture?: boolean
 }
 
-export type EventEntryList<T> = EventEntry<T>[]
+export type EventEntryList = EventEntry[]
 
-export class EventManager<AN> {
+export class EventManager {
 
   private controller: HTMLController
-  private eventEntries: EventEntries<AN>
+  private eventEntries: EventEntries
 
   constructor(controller: HTMLController) {
     this.controller = controller
@@ -38,7 +39,7 @@ export class EventManager<AN> {
   public listen(): this {
     Object.keys(this.eventEntries).forEach(name => {
 
-      const eventEntry: EventEntry<AN> = this.eventEntries[name]
+      const eventEntry: EventEntry = this.eventEntries[name]
 
       let targets = undefined
 
@@ -72,14 +73,14 @@ export class EventManager<AN> {
     return this
   }
 
-  private listenerFactory(actionName: AN): EventListener {
+  private listenerFactory(actionName: ActionName): EventListener {
     return (event: Event) => {
       this.eventHub(event, actionName)
     }
   }
 
   private addEventListenerToTarget(
-    target: HTMLElement | Window | Document, eventEntry: EventEntry<AN>, useCapture: boolean
+    target: HTMLElement | Window | Document, eventEntry: EventEntry, useCapture: boolean
   ): this {
 
     if (Array.isArray(eventEntry.event)) {
@@ -96,7 +97,7 @@ export class EventManager<AN> {
     return this
   }
 
-  public addEntry(entry: EventEntry<AN>): this {
+  public addEntry(entry: EventEntry): this {
     if (typeof this.eventEntries[entry.name] === 'object') {
       this.eventEntries[entry.name] = Object.assign(this.eventEntries[name], entry)
     } else {
@@ -112,7 +113,7 @@ export class EventManager<AN> {
     return this
   }
 
-  private eventHub(event: Event, actionName: AN): this {
+  private eventHub(event: Event, actionName: ActionName): this {
     const actionManager = this.controller.actionManager
 
     if (
@@ -122,7 +123,7 @@ export class EventManager<AN> {
 
       actionManager.isRunning = true
 
-      const eventName: string = StringUtil.upperCaseFirstLetter(actionName.toString())
+      const eventName: string = StringUtil.upperCaseFirstLetter(actionName)
       const trigger = DOMUtil.findAncestorWithClass(
         <HTMLElement>event.target,
         this.controller.config[`classNameJs${eventName}`],
@@ -133,9 +134,8 @@ export class EventManager<AN> {
         typeof trigger !== 'undefined' &&
         trigger instanceof HTMLElement
       ) {
-        actionManager.actionHub(
-          actionManager.composeActionFromEvent(actionName, trigger)
-        )
+        const action: Action = actionManager.composeActionFromEvent(actionName, trigger)
+        actionManager.actionHub(action)
       } else {
         actionManager.endAction()
       }

@@ -1,11 +1,14 @@
 import {
   MonoConfig,
   MonoActionName,
+  MonoAction,
   MonoController,
   PolyConfig,
   PolyActionName,
+  PolyAction,
   PolyController,
   SequenceActionName,
+  SequenceAction,
   SequenceController,
   SequenceConfig,
 } from './index'
@@ -15,36 +18,37 @@ export type HTMLController = MonoController | PolyController | SequenceControlle
 export type Config = MonoConfig | PolyConfig | SequenceConfig
 
 export type ActionName = MonoActionName | PolyActionName | SequenceActionName
+export type Action = MonoAction | PolyAction | SequenceAction
 
-export interface Hook<Action> {
+export interface Hook<A> {
   (
-    action: Action,
+    action: A,
     context?: HTMLController,
   ): Promise<any>
 }
 
-export interface ConditionHook<Action> {
+export interface ConditionHook<A> {
   (
-    action: Action,
+    action: A,
     context?: HTMLController,
   ): boolean
 }
 
-export interface BeforeActionCallback<Action> {
+export interface BeforeActionCallback<A> {
   (
-    action: Action,
+    action: A,
     context?: HTMLController,
   ): Promise<void>
 }
 
-export interface AfterActionCallback<Action> {
+export interface AfterActionCallback<A> {
   (
-    action: Action,
+    action: A,
     context?: HTMLController,
   ): void
 }
 
-export interface ActionManager<A> {
-  composeActionFromEvent: (actionName: ActionName, trigger: HTMLElement) => A,
+export interface ActionManager<A, AN> {
+  composeActionFromEvent: (actionName: AN, trigger: HTMLElement) => Action,
   actionHub: (action: A, callback?: Function) => void,
 }

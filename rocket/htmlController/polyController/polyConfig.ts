@@ -49,7 +49,7 @@ export interface PolyConfig {
   onKeydown?: (event: KeyboardEvent, group: PolyGroup, context: PolyController) => void,
 }
 
-export const POLY_EVENT_ENTRY_LIST: EventEntry<PolyActionName>[] = [
+export const POLY_EVENT_ENTRY_LIST: EventEntry[] = [
   {
     name: 'activate',
     action: 'activate',
