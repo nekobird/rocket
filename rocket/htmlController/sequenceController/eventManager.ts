@@ -6,7 +6,7 @@ import {
 import {
   ActionName,
   EVENT_ENTRY_LIST,
-  PolyController,
+  SequenceController,
 } from './index'
 import { ActionManager } from './actionManager';
 
@@ -27,10 +27,10 @@ export type EventEntryList = EventEntry[]
 
 export class EventManager {
 
-  private controller: PolyController
+  private controller: SequenceController
   private eventEntries: EventEntries
 
-  constructor(controller: PolyController) {
+  constructor(controller: SequenceController) {
     this.controller = controller
     this.eventEntries = {}
   }
@@ -125,6 +125,7 @@ export class EventManager {
 
   private eventHub(event: Event, actionName: ActionName): EventManager {
     const actionManager: ActionManager = this.controller.actionManager
+
     if (
       this.controller.isReady === true &&
       actionManager.isRunning === false
@@ -150,55 +151,6 @@ export class EventManager {
       }
     }
     return this
-  }
-
-  // Extra Event Handlers
-
-  private eventHandlerClickOutside = (event: Event) => {
-    if (
-      this.controller.config.listenToClickOutside === true &&
-      this.controller.actionManager.isRunning === false
-    ) {
-      Object.keys(this.controller.groups).forEach(groupName => {
-        let group: Group = this.controller.groups[groupName]
-        if (
-          group.isActive == true &&
-          DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItems) === false
-        ) {
-          this.controller.config.onClickOutside(event, group, this)
-        }
-      })
-    }
-  }
-
-  private eventHandlerTouchOutside = (event: Event) => {
-    if (
-      this.controller.config.listenToTouchOutside === true &&
-      this.controller.actionManager.isRunning === false
-    ) {
-
-      Object.keys(this.controller.groups).forEach(groupName => {
-        let group: Group = this.controller.groups[groupName]
-        if (
-          group.isActive == true &&
-          DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItems) === false
-        ) {
-          this.controller.config.onClickOutside(event, group, this)
-        }
-      })
-    }
-  }
-
-  private eventHandlerKeydown = (event: Event) => {
-    if (
-      this.controller.config.listenToKeydown === true &&
-      this.controller.actionManager.isRunning === false
-    ) {
-      Object.keys(this.controller.groupManager.groups).forEach(groupName => {
-        let group: Group = this.controller.groupManager.groups[groupName]
-        this.controller.config.onKeydown(event, group, this)
-      })
-    }
   }
 
 }

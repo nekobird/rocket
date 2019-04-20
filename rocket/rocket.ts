@@ -55,4 +55,4 @@ export * from './ui/uiTextField'
 
 // HTML
 export * from './htmlController/polyController/polyController'
-export * from './htmlController/SequenceHTMLController'
+export * from './htmlController/sequenceController/sequenceController'

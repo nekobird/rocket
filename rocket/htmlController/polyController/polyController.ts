@@ -1,28 +1,12 @@
 import {
-  DOMUtil,
-} from '../../rocket'
-
-import {
+  ActionManager,
   Config,
   DEFAULT_CONFIG,
-} from './config'
-
-import {
-  ActionManager
-} from './actionManager'
-
-import {
-  EventManager
-} from './eventManager'
-
-import {
+  ElementManager,
+  EventManager,
   Group,
   GroupManager,
-} from './groupManager'
-
-import {
-  ElementManager,
-} from './elementManager'
+} from './index'
 
 export class PolyController {
 
@@ -33,20 +17,21 @@ export class PolyController {
   public elementManager: ElementManager
   public groupManager: GroupManager
   public actionManager: ActionManager
-
   public eventManager: EventManager
 
   constructor(config: Config) {
     this.config = Object.assign({}, DEFAULT_CONFIG)
-    this.setConfig(config)
-    this.initialize()
+    this
+      .setConfig(config)
+      .initialize()
   }
 
-  public setConfig(config: Config) {
+  public setConfig(config: Config): PolyController {
     Object.assign(this.config, config)
+    return this
   }
 
-  private initialize() {
+  private initialize(): PolyController {
     this.elementManager = new ElementManager(this)
     this.groupManager = new GroupManager(this)
     this.actionManager = new ActionManager(this)
@@ -55,13 +40,17 @@ export class PolyController {
     this.elementManager.initialize()
     this.groupManager.initialize()
     this.eventManager.initialize()
+    return this
   }
 
   public itemIsActive(groupName: string, id: string): boolean {
     const item: HTMLElement = document.querySelector(
       `${this.config.selectorItems}[data-group="${groupName}"][data-id="${id}"]`
     )
-    if (item !== null && item instanceof HTMLElement) {
+    if (
+      item !== null &&
+      item instanceof HTMLElement
+    ) {
       return item.classList.contains(this.config.classNameItemActive)
     }
     return false
@@ -77,7 +66,7 @@ export class PolyController {
 
   // ACTION
 
-  public activate(groupName: string, id: string): Promise<any> {
+  public activate(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
       this.actionManager.hubAction(
         this.actionManager.composeAction('activate', groupName, id),
@@ -86,7 +75,7 @@ export class PolyController {
     })
   }
 
-  public deactivate(groupName: string, id: string): Promise<any> {
+  public deactivate(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
       this.actionManager.hubAction(
         this.actionManager.composeAction('deactivate', groupName, id),
@@ -95,7 +84,7 @@ export class PolyController {
     })
   }
 
-  public toggle(groupName: string, id: string): Promise<any> {
+  public toggle(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
       this.actionManager.hubAction(
         this.actionManager.composeAction('toggle', groupName, id),
@@ -104,7 +93,7 @@ export class PolyController {
     })
   }
 
-  public activateAll(groupName: string): Promise<any> {
+  public activateAll(groupName: string): Promise<void> {
     return new Promise(resolve => {
       this.actionManager.hubAction(
         this.actionManager.composeAction('activateAll', groupName),
@@ -113,7 +102,7 @@ export class PolyController {
     })
   }
 
-  public deactivateAll(groupName: string): Promise<any> {
+  public deactivateAll(groupName: string): Promise<void> {
     return new Promise(resolve => {
       this.actionManager.hubAction(
         this.actionManager.composeAction('deactivateAll', groupName),
@@ -122,7 +111,7 @@ export class PolyController {
     })
   }
 
-  public toggleAll(groupName: string): Promise<any> {
+  public toggleAll(groupName: string): Promise<void> {
     return new Promise(resolve => {
       this.actionManager.hubAction(
         this.actionManager.composeAction('toggleAll', groupName),

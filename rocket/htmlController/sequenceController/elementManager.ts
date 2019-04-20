@@ -4,7 +4,7 @@ import {
 
 import {
   Config,
-  PolyController,
+  SequenceController,
 } from './index'
 
 export interface ElementEntries {
@@ -18,10 +18,10 @@ export interface ElementEntry {
 
 export class ElementManager {
 
-  private controller: PolyController
+  private controller: SequenceController
   public elementEntries: ElementEntries
 
-  constructor(controller: PolyController) {
+  constructor(controller: SequenceController) {
     this.controller = controller
     this.elementEntries = {}
   }

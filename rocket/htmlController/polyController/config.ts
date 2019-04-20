@@ -1,25 +1,17 @@
 import {
-  PolyController
-} from '../../rocket';
-
-import {
-  Group
-} from './groupManager';
-
-import {
-  Action
-} from './actionManager'
-
-import {
-  EventEntry
-} from './eventManager';
+  Action,
+  EventEntry,
+  Group,
+  PolyController,
+} from './index';
 
 // INTERFACE
+
 export interface BeforeActionCallback {
   (
     action: Action,
     context?: PolyController,
-  ): Promise<any>
+  ): Promise<void>
 }
 
 export interface AfterActionCallback {
@@ -33,7 +25,7 @@ export interface Hook {
   (
     action: Action,
     context?: PolyController,
-  ): Promise<any>
+  ): Promise<void>
 }
 
 export interface ConditionHook {
@@ -53,6 +45,7 @@ export interface ListenToHook {
 
 export interface Config {
   listenToClickOutside?: false,
+  listenToTouchOutside?: false,
   listenToKeydown?: false,
 
   selectorItems?: string,
@@ -81,6 +74,10 @@ export interface Config {
 
   beforeAction?: BeforeActionCallback,
   afterAction?: AfterActionCallback,
+
+  onClickOutside?: (event: MouseEvent, group: Group, context: PolyController) => void,
+  onTouchOutside?: (event: TouchEvent, group: Group, context: PolyController) => void,
+  onKeydown?: (event: KeyboardEvent, group: Group, context: PolyController) => void,
 }
 
 export const EVENT_ENTRY_LIST: EventEntry[] = [
@@ -130,6 +127,7 @@ export const EVENT_ENTRY_LIST: EventEntry[] = [
 
 export const DEFAULT_CONFIG: Config = {
   listenToClickOutside: false,
+  listenToTouchOutside: false,
   listenToKeydown: false,
 
   selectorItems: '.item',
@@ -141,7 +139,6 @@ export const DEFAULT_CONFIG: Config = {
   classNameJsActivateAll: 'js_activateAll',
   classNameJsDeactivateAll: 'js_deactivateAll',
   classNameJsToggleAll: 'js_toggleAll',
-
 
   conditionActivate: (action, context) => { return true },
   conditionDeactivate: (action, context) => { return true },
@@ -159,6 +156,7 @@ export const DEFAULT_CONFIG: Config = {
   beforeAction: (action, context) => { return Promise.resolve() },
   afterAction: (action, context) => { return Promise.resolve() },
 
-  // onClickOutside: (event, group, context) => { },
-  // onKeydown: (event, group, context) => { },
+  onClickOutside: (event, group, context) => { },
+  onTouchOutside: (event, group, context) => { },
+  onKeydown: (event, group, context) => { },
 }
