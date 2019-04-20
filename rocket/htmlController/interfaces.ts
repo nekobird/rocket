@@ -1,16 +1,16 @@
 import {
-  MonoConfig,
-  MonoActionName,
   MonoAction,
+  MonoActionName,
+  MonoConfig,
   MonoController,
-  PolyConfig,
-  PolyActionName,
   PolyAction,
+  PolyActionName,
+  PolyConfig,
   PolyController,
-  SequenceActionName,
   SequenceAction,
-  SequenceController,
+  SequenceActionName,
   SequenceConfig,
+  SequenceController,
 } from './index'
 
 export type HTMLController = MonoController | PolyController | SequenceController
@@ -45,6 +45,14 @@ export interface AfterActionCallback<A> {
   (
     action: A,
     context?: HTMLController,
+  ): void
+}
+
+export interface ListenToHook<E, G, C> {
+  (
+    event: E,
+    group: G,
+    context: C,
   ): void
 }
 

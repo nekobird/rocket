@@ -3,6 +3,7 @@ import {
   EventEntry,
   PolyGroup,
   PolyController,
+  ListenToHook,
   ConditionHook,
   BeforeActionCallback,
   AfterActionCallback,
@@ -11,9 +12,9 @@ import {
 // INTERFACE
 
 export interface PolyConfig {
-  listenToClickOutside?: false,
-  listenToTouchOutside?: false,
-  listenToKeydown?: false,
+  listenToClickOutside?: boolean,
+  listenToTouchOutside?: boolean,
+  listenToKeydown?: boolean,
 
   selectorItems?: string,
 
@@ -42,9 +43,9 @@ export interface PolyConfig {
   beforeAction?: BeforeActionCallback<PolyAction>,
   afterAction?: AfterActionCallback<PolyAction>,
 
-  onClickOutside?: (event: MouseEvent, group: PolyGroup, context: PolyController) => void,
-  onTouchOutside?: (event: TouchEvent, group: PolyGroup, context: PolyController) => void,
-  onKeydown?: (event: KeyboardEvent, group: PolyGroup, context: PolyController) => void,
+  onClickOutside?: ListenToHook<MouseEvent, PolyGroup, PolyController>,
+  onTouchOutside?: ListenToHook<TouchEvent, PolyGroup, PolyController>,
+  onKeydown?: ListenToHook<KeyboardEvent, PolyGroup, PolyController>,
 }
 
 export const POLY_EVENT_ENTRY_LIST: EventEntry[] = [
@@ -52,42 +53,42 @@ export const POLY_EVENT_ENTRY_LIST: EventEntry[] = [
     name: 'activate',
     action: 'activate',
     target: 'jsActivate',
-    event: ['click', 'touch'],
+    event: ['click', 'touchstart'],
     listener: undefined,
   },
   {
     name: 'deactivate',
     action: 'deactivate',
     target: 'jsDeactivate',
-    event: ['click', 'touch'],
+    event: ['click', 'touchstart'],
     listener: undefined,
   },
   {
     name: 'toggle',
     action: 'toggle',
     target: 'jsToggle',
-    event: ['click', 'touch'],
+    event: ['click', 'touchstart'],
     listener: undefined,
   },
   {
     name: 'activateAll',
     action: 'activateAll',
     target: 'jsActivateAll',
-    event: ['click', 'touch'],
+    event: ['click', 'touchstart'],
     listener: undefined,
   },
   {
     name: 'deactivateAll',
     action: 'deactivateAll',
     target: 'jsDeactivateAll',
-    event: ['click', 'touch'],
+    event: ['click', 'touchstart'],
     listener: undefined,
   },
   {
     name: 'toggleAll',
     action: 'toggleAll',
     target: 'jsToggleAll',
-    event: ['click', 'touch'],
+    event: ['click', 'touchstart'],
     listener: undefined,
   },
 ]

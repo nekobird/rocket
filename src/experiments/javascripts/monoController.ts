@@ -20,5 +20,10 @@ let controller = new MonoController({
       action.nextItem.classList.add('__animateIn')
       setTimeout(() => { resolve() }, 400)
     })
+  },
+  onKeydown: (event, group, context) => {
+    if (event.keyCode === 27) {
+      context.deactivate(group.name)
+    }
   }
 })
