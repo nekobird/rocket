@@ -2,7 +2,7 @@ import {
   SequenceController,
 } from '../../../rocket/rocket'
 
-let controller = new SequenceController({
+const controller = new SequenceController({
   selectorItems: '.item',
   classNameItemActive: '__active',
   classNameJsPrevious: 'js_previous',

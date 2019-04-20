@@ -12,29 +12,29 @@
 
   <link rel="stylesheet"
         type="text/css"
-        href="stylesheets/main.scss">
+        href="stylesheets/polyController.scss">
 </head>
 
 <body>
 
   <div class="site_content">
+    <div class="item __active"
+         data-group="a"
+         data-id="one">A - Item One</div>
+    <div class="item"
+         data-group="a"
+         data-id="two">A - Item Two</div>
+    <div class="item"
+         data-group="a"
+         data-id="three">A - Item Three</div>
 
-    <div class="polyItem __active"
-         data-group="a"
-         data-id="one">PolyController Item One</div>
-    <div class="polyItem"
-         data-group="a"
-         data-id="two">PolyController Item Two</div>
-    <div class="polyItem"
-         data-group="a"
-         data-id="three">PolyController Item Three</div>
-    <div class="polyItem __active"
+    <div class="item __active"
          data-group="b"
          data-id="one">Poly One</div>
-    <div class="polyItem"
+    <div class="item"
          data-group="b"
          data-id="two">Poly Two</div>
-    <div class="polyItem"
+    <div class="item"
          data-group="b"
          data-id="three">Poly Three</div>
 
@@ -42,31 +42,31 @@
       <a class="js_open"
          data-group="a"
          data-target="one"
-         href="javascript:void(0)">Open One</a>
+         href="javascript:void(0)">A - Open One</a>
       <a class="js_open"
          data-group="a"
          data-target="two"
-         href="javascript:void(0)">Open One</a>
+         href="javascript:void(0)">A - Open One</a>
       <a class="js_close"
          data-group="a"
          data-target="one"
-         href="javascript:void(0)">Close One</a>
+         href="javascript:void(0)">A - Close One</a>
+    </div>
+
+    <div class="controls">
       <a class="js_activateAll"
          data-group="a"
-         data-target="one"
-         href="javascript:void(0)">Activate All</a>
+         href="javascript:void(0)">A - Activate All</a>
       <a class="js_deactivateAll"
          data-group="a"
-         data-target="one"
-         href="javascript:void(0)">Deactivate All</a>
+         href="javascript:void(0)">A - Deactivate All</a>
       <a class="js_toggleAll"
          data-group="a"
-         data-target="one"
-         href="javascript:void(0)">Toggle All</a>
+         href="javascript:void(0)">A - Toggle All</a>
     </div>
   </div><!-- site_content -->
 
-  <script src="javascripts/rocket_html_playground.ts"></script>
+  <script src="javascripts/polyController.ts"></script>
 </body>
 
 </html>

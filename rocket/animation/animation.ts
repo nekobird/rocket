@@ -59,7 +59,7 @@ export class Animation {
     Object.assign(this, config)
   }
 
-  public goToBeginning(): Animation {
+  public goToBeginning(): this {
     if (typeof this.onTick === 'function') {
       this.onTick(0, this, undefined)
     } else if (this.onTick.constructor === Array) {
@@ -68,7 +68,7 @@ export class Animation {
     return this
   }
 
-  public goToEnd(): Animation {
+  public goToEnd(): this {
     if (typeof this.onTick === 'function') {
       this.onTick(1, this, undefined)
     } else if (this.onTick.constructor === Array) {
@@ -77,7 +77,7 @@ export class Animation {
     return this
   }
 
-  public reset(): Animation {
+  public reset(): this {
     this.clearSessions()
 
     this.isActive = false
@@ -96,7 +96,7 @@ export class Animation {
     return this
   }
 
-  public pause(): Animation {
+  public pause(): this {
     if (
       this.isActive === true &&
       this.isAnimating == true &&
@@ -110,14 +110,14 @@ export class Animation {
     return this
   }
 
-  public stop(): Animation {
+  public stop(): this {
     this.reset()
     this.call_onComplete()
     this.callback()
     return this
   }
 
-  public stopAndJumptToEnd(): Animation {
+  public stopAndJumptToEnd(): this {
     this
       .reset()
       .goToEnd()
@@ -126,7 +126,7 @@ export class Animation {
     return this
   }
 
-  public stopAndJumpToBeginning(): Animation {
+  public stopAndJumpToBeginning(): this {
     this
       .reset()
       .goToBeginning()
@@ -136,7 +136,7 @@ export class Animation {
   }
 
   // A
-  public play(delay: number): Animation {
+  public play(delay: number): this {
     this.call_onStart()
 
     // This is only called when it's not animating
@@ -154,7 +154,7 @@ export class Animation {
   }
 
   // B, Similar to play but without the delay :D
-  public start(): Animation {
+  public start(): this {
     this.isActive = true
 
     // Set beginning direction
@@ -188,7 +188,7 @@ export class Animation {
   }
 
   // C
-  private loop(): Animation {
+  private loop(): this {
     let frame = () => {
 
       // Tick, this also moves progress forward!
@@ -233,7 +233,7 @@ export class Animation {
   }
 
   // D
-  private tick(): Animation {
+  private tick(): this {
     // Update progress.
     this.progress = this.currentNValue
 
@@ -268,20 +268,20 @@ export class Animation {
     )
   }
 
-  private clearSessions(): Animation {
+  private clearSessions(): this {
     clearTimeout(this.timeoutID)
     window.cancelAnimationFrame(this.RAFID)
     return this
   }
 
-  private toggleDirection(): Animation {
+  private toggleDirection(): this {
     this.direction = !this.direction
     return this
   }
 
   // CALLBACK
 
-  private call_onStart(): Animation {
+  private call_onStart(): this {
     if (typeof this.onStart === 'function') {
       this.onStart(this)
     } else if (this.onStart.constructor === Array) {
@@ -290,7 +290,7 @@ export class Animation {
     return this
   }
 
-  private call_onComplete(): Animation {
+  private call_onComplete(): this {
     if (typeof this.onComplete === 'function') {
       this.onComplete(this)
     } else if (this.onComplete.constructor === Array) {
@@ -299,7 +299,7 @@ export class Animation {
     return this
   }
 
-  private call_onIterationStart(): Animation {
+  private call_onIterationStart(): this {
     if (typeof this.onIterationStart === 'function') {
       this.onIterationStart(this)
     } else if (this.onIterationStart.constructor === Array) {
@@ -308,7 +308,7 @@ export class Animation {
     return this
   }
 
-  private call_onIterationComplete(): Animation {
+  private call_onIterationComplete(): this {
     if (typeof this.onIterationComplete === 'function') {
       this.onIterationComplete(this)
     } else if (this.onIterationComplete.constructor === Array) {

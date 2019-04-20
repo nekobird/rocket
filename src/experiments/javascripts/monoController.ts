@@ -2,11 +2,13 @@ import {
   MonoController,
 } from '../../../rocket/rocket'
 
-let controller = new MonoController({
+const controller = new MonoController({
   selectorItems: '.item',
+
   classNameItemActive: '__active',
   classNameJsActivate: 'js_activate',
   classNameJsDeactivate: 'js_deactivate',
+
   beforeDeactivate: (action, context) => {
     return new Promise(resolve => {
       action.currentItem.classList.remove('__animateIn', '__animateOut')

@@ -21,17 +21,17 @@ export interface MonoConfig {
   classNameJsActivate?: string,
   classNameJsDeactivate?: string,
 
-  beforeActivate?: Hook<MonoAction>,
-  beforeDeactivate?: Hook<MonoAction>,
+  beforeActivate?: Hook<MonoAction, MonoController>,
+  beforeDeactivate?: Hook<MonoAction, MonoController>,
 
-  afterActivate?: Hook<MonoAction>,
-  afterDeactivate?: Hook<MonoAction>,
+  afterActivate?: Hook<MonoAction, MonoController>,
+  afterDeactivate?: Hook<MonoAction, MonoController>,
 
-  conditionActivate?: ConditionHook<MonoAction>,
-  conditionDeactivate?: ConditionHook<MonoAction>,
+  conditionActivate?: ConditionHook<MonoAction, MonoController>,
+  conditionDeactivate?: ConditionHook<MonoAction, MonoController>,
 
-  beforeAction?: BeforeActionCallback<MonoAction>,
-  afterAction?: AfterActionCallback<MonoAction>,
+  beforeAction?: BeforeActionCallback<MonoAction, MonoController>,
+  afterAction?: AfterActionCallback<MonoAction, MonoController>,
 
   onClickOutside?: ListenToHook<MouseEvent, MonoGroup, MonoController>,
   onTouchOutside?: ListenToHook<TouchEvent, MonoGroup, MonoController>,

@@ -20,31 +20,31 @@ export type Config = MonoConfig | PolyConfig | SequenceConfig
 export type ActionName = MonoActionName | PolyActionName | SequenceActionName
 export type Action = MonoAction | PolyAction | SequenceAction
 
-export interface Hook<A> {
+export interface Hook<A, C> {
   (
     action: A,
-    context?: HTMLController,
+    context?: C,
   ): Promise<void>
 }
 
-export interface ConditionHook<A> {
+export interface ConditionHook<A, C> {
   (
     action: A,
-    context?: HTMLController,
+    context?: C,
   ): boolean
 }
 
-export interface BeforeActionCallback<A> {
+export interface BeforeActionCallback<A, C> {
   (
     action: A,
-    context?: HTMLController,
+    context?: C,
   ): Promise<void>
 }
 
-export interface AfterActionCallback<A> {
+export interface AfterActionCallback<A, C> {
   (
     action: A,
-    context?: HTMLController,
+    context?: C,
   ): void
 }
 

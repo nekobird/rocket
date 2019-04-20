@@ -26,22 +26,22 @@ export interface PolyConfig {
   classNameJsDeactivateAll?: string,
   classNameJsToggleAll?: string,
 
-  conditionActivate?: ConditionHook<PolyAction>,
-  conditionDeactivate?: ConditionHook<PolyAction>,
-  conditionToggle?: ConditionHook<PolyAction>,
+  conditionActivate?: ConditionHook<PolyAction, PolyController>,
+  conditionDeactivate?: ConditionHook<PolyAction, PolyController>,
+  conditionToggle?: ConditionHook<PolyAction, PolyController>,
 
-  conditionActivateAll?: ConditionHook<PolyAction>,
-  conditionDeactivateAll?: ConditionHook<PolyAction>,
-  conditionToggleAll?: ConditionHook<PolyAction>,
+  conditionActivateAll?: ConditionHook<PolyAction, PolyController>,
+  conditionDeactivateAll?: ConditionHook<PolyAction, PolyController>,
+  conditionToggleAll?: ConditionHook<PolyAction, PolyController>,
 
-  beforeDeactivate?: BeforeActionCallback<PolyAction>,
-  afterDeactivate?: AfterActionCallback<PolyAction>,
+  beforeDeactivate?: BeforeActionCallback<PolyAction, PolyController>,
+  afterDeactivate?: AfterActionCallback<PolyAction, PolyController>,
 
-  beforeActivate?: BeforeActionCallback<PolyAction>,
-  afterActivate?: AfterActionCallback<PolyAction>,
+  beforeActivate?: BeforeActionCallback<PolyAction, PolyController>,
+  afterActivate?: AfterActionCallback<PolyAction, PolyController>,
 
-  beforeAction?: BeforeActionCallback<PolyAction>,
-  afterAction?: AfterActionCallback<PolyAction>,
+  beforeAction?: BeforeActionCallback<PolyAction, PolyController>,
+  afterAction?: AfterActionCallback<PolyAction, PolyController>,
 
   onClickOutside?: ListenToHook<MouseEvent, PolyGroup, PolyController>,
   onTouchOutside?: ListenToHook<TouchEvent, PolyGroup, PolyController>,

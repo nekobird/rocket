@@ -25,18 +25,18 @@ export interface SequenceConfig {
   classNameJsNext?: string,
   classNameJsJump?: string,
 
-  beforeActivate?: Hook<SequenceAction>,
-  beforeDeactivate?: Hook<SequenceAction>,
+  beforeActivate?: Hook<SequenceAction, SequenceController>,
+  beforeDeactivate?: Hook<SequenceAction, SequenceController>,
 
-  afterActivate?: Hook<SequenceAction>,
-  afterDeactivate?: Hook<SequenceAction>,
+  afterActivate?: Hook<SequenceAction, SequenceController>,
+  afterDeactivate?: Hook<SequenceAction, SequenceController>,
 
-  conditionPrevious?: ConditionHook<SequenceAction>,
-  conditionNext?: ConditionHook<SequenceAction>,
-  conditionJump?: ConditionHook<SequenceAction>,
+  conditionPrevious?: ConditionHook<SequenceAction, SequenceController>,
+  conditionNext?: ConditionHook<SequenceAction, SequenceController>,
+  conditionJump?: ConditionHook<SequenceAction, SequenceController>,
 
-  beforeAction?: BeforeActionCallback<SequenceAction>,
-  afterAction?: AfterActionCallback<SequenceAction>,
+  beforeAction?: BeforeActionCallback<SequenceAction, SequenceController>,
+  afterAction?: AfterActionCallback<SequenceAction, SequenceController>,
 
   onClickOutside?: ListenToHook<MouseEvent, SequenceGroup, SequenceController>,
   onTouchOutside?: ListenToHook<TouchEvent, SequenceGroup, SequenceController>,

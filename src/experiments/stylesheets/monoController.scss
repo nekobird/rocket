@@ -1,3 +1,7 @@
+html {
+  font-family: sans-serif;
+}
+
 @keyframes item_animation_in {
   from {
     opacity: 0;
@@ -26,10 +30,6 @@
 
   &.__active {
     display: block;
-  }
-
-  &.__red {
-    background: red;
   }
 
   &.__animateIn {
