@@ -3,11 +3,9 @@ import {
   EventEntry,
   PolyGroup,
   PolyController,
-  Hook,
   ConditionHook,
   BeforeActionCallback,
   AfterActionCallback,
-  PolyActionName,
 } from '../index';
 
 // INTERFACE

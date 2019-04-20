@@ -1,7 +1,5 @@
 import {
   SequenceAction,
-  SequenceActionName,
-  SequenceController,
 } from './index'
 
 import {

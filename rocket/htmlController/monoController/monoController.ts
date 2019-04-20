@@ -37,7 +37,6 @@ export class MonoController {
     MONO_EVENT_ENTRY_LIST.forEach(eventEntry => {
       this.eventManager.addEntry(eventEntry)
     })
-    console.log(this.eventManager)
     return this
   }
 

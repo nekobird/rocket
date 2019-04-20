@@ -24,7 +24,7 @@ export interface Hook<A> {
   (
     action: A,
     context?: HTMLController,
-  ): Promise<any>
+  ): Promise<void>
 }
 
 export interface ConditionHook<A> {
@@ -48,7 +48,7 @@ export interface AfterActionCallback<A> {
   ): void
 }
 
-export interface ActionManager<A, AN> {
-  composeActionFromEvent: (actionName: AN, trigger: HTMLElement) => Action,
-  actionHub: (action: A, callback?: Function) => void,
+export interface ActionManager {
+  composeActionFromEvent: (actionName: ActionName, trigger: HTMLElement) => Action,
+  actionHub: (action: Action, callback?: Function) => void,
 }

@@ -50,6 +50,7 @@ export class SequenceGroupManager {
         }
       })
     }
+
     return this
   }
 

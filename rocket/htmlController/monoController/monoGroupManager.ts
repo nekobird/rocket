@@ -96,8 +96,8 @@ export class MonoGroupManager {
     }
   }
 
-  public deactivateItems() {
-    Object.keys(this.groups).forEach(groupName => {
+  public deactivateItem(groupName: string) {
+    if (typeof this.groups[groupName] === 'object') {
       const group: MonoGroup = this.groups[groupName]
       group.activeItem.classList.remove(
         this.controller.config.classNameItemActive
@@ -105,7 +105,7 @@ export class MonoGroupManager {
       group.activeItem = undefined
       group.activeItemId = undefined
       group.isActive = false
-    })
+    }
   }
 
   private checkIfValidItem(item: HTMLElement): boolean {

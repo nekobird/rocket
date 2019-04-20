@@ -4,11 +4,11 @@ import {
 
 import {
   Action,
-  ActionName,
   ActionManager,
+  ActionName,
   SequenceConfig,
-  SequenceGroup,
   SequenceController,
+  SequenceGroup,
 } from '../index'
 
 export type SequenceActionName = 'previous' | 'next' | 'jump'
@@ -24,7 +24,7 @@ export interface SequenceAction {
   trigger?: HTMLElement,
 }
 
-export class SequenceActionManager implements ActionManager<SequenceAction, SequenceActionName> {
+export class SequenceActionManager implements ActionManager {
 
   private controller: SequenceController
 
@@ -190,6 +190,9 @@ export class SequenceActionManager implements ActionManager<SequenceAction, Sequ
           .then(() => {
             this.isNested = false
             resolve()
+          })
+          .catch(() => {
+            this.isNested = false
           })
       })
     } else {

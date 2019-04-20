@@ -24,7 +24,7 @@ export interface MonoAction {
   trigger?: HTMLElement,
 }
 
-export class MonoActionManager implements ActionManager<MonoAction, MonoActionName> {
+export class MonoActionManager implements ActionManager {
 
   private controller: MonoController
 
@@ -60,14 +60,14 @@ export class MonoActionManager implements ActionManager<MonoAction, MonoActionNa
 
   private deactivate(action: MonoAction): Promise<void> {
     const config: MonoConfig = this.controller.config
-    if (
-      action.group.isActive === true &&
-      config.conditionDeactivate(action, this.controller) === true
-    ) {
+    if (action.group.isActive === false) {
+      return Promise.resolve()
+    }
+    if (config.conditionDeactivate(action, this.controller) === true) {
       return config
         .beforeDeactivate(action, this.controller)
         .then(() => {
-          this.controller.groupManager.deactivateItems()
+          this.controller.groupManager.deactivateItem(action.groupName)
           return Promise.resolve()
         })
         .then(() => {
@@ -79,12 +79,16 @@ export class MonoActionManager implements ActionManager<MonoAction, MonoActionNa
   }
 
   private completeAction(action: MonoAction): Promise<void> {
-    if (action.name === 'activate') {
+    if (
+      action.name === 'activate' &&
+      action.group.activeItem !== action.nextItem
+    ) {
       return this
         .deactivate(action)
         .then(() => { return this.activate(action) })
+    } else if (action.name === 'deactivate') {
+      return this.deactivate(action)
     }
-    return this.deactivate(action)
   }
 
   public endAction(callback?: Function): this {
@@ -141,10 +145,6 @@ export class MonoActionManager implements ActionManager<MonoAction, MonoActionNa
   // 1) ACTION HUB
 
   public actionHub(action: Action, callback?: Function): this {
-
-    const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
-    this[`setActionTarget${actionNameString}`](action)
-
     const config: MonoConfig = this.controller.config
 
     let preAction: Promise<void>
@@ -157,6 +157,9 @@ export class MonoActionManager implements ActionManager<MonoAction, MonoActionNa
             this.isNested = false
             resolve()
           })
+          .catch(() => {
+            this.isNested = false
+          })
       })
     } else {
       preAction = Promise.resolve()
@@ -164,6 +167,7 @@ export class MonoActionManager implements ActionManager<MonoAction, MonoActionNa
 
     preAction
       .then(() => { return this.completeAction(<MonoAction>action) })
+      .then(() => { this.endAction(callback) })
       .catch(() => { this.endAction(callback) })
     return this
   }

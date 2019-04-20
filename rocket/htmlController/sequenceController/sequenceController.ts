@@ -19,7 +19,7 @@ export class SequenceController {
   public elementManager: ElementManager
   public groupManager: SequenceGroupManager
   public actionManager: SequenceActionManager
-  public eventManager: EventManager<SequenceAction, SequenceActionName>
+  public eventManager: EventManager
 
   constructor(config: SequenceConfig) {
     this

@@ -5,7 +5,6 @@ import {
   EventEntry,
   Hook,
   MonoAction,
-  MonoActionName,
 } from '../index'
 
 export interface MonoConfig {
