@@ -1,10 +1,10 @@
 import {
   StringUtil,
-} from '../../rocket'
+} from '../rocket'
 
 import {
   Config,
-  SequenceController,
+  HTMLController,
 } from './index'
 
 export interface ElementEntries {
@@ -18,10 +18,10 @@ export interface ElementEntry {
 
 export class ElementManager {
 
-  private controller: SequenceController
+  private controller: HTMLController
   public elementEntries: ElementEntries
 
-  constructor(controller: SequenceController) {
+  constructor(controller: HTMLController) {
     this.controller = controller
     this.elementEntries = {}
   }
@@ -35,11 +35,11 @@ export class ElementManager {
 
   public initializeElementEntriesFromConfig(): ElementManager {
     const config: Config = this.controller.config
-    const addElement = (name: string, selector: string) => {
+    const addEntry = (name: string, selector: string) => {
       if (typeof this.elementEntries[name] === 'object') {
         this.elementEntries[name].selector = selector
       } else {
-        this.addElement(name, selector)
+        this.addEntry(name, selector)
       }
     }
     Object.keys(config).forEach(name => {
@@ -47,7 +47,7 @@ export class ElementManager {
         let elementName: string = StringUtil.lowerCaseFirstLetter(
           name.replace(/^selector/g, '')
         )
-        addElement(elementName, config[name])
+        addEntry(elementName, config[name])
       }
     })
     Object.keys(config).forEach(name => {
@@ -55,7 +55,7 @@ export class ElementManager {
         let elementName: string = StringUtil.lowerCaseFirstLetter(
           name.replace(/^className/g, '')
         )
-        addElement(elementName, `.${config[name]}`)
+        addEntry(elementName, `.${config[name]}`)
       }
     })
     return this
@@ -71,7 +71,7 @@ export class ElementManager {
     return this
   }
 
-  public addElement(name: string, selector: string): ElementManager {
+  public addEntry(name: string, selector: string): ElementManager {
     if (typeof this.elementEntries[name] !== 'object') {
       this.elementEntries[name] = {
         elements: undefined,
@@ -81,14 +81,14 @@ export class ElementManager {
     return this
   }
 
-  public removeElement(name: string): ElementManager {
+  public removeEntry(name: string): ElementManager {
     if (typeof this.elementEntries[name] === 'object') {
       delete this.elementEntries[name]
     }
     return this
   }
 
-  public getElementEntry(name: string): ElementEntry | false {
+  public getEntry(name: string): ElementEntry | false {
     if (typeof this.elementEntries[name] === 'object') {
       return this.elementEntries[name]
     }

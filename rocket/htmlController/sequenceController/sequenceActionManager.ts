@@ -3,17 +3,19 @@ import {
 } from '../../rocket'
 
 import {
-  Config,
-  Group,
+  ActionName,
+  ActionManager,
+  SequenceConfig,
+  SequenceGroup,
   SequenceController,
-} from './index'
+} from '../index'
 
-export type ActionName = 'previous' | 'next' | 'jump'
+export type SequenceActionName = 'previous' | 'next' | 'jump'
 
-export interface Action {
-  name?: ActionName
+export interface SequenceAction {
+  name?: SequenceActionName
   groupName: string,
-  group?: Group,
+  group?: SequenceGroup,
   currentItem?: HTMLElement,
   nextItemIndex?: number,
   nextItemId?: string,
@@ -21,7 +23,7 @@ export interface Action {
   trigger?: HTMLElement,
 }
 
-export class ActionManager {
+export class SequenceActionManager implements ActionManager<SequenceAction> {
 
   private controller: SequenceController
 
@@ -34,8 +36,8 @@ export class ActionManager {
 
   // 5) COMPLETE ACTION
 
-  private completeAction(action: Action, callback?: Function): ActionManager {
-    const config: Config = this.controller.config
+  private completeAction(action: SequenceAction, callback?: Function): this {
+    const config: SequenceConfig = this.controller.config
     const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
     // condition[actionName]
     if (
@@ -76,7 +78,7 @@ export class ActionManager {
     return this
   }
 
-  public endAction(callback?: Function): ActionManager {
+  public endAction(callback?: Function): this {
     this.isRunning = false
     if (typeof callback === 'function') {
       callback()
@@ -84,7 +86,7 @@ export class ActionManager {
     return this
   }
 
-  private deactivate(action: Action): ActionManager {
+  private deactivate(action: SequenceAction): this {
     action.group.items.forEach(item => {
       item.classList.remove(
         this.controller.config.classNameItemActive
@@ -96,7 +98,7 @@ export class ActionManager {
     return this
   }
 
-  private activate(action: Action): ActionManager {
+  private activate(action: SequenceAction): this {
     action.nextItem.classList.add(
       this.controller.config.classNameItemActive
     )
@@ -108,7 +110,7 @@ export class ActionManager {
 
   // SET ACTION TO TARGET
 
-  private setActionTargetPrevious(action: Action): Action {
+  private setActionTargetPrevious(action: SequenceAction): SequenceAction {
     let index: number
     if (action.group.activeIndex - 1 >= 0) {
       index = action.group.activeIndex - 1
@@ -120,7 +122,7 @@ export class ActionManager {
     return action
   }
 
-  private setActionTargetNext(action: Action): Action {
+  private setActionTargetNext(action: SequenceAction): SequenceAction {
     let index: number
     if (action.group.activeIndex + 1 >= action.group.items.length) {
       index = 0
@@ -132,7 +134,7 @@ export class ActionManager {
     return action
   }
 
-  private setActionTargetJump(action: Action): Action {
+  private setActionTargetJump(action: SequenceAction): SequenceAction {
     action.nextItem = document.querySelector(
       `${this.controller.config.selectorItems}[data-group="${action.groupName}"][data-id="${action.nextItemId}"]`
     )
@@ -142,8 +144,8 @@ export class ActionManager {
 
   // CREATE AND COMPOSE ACTIONS
 
-  public createAction(actionName: ActionName, groupName: string): Action {
-    const group: Group = this.controller.groupManager.groups[groupName]
+  public createAction(actionName: SequenceActionName, groupName: string): SequenceAction {
+    const group: SequenceGroup = this.controller.groupManager.groups[groupName]
     return {
       name: actionName,
       groupName: groupName,
@@ -152,17 +154,17 @@ export class ActionManager {
     }
   }
 
-  public composeAction(actionName: ActionName, groupName: string, id?: string): Action {
-    let action: Action = this.createAction(actionName, groupName)
+  public composeAction(actionName: SequenceActionName, groupName: string, id?: string): SequenceAction {
+    let action: SequenceAction = this.createAction(actionName, groupName)
     if (typeof id === 'string') {
       action.nextItemId = id
     }
     return action
   }
 
-  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action {
+  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): SequenceAction {
     const groupName: string = trigger.dataset.group
-    const action: Action = this.createAction(actionName, groupName)
+    const action: SequenceAction = this.createAction(actionName, groupName)
     if (typeof trigger.dataset.target === 'string') {
       action.nextItemId = trigger.dataset.target
     }
@@ -172,12 +174,11 @@ export class ActionManager {
 
   // 1) ACTION HUB
 
-  public hubAction(action: Action, callback?: Function): ActionManager {
-
+  public actionHub(action: SequenceAction, callback?: Function): this {
     const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
     this[`setActionTarget${actionNameString}`](action)
 
-    const config: Config = this.controller.config
+    const config: SequenceConfig = this.controller.config
 
     let preAction: Promise<void>
     if (this.isNested === false) {

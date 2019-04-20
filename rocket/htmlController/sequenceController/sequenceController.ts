@@ -1,57 +1,66 @@
 import {
-  DOMUtil,
-} from '../../rocket'
-
-import {
-  DEFAULT_CONFIG,
   ElementManager,
-  GroupManager,
-  ActionManager,
   EventManager,
-  Config
-} from './index'
+  SEQUENCE_DEFAULT_CONFIG,
+  SEQUENCE_EVENT_ENTRY_LIST,
+  SequenceActionManager,
+  SequenceActionName,
+  SequenceConfig,
+  SequenceGroupManager,
+} from '../index'
 
 export class SequenceController {
 
   public isReady: boolean = false
 
-  public config: Config
+  public config: SequenceConfig
 
   public elementManager: ElementManager
-  public groupManager: GroupManager
-  public actionManager: ActionManager
-  public eventManager: EventManager
+  public groupManager: SequenceGroupManager
+  public actionManager: SequenceActionManager
+  public eventManager: EventManager<SequenceActionName>
 
-  constructor(config: Config) {
+  constructor(config: SequenceConfig) {
     this
       .setConfig(config)
       .initialize()
   }
 
-  public setConfig(config: Config): SequenceController {
-    this.config = Object.assign(DEFAULT_CONFIG, config)
+  public setConfig(config: SequenceConfig): SequenceController {
+    this.config = Object.assign(SEQUENCE_DEFAULT_CONFIG, config)
     return this
   }
 
   private initialize(): SequenceController {
     this.elementManager = new ElementManager(this)
-    this.groupManager = new GroupManager(this)
-    this.actionManager = new ActionManager(this)
+    this.groupManager = new SequenceGroupManager(this)
+    this.actionManager = new SequenceActionManager(this)
     this.eventManager = new EventManager(this)
 
     this.elementManager.initialize()
     this.groupManager.initialize()
-    this.eventManager.initialize()
+
+    this.initializeEventEntriesFromConfig()
+    this.eventManager.listen()
     return this
   }
+
+  private initializeEventEntriesFromConfig(): this {
+    SEQUENCE_EVENT_ENTRY_LIST.forEach(eventEntry => {
+      this.eventManager.addEntry(eventEntry)
+    })
+    console.log(this.eventManager)
+    return this
+  }
+
 
   // PUBLIC
 
   public previous(groupName: string): Promise<void> {
     return new Promise(resolve => {
-      let actionManager: ActionManager = this.actionManager
+      let actionManager: SequenceActionManager = this.actionManager
       if (actionManager.isRunning === true) { actionManager.isNested = true }
-      actionManager.hubAction(
+      actionManager.actionHub(
         actionManager.composeAction('previous', groupName),
         () => { resolve() }
       )
@@ -60,9 +69,9 @@ export class SequenceController {
 
   public next(groupName: string): Promise<void> {
     return new Promise(resolve => {
-      let actionManager: ActionManager = this.actionManager
+      let actionManager: SequenceActionManager = this.actionManager
       if (actionManager.isRunning === true) { actionManager.isNested = true }
-      actionManager.hubAction(
+      actionManager.actionHub(
         actionManager.composeAction('next', groupName),
         () => { resolve() }
       )
@@ -71,9 +80,9 @@ export class SequenceController {
 
   public jump(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
-      let actionManager: ActionManager = this.actionManager
+      let actionManager: SequenceActionManager = this.actionManager
       if (actionManager.isRunning === true) { actionManager.isNested = true }
-      actionManager.hubAction(
+      actionManager.actionHub(
         actionManager.composeAction('jump', groupName, id),
         () => { resolve() }
       )

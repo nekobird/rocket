@@ -14,7 +14,7 @@ export class Vector2 {
     return this
   }
 
-  public setPoint(x: number | Point, y?: number): Vector2 {
+  public setPoint(x: number | Point, y?: number): this {
     if (
       typeof x === 'number' &&
       typeof y === 'number'
@@ -40,7 +40,7 @@ export class Vector2 {
     return Num.hypotenuse(this.x, this.y)
   }
 
-  public equals(point: Point): Vector2 {
+  public equals(point: Point): this {
     this.x = point.x
     this.y = point.y
     return this
@@ -53,7 +53,7 @@ export class Vector2 {
     )
   }
 
-  public round(to: number = 0): Vector2 {
+  public round(to: number = 0): this {
     this.x = parseFloat(
       this.x.toFixed(to)
     )
@@ -79,7 +79,7 @@ export class Vector2 {
     return (Math.abs(this.x) + Math.abs(this.y)) / 2
   }
 
-  public absolute(): Vector2 {
+  public absolute(): this {
     this.x = Math.abs(this.x)
     this.y = Math.abs(this.y)
     return this
@@ -87,13 +87,13 @@ export class Vector2 {
 
   // ADD
 
-  public add(point: Point): Vector2 {
+  public add(point: Point): this {
     this.x += point.x
     this.y += point.y
     return this
   }
 
-  public addX(point: number | Point): Vector2 {
+  public addX(point: number | Point): this {
     if (typeof point === 'number') {
       this.x += point
     } else {
@@ -102,7 +102,7 @@ export class Vector2 {
     return this
   }
 
-  public addY(point: number | Point): Vector2 {
+  public addY(point: number | Point): this {
     if (typeof point === 'number') {
       this.y += point
     } else {
@@ -113,13 +113,13 @@ export class Vector2 {
 
   // SUBTRACT
 
-  public subtract(point: Point): Vector2 {
+  public subtract(point: Point): this {
     this.x -= point.x
     this.y -= point.y
     return this
   }
 
-  public subtractX(point: number | Point): Vector2 {
+  public subtractX(point: number | Point): this {
     if (typeof point === 'number') {
       this.x -= point
     } else {
@@ -128,7 +128,7 @@ export class Vector2 {
     return this
   }
 
-  public subtractY(point: number | Point): Vector2 {
+  public subtractY(point: number | Point): this {
     if (typeof point === 'number') {
       this.y -= point
     } else {
@@ -139,44 +139,44 @@ export class Vector2 {
 
   // MULTIPLY
 
-  public multiply(by: number): Vector2 {
+  public multiply(by: number): this {
     this.x *= by
     this.y *= by
     return this
   }
 
-  public multiplyX(by: number): Vector2 {
+  public multiplyX(by: number): this {
     this.x *= by
     return this
   }
 
-  public multiplyY(by: number): Vector2 {
+  public multiplyY(by: number): this {
     this.y *= by
     return this
   }
 
   // DIVIDE
 
-  public divide(by: number): Vector2 {
+  public divide(by: number): this {
     by = by === 0 ? 1 : by
     this.x /= by
     this.y /= by
     return this
   }
 
-  public divideX(by: number): Vector2 {
+  public divideX(by: number): this {
     by = by === 0 ? 1 : by
     this.x /= by
     return this
   }
 
-  public divideY(by: number): Vector2 {
+  public divideY(by: number): this {
     by = by === 0 ? 1 : by
     this.y /= by
     return this
   }
 
-  public constrain(constrain: number): Vector2 {
+  public constrain(constrain: number): this {
     this.x = Num.constrain(this.x, constrain)
     this.y = Num.constrain(this.y, constrain)
     return this
@@ -186,7 +186,7 @@ export class Vector2 {
     return this.x * point.x + this.y * point.y
   }
 
-  public normalize(): Vector2 {
+  public normalize(): this {
     let mag: number = Math.abs(this.magnitude)
     mag = mag === 0 ? 1 : mag
     this.x /= mag
@@ -241,7 +241,7 @@ export class Vector2 {
 
   // ROTATE
 
-  public rotateBy(by: number): Vector2 {
+  public rotateBy(by: number): this {
     const angle: number = this.angle + by
     const m: number = Math.abs(
       Math.sqrt(this.x * this.x + this.y * this.y)
@@ -251,7 +251,7 @@ export class Vector2 {
     return this
   }
 
-  public rotateTo(angle: number): Vector2 {
+  public rotateTo(angle: number): this {
     angle = Num.cycle(angle, Math.PI * 2)
     const m: number = Math.abs(
       Math.sqrt(this.x * this.x + this.y * this.y)
@@ -261,7 +261,7 @@ export class Vector2 {
     return this
   }
 
-  public rotateByFrom(by: number, from: Point): Vector2 {
+  public rotateByFrom(by: number, from: Point): this {
     by = Num.cycle(by, Math.PI * 2)
     const x: number = this.x - from.x
     const y: number = this.y - from.y
@@ -278,7 +278,7 @@ export class Vector2 {
     return this
   }
 
-  public rotateToFrom(to: number, from: Point): Vector2 {
+  public rotateToFrom(to: number, from: Point): this {
     to = Num.cycle(to, Math.PI * 2)
     const x: number = this.x - from.x
     const y: number = this.y - from.y
@@ -292,7 +292,7 @@ export class Vector2 {
 
   // MOVE
 
-  public moveBy(x: number | Point, y?: number): Vector2 {
+  public moveBy(x: number | Point, y?: number): this {
     if (
       typeof x === 'number' &&
       typeof y === 'number'
@@ -324,21 +324,21 @@ export class Vector2 {
     return this
   }
 
-  public moveRadiallyBy(angle: number, by: number): Vector2 {
+  public moveRadiallyBy(angle: number, by: number): this {
     angle = Num.cycle(angle, Math.PI * 2)
     this.x += Math.cos(angle) * by
     this.y += Math.sin(angle) * by
     return this
   }
 
-  public moveRadiallyTo(angle: number, by: number): Vector2 {
+  public moveRadiallyTo(angle: number, by: number): this {
     angle = Num.cycle(angle, Math.PI * 2)
     this.x = Math.cos(angle) * by
     this.y = Math.sin(angle) * by
     return this
   }
 
-  public scaleBy(by: number): Vector2 {
+  public scaleBy(by: number): this {
     let magnitude: number = Math.abs(Math.sqrt(this.x * this.x + this.y * this.y))
     magnitude = magnitude === 0 ? 1 : magnitude
     this.x /= magnitude
@@ -348,7 +348,7 @@ export class Vector2 {
     return this
   }
 
-  public scaleByFrom(by: number, from: Point): Vector2 {
+  public scaleByFrom(by: number, from: Point): this {
     const sub: Vector2 = Vector2.subtract(this, from)
     const m: number = sub.magnitude
     sub
@@ -359,7 +359,7 @@ export class Vector2 {
     return this
   }
 
-  public limit(by: number): Vector2 {
+  public limit(by: number): this {
     const mag: number = this.magnitude
     if (mag > by) {
       this
@@ -369,7 +369,7 @@ export class Vector2 {
     return this
   }
 
-  public lerp(point: Point, time: number): Vector2 {
+  public lerp(point: Point, time: number): this {
     this.x = Num.modulate(time, 1, [this.x, point.x], false)
     this.y = Num.modulate(time, 1, [this.y, point.y], false)
     return this
@@ -377,7 +377,7 @@ export class Vector2 {
 
   // ZERO
 
-  public zero(): Vector2 {
+  public zero(): this {
     this.x = 0
     this.y = 0
     return this

@@ -1,38 +1,39 @@
 import {
   ElementEntry,
+  SequenceConfig,
   SequenceController,
-} from './index'
+} from '../index'
 
-export interface Groups {
-  [groupName: string]: Group,
+export interface SequenceGroups {
+  [groupName: string]: SequenceGroup,
 }
 
-export interface Group {
+export interface SequenceGroup {
   name: string,
-  isActive: boolean,
+  items: HTMLElement[],
   activeIndex: number,
   activeItem: HTMLElement,
-  items: HTMLElement[],
+  isActive: boolean,
 }
 
-export class GroupManager {
+export class SequenceGroupManager {
 
   private controller: SequenceController
-  public groups: Groups = {}
+  public groups: SequenceGroups = {}
 
   constructor(controller: SequenceController) {
     this.controller = controller
   }
 
-  public initialize(): GroupManager {
+  public initialize(): this {
     this
       .initializeGroups()
       .initializeActiveItems()
     return this
   }
 
-  private initializeGroups(): GroupManager {
-    const items: ElementEntry | false = this.controller.elementManager.getElementEntry('items')
+  private initializeGroups(): this {
+    const items: ElementEntry | false = this.controller.elementManager.getEntry('items')
 
     if (items) {
       items.elements.forEach(item => {
@@ -42,52 +43,42 @@ export class GroupManager {
         ))
         this.groups[groupName] = {
           name: groupName,
-
-          isActive: false,
-
-          activeItem: undefined,
-          activeIndex: undefined,
-
           items: groupItems,
+          activeIndex: undefined,
+          activeItem: undefined,
+          isActive: false,
         }
       })
     }
     return this
   }
 
-  private initializeActiveItems(): GroupManager {
+  private initializeActiveItems(): this {
     if (this.groupCount > 0) {
+      const config: SequenceConfig = this.controller.config
+
       Object.keys(this.groups).forEach(groupName => {
-        const group: Group = this.groups[groupName]
+        const group: SequenceGroup = this.groups[groupName]
 
         group.items.forEach((item: HTMLElement, index: number) => {
           if (
-            item.classList.contains(
-              this.controller.config.classNameItemActive
-            ) === true
+            item.classList.contains(config.classNameItemActive) === true
           ) {
             if (typeof group.activeItem === 'undefined') {
-              group.isActive = true
-
               group.activeIndex = index
               group.activeItem = item
+              group.isActive = true
             } else {
-              item.classList.remove(
-                this.controller.config.classNameItemActive
-              )
+              item.classList.remove(config.classNameItemActive)
             }
           }
         })
 
         if (typeof group.activeItem === 'undefined') {
-          group.isActive = true
-
+          group.items[0].classList.add(config.classNameItemActive)
           group.activeIndex = 0
           group.activeItem = group.items[0]
-
-          group.items[0].classList.add(
-            this.controller.config.classNameItemActive
-          )
+          group.isActive = true
         }
       })
       this.controller.isReady = true
@@ -95,11 +86,13 @@ export class GroupManager {
     return this
   }
 
+  // GROUP
+
   public get groupCount(): number {
     return Object.keys(this.groups).length
   }
 
-  public getGroupProperties(groupName: string): Group {
+  public getGroupProperty(groupName: string): SequenceGroup {
     return this.groups[groupName]
   }
 

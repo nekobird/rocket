@@ -3,28 +3,27 @@ import {
 } from '../../rocket'
 
 import {
-  Config,
-  Group,
+  ActionManager,
+  ActionName,
+  PolyConfig,
+  PolyGroup,
   PolyController,
-} from './index'
+} from '../index'
 
-export type ActionName = 'activate' | 'activateAll' | 'deactivate' | 'deactivateAll' | 'toggle' | 'toggleAll'
+export type PolyActionName = 'activate' | 'activateAll' | 'deactivate' | 'deactivateAll' | 'toggle' | 'toggleAll'
 
-export interface Action {
-  name?: ActionName,
-
+export interface PolyAction {
+  name?: PolyActionName,
   groupName: string,
-  group?: Group,
-
+  group?: PolyGroup,
   targetId?: string,
   targetItem?: HTMLElement,
-
   trigger?: HTMLElement,
 }
 
 export const POLY_ACTIONS: string[] = ['activateAll', 'deactivateAll', 'toggleAll']
 
-export class ActionManager {
+export class PolyActionManager implements ActionManager<PolyAction> {
 
   public isRunning: boolean = false
   public isNested: boolean = false
@@ -35,12 +34,12 @@ export class ActionManager {
     this.controller = controller
   }
 
-  public isPolyAction(actionName: ActionName): boolean {
+  public isPolyAction(actionName: PolyActionName): boolean {
     return POLY_ACTIONS.indexOf(actionName) === -1 ? false : true
   }
 
-  public hubAction(action: Action, callback?: Function): ActionManager {
-    let config: Config = this.controller.config
+  public actionHub(action: PolyAction, callback?: Function): this {
+    let config: PolyConfig = this.controller.config
 
     let preAction: Promise<void>
     if (this.isNested === false) {
@@ -85,15 +84,15 @@ export class ActionManager {
     return this
   }
 
-  private itemActivate(action: Action): ActionManager {
-    const config: Config = this.controller.config
+  private itemActivate(action: PolyAction): this {
+    const config: PolyConfig = this.controller.config
     action.targetItem.classList.add(config.classNameItemActive)
     action.group.activeItems.push(action.targetItem)
     action.group.isActive = true
     return this
   }
 
-  private itemDeactivate(action: Action): ActionManager {
+  private itemDeactivate(action: PolyAction): this {
     action.targetItem.classList.remove(this.controller.config.classNameItemActive)
     const index: number = action.group.activeItems.indexOf(action.targetItem)
     action.group.activeItems.slice(index, 1)
@@ -106,11 +105,11 @@ export class ActionManager {
   // 5) HANDLE ACTIONS
 
   private handleActionActivation(
-    actionName: 'activate' | 'deactivate', action: Action, callback?: Function
+    actionName: 'activate' | 'deactivate', action: PolyAction, callback?: Function
   ): Promise<void> {
 
     const actionNameString: string = StringUtil.upperCaseFirstLetter(actionName)
-    const config: Config = this.controller.config
+    const config: PolyConfig = this.controller.config
 
     // Only proceed if item is not yet activated or deactivated
     let proceed: boolean = true
@@ -145,8 +144,8 @@ export class ActionManager {
     }
   }
 
-  private handleActionToggle(action: Action, callback?: Function): Promise<void> {
-    const config: Config = this.controller.config
+  private handleActionToggle(action: PolyAction, callback?: Function): Promise<void> {
+    const config: PolyConfig = this.controller.config
 
     if (config.conditionToggle(action, this.controller) === true) {
       if (action.targetItem.classList.contains(config.classNameItemActive) === false) {
@@ -159,8 +158,8 @@ export class ActionManager {
     }
   }
 
-  private handleActionActivationAll(action: Action, callback?: Function): Promise<void> {
-    let config: Config = this.controller.config
+  private handleActionActivationAll(action: PolyAction, callback?: Function): Promise<void> {
+    let config: PolyConfig = this.controller.config
     let actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
 
     if (
@@ -172,7 +171,7 @@ export class ActionManager {
       for (let i: number = 0; i < action.group.items.length; i++) {
         let item = action.group.items[i]
         // Action Creation
-        let individualAction: Action = Object.assign({
+        let individualAction: PolyAction = Object.assign({
           targetId: item.dataset.id,
           targetItem: item,
         }, action)
@@ -204,7 +203,7 @@ export class ActionManager {
     }
   }
 
-  public endAction(callback?: Function): ActionManager {
+  public endAction(callback?: Function): this {
     if (this.isNested === false) {
       this.isRunning = false
     }
@@ -216,7 +215,7 @@ export class ActionManager {
 
   // ACTION CREATOR AND COMPOSER
 
-  private createAction(actionName: ActionName, groupName: string): Action {
+  private createAction(actionName: PolyActionName, groupName: string): PolyAction {
     return {
       name: actionName,
       groupName: groupName,
@@ -224,8 +223,8 @@ export class ActionManager {
     }
   }
 
-  public composeAction(actionName: ActionName, groupName: string, id?: string): Action {
-    let action: Action = this.createAction(actionName, groupName)
+  public composeAction(actionName: PolyActionName, groupName: string, id?: string): PolyAction {
+    let action: PolyAction = this.createAction(actionName, groupName)
     if (typeof id === 'string') {
       action.targetId = id
       action.targetItem = document.querySelector(
@@ -235,14 +234,21 @@ export class ActionManager {
     return action
   }
 
-  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action {
+  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): PolyAction {
     const groupName: string = trigger.dataset.group
     let whitelist: string[] = ['activate', 'deactivate', 'toggle']
     if (whitelist.indexOf(actionName) !== -1) {
-      return this.composeAction(actionName, groupName, trigger.dataset.target)
+      return this.composeAction(<PolyActionName>actionName, groupName, trigger.dataset.target)
     } else {
-      return this.composeAction(actionName, groupName)
+      return this.composeAction(<PolyActionName>actionName, groupName)
     }
+  }
+
+  // HELPER
+
+  private checkIfValidActionName(actionName: ActionName): boolean {
+    const validNames = ['activate', 'activateAll', 'deactivate', 'deactivateAll', 'toggle', 'toggleAll']
+    return validNames.indexOf(actionName) !== -1
   }
 
 }

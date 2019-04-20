@@ -1,64 +1,44 @@
 import {
   DOMUtil,
   StringUtil,
-} from '../../rocket'
+} from '../rocket'
 
 import {
   ActionName,
-  EVENT_ENTRY_LIST,
-  SequenceController,
+  HTMLController,
 } from './index'
-import { ActionManager } from './actionManager';
 
-export interface EventEntries {
-  [name: string]: EventEntry
+export interface EventEntries<T> {
+  [name: string]: EventEntry<T>
 }
 
-export interface EventEntry {
+export interface EventEntry<T> {
   name: string,
   target: string | HTMLElement | HTMLElement[] | Document | Window,
   event: string | string[],
-  action: ActionName,
+  action: T,
   listener: EventListener | Function,
   useCapture?: boolean
 }
 
-export type EventEntryList = EventEntry[]
+export type EventEntryList<T> = EventEntry<T>[]
 
-export class EventManager {
+export class EventManager<AN> {
 
-  private controller: SequenceController
-  private eventEntries: EventEntries
+  private controller: HTMLController
+  private eventEntries: EventEntries<AN>
 
-  constructor(controller: SequenceController) {
+  constructor(controller: HTMLController) {
     this.controller = controller
     this.eventEntries = {}
   }
 
-  public initialize(): EventManager {
-    this
-      .initializeEventEntriesFromConfig()
-      .listen()
-    return this
-  }
+  // LISTEN
 
-  private initializeEventEntriesFromConfig(): EventManager {
-    EVENT_ENTRY_LIST.forEach(eventEntry => {
-      this.addEventEntry(eventEntry)
-    })
-    return this
-  }
-
-  private listenerFactory(action: ActionName): EventListener {
-    return (event: Event) => {
-      this.eventHub(event, action)
-    }
-  }
-
-  private listen(): EventManager {
+  public listen(): this {
     Object.keys(this.eventEntries).forEach(name => {
 
-      const eventEntry: EventEntry = this.eventEntries[name]
+      const eventEntry: EventEntry<AN> = this.eventEntries[name]
 
       let targets = undefined
 
@@ -92,9 +72,15 @@ export class EventManager {
     return this
   }
 
+  private listenerFactory(actionName: AN): EventListener {
+    return (event: Event) => {
+      this.eventHub(event, actionName)
+    }
+  }
+
   private addEventListenerToTarget(
-    target: HTMLElement | Window | Document, eventEntry: EventEntry, useCapture: boolean
-  ): EventManager {
+    target: HTMLElement | Window | Document, eventEntry: EventEntry<AN>, useCapture: boolean
+  ): this {
 
     if (Array.isArray(eventEntry.event)) {
       eventEntry.event.forEach(event => {
@@ -110,7 +96,7 @@ export class EventManager {
     return this
   }
 
-  public addEventEntry(entry: EventEntry): EventManager {
+  public addEntry(entry: EventEntry<AN>): this {
     if (typeof this.eventEntries[entry.name] === 'object') {
       this.eventEntries[entry.name] = Object.assign(this.eventEntries[name], entry)
     } else {
@@ -119,20 +105,24 @@ export class EventManager {
     return this
   }
 
-  public removeEventEntry(name: string): EventManager {
+  public removeEntry(name: string): this {
+    if (typeof this.eventEntries[name] === 'object') {
+      delete this.eventEntries[name]
+    }
     return this
   }
 
-  private eventHub(event: Event, actionName: ActionName): EventManager {
-    const actionManager: ActionManager = this.controller.actionManager
+  private eventHub(event: Event, actionName: AN): this {
+    const actionManager = this.controller.actionManager
 
     if (
       this.controller.isReady === true &&
       actionManager.isRunning === false
     ) {
+
       actionManager.isRunning = true
 
-      const eventName: string = StringUtil.upperCaseFirstLetter(actionName)
+      const eventName: string = StringUtil.upperCaseFirstLetter(actionName.toString())
       const trigger = DOMUtil.findAncestorWithClass(
         <HTMLElement>event.target,
         this.controller.config[`classNameJs${eventName}`],
@@ -143,7 +133,7 @@ export class EventManager {
         typeof trigger !== 'undefined' &&
         trigger instanceof HTMLElement
       ) {
-        actionManager.hubAction(
+        actionManager.actionHub(
           actionManager.composeActionFromEvent(actionName, trigger)
         )
       } else {

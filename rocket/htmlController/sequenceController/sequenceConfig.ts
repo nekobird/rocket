@@ -1,38 +1,18 @@
 import {
-  Action,
-  EventEntry,
+  SequenceAction,
+  SequenceActionName,
   SequenceController,
 } from './index'
 
-export interface Hook {
-  (
-    action: Action,
-    context?: SequenceController,
-  ): Promise<any>
-}
+import {
+  EventEntry,
+  Hook,
+  ConditionHook,
+  BeforeActionCallback,
+  AfterActionCallback,
+} from '../index'
 
-export interface ConditionHook {
-  (
-    action: Action,
-    context?: SequenceController,
-  ): boolean
-}
-
-export interface BeforeActionCallback {
-  (
-    action: Action,
-    context?: SequenceController,
-  ): Promise<any>
-}
-
-export interface AfterActionCallback {
-  (
-    action: Action,
-    context?: SequenceController,
-  ): void
-}
-
-export interface Config {
+export interface SequenceConfig {
   selectorItems?: string,
 
   classNameItemActive?: string,
@@ -40,21 +20,21 @@ export interface Config {
   classNameJsNext?: string,
   classNameJsJump?: string,
 
-  beforeActivate?: Hook,
-  beforeDeactivate?: Hook,
+  beforeActivate?: Hook<SequenceAction>,
+  beforeDeactivate?: Hook<SequenceAction>,
 
-  afterActivate?: Hook,
-  afterDeactivate?: Hook,
+  afterActivate?: Hook<SequenceAction>,
+  afterDeactivate?: Hook<SequenceAction>,
 
-  conditionPrevious?: ConditionHook,
-  conditionNext?: ConditionHook,
-  conditionJump?: ConditionHook,
+  conditionPrevious?: ConditionHook<SequenceAction>,
+  conditionNext?: ConditionHook<SequenceAction>,
+  conditionJump?: ConditionHook<SequenceAction>,
 
-  beforeAction?: BeforeActionCallback,
-  afterAction?: AfterActionCallback,
+  beforeAction?: BeforeActionCallback<SequenceAction>,
+  afterAction?: AfterActionCallback<SequenceAction>,
 }
 
-export const DEFAULT_CONFIG: Config = {
+export const SEQUENCE_DEFAULT_CONFIG: SequenceConfig = {
   selectorItems: '.item',
 
   classNameItemActive: '__active',
@@ -75,7 +55,7 @@ export const DEFAULT_CONFIG: Config = {
   afterAction: (action, context) => { },
 }
 
-export const EVENT_ENTRY_LIST: EventEntry[] = [
+export const SEQUENCE_EVENT_ENTRY_LIST: EventEntry<SequenceActionName>[] = [
   {
     name: 'previous',
     action: 'previous',

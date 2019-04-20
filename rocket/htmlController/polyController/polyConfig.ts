@@ -1,49 +1,18 @@
 import {
-  Action,
+  PolyAction,
   EventEntry,
-  Group,
+  PolyGroup,
   PolyController,
-} from './index';
+  Hook,
+  ConditionHook,
+  BeforeActionCallback,
+  AfterActionCallback,
+  PolyActionName,
+} from '../index';
 
 // INTERFACE
 
-export interface BeforeActionCallback {
-  (
-    action: Action,
-    context?: PolyController,
-  ): Promise<void>
-}
-
-export interface AfterActionCallback {
-  (
-    action: Action,
-    context?: PolyController,
-  ): void
-}
-
-export interface Hook {
-  (
-    action: Action,
-    context?: PolyController,
-  ): Promise<void>
-}
-
-export interface ConditionHook {
-  (
-    action: Action,
-    context?: PolyController,
-  ): boolean
-}
-
-export interface ListenToHook {
-  (
-    event: Event,
-    group: Group,
-    context: PolyController,
-  ): void
-}
-
-export interface Config {
+export interface PolyConfig {
   listenToClickOutside?: false,
   listenToTouchOutside?: false,
   listenToKeydown?: false,
@@ -58,29 +27,29 @@ export interface Config {
   classNameJsDeactivateAll?: string,
   classNameJsToggleAll?: string,
 
-  conditionActivate?: ConditionHook,
-  conditionDeactivate?: ConditionHook,
-  conditionToggle?: ConditionHook,
+  conditionActivate?: ConditionHook<PolyAction>,
+  conditionDeactivate?: ConditionHook<PolyAction>,
+  conditionToggle?: ConditionHook<PolyAction>,
 
-  conditionActivateAll?: ConditionHook,
-  conditionDeactivateAll?: ConditionHook,
-  conditionToggleAll?: ConditionHook,
+  conditionActivateAll?: ConditionHook<PolyAction>,
+  conditionDeactivateAll?: ConditionHook<PolyAction>,
+  conditionToggleAll?: ConditionHook<PolyAction>,
 
-  beforeDeactivate?: BeforeActionCallback,
-  afterDeactivate?: AfterActionCallback,
+  beforeDeactivate?: BeforeActionCallback<PolyAction>,
+  afterDeactivate?: AfterActionCallback<PolyAction>,
 
-  beforeActivate?: BeforeActionCallback,
-  afterActivate?: AfterActionCallback,
+  beforeActivate?: BeforeActionCallback<PolyAction>,
+  afterActivate?: AfterActionCallback<PolyAction>,
 
-  beforeAction?: BeforeActionCallback,
-  afterAction?: AfterActionCallback,
+  beforeAction?: BeforeActionCallback<PolyAction>,
+  afterAction?: AfterActionCallback<PolyAction>,
 
-  onClickOutside?: (event: MouseEvent, group: Group, context: PolyController) => void,
-  onTouchOutside?: (event: TouchEvent, group: Group, context: PolyController) => void,
-  onKeydown?: (event: KeyboardEvent, group: Group, context: PolyController) => void,
+  onClickOutside?: (event: MouseEvent, group: PolyGroup, context: PolyController) => void,
+  onTouchOutside?: (event: TouchEvent, group: PolyGroup, context: PolyController) => void,
+  onKeydown?: (event: KeyboardEvent, group: PolyGroup, context: PolyController) => void,
 }
 
-export const EVENT_ENTRY_LIST: EventEntry[] = [
+export const POLY_EVENT_ENTRY_LIST: EventEntry<PolyActionName>[] = [
   {
     name: 'activate',
     action: 'activate',
@@ -125,7 +94,7 @@ export const EVENT_ENTRY_LIST: EventEntry[] = [
   },
 ]
 
-export const DEFAULT_CONFIG: Config = {
+export const POLY_DEFAULT_CONFIG: PolyConfig = {
   listenToClickOutside: false,
   listenToTouchOutside: false,
   listenToKeydown: false,

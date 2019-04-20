@@ -1,80 +1,78 @@
 import {
-  DOMUtil,
-} from '../../rocket'
-
-import {
-  DEFAULT_CONFIG,
   ElementManager,
-  GroupManager,
-  ActionManager,
   EventManager,
-  Config
-} from './index'
+  MONO_DEFAULT_CONFIG,
+  MONO_EVENT_ENTRY_LIST,
+  MonoActionManager,
+  MonoActionName,
+  MonoConfig,
+  MonoGroupManager,
+} from '../index'
 
 export class MonoController {
 
   public isReady: boolean = false
 
-  public config: Config
+  public config: MonoConfig
 
   public elementManager: ElementManager
-  public groupManager: GroupManager
-  public actionManager: ActionManager
-  public eventManager: EventManager
+  public eventManager: EventManager<MonoActionName>
 
-  constructor(config: Config) {
+  public groupManager: MonoGroupManager
+  public actionManager: MonoActionManager
+
+  constructor(config: MonoConfig) {
     this
       .setConfig(config)
       .initialize()
   }
 
-  public setConfig(config: Config): MonoController {
-    this.config = Object.assign(DEFAULT_CONFIG, config)
+  public setConfig(config: MonoConfig): MonoController {
+    this.config = Object.assign(MONO_DEFAULT_CONFIG, config)
+    return this
+  }
+
+  private initializeEventEntriesFromConfig(): this {
+    MONO_EVENT_ENTRY_LIST.forEach(eventEntry => {
+      this.eventManager.addEntry(eventEntry)
+    })
+    console.log(this.eventManager)
     return this
   }
 
   private initialize(): MonoController {
     this.elementManager = new ElementManager(this)
-    this.groupManager = new GroupManager(this)
-    this.actionManager = new ActionManager(this)
+    this.groupManager = new MonoGroupManager(this)
+    this.actionManager = new MonoActionManager(this)
     this.eventManager = new EventManager(this)
 
     this.elementManager.initialize()
     this.groupManager.initialize()
-    this.eventManager.initialize()
+
+    this.initializeEventEntriesFromConfig()
+    this.eventManager.listen()
     return this
   }
 
   // PUBLIC
 
-  public previous(groupName: string): Promise<void> {
+  public activate(groupName: string): Promise<void> {
     return new Promise(resolve => {
-      let actionManager: ActionManager = this.actionManager
+      let actionManager: MonoActionManager = this.actionManager
       if (actionManager.isRunning === true) { actionManager.isNested = true }
-      actionManager.hubAction(
-        actionManager.composeAction('previous', groupName),
+      actionManager.actionHub(
+        actionManager.composeAction('activate', groupName),
         () => { resolve() }
       )
     })
   }
 
-  public next(groupName: string): Promise<void> {
+  public deactivate(groupName: string): Promise<void> {
     return new Promise(resolve => {
-      let actionManager: ActionManager = this.actionManager
+      let actionManager: MonoActionManager = this.actionManager
       if (actionManager.isRunning === true) { actionManager.isNested = true }
-      actionManager.hubAction(
-        actionManager.composeAction('next', groupName),
-        () => { resolve() }
-      )
-    })
-  }
-
-  public jump(groupName: string, id: string): Promise<void> {
-    return new Promise(resolve => {
-      let actionManager: ActionManager = this.actionManager
-      if (actionManager.isRunning === true) { actionManager.isNested = true }
-      actionManager.hubAction(
-        actionManager.composeAction('jump', groupName, id),
+      actionManager.actionHub(
+        actionManager.composeAction('deactivate', groupName),
         () => { resolve() }
       )
     })

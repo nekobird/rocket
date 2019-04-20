@@ -1,23 +1,23 @@
 import {
   ElementEntry,
   PolyController,
-} from './index'
+} from '../index'
 
-export interface Groups {
-  [groupName: string]: Group,
+export interface PolyGroups {
+  [groupName: string]: PolyGroup,
 }
 
-export interface Group {
+export interface PolyGroup {
   name: string,
   items: HTMLElement[],
   activeItems?: HTMLElement[],
   isActive: boolean,
 }
 
-export class GroupManager {
+export class PolyGroupManager {
 
   private controller: PolyController
-  public groups: Groups = {}
+  public groups: PolyGroups = {}
 
   constructor(controller: PolyController) {
     this.controller = controller
@@ -30,8 +30,8 @@ export class GroupManager {
     return this
   }
 
-  public initializeGroups(): GroupManager {
-    const items: ElementEntry | false = this.controller.elementManager.getElementEntry('items')
+  public initializeGroups(): this {
+    const items: ElementEntry | false = this.controller.elementManager.getEntry('items')
     if (items) {
       items.elements.forEach(item => {
         const groupName: string = item.dataset.group
@@ -39,21 +39,21 @@ export class GroupManager {
           `${this.controller.config.selectorItems}[data-group="${groupName}"]`
         ))
         this.groups[groupName] = {
+          name: groupName,
+          items: groupItems,
           activeItems: [],
           isActive: false,
-          items: groupItems,
-          name: groupName,
         }
       })
     }
     return this
   }
 
-  private initializeActiveItems(): GroupManager {
+  private initializeActiveItems(): this {
     if (this.groupCount > 0) {
       Object.keys(this.groups).forEach(groupName => {
-        const group: Group = this.groups[groupName]
-        Array.from(group.items).forEach((item, index) => {
+        const group: PolyGroup = this.groups[groupName]
+        group.items.forEach((item, index) => {
           if (item.classList.contains(this.controller.config.classNameItemActive)) {
             group.activeItems.push(item)
             group.isActive = true
@@ -69,7 +69,7 @@ export class GroupManager {
     return Object.keys(this.groups).length
   }
 
-  public getGroupProperties(groupName: string): Group {
+  public getGroupProperties(groupName: string): PolyGroup {
     return this.groups[groupName]
   }
 
