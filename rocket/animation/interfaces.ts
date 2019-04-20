@@ -1,8 +1,3 @@
-import {
-  AnimationTimingFunction,
-  AnimationTickFunction,
-} from './index'
-
 export interface AnimationConfig {
   alternate?: boolean,
   delay?: number,
@@ -22,4 +17,12 @@ export interface AnimationConfig {
   onTick?: AnimationTickFunction | AnimationTickFunction[],
 
   callback?: Function,
+}
+
+export interface AnimationTickFunction {
+  (n: number, context: Animation, data?: any): void
+}
+
+export interface AnimationTimingFunction {
+  (t: number): number
 }

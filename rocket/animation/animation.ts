@@ -5,7 +5,7 @@ import {
 import {
   AnimationTimingFunction,
   AnimationConfig,
-} from './interfaces/index'
+} from './interfaces'
 
 export class Animation {
 
