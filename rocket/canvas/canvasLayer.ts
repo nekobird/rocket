@@ -20,18 +20,18 @@ export class CanvasLayer {
     this.element.style.zIndex = zIndex.toString()
   }
 
-  public updateElement(element: HTMLCanvasElement): CanvasLayer {
+  public updateElement(element: HTMLCanvasElement): this {
     this.element = element
     this.draw.element = element
     return this
   }
 
-  public show(): CanvasLayer {
+  public show(): this {
     this.element.style.display = `block`
     return this
   }
 
-  public hide(): CanvasLayer {
+  public hide(): this {
     this.element.style.display = `none`
     return this
   }

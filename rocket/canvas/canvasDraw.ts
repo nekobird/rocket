@@ -74,7 +74,7 @@ export class CanvasDraw {
     )
   }
 
-  public applyStyle(style: CanvasDrawStyle): CanvasDraw {
+  public applyStyle(style: CanvasDrawStyle): this {
     let computedStyle: any = Object.assign({}, this._defaultStyle)
 
     if (typeof style === 'object') {
@@ -98,7 +98,7 @@ export class CanvasDraw {
     return this
   }
 
-  public clear(): CanvasDraw {
+  public clear(): this {
     this.context.clearRect(
       0, 0,
       this.element.width, this.element.height
@@ -106,7 +106,7 @@ export class CanvasDraw {
     return this
   }
 
-  public resize(width?: number, height?: number): CanvasDraw {
+  public resize(width?: number, height?: number): this {
     const m: number = this.resolutionMultiplier
     if (
       typeof height === 'number' &&
@@ -151,12 +151,12 @@ export class CanvasDraw {
     return this.context.putImageData(pixel, 0, 0)
   }
 
-  public clip(): CanvasDraw {
+  public clip(): this {
     this.context.clip()
     return this
   }
 
-  public shadow(offsetX, offsetY, blur, color): CanvasDraw {
+  public shadow(offsetX, offsetY, blur, color): this {
     const m = this.resolutionMultiplier
     if (color instanceof Color) {
       color = color.rgbaString
@@ -168,7 +168,7 @@ export class CanvasDraw {
     return this
   }
 
-  public image(img, st, sw, sh, dt, dw, dh): CanvasDraw {
+  public image(img, st, sw, sh, dt, dw, dh): this {
     const m = this.resolutionMultiplier
     this.context.drawImage(
       img, st.x, st.y, sw, sh, dt.x * m, dt.y * m, dw * m, dh * m
@@ -178,7 +178,7 @@ export class CanvasDraw {
 
   // SHAPES
 
-  public circle(v: Point, r: number, style: CanvasDrawStyle, insert): CanvasDraw {
+  public circle(v: Point, r: number, style: CanvasDrawStyle, insert): this {
     const m = this.resolutionMultiplier
     this.save()
     this.begin()
@@ -199,12 +199,12 @@ export class CanvasDraw {
 
   // PATH
 
-  public begin(): CanvasDraw {
+  public begin(): this {
     this.context.beginPath()
     return this
   }
 
-  public end(): CanvasDraw {
+  public end(): this {
     this.context.closePath()
     return this
   }
@@ -215,19 +215,19 @@ export class CanvasDraw {
     return this.context.isPointInPath(point.x * m, point.y * m)
   }
 
-  public moveTo(to: Point): CanvasDraw {
+  public moveTo(to: Point): this {
     const m: number = this.resolutionMultiplier
     this.context.moveTo(to.x * m, to.y * m)
     return this
   }
 
-  public lineTo(to: Point): CanvasDraw {
+  public lineTo(to: Point): this {
     const m: number = this.resolutionMultiplier
     this.context.lineTo(to.x * m, to.y * m)
     return this
   }
 
-  public arcTo(from: Point, to: Point, r): CanvasDraw {
+  public arcTo(from: Point, to: Point, r): this {
     const m: number = this.resolutionMultiplier
     this.context.arcTo(
       from.x * m, from.y * m,
@@ -237,7 +237,7 @@ export class CanvasDraw {
     return this
   }
 
-  public bezierCurveTo(cp1: Point, cp2: Point, to: Point): CanvasDraw {
+  public bezierCurveTo(cp1: Point, cp2: Point, to: Point): this {
     const m: number = this.resolutionMultiplier
     this.context.bezierCurveTo(
       cp1.x * m, cp1.y * m,
@@ -247,7 +247,7 @@ export class CanvasDraw {
     return this
   }
 
-  public quadraticCurveTo(cp: Point, to: Point): CanvasDraw {
+  public quadraticCurveTo(cp: Point, to: Point): this {
     const m: number = this.resolutionMultiplier
     this.context.quadraticCurveTo(
       cp.x * m, cp.y * m,
@@ -258,19 +258,19 @@ export class CanvasDraw {
 
   // TRANSFORM
 
-  public translate(to: Point): CanvasDraw {
+  public translate(to: Point): this {
     const m: number = this.resolutionMultiplier
     this.context.translate(to.x * m, to.y * m)
     this.previousTranslation.equals(to)
     return this
   }
 
-  public rotate(angle: number): CanvasDraw {
+  public rotate(angle: number): this {
     this.context.rotate(angle)
     return this
   }
 
-  public scale(w: number, h?: number): CanvasDraw {
+  public scale(w: number, h?: number): this {
     if (typeof h !== 'number') {
       h = w
     }
@@ -280,17 +280,17 @@ export class CanvasDraw {
 
   // STASH
 
-  public reset(): CanvasDraw {
+  public reset(): this {
     this.context.setTransform(1, 0, 0, 1, 0, 0)
     return this
   }
 
-  public save(): CanvasDraw {
+  public save(): this {
     this.context.save()
     return this
   }
 
-  public restore(): CanvasDraw {
+  public restore(): this {
     this.context.restore()
     return this
   }

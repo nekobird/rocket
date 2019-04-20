@@ -205,6 +205,9 @@ export class SequenceActionManager implements ActionManager {
       })
       .catch(() => {
         this.endAction(callback)
+        if (this.isNested === false) {
+          config.afterAction(<SequenceAction>action, this.controller)
+        }
       })
 
     return this

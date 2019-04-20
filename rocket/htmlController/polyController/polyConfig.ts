@@ -1,12 +1,12 @@
 import {
-  PolyAction,
-  EventEntry,
-  PolyGroup,
-  PolyController,
-  ListenToHook,
-  ConditionHook,
-  BeforeActionCallback,
   AfterActionCallback,
+  BeforeActionCallback,
+  ConditionHook,
+  EventEntry,
+  ListenToHook,
+  PolyAction,
+  PolyController,
+  PolyGroup,
 } from '../index';
 
 // INTERFACE

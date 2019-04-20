@@ -75,18 +75,16 @@ export class CanvasLayerManager {
       layer.element.style.width = `${width}px`
       layer.draw.resize()
     })
-
-    return this
   }
 
   // LISTEN
 
-  public startListening(): CanvasLayerManager {
+  public startListening(): this {
     window.addEventListener('resize', this.resize)
     return this
   }
 
-  public stopListening(): CanvasLayerManager {
+  public stopListening(): this {
     window.removeEventListener('resize', this.resize)
     return this
   }

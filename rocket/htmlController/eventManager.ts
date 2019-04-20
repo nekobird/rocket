@@ -15,11 +15,11 @@ export interface EventEntries {
 
 export interface EventEntry {
   name: string,
-  target: string | HTMLElement | HTMLElement[] | Document | Window,
+  target: string | HTMLElement | HTMLElement[] | Window | Document,
   event: string | string[],
   action: ActionName,
   listener: EventListener | Function,
-  useCapture?: boolean
+  useCapture?: boolean,
 }
 
 export type EventEntryList = EventEntry[]
@@ -41,7 +41,7 @@ export class EventManager {
 
       const eventEntry: EventEntry = this.eventEntries[name]
 
-      let targets: Window | Document | HTMLElement[] | HTMLElement | undefined = undefined
+      let targets: HTMLElement[] | HTMLElement | Window | Document | undefined = undefined
 
       if (typeof eventEntry.target === 'string') {
         const elements = this.controller.elementManager.getElements(eventEntry.target)
@@ -94,6 +94,7 @@ export class EventManager {
         eventEntry.event, <EventListener>eventEntry.listener, useCapture
       )
     }
+
     return this
   }
 
@@ -140,6 +141,7 @@ export class EventManager {
         actionManager.endAction()
       }
     }
+
     return this
   }
 

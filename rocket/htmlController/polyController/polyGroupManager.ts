@@ -32,12 +32,15 @@ export class PolyGroupManager {
 
   public initializeGroups(): this {
     const items: ElementEntry | false = this.controller.elementManager.getEntry('items')
-    if (items) {
+
+    if (typeof items === 'object') {
       items.elements.forEach(item => {
         const groupName: string = item.dataset.group
-        const groupItems: HTMLElement[] = Array.from(document.querySelectorAll(
-          `${this.controller.config.selectorItems}[data-group="${groupName}"]`
-        ))
+        const groupItems: HTMLElement[] = Array.from(
+          document.querySelectorAll(
+            `${this.controller.config.selectorItems}[data-group="${groupName}"]`
+          )
+        )
         this.groups[groupName] = {
           name: groupName,
           items: groupItems,
@@ -46,6 +49,7 @@ export class PolyGroupManager {
         }
       })
     }
+
     return this
   }
 
@@ -69,8 +73,11 @@ export class PolyGroupManager {
     return Object.keys(this.groups).length
   }
 
-  public getGroupProperties(groupName: string): PolyGroup {
-    return this.groups[groupName]
+  public getGroupProperty(groupName: string): PolyGroup | false {
+    if (typeof this.groups[groupName] === 'object') {
+      return this.groups[groupName]
+    }
+    return false
   }
 
 }

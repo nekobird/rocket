@@ -167,7 +167,12 @@ export class MonoActionManager implements ActionManager {
 
     preAction
       .then(() => { return this.completeAction(<MonoAction>action) })
-      .then(() => { this.endAction(callback) })
+      .then(() => {
+        this.endAction(callback)
+        if (this.isNested === false) {
+          config.afterAction(<MonoAction>action, this.controller)
+        }
+      })
       .catch(() => { this.endAction(callback) })
     return this
   }

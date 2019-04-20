@@ -35,7 +35,10 @@ export class SequenceGroupManager {
   private initializeGroups(): this {
     const items: ElementEntry | false = this.controller.elementManager.getEntry('items')
 
-    if (items !== false && typeof items.elements === 'object') {
+    if (
+      items !== false &&
+      typeof items.elements === 'object'
+    ) {
       items.elements.forEach(item => {
         const groupName: string | undefined = item.dataset.group
         if (typeof groupName === 'string') {
@@ -95,8 +98,11 @@ export class SequenceGroupManager {
     return Object.keys(this.groups).length
   }
 
-  public getGroupProperty(groupName: string): SequenceGroup {
-    return this.groups[groupName]
+  public getGroupProperty(groupName: string): SequenceGroup | false {
+    if (typeof this.groups[groupName] === 'object') {
+      return this.groups[groupName]
+    }
+    return false
   }
 
 }
