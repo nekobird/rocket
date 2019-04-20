@@ -14,7 +14,7 @@ export class Vector2 {
     return this
   }
 
-  public setPoint(x: number | Point, y?: number): this {
+  public setPoint(x: number | Point | undefined, y?: number): this {
     if (
       typeof x === 'number' &&
       typeof y === 'number'

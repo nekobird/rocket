@@ -43,9 +43,9 @@ export class UITextArea {
   public onPaste: Function = () => { }
 
   // PROPERTIES
-  public lastKeyCode: number
+  public lastKeyCode: number = NaN
 
-  constructor(element?: HTMLTextAreaElement, config?: Config) {
+  constructor(element: HTMLTextAreaElement, config?: Config) {
     this[_textBoxModel] = new TextBoxModel
 
     // EVENT NAMES
@@ -61,7 +61,10 @@ export class UITextArea {
     )
 
     this.element = element
-    this.config = config
+
+    if (typeof config === 'object') {
+      this.config = config
+    }
 
     this.initialize()
     return this

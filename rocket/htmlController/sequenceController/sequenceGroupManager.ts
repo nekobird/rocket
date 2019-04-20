@@ -11,8 +11,8 @@ export interface SequenceGroups {
 export interface SequenceGroup {
   name: string,
   items: HTMLElement[],
-  activeIndex: number,
-  activeItem: HTMLElement,
+  activeIndex: number | undefined,
+  activeItem: HTMLElement | undefined,
   isActive: boolean,
 }
 
@@ -35,18 +35,20 @@ export class SequenceGroupManager {
   private initializeGroups(): this {
     const items: ElementEntry | false = this.controller.elementManager.getEntry('items')
 
-    if (items) {
+    if (items !== false && typeof items.elements === 'object') {
       items.elements.forEach(item => {
-        const groupName: string = item.dataset.group
-        const groupItems: HTMLElement[] = Array.from(document.querySelectorAll(
-          `${this.controller.config.selectorItems}[data-group="${groupName}"]`
-        ))
-        this.groups[groupName] = {
-          name: groupName,
-          items: groupItems,
-          activeIndex: undefined,
-          activeItem: undefined,
-          isActive: false,
+        const groupName: string | undefined = item.dataset.group
+        if (typeof groupName === 'string') {
+          const groupItems: HTMLElement[] = Array.from(document.querySelectorAll(
+            `${this.controller.config.selectorItems}[data-group="${groupName}"]`
+          ))
+          this.groups[groupName] = {
+            name: groupName,
+            items: groupItems,
+            activeIndex: undefined,
+            activeItem: undefined,
+            isActive: false,
+          }
         }
       })
     }
@@ -63,20 +65,20 @@ export class SequenceGroupManager {
 
         group.items.forEach((item: HTMLElement, index: number) => {
           if (
-            item.classList.contains(config.classNameItemActive) === true
+            item.classList.contains(<string>config.classNameItemActive) === true
           ) {
             if (typeof group.activeItem === 'undefined') {
               group.activeIndex = index
               group.activeItem = item
               group.isActive = true
             } else {
-              item.classList.remove(config.classNameItemActive)
+              item.classList.remove(<string>config.classNameItemActive)
             }
           }
         })
 
         if (typeof group.activeItem === 'undefined') {
-          group.items[0].classList.add(config.classNameItemActive)
+          group.items[0].classList.add(<string>config.classNameItemActive)
           group.activeIndex = 0
           group.activeItem = group.items[0]
           group.isActive = true

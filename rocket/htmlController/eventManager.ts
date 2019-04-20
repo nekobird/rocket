@@ -41,7 +41,7 @@ export class EventManager {
 
       const eventEntry: EventEntry = this.eventEntries[name]
 
-      let targets = undefined
+      let targets: Window | Document | HTMLElement[] | HTMLElement | undefined = undefined
 
       if (typeof eventEntry.target === 'string') {
         const elements = this.controller.elementManager.getElements(eventEntry.target)

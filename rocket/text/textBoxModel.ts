@@ -63,7 +63,9 @@ export class TextBoxModel {
 
   private modelElement: HTMLElement
 
-  constructor() { }
+  constructor() {
+    this.modelElement = document.createElement('TEXTAREA')
+  }
 
   public getTextBoxHeightFromElement(element: HTMLElement, text?: string): number {
     // Create and prepare model to measure height.
@@ -190,7 +192,7 @@ export class TextBoxModel {
     return this
   }
 
-  public create(type = undefined): TextBoxModel {
+  public create(type?: string): TextBoxModel {
     type = typeof type === 'string' ? type : 'TEXTAREA'
     this.modelElement = document.createElement(type)
     document.body.appendChild(this.modelElement)
@@ -224,7 +226,7 @@ export class TextBoxModel {
     ) {
       return (<HTMLTextAreaElement | HTMLInputElement>element).value
     }
-    return element.textContent
+    return typeof element.textContent === 'string' ? element.textContent : ''
   }
 
   public static getElementHorizontalBorderWidth(element: HTMLElement) {

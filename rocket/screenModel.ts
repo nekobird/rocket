@@ -18,8 +18,8 @@ const MODEL_ATTRIBUTES = {
   zIndex: '-9999',
 }
 
-let modelElement = undefined
-let modelIsReady = false
+let modelElement: HTMLElement
+let modelIsReady: boolean = false
 
 export class ScreenModel {
 

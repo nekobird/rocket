@@ -12,7 +12,7 @@ export interface ElementEntries {
 }
 
 export interface ElementEntry {
-  elements: HTMLElement[],
+  elements: HTMLElement[] | undefined,
   selector: string,
 }
 
@@ -96,8 +96,11 @@ export class ElementManager {
   }
 
   public getElements(name: string): HTMLElement[] | false {
-    if (typeof this.elementEntries[name] === 'object') {
-      return this.elementEntries[name].elements
+    if (
+      typeof this.elementEntries[name] === 'object' &&
+      typeof this.elementEntries[name].elements === 'object'
+    ) {
+      return <HTMLElement[]>this.elementEntries[name].elements
     }
     return false
   }

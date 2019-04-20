@@ -23,13 +23,16 @@ export class DOMUtil {
   ): DOMUtilResult {
     const results: HTMLElement[] = []
 
+    if (element === null) { return false }
+
     if (identifierFn(element)) {
       results.push(element)
     }
 
-    let currentEl: HTMLElement = element
+    let currentEl: HTMLElement | null = element
 
-    while (currentEl.nodeName !== 'HTML') {
+    while (currentEl === null || currentEl.nodeName !== 'HTML') {
+      currentEl = <HTMLElement>currentEl
       if (identifierFn(currentEl)) {
         results.push(currentEl)
       }
@@ -144,8 +147,11 @@ export class DOMUtil {
   // SIBLING
 
   static getSiblings(element: HTMLElement): HTMLCollection | false {
-    const siblings: HTMLCollection = element.parentElement.children
-    return siblings.length > 0 ? siblings : false
+    if (element.parentElement !== null) {
+      const siblings: HTMLCollection = element.parentElement.children
+      return siblings.length > 0 ? siblings : false
+    }
+    return false
   }
 
   static findSibling(
