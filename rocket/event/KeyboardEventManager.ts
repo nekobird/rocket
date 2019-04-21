@@ -4,69 +4,100 @@
 // keydown, keypress, textInput, keyup
 
 import {
-  KeyboardEventHandler
+  KeyboardEventHandler,
 } from '../rocket'
 
-interface Handler {
-  manager: KeyboardEventManager,
-  name: string,
-}
-
-interface KeyboardEventHandlers {
+export interface KeyboardEventHandlers {
   [name: string]: KeyboardEventHandler
 }
 
-interface KeyboardEventManagerHook {
+export interface KeyboardEventManagerHook {
   (
-    event: KeyboardEvent,
-    context: KeyboardEventManager,
+    action: KeyboardEventManagerAction
   ): void
+}
+
+export type KeyboardEventManagerActionName = 'keydown' | 'keypress' | 'keyup'
+
+export interface KeyboardEventManagerAction {
+  name: KeyboardEventManagerActionName,
+  event: KeyboardEvent,
+  keyCode: number,
+  manager: KeyboardEventManager,
+  time: number,
+}
+
+export interface KeyboardEventManagerKey {
+  keyCode: number,
+  keydownEvent?: KeyboardEvent,
+  keydownTime?: number,
+  keyupEvent?: KeyboardEvent,
+  keyupTime?: number,
+  duration?: number,
+  isDown?: boolean,
+}
+
+export interface KeyboardEventManagerKeys {
+  [keyCode: number]: KeyboardEventManagerKey
 }
 
 export class KeyboardEventManager {
 
-  public isDown: boolean = false
   public isDisabled: boolean = false
+
+  public isDown: boolean = false
 
   public altKeyIsDown: boolean = false
   public ctrlKeyIsDown: boolean = false
   public shiftKeyIsDown: boolean = false
 
   public downKeyCodes: number[]
+  public keys: KeyboardEventManagerKeys
 
-  // PREVIOUS
-  public previous_keyCode_keydown: number
-  public previous_keyCode_keypress: number
-  public previous_duration_keydown: number
+  public firstKeydownTime: number
+  public lastKeydownTime: number
+  public lastKeyupTime: number
+  public lastKeypressTime: number
+  public duration: number
 
-  // TIME
-  public time_keydown: number
-  public time_keyup: number
-  public time_keypress: number
+  public lastKeydownKeyCode: number
+  public lastKeyupKeyCode: number
+  public lastKeypressKeyCode: number
 
   // HOOK
-  public onEvent: KeyboardEventManagerHook = (event, context) => { }
-  public onKeydown: KeyboardEventManagerHook = (event, context) => { }
-  public onKeypress: KeyboardEventManagerHook = (event, context) => { }
-  public onKeyup: KeyboardEventManagerHook = (event, context) => { }
+  public onEvent: KeyboardEventManagerHook = (action) => { }
+  public onKeydown: KeyboardEventManagerHook = (action) => { }
+  public onKeypress: KeyboardEventManagerHook = (action) => { }
+  public onKeyup: KeyboardEventManagerHook = (action) => { }
+
+  public onFirstKeydown: KeyboardEventManagerHook = (action) => { }
+  public onLastKeyup: KeyboardEventManagerHook = (action) => { }
 
   public handlers: KeyboardEventHandlers
 
   constructor() {
     this.handlers = {}
+    this.downKeyCodes = []
+    this.keys = {}
     this.startListening()
   }
 
-  public register(name: string, handler: KeyboardEventHandler): KeyboardEventManager {
-    this.handlers[name] = handler
-    this.handlers[name].name = name
-    this.handlers[name].manager = this
+  public register(name: string, handler: KeyboardEventHandler): this {
+    if (typeof this.handlers[name] === 'undefined') {
+      this.handlers[name] = handler
+      this.handlers[name].name = name
+      this.handlers[name].manager = this
+    } else {
+      this.handlers[name] = Object.assign(this.handlers[name], handler)
+    }
     return this
   }
 
-  public remove(name: string): KeyboardEventManager {
-    this.handlers[name].manager = undefined
-    delete this.handlers[name]
+  public remove(name: string): this {
+    if (typeof this.handlers[name] === 'object') {
+      this.handlers[name].manager = undefined
+      delete this.handlers[name]
+    }
     return this
   }
 
@@ -74,36 +105,65 @@ export class KeyboardEventManager {
     return typeof this.handlers[name] !== 'undefined' ? this.handlers[name] : false
   }
 
+  // ACTION
+
+  private composeAction(
+    name: KeyboardEventManagerActionName, event: KeyboardEvent
+  ): KeyboardEventManagerAction {
+    return {
+      name: name,
+      event: event,
+      keyCode: event.keyCode,
+      time: Date.now(),
+      manager: this,
+    }
+  }
+
+  // MANAGE KEYS
+
+  private createKeyObject(keyCode: number) {
+    if (typeof this.keys[keyCode] === 'undefined') {
+      this.keys[keyCode] = { keyCode: keyCode }
+    }
+  }
+
+  private updateKeyOnKeydown(event: KeyboardEvent) {
+    this.createKeyObject(event.keyCode)
+    const key: KeyboardEventManagerKey = this.keys[event.keyCode]
+    key.keydownEvent = event
+    key.keydownTime = Date.now()
+    key.keyupEvent = undefined
+    key.keyupTime = undefined
+    key.duration = undefined
+    key.isDown = true
+
+  }
+
+  private updateKeyOnKeyup(event: KeyboardEvent) {
+    const key: KeyboardEventManagerKey = this.keys[event.keyCode]
+    key.keyupEvent = event
+    key.keyupTime = Date.now()
+    key.duration = key.keyupTime - key.keydownTime
+    key.isDown = false
+  }
+
+  public getKey(keyCode: number): KeyboardEventManagerKey | false {
+    if (typeof this.keys[keyCode] === 'object') {
+      return this.keys[keyCode]
+    }
+    return false
+  }
+
   // EVENT HANDLER
 
-  private composeAction(name: string, event: KeyboardEvent) {
-    const action = {
-      name: name,
-      keyCode: event.keyCode,
-      event: event,
-      time: Date.now(),
+  private eventHandlerKeydown = (event: KeyboardEvent) => {
+    this.lastKeydownKeyCode = event.keyCode
+
+    this.updateKeyOnKeydown(event)
+
+    if (this.downKeyCodes.indexOf(event.keyCode) === -1) {
+      this.downKeyCodes.push(event.keyCode)
     }
-  }
-
-  private composeContext() {
-    const context = {
-      // previousKeyCode
-      // previousKeyboardEvent
-      // downKeyCodes
-      // altKeyIsDown
-      // ctrlKeyIsDown
-      // ctrlKeyIsDown
-    }
-  }
-
-  private eventHandler_keydown(event: KeyboardEvent) {
-    this.time_keydown = Date.now()
-
-    this.downKeyCodes.push(event.keyCode)
-
-    this.previous_keyCode = event.keyCode
-    this.previous_event_keydown = event
-
 
     if (event.keyCode === 16) {
       this.shiftKeyIsDown = true
@@ -112,36 +172,32 @@ export class KeyboardEventManager {
     } else if (event.keyCode === 18) {
       this.altKeyIsDown = true
     }
-    this.isDown = true
 
-    if (this.isDisabled === false) {
-      this.onEvent(event, this)
-      this.onKeydown(event, this)
-      Object.keys(this.handlers).forEach(name => {
-        this.handlers[name].handle_keydown(
-          this.composeAction('keydown', event)
-          this.composeContext('keydown', event),
-        )
-      })
+    this.lastKeydownTime = Date.now()
+
+    const action = this.composeAction('keydown', event)
+
+    if (this.isDown === false) {
+      this.onFirstKeydown(action)
+      this.firstKeydownTime = Date.now()
+      this.lastKeyupKeyCode = undefined
+      this.duration = undefined
+      this.isDown = true
     }
+
+    this.onEvent(action)
+    this.onKeydown(action)
+    Object.keys(this.handlers).forEach(handlerName => {
+      this.handlers[handlerName].handleKeydown(action)
+    })
   }
 
-  private eventHandler_keypress = (event: KeyboardEvent) => {
-    this.lastKeyCode = event.keyCode
-    this.time_keypress = Date.now()
-    this.lastFiredEvent = event
-    this.lastKeyCode = event.keyCode
+  private eventHandlerKeyup = (event: KeyboardEvent) => {
+    this.lastKeyupKeyCode = event.keyCode
+    this.isDown = false
 
-    if (this.isDisabled === false) {
-      this.onEvent(event, this)
-      this.onKeypress(event, this)
-      Object.keys(this.handlers).forEach(name => {
-        this.handlers[name].handle_keypress(event)
-      })
-    }
-  }
+    this.updateKeyOnKeyup(event)
 
-  private eventHandler_keyup = (event: KeyboardEvent) => {
     const downKeyIndex: number = this.downKeyCodes.indexOf(event.keyCode)
     if (downKeyIndex !== -1) {
       this.downKeyCodes.splice(downKeyIndex, 1)
@@ -154,38 +210,49 @@ export class KeyboardEventManager {
     } else if (event.keyCode === 18) {
       this.altKeyIsDown = false
     }
+
+    const action = this.composeAction('keyup', event)
+
     if (this.downKeyCodes.length === 0) {
+      this.lastKeyupTime = Date.now()
+      this.onLastKeyup(action)
       this.isDown = false
     }
 
-    this.time_keydown_end = Date.now()
-    this.duration_keydown = this.time_keydown_end - this.time_keydown_start
-    this.lastFiredEvent = event
-    this.lastKeyCode = event.keyCode
-    this.isDown = false
+    this.onEvent(action)
+    this.onKeyup(action)
+    Object.keys(this.handlers).forEach(handlerName => {
+      this.handlers[handlerName].handleKeyup(action)
+    })
+  }
+
+  private eventHandlerKeypress = (event: KeyboardEvent) => {
+    this.lastKeypressKeyCode = event.keyCode
+    this.lastKeypressTime = Date.now()
 
     if (this.isDisabled === false) {
-      this.onEvent(event, this)
-      this.onKeyup(event, this)
-      Object.keys(this.handlers).forEach(name => {
-        this.handlers[name].handle_keyUp(event)
+      const action = this.composeAction('keypress', event)
+      this.onEvent(action)
+      this.onKeypress(action)
+      Object.keys(this.handlers).forEach(handlerName => {
+        this.handlers[handlerName].handleKeypress(action)
       })
     }
   }
 
   // LISTEN
 
-  public startListening(): KeyboardEventManager {
-    window.addEventListener('keydown', this.eventHandler_keydown)
-    window.addEventListener('keypress', this.eventHandler_keypress)
-    window.addEventListener('keyup', this.eventHandler_keyup)
+  public startListening(): this {
+    window.addEventListener('keydown', this.eventHandlerKeydown)
+    window.addEventListener('keypress', this.eventHandlerKeypress)
+    window.addEventListener('keyup', this.eventHandlerKeyup)
     return this
   }
 
-  public stopListening(): KeyboardEventManager {
-    window.removeEventListener('keydown', this.eventHandler_keydown)
-    window.removeEventListener('keypress', this.eventHandler_keypress)
-    window.removeEventListener('keyup', this.eventHandler_keyup)
+  public stopListening(): this {
+    window.removeEventListener('keydown', this.eventHandlerKeydown)
+    window.removeEventListener('keypress', this.eventHandlerKeypress)
+    window.removeEventListener('keyup', this.eventHandlerKeyup)
     return this
   }
 

@@ -1,87 +1,86 @@
 import {
-  KeyboardEventManager
-} from "./KeyboardEventManager"
+  StringUtil,
+  KeyboardEventManagerActionName,
+  KeyboardEventManagerAction,
+  KeyboardEventManager,
+} from './../rocket'
 
 // The *Down happens first,
 // the *Press happens second (when text is entered), 
 // and the *Up happens last (when text input is complete).
 
-interface ConditionHook {
+interface KeyboardEventHandlerConditionHook {
   (
-    keyCode: number,
-    event: KeyboardEvent,
-    context: KeyboardEventHandler
+    action: KeyboardEventManagerAction
   ): boolean
 }
 
-type ActionName = 'keydown' | 'keypress' | 'keyup'
+export interface KeyboardEventHandlerConfig {
+  conditionKeydown?: KeyboardEventHandlerConditionHook,
+  conditionKeyup?: KeyboardEventHandlerConditionHook,
+  conditionKeypress?: KeyboardEventHandlerConditionHook,
+  onKeydown?: KeyboardEventHandlerHook | KeyboardEventHandlerHook[],
+  onKeyup?: KeyboardEventHandlerHook | KeyboardEventHandlerHook[],
+  onKeypress?: KeyboardEventHandlerHook | KeyboardEventHandlerHook[],
+}
 
-interface KeyboardEventAction {
-  name: ActionName
-  keyCode: number,
-  event: KeyboardEvent,
+export interface KeyboardEventHandlerHook {
+  (
+    action: KeyboardEventManagerAction
+  ): void
 }
 
 export class KeyboardEventHandler {
+
   public name: string
   public manager: KeyboardEventManager
 
   // CONDITION
-  public condition_keydown: ConditionHook = () => {
-    return true
-  }
-  public condition_keypress: ConditionHook = () => {
-    return true
-  }
+  public conditionKeydown: KeyboardEventHandlerConditionHook = () => { return true }
+  public conditionKeyup: KeyboardEventHandlerConditionHook = () => { return true }
+  public conditionKeypress: KeyboardEventHandlerConditionHook = () => { return true }
 
   // CALLBACK
-  public onKeydownStart: Function | Function[] = () => { }
-  public onKeydownEnd: Function | Function[] = () => { }
-  public onKeypress: Function | Function[] = () => { }
+  public onKeydown: KeyboardEventHandlerHook | KeyboardEventHandlerHook[] = () => { }
+  public onKeyup: KeyboardEventHandlerHook | KeyboardEventHandlerHook[] = () => { }
+  public onKeypress: KeyboardEventHandlerHook | KeyboardEventHandlerHook[] = () => { }
 
-  constructor() { }
+  constructor(config?: KeyboardEventHandlerConfig) {
+    if (typeof config === 'object') {
+      this.config = config
+    }
+  }
+
+  set config(config: KeyboardEventHandlerConfig) {
+    Object.assign(this, config)
+  }
 
   // HANDLE
 
-  public handle_keydown(action: KeyboardEventAction): KeyboardEventHandler {
-    if (this.condition_keydown(event.keyCode, event, this) === true) {
-      if (typeof this.onKeydownStart === 'function') {
-        this.onKeydownStart(event.keyCode, event, this)
-      } else if (this.onKeydownStart.constructor === Array) {
-        this.onKeydownStart.forEach(callback => {
-          callback(event.keyCode, event, this)
-        })
-      }
-    }
+  public handleKeydown(action: KeyboardEventManagerAction): this {
+    this.callHook('keydown', action)
     return this
   }
 
-  public handle_keypress(action: KeyboardEventAction): KeyboardEventHandler {
-    if (this.condition_keypress(event.keyCode, event, this) === true) {
-
-
-      if (typeof this.onKeypress === 'function') {
-        this.onKeypress(event.keyCode, event, this)
-      } else if (this.onKeypress.constructor === Array) {
-        this.onKeypress.forEach(callback => {
-          callback(event.keyCode, event, this)
-        })
-      }
-    }
+  public handleKeyup(action: KeyboardEventManagerAction): this {
+    this.callHook('keyup', action)
     return this
   }
 
-  public handle_keyUp(action: KeyboardEventAction): KeyboardEventHandler {
-    if (this.isDown === true) {
-      if (typeof this.onKeydownEnd === 'function') {
-        this.onKeydownEnd(event.keyCode, event, this)
-      } else if (this.onKeydownEnd.constructor === Array) {
-        this.onKeydownEnd.forEach(callback => {
-          callback(event.keyCode, event, this)
-        })
+  public handleKeypress(action: KeyboardEventManagerAction): this {
+    this.callHook('keypress', action)
+    return this
+  }
+
+  private callHook(handleName: KeyboardEventManagerActionName, action: KeyboardEventManagerAction) {
+    const handleNameString: string = StringUtil.upperCaseFirstLetter(handleName)
+    if (this[`condition${handleNameString}`](action) === true) {
+      if (typeof this[`on${handleNameString}`] === 'function') {
+        this[`on${handleNameString}`](action)
+      } else if (Array.isArray(this[`on${handleNameString}`]) === true) {
+        this[`on${handleNameString}`].forEach(callback => { callback(action) })
       }
     }
-    return this
   }
 
 }

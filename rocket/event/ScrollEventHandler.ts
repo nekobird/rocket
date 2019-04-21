@@ -3,6 +3,7 @@ import {
   Vector2,
 } from '../rocket'
 
+
 interface ConditionHook {
   (
     event: Event,
@@ -28,8 +29,8 @@ export class ScrollEventHandler {
   }
 
   public onScrollStart: Function = () => { }
-  public onScroll: Function = () => { }
   public onScrollEnd: Function = () => { }
+  public onScroll: Function = () => { }
 
   public debounce: Function
 

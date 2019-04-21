@@ -19,14 +19,14 @@ export class Animation {
   public delay: number = 0 // Delay before animation starts.
   public duration: number = 2 // In seconds.
 
-  public iterationDelay = 0 // Delay before next iteration.
-  public numberOfIterations = 1 // number | 'infinite'
+  public iterationDelay: number = 0 // Delay before next iteration.
+  public numberOfIterations: number | 'infinite' = 1
 
   public iterationCount: number = 0
 
   public exports: any = undefined
 
-  public timingFunction: Function = (t: number): number => {
+  public timingFunction: AnimationTimingFunction = (t: number): number => {
     return t
   }
 

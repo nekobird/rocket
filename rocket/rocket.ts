@@ -34,8 +34,8 @@ export * from './color/color'
 // export * from './event/ScrollEventHandler'
 // export * from './event/ScrollEventManager'
 
-// export * from './event/KeyboardEventHandler'
-// export * from './event/KeyboardEventManager'
+export * from './event/KeyboardEventHandler'
+export * from './event/KeyboardEventManager'
 
 // export * from './event/MouseEventHandler'
 // export * from './event/MouseEventManager'

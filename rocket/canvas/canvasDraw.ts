@@ -18,10 +18,10 @@ const DEFAULT_STYLE: CanvasDrawStyle = {
   fillColor: 'black',
   noFill: false,
   noStroke: false,
-  strokeCap: 'round', // round, square
+  strokeCap: 'round',
   strokeColor: 'black',
-  strokeJoin: 'round', // bevel, round, miter
-  strokeWidth: 0
+  strokeJoin: 'round',
+  strokeWidth: 0,
 }
 
 export class CanvasDraw {
