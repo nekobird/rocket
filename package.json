@@ -5,11 +5,11 @@
   "main": "build/rocket.js",
   "types": "build/rocket.d.ts",
   "scripts": {
-    "start": "parcel ./src/index.html ./src/experiments/index.html",
-    "startDocumentation": "parcel ./documentation/index.html",
-    "build": "parcel build ./src/index.html --public-url ./",
-    "buildRocket": "tsc -t es6",
-    "prepare": "npm run buildRocket"
+    "build": "tsc -t es6",
+    "buildDocumentation": "parcel build ./documentation/index.html --public-url ./",
+    "buildExamples": "parcel build ./examples/index.html --public-url ./",
+    "prepare": "npm run build",
+    "start": "parcel ./documentation/index.html ./examples/index.html"
   },
   "keywords": [],
   "author": "Andrew Prasetya",

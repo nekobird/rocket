@@ -1,6 +1,6 @@
 import {
   PolyController,
-} from '../../../rocket/Rocket'
+} from '../../rocket/Rocket'
 
 const controller = new PolyController({
   selectorItems: '.item',

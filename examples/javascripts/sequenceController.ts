@@ -1,14 +1,13 @@
 import {
-  MonoController,
-} from '../../../rocket/rocket'
+  SequenceController,
+} from '../../rocket/rocket'
 
-const controller = new MonoController({
+const controller = new SequenceController({
   selectorItems: '.item',
-
   classNameItemActive: '__active',
-  classNameJsActivate: 'js_activate',
-  classNameJsDeactivate: 'js_deactivate',
-
+  classNameJsPrevious: 'js_previous',
+  classNameJsNext: 'js_next',
+  classNameJsJump: 'js_jump',
   beforeDeactivate: (action, context) => {
     return new Promise(resolve => {
       action.currentItem.classList.remove('__animateIn', '__animateOut')
@@ -22,10 +21,5 @@ const controller = new MonoController({
       action.nextItem.classList.add('__animateIn')
       setTimeout(() => { resolve() }, 400)
     })
-  },
-  onKeydown: (event, group, context) => {
-    if (event.keyCode === 27) {
-      context.deactivate(group.name)
-    }
   }
 })
