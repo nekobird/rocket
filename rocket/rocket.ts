@@ -31,8 +31,8 @@ export * from './color/convertColor'
 export * from './color/color'
 
 // EVENT
-// export * from './event/ScrollEventHandler'
-// export * from './event/ScrollEventManager'
+export * from './event/ScrollEventHandler'
+export * from './event/ScrollEventManager'
 
 export * from './event/KeyboardEventHandler'
 export * from './event/KeyboardEventManager'

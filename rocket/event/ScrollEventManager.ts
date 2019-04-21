@@ -4,21 +4,21 @@ import {
   Vector2,
 } from '../rocket'
 
-interface ScrollEventHandlers {
+export interface ScrollEventHandlers {
   [name: string]: ScrollEventHandler
 }
 
 export class ScrollEventManager {
 
-  public debounce: Function
-  public debounceTime: number = 0.2
+  public debounceWait: number = 0.2
 
   public isScrolling: boolean = false
 
   public onEvent: Function = () => { }
+
   public onScrollStart: Function = () => { }
-  public onScroll: Function = () => { }
   public onScrollEnd: Function = () => { }
+  public onScroll: Function = () => { }
 
   public handlers: ScrollEventHandlers
 
@@ -27,65 +27,75 @@ export class ScrollEventManager {
     this.startListening()
   }
 
-  public register(name: string, handler: ScrollEventHandler): ScrollEventManager {
+  public register(name: string, handler: ScrollEventHandler): this {
     this.handlers[name] = handler
     this.handlers[name].name = name
     return this
   }
 
-  public remove(name: string): ScrollEventManager {
-    this.handlers[name].element.removeEventListener(
-      'scroll', this.eventHandler_scroll
+  public remove(name: string): this {
+    this.handlers[name].target.removeEventListener(
+      'scroll',
+      this.eventHandlerScroll
     )
-    this.handlers[name].element.removeEventListener(
-      'scroll', <EventListener>this.handlers[name].debounce
+    this.handlers[name].target.removeEventListener(
+      'scroll',
+      <EventListener>this.handlers[name].debounce
     )
     delete this.handlers[name]
     return this
   }
 
-  public find(name: string) {
-    return this.handlers[name]
+  public find(name: string): ScrollEventHandler | false {
+    if (typeof this.handlers[name] === 'object') {
+      return this.handlers[name]
+    }
+    return false
   }
 
   // HANDLE
 
-  private eventHandler_scroll = (event: Event) => {
-    Object.keys(this.handlers).forEach(name => {
-      this.handlers[name].handle_scroll(event)
+  private eventHandlerScroll = (event: Event) => {
+    Object.keys(this.handlers).forEach(handlerName => {
+      this.handlers[handlerName].handleScroll(event)
     })
   }
 
   private handleScrollEnd = () => {
-    Object.keys(this.handlers).forEach(name => {
-      this.handlers[name].handle_scroll(event)
+    Object.keys(this.handlers).forEach(handlerName => {
+      this.handlers[handlerName].handleScroll(event)
     })
   }
 
   // LISTEN
 
   public startListening(): ScrollEventManager {
-    for (let name in this.handlers) {
-      this.handlers[name].debounce = Util.debounce(
-        this.debounceTime, this.handlers[name].handle_scrollEnd.bind(this)
+    Object.keys(this.handlers).forEach(handlerName => {
+      this.handlers[handlerName].debounce = Util.debounce(
+        this.debounceWait,
+        this.handlers[handlerName].handleScrollEnd.bind(this)
       )
-      this.handlers[name].element.addEventListener(
-        'scroll', this.handlers[name].handle_scroll.bind(this)
+      this.handlers[handlerName].target.addEventListener(
+        'scroll',
+        this.handlers[handlerName].handleScroll.bind(this)
       )
-      this.handlers[name].element.addEventListener(
-        'scroll', this.handlers[name].debounce.bind(this)
+      this.handlers[handlerName].target.addEventListener(
+        'scroll',
+        this.handlers[handlerName].debounce.bind(this)
       )
-    }
+    })
     return this
   }
 
   public stopListening(): ScrollEventManager {
-    Object.keys(this.handlers).forEach(name => {
-      this.handlers[name].element.removeEventListener(
-        'scroll', this.eventHandler_scroll
+    Object.keys(this.handlers).forEach(handlerName => {
+      this.handlers[handlerName].target.removeEventListener(
+        'scroll',
+        this.eventHandlerScroll
       )
-      this.handlers[name].element.removeEventListener(
-        'scroll', <EventListener>this.handlers[name].debounce
+      this.handlers[handlerName].target.removeEventListener(
+        'scroll',
+        <EventListener>this.handlers[handlerName].debounce
       )
     })
     return this
