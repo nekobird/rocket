@@ -25,6 +25,8 @@ export interface KeyboardEventManagerAction {
   keyCode: number,
   manager: KeyboardEventManager,
   time: number,
+  isFirstKeydown: boolean,
+  isLastKeyup: boolean,
 }
 
 export interface KeyboardEventManagerKey {
@@ -55,14 +57,14 @@ export class KeyboardEventManager {
   public keys: KeyboardEventManagerKeys
 
   public firstKeydownTime: number
-  public lastKeydownTime: number
+  public previousKeydownTime: number
   public lastKeyupTime: number
-  public lastKeypressTime: number
+  public previousKeypressTime: number
   public duration: number
 
-  public lastKeydownKeyCode: number
-  public lastKeyupKeyCode: number
-  public lastKeypressKeyCode: number
+  public previousKeydownKeyCode: number
+  public previousKeyupKeyCode: number
+  public previousKeypressKeyCode: number
 
   // HOOK
   public onEvent: KeyboardEventManagerHook = (action) => { }
@@ -116,6 +118,8 @@ export class KeyboardEventManager {
       keyCode: event.keyCode,
       time: Date.now(),
       manager: this,
+      isFirstKeydown: false,
+      isLastKeyup: false,
     }
   }
 
@@ -136,7 +140,6 @@ export class KeyboardEventManager {
     key.keyupTime = undefined
     key.duration = undefined
     key.isDown = true
-
   }
 
   private updateKeyOnKeyup(event: KeyboardEvent) {
@@ -154,17 +157,20 @@ export class KeyboardEventManager {
     return false
   }
 
-  // EVENT HANDLER
-
-  private eventHandlerKeydown = (event: KeyboardEvent) => {
-    this.lastKeydownKeyCode = event.keyCode
-
-    this.updateKeyOnKeydown(event)
-
+  private updateDownKeyCodesOnKeydown(event: KeyboardEvent) {
     if (this.downKeyCodes.indexOf(event.keyCode) === -1) {
       this.downKeyCodes.push(event.keyCode)
     }
+  }
 
+  private updateDownKeyCodesOnKeyup(event: KeyboardEvent) {
+    const downKeyIndex: number = this.downKeyCodes.indexOf(event.keyCode)
+    if (downKeyIndex !== -1) {
+      this.downKeyCodes.splice(downKeyIndex, 1)
+    }
+  }
+
+  private updateModifierKeysOnKeydown(event: KeyboardEvent) {
     if (event.keyCode === 16) {
       this.shiftKeyIsDown = true
     } else if (event.keyCode === 17) {
@@ -172,19 +178,38 @@ export class KeyboardEventManager {
     } else if (event.keyCode === 18) {
       this.altKeyIsDown = true
     }
+  }
 
-    this.lastKeydownTime = Date.now()
+  private updateModifierKeysOnKeyup(event: KeyboardEvent) {
+    if (event.keyCode === 16) {
+      this.shiftKeyIsDown = false
+    } else if (event.keyCode === 17) {
+      this.ctrlKeyIsDown = false
+    } else if (event.keyCode === 18) {
+      this.altKeyIsDown = false
+    }
+  }
+
+  // EVENT HANDLER
+
+  private eventHandlerKeydown = (event: KeyboardEvent) => {
+
+    this.updateKeyOnKeydown(event)
+    this.updateDownKeyCodesOnKeydown(event)
+    this.updateModifierKeysOnKeydown(event)
+
+    this.previousKeydownKeyCode = event.keyCode
+    this.previousKeydownTime = Date.now()
 
     const action = this.composeAction('keydown', event)
-
     if (this.isDown === false) {
-      this.onFirstKeydown(action)
       this.firstKeydownTime = Date.now()
-      this.lastKeyupKeyCode = undefined
+      this.lastKeyupTime = undefined
       this.duration = undefined
       this.isDown = true
+      action.isFirstKeydown = true
+      this.onFirstKeydown(action)
     }
-
     this.onEvent(action)
     this.onKeydown(action)
     Object.keys(this.handlers).forEach(handlerName => {
@@ -193,32 +218,20 @@ export class KeyboardEventManager {
   }
 
   private eventHandlerKeyup = (event: KeyboardEvent) => {
-    this.lastKeyupKeyCode = event.keyCode
-    this.isDown = false
-
     this.updateKeyOnKeyup(event)
+    this.updateDownKeyCodesOnKeyup(event)
+    this.updateModifierKeysOnKeyup(event)
 
-    const downKeyIndex: number = this.downKeyCodes.indexOf(event.keyCode)
-    if (downKeyIndex !== -1) {
-      this.downKeyCodes.splice(downKeyIndex, 1)
-    }
-
-    if (event.keyCode === 16) {
-      this.shiftKeyIsDown = false
-    } else if (event.keyCode === 17) {
-      this.ctrlKeyIsDown = false
-    } else if (event.keyCode === 18) {
-      this.altKeyIsDown = false
-    }
+    this.previousKeyupKeyCode = event.keyCode
 
     const action = this.composeAction('keyup', event)
-
     if (this.downKeyCodes.length === 0) {
       this.lastKeyupTime = Date.now()
-      this.onLastKeyup(action)
+      this.duration = this.lastKeyupTime - this.firstKeydownTime
       this.isDown = false
+      action.isLastKeyup = true
+      this.onLastKeyup(action)
     }
-
     this.onEvent(action)
     this.onKeyup(action)
     Object.keys(this.handlers).forEach(handlerName => {
@@ -227,8 +240,8 @@ export class KeyboardEventManager {
   }
 
   private eventHandlerKeypress = (event: KeyboardEvent) => {
-    this.lastKeypressKeyCode = event.keyCode
-    this.lastKeypressTime = Date.now()
+    this.previousKeypressKeyCode = event.keyCode
+    this.previousKeypressTime = Date.now()
 
     if (this.isDisabled === false) {
       const action = this.composeAction('keypress', event)
