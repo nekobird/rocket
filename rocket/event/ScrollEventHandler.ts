@@ -56,12 +56,11 @@ export class ScrollEventHandler {
         window.scrollX,
         window.scrollY
       )
-    } else {
-      return new Vector2(
-        (<HTMLElement>this.target).scrollLeft,
-        (<HTMLElement>this.target).scrollTop
-      )
     }
+    return new Vector2(
+      (<HTMLElement>this.target).scrollLeft,
+      (<HTMLElement>this.target).scrollTop
+    )
   }
 
   set top(top: number) {
@@ -76,9 +75,8 @@ export class ScrollEventHandler {
   get top(): number {
     if (this.target === window) {
       return window.scrollY
-    } else {
-      return (<HTMLElement>this.target).scrollTop
     }
+    return (<HTMLElement>this.target).scrollTop
   }
 
   set left(left: number) {
@@ -93,9 +91,8 @@ export class ScrollEventHandler {
   get left(): number {
     if (this.target === window) {
       return window.scrollX
-    } else {
-      return (<HTMLElement>this.target).scrollLeft
     }
+    return (<HTMLElement>this.target).scrollLeft
   }
 
   set scrollTo(to: Point) {
@@ -123,7 +120,7 @@ export class ScrollEventHandler {
 
   // HANDLE
 
-  public handleScroll(event: Event): ScrollEventHandler {
+  public handleScroll = (event: Event) => {
     this.event = event
 
     this.position.equals(this.scrollPosition)
@@ -149,17 +146,15 @@ export class ScrollEventHandler {
 
     this.previousPosition.equals(this.position)
     this.previousVelocity.equals(this.velocity)
-    return this
   }
 
-  public handleScrollEnd(): ScrollEventHandler {
+  public handleScrollEnd = () => {
     if (this.isScrolling === true) {
       this.scrollEndTime = Date.now()
       this.duration = this.scrollEndTime - this.scrollStartTime
       this.isScrolling = false
       this.onScrollEnd(this.position, this)
     }
-    return this
   }
 
 }

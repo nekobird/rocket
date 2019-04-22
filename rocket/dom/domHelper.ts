@@ -1,4 +1,18 @@
+import {
+  Vector2,
+} from '../rocket'
+
 export class DOMHelper {
+
+  public static elementOffset(element: HTMLElement): Vector2 {
+    const rect = element.getBoundingClientRect()
+    const scrollLeft: number = window.pageXOffset || document.documentElement.scrollLeft
+    const scrollTop: number = window.pageYOffset || document.documentElement.scrollTop
+    return new Vector2(
+      rect.left + scrollLeft,
+      rect.top + scrollTop
+    )
+  }
 
   // ELEMENT
 
