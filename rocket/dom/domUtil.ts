@@ -1,8 +1,8 @@
-interface IdentifierFn {
+export interface DOMUtilIdentifierFn {
   (element: HTMLElement): boolean
 }
 
-type DOMUtilResult = HTMLElement | HTMLElement[] | boolean
+export type DOMUtilResult = HTMLElement | HTMLElement[] | boolean
 
 export class DOMUtil {
 
@@ -19,7 +19,7 @@ export class DOMUtil {
   // Returns false if no matching ancestor is found.
 
   static findAncestor(
-    element: HTMLElement, identifierFn: IdentifierFn, isMoreThanOneResults: boolean = true
+    element: HTMLElement, identifierFn: DOMUtilIdentifierFn, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
     const results: HTMLElement[] = []
 
@@ -49,7 +49,7 @@ export class DOMUtil {
   static findAncestorWithClass(
     element: HTMLElement, className: string, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
-    const identifierFn: IdentifierFn = _element => {
+    const identifierFn: DOMUtilIdentifierFn = _element => {
       return _element.classList.contains(className)
     }
     return this.findAncestor(element, identifierFn, isMoreThanOneResults)
@@ -59,7 +59,7 @@ export class DOMUtil {
   static findAncestorWithID(
     element: HTMLElement, ID: string, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
-    const identifierFn: IdentifierFn = _element => {
+    const identifierFn: DOMUtilIdentifierFn = _element => {
       return _element.id === ID
     }
     return this.findAncestor(element, identifierFn, isMoreThanOneResults)
@@ -68,7 +68,7 @@ export class DOMUtil {
   static hasAncestor(
     element: HTMLElement, ancestors: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>
   ): DOMUtilResult {
-    const identifierFn: IdentifierFn = _element => {
+    const identifierFn: DOMUtilIdentifierFn = _element => {
       if (typeof ancestors[Symbol.iterator] === 'function') {
         return [...<NodeListOf<HTMLElement>>ancestors].indexOf(_element) !== -1
       } else {
@@ -82,7 +82,7 @@ export class DOMUtil {
 
   // Find descendant that match the identifierFn.
   static findDescendant(
-    element: HTMLElement, identifierFn: IdentifierFn, isMoreThanOneResults: boolean = true
+    element: HTMLElement, identifierFn: DOMUtilIdentifierFn, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
     const results: HTMLElement[] = []
     if (identifierFn(element)) {
@@ -115,7 +115,7 @@ export class DOMUtil {
   static findDescendantWithID(
     element: HTMLElement, ID: string, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
-    const identifierFn: IdentifierFn = _element => {
+    const identifierFn: DOMUtilIdentifierFn = _element => {
       return _element.id === ID
     }
     return this.findDescendant(element, identifierFn, isMoreThanOneResults)
@@ -125,7 +125,7 @@ export class DOMUtil {
   static findDescendantWithClass(
     element: HTMLElement, className: string, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
-    const identifierFn: IdentifierFn = _element => {
+    const identifierFn: DOMUtilIdentifierFn = _element => {
       return _element.classList.contains(className)
     }
     return this.findDescendant(element, identifierFn, isMoreThanOneResults)
@@ -134,7 +134,7 @@ export class DOMUtil {
   static hasDescendant(
     element: HTMLElement, descendants: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>
   ): DOMUtilResult {
-    const identifierFn: IdentifierFn = _element => {
+    const identifierFn: DOMUtilIdentifierFn = _element => {
       if (typeof descendants[Symbol.iterator] === 'function') {
         return [...<NodeListOf<HTMLElement>>descendants].indexOf(_element) !== -1
       } else {
@@ -181,7 +181,7 @@ export class DOMUtil {
   static findSiblingWithClass(
     element: HTMLElement, className: string, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
-    const identifierFn: IdentifierFn = _element => {
+    const identifierFn: DOMUtilIdentifierFn = _element => {
       return _element.classList.contains(className)
     }
     return this.findSibling(element, identifierFn, isMoreThanOneResults)
