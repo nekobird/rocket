@@ -42,33 +42,30 @@ export class MonoController {
   public activate(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
       const actionManager: MonoActionManager = this.actionManager
-      if (actionManager.isRunning === true) {
-        actionManager.isNested = true
-      }
       const action: MonoAction = actionManager.composeAction('activate', groupName, id)
-      actionManager.actionHub(action, () => { resolve() })
+      actionManager.actionHub(action)
+        .then(() => resolve())
+        .catch(() => resolve())
     })
   }
 
   public deactivate(groupName: string, id?: string): Promise<void> {
     return new Promise(resolve => {
       const actionManager: MonoActionManager = this.actionManager
-      if (actionManager.isRunning === true) {
-        actionManager.isNested = true
-      }
       const action: MonoAction = actionManager.composeAction('deactivate', groupName, id)
-      actionManager.actionHub(action, () => { resolve() })
+      actionManager.actionHub(action)
+        .then(() => resolve())
+        .catch(() => resolve())
     })
   }
 
   public toggle(groupName: string, id?: string): Promise<void> {
     return new Promise(resolve => {
       const actionManager: MonoActionManager = this.actionManager
-      if (actionManager.isRunning === true) {
-        actionManager.isNested = true
-      }
       const action: MonoAction = actionManager.composeAction('toggle', groupName, id)
-      actionManager.actionHub(action, () => { resolve() })
+      actionManager.actionHub(action)
+        .then(() => resolve())
+        .catch(() => resolve())
     })
   }
 

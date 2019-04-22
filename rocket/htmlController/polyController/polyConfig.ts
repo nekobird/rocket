@@ -51,7 +51,7 @@ export interface PolyConfig {
 }
 
 export const POLY_DEFAULT_CONFIG: PolyConfig = {
-  cooldown: 100,
+  cooldown: 200,
 
   listenToClickOutside: false,
   listenToTouchOutside: false,

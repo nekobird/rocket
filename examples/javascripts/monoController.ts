@@ -30,3 +30,8 @@ const controller = new MonoController({
     }
   }
 })
+
+const trigger_0 = document.getElementById('deactivate_a_one')
+trigger_0.addEventListener('click', event => {
+  controller.deactivate('a', 'one')
+})

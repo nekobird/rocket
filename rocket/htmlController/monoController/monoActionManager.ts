@@ -158,7 +158,13 @@ export class MonoActionManager implements ActionManager {
 
   // 1) ACTION HUB
 
-  public actionHub(action: Action, callback?: Function): this {
+  public actionHub(action: Action, isNestedAction: boolean = false, callback?: Function): Promise<void> {
+    if (
+      this.isRunning === true &&
+      isNestedAction === true
+    ) {
+      this.isNested = true
+    }
     this.isRunning = true
 
     const config: MonoConfig = this.controller.config
@@ -181,7 +187,7 @@ export class MonoActionManager implements ActionManager {
       preAction = Promise.resolve()
     }
 
-    preAction
+    return preAction
       .then(() => {
         return this.completeAction(<MonoAction>action)
       })
@@ -189,6 +195,12 @@ export class MonoActionManager implements ActionManager {
         return this.endAction(callback)
       })
       .then(() => {
+        if (
+          isNestedAction === true &&
+          this.isNested === true
+        ) {
+          this.isNested = false
+        }
         if (this.isNested === false) {
           config.afterAction(<MonoAction>action, this.controller)
         }
@@ -196,7 +208,6 @@ export class MonoActionManager implements ActionManager {
       .catch(() => {
         return this.endAction(callback)
       })
-    return this
   }
 
   public endAction(callback?: Function): Promise<void> {
@@ -207,6 +218,9 @@ export class MonoActionManager implements ActionManager {
           resolve()
         }, this.controller.config.cooldown)
       })
+    }
+    if (this.isRunning === false && this.isNested === true) {
+      this.isNested = false;
     }
     if (typeof callback === 'function') {
       callback()

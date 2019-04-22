@@ -58,5 +58,5 @@ export interface ListenToHook<E, G, C> {
 
 export interface ActionManager {
   composeActionFromEvent: (actionName: ActionName, trigger: HTMLElement) => Action,
-  actionHub: (action: Action, callback?: Function) => void,
+  actionHub: (action: Action, isNestedAction: boolean, callback?: Function) => void,
 }

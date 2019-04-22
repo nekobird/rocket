@@ -6,3 +6,10 @@ https://www.typescriptlang.org/docs/handbook/symbols.html
 https://stackoverflow.com/questions/42441408/typescript-how-to-declare-array-of-fixed-size-for-type-checking-at-compile-time?noredirect=1&lq=1
 
 https://github.com/thedaviddias/Front-End-Checklist
+
+
+HTMLController
+
+Nested Actions can be called from:
+BeforeAction
+Manual action call

@@ -7,6 +7,7 @@ import {
   EventManager,
   POLY_DEFAULT_CONFIG,
   POLY_EVENT_ENTRY_LIST,
+  PolyAction,
   PolyActionManager,
   PolyConfig,
   PolyGroup,
@@ -40,73 +41,61 @@ export class PolyController {
 
   public activate(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
-      if (this.actionManager.isRunning === true) {
-        this.actionManager.isNested = true
-      }
-      this.actionManager.actionHub(
-        this.actionManager.composeAction('activate', groupName, id),
-        () => { resolve() }
-      )
+      const actionManager: PolyActionManager = this.actionManager
+      const action: PolyAction = actionManager.composeAction('activate', groupName, id)
+      actionManager.actionHub(action)
+        .then(() => resolve())
+        .catch(() => resolve())
     })
   }
 
   public deactivate(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
-      if (this.actionManager.isRunning === true) {
-        this.actionManager.isNested = true
-      }
-      this.actionManager.actionHub(
-        this.actionManager.composeAction('deactivate', groupName, id),
-        () => { resolve() }
-      )
+      const actionManager: PolyActionManager = this.actionManager
+      const action: PolyAction = actionManager.composeAction('deactivate', groupName, id)
+      actionManager.actionHub(action)
+        .then(() => resolve())
+        .catch(() => resolve())
     })
   }
 
   public toggle(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
-      if (this.actionManager.isRunning === true) {
-        this.actionManager.isNested = true
-      }
-      this.actionManager.actionHub(
-        this.actionManager.composeAction('toggle', groupName, id),
-        () => { resolve() }
-      )
+      const actionManager: PolyActionManager = this.actionManager
+      const action: PolyAction = actionManager.composeAction('toggle', groupName, id)
+      actionManager.actionHub(action)
+        .then(() => resolve())
+        .catch(() => resolve())
     })
   }
 
   public activateAll(groupName: string): Promise<void> {
     return new Promise(resolve => {
-      if (this.actionManager.isRunning === true) {
-        this.actionManager.isNested = true
-      }
-      this.actionManager.actionHub(
-        this.actionManager.composeAction('activateAll', groupName),
-        () => { resolve() }
-      )
+      const actionManager: PolyActionManager = this.actionManager
+      const action: PolyAction = actionManager.composeAction('activateAll', groupName)
+      actionManager.actionHub(action)
+        .then(() => resolve())
+        .catch(() => resolve())
     })
   }
 
   public deactivateAll(groupName: string): Promise<void> {
     return new Promise(resolve => {
-      if (this.actionManager.isRunning === true) {
-        this.actionManager.isNested = true
-      }
-      this.actionManager.actionHub(
-        this.actionManager.composeAction('deactivateAll', groupName),
-        () => { resolve() }
-      )
+      const actionManager: PolyActionManager = this.actionManager
+      const action: PolyAction = actionManager.composeAction('deactivateAll', groupName)
+      actionManager.actionHub(action)
+        .then(() => resolve())
+        .catch(() => resolve())
     })
   }
 
   public toggleAll(groupName: string): Promise<void> {
     return new Promise(resolve => {
-      if (this.actionManager.isRunning === true) {
-        this.actionManager.isNested = true
-      }
-      this.actionManager.actionHub(
-        this.actionManager.composeAction('toggleAll', groupName),
-        () => { resolve() }
-      )
+      const actionManager: PolyActionManager = this.actionManager
+      const action: PolyAction = actionManager.composeAction('toggleAll', groupName)
+      actionManager.actionHub(action)
+        .then(() => resolve())
+        .catch(() => resolve())
     })
   }
 

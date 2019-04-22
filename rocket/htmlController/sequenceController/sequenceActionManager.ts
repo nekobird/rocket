@@ -156,7 +156,13 @@ export class SequenceActionManager implements ActionManager {
 
   // 1) ACTION HUB
 
-  public actionHub(action: Action, callback?: Function): this {
+  public actionHub(action: Action, isNestedAction: boolean = false, callback?: Function): Promise<void> {
+    if (
+      this.isRunning === true &&
+      isNestedAction === true
+    ) {
+      this.isNested = true
+    }
     this.isRunning = true
 
     const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
@@ -182,7 +188,7 @@ export class SequenceActionManager implements ActionManager {
       preAction = Promise.resolve()
     }
 
-    preAction
+    return preAction
       .then(() => {
         return this.completeAction(<SequenceAction>action, callback)
       })
@@ -190,6 +196,12 @@ export class SequenceActionManager implements ActionManager {
         return this.endAction(callback)
       })
       .then(() => {
+        if (
+          isNestedAction === true &&
+          this.isNested === true
+        ) {
+          this.isNested = false
+        }
         if (this.isNested === false) {
           config.afterAction(<SequenceAction>action, this.controller)
         }
@@ -197,7 +209,6 @@ export class SequenceActionManager implements ActionManager {
       .catch(() => {
         return this.endAction(callback)
       })
-    return this
   }
 
   public endAction(callback?: Function): Promise<void> {

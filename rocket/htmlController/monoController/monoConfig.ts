@@ -42,7 +42,7 @@ export interface MonoConfig {
 }
 
 export const MONO_DEFAULT_CONFIG: MonoConfig = {
-  cooldown: 100,
+  cooldown: 200,
 
   listenToClickOutside: false,
   listenToTouchOutside: false,

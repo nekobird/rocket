@@ -42,33 +42,30 @@ export class SequenceController {
   public previous(groupName: string): Promise<void> {
     return new Promise(resolve => {
       let actionManager: SequenceActionManager = this.actionManager
-      if (actionManager.isRunning === true) {
-        actionManager.isNested = true
-      }
       const action: SequenceAction = actionManager.composeAction('previous', groupName)
-      actionManager.actionHub(action, () => { resolve() })
+      actionManager.actionHub(action)
+        .then(() => resolve())
+        .catch(() => resolve())
     })
   }
 
   public next(groupName: string): Promise<void> {
     return new Promise(resolve => {
       let actionManager: SequenceActionManager = this.actionManager
-      if (actionManager.isRunning === true) {
-        actionManager.isNested = true
-      }
       const action: SequenceAction = actionManager.composeAction('next', groupName)
-      actionManager.actionHub(action, () => { resolve() })
+      actionManager.actionHub(action)
+        .then(() => resolve())
+        .catch(() => resolve())
     })
   }
 
   public jump(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
       let actionManager: SequenceActionManager = this.actionManager
-      if (actionManager.isRunning === true) {
-        actionManager.isNested = true
-      }
       const action: SequenceAction = actionManager.composeAction('jump', groupName, id)
-      actionManager.actionHub(action, () => { resolve() })
+      actionManager.actionHub(action)
+        .then(() => resolve())
+        .catch(() => resolve())
     })
   }
 
