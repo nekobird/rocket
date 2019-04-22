@@ -56,7 +56,7 @@ export class ScreenEventManager {
 
   constructor() {
     this.handlers = []
-    this.startListening()
+    this.listen()
     return this
   }
 
@@ -140,14 +140,14 @@ export class ScreenEventManager {
 
   // LISTEN
 
-  public startListening(): this {
+  public listen(): this {
     this.debounce = Util.debounce(this.debounceWait, this.eventHandlerResizeEnd)
     window.addEventListener('resize', this.eventHandlerResize)
     window.addEventListener('resize', <EventListener>this.debounce)
     return this
   }
 
-  public stopListening(): this {
+  public stopListen(): this {
     window.removeEventListener('resize', this.eventHandlerResize)
     window.removeEventListener('resize', <EventListener>this.debounce)
     return this

@@ -29,17 +29,20 @@ export class MouseEventManager {
 
   constructor() {
     this.handlers = {}
-    this.startListening()
   }
 
   public register(name: string, handler: MouseEventHandler): this {
-    this.handlers[name] = handler
-    this.handlers[name].name = name
+    if (typeof this.handlers[name] === 'undefined') {
+      this.handlers[name] = handler
+      this.handlers[name].name = name
+    }
     return this
   }
 
   public remove(name: string): this {
-    delete this.handlers[name]
+    if (typeof this.handlers[name] === 'object') {
+      delete this.handlers[name]
+    }
     return this
   }
 
@@ -92,7 +95,7 @@ export class MouseEventManager {
 
   // LISTEN
 
-  public startListening(): this {
+  public listen(): this {
     this.debounce = Util.debounce(
       this.debounceWait, this.eventHandlerMouseMoveEnd.bind(this)
     )
@@ -104,7 +107,7 @@ export class MouseEventManager {
     return this
   }
 
-  public stopListening(): this {
+  public stopListen(): this {
     window.removeEventListener('click', this.eventHandlerMouseClick)
     window.removeEventListener('mousedown', this.eventHandlerMouseDown)
     window.removeEventListener('mouseup', this.eventHandlerMouseUp)
