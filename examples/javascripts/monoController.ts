@@ -8,6 +8,7 @@ const controller = new MonoController({
   classNameItemActive: '__active',
   classNameJsActivate: 'js_activate',
   classNameJsDeactivate: 'js_deactivate',
+  classNameJsToggle: 'js_toggle',
 
   beforeDeactivate: (action, context) => {
     return new Promise(resolve => {

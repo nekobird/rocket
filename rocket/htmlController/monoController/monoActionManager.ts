@@ -7,7 +7,7 @@ import {
   MonoController,
 } from '../index'
 
-export type MonoActionName = 'activate' | 'deactivate'
+export type MonoActionName = 'activate' | 'deactivate' | 'toggle'
 
 export interface MonoAction {
   name?: MonoActionName
@@ -85,14 +85,27 @@ export class MonoActionManager implements ActionManager {
   private completeAction(action: MonoAction): Promise<void> {
     if (
       action.name === 'activate' &&
-      action.group.activeItem !== action.nextItem
+      action.group.activeItemId !== action.targetId
     ) {
       return this
         .deactivate(action)
-        .then(() => { return this.activate(action) })
+        .then(() => {
+          return this.activate(action)
+        })
     } else if (action.name === 'deactivate') {
       return this.deactivate(action)
+    } else if (action.name === 'toggle') {
+      if (action.group.activeItemId === action.targetId) {
+        return this.deactivate(action)
+      } else {
+        return this
+          .deactivate(action)
+          .then(() => {
+            return this.activate(action)
+          })
+      }
     }
+    return Promise.reject()
   }
 
   public endAction(callback?: Function): this {

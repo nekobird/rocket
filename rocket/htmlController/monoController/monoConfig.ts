@@ -20,6 +20,7 @@ export interface MonoConfig {
   classNameItemActive?: string,
   classNameJsActivate?: string,
   classNameJsDeactivate?: string,
+  classNameJsToggle?: string,
 
   beforeActivate?: Hook<MonoAction, MonoController>,
   beforeDeactivate?: Hook<MonoAction, MonoController>,
@@ -48,6 +49,7 @@ export const MONO_DEFAULT_CONFIG: MonoConfig = {
   classNameItemActive: '__active',
   classNameJsActivate: 'js_activate',
   classNameJsDeactivate: 'js_deactivate',
+  classNameJsToggle: 'js_toggle',
 
   beforeActivate: (action, context) => { return Promise.resolve() },
   beforeDeactivate: (action, context) => { return Promise.resolve() },
@@ -78,6 +80,13 @@ export const MONO_EVENT_ENTRY_LIST: EventEntry[] = [
     name: 'deactivate',
     action: 'deactivate',
     target: 'jsDeactivate',
+    event: ['click', 'touchstart'],
+    listener: undefined,
+  },
+  {
+    name: 'toggle',
+    action: 'toggle',
+    target: 'jsToggle',
     event: ['click', 'touchstart'],
     listener: undefined,
   },

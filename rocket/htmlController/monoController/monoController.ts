@@ -60,6 +60,17 @@ export class MonoController {
     })
   }
 
+  public toggle(groupName: string, id?: string): Promise<void> {
+    return new Promise(resolve => {
+      const actionManager: MonoActionManager = this.actionManager
+      if (actionManager.isRunning === true) {
+        actionManager.isNested = true
+      }
+      const action: MonoAction = actionManager.composeAction('toggle', groupName, id)
+      actionManager.actionHub(action, () => { resolve() })
+    })
+  }
+
   public groupIsActive(groupName: string): boolean {
     if (
       typeof this.groupManager.groups[groupName] === 'object' &&

@@ -31,6 +31,7 @@ export class Animation {
 
   constructor(config?: AnimationConfig) {
     this.config = Object.assign({}, DEFAULT_ANIMATION_CONFIG)
+    this.setConfig(config)
     return this
   }
 

@@ -1,6 +1,6 @@
 {
   "name": "@nekobird/rocket",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "Rocket UI Library",
   "main": "build/rocket.js",
   "types": "build/rocket.d.ts",
@@ -15,8 +15,10 @@
   "author": "Andrew Prasetya",
   "license": "ISC",
   "devDependencies": {
-    "sass": "^1.18.0",
-    "typescript": "^3.4.3"
+    "sass": "^1.19.0",
+    "typescript": "^3.4.4"
   },
-  "files": ["build/**/*"]
+  "files": [
+    "build/**/*"
+  ]
 }
