@@ -26,13 +26,14 @@ export class MonoController {
   public actionManager: MonoActionManager
 
   constructor(config: MonoConfig) {
+    this.config = Object.assign(MONO_DEFAULT_CONFIG, config)
     this
       .setConfig(config)
       .initialize()
   }
 
   public setConfig(config: MonoConfig): MonoController {
-    this.config = Object.assign(MONO_DEFAULT_CONFIG, config)
+    Object.assign(this.config, config)
     return this
   }
 

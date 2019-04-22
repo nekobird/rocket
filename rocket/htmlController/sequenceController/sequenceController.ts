@@ -26,13 +26,14 @@ export class SequenceController {
   public eventManager: EventManager
 
   constructor(config: SequenceConfig) {
+    this.config = Object.assign({}, SEQUENCE_DEFAULT_CONFIG)
     this
       .setConfig(config)
       .initialize()
   }
 
   public setConfig(config: SequenceConfig): SequenceController {
-    this.config = Object.assign(SEQUENCE_DEFAULT_CONFIG, config)
+    Object.assign(this.config, config)
     return this
   }
 
