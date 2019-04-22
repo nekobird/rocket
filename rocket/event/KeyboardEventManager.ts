@@ -130,7 +130,7 @@ export class KeyboardEventManager {
     }
   }
 
-  private updateKeyOnKeydown(event: KeyboardEvent) {
+  private updateKeyOnKeydown(event: KeyboardEvent): this {
     this.createKeyObject(event.keyCode)
     const key: KeyboardEventManagerKey = this.keys[event.keyCode]
     key.keydownEvent = event
@@ -139,14 +139,16 @@ export class KeyboardEventManager {
     key.keyupTime = undefined
     key.duration = undefined
     key.isDown = true
+    return this
   }
 
-  private updateKeyOnKeyup(event: KeyboardEvent) {
+  private updateKeyOnKeyup(event: KeyboardEvent): this {
     const key: KeyboardEventManagerKey = this.keys[event.keyCode]
     key.keyupEvent = event
     key.keyupTime = Date.now()
     key.duration = key.keyupTime - key.keydownTime
     key.isDown = false
+    return this
   }
 
   public getKey(keyCode: number): KeyboardEventManagerKey | false {
@@ -156,46 +158,65 @@ export class KeyboardEventManager {
     return false
   }
 
-  private updateDownKeyCodesOnKeydown(event: KeyboardEvent) {
+  private updateDownKeyCodesOnKeydown(event: KeyboardEvent): this {
     if (this.downKeyCodes.indexOf(event.keyCode) === -1) {
       this.downKeyCodes.push(event.keyCode)
     }
+    return this
   }
 
-  private updateDownKeyCodesOnKeyup(event: KeyboardEvent) {
+  private updateDownKeyCodesOnKeyup(event: KeyboardEvent): this {
     const downKeyIndex: number = this.downKeyCodes.indexOf(event.keyCode)
     if (downKeyIndex !== -1) {
       this.downKeyCodes.splice(downKeyIndex, 1)
     }
+    return this
   }
 
-  private updateModifierKeysOnKeydown(event: KeyboardEvent) {
-    if (event.keyCode === 16) {
-      this.shiftKeyIsDown = true
-    } else if (event.keyCode === 17) {
-      this.ctrlKeyIsDown = true
-    } else if (event.keyCode === 18) {
-      this.altKeyIsDown = true
+  private updateModifierKeysOnKeydown(event: KeyboardEvent): this {
+    switch (event.keyCode) {
+      case 16: {
+        this.shiftKeyIsDown = true
+        break
+      }
+      case 17: {
+        this.ctrlKeyIsDown = true
+        break
+      }
+      case 18: {
+        this.altKeyIsDown = true
+        break
+      }
     }
+    return this
   }
 
-  private updateModifierKeysOnKeyup(event: KeyboardEvent) {
-    if (event.keyCode === 16) {
-      this.shiftKeyIsDown = false
-    } else if (event.keyCode === 17) {
-      this.ctrlKeyIsDown = false
-    } else if (event.keyCode === 18) {
-      this.altKeyIsDown = false
+  private updateModifierKeysOnKeyup(event: KeyboardEvent): this {
+    switch (event.keyCode) {
+      case 16: {
+        this.shiftKeyIsDown = false
+        break
+      }
+      case 17: {
+        this.ctrlKeyIsDown = false
+        break
+      }
+      case 18: {
+        this.altKeyIsDown = false
+        break
+      }
     }
+    return this
   }
 
   // EVENT HANDLER
 
   private eventHandlerKeydown = (event: KeyboardEvent) => {
 
-    this.updateKeyOnKeydown(event)
-    this.updateDownKeyCodesOnKeydown(event)
-    this.updateModifierKeysOnKeydown(event)
+    this
+      .updateKeyOnKeydown(event)
+      .updateDownKeyCodesOnKeydown(event)
+      .updateModifierKeysOnKeydown(event)
 
     this.previousKeydownKeyCode = event.keyCode
     this.previousKeydownTime = Date.now()
@@ -217,9 +238,10 @@ export class KeyboardEventManager {
   }
 
   private eventHandlerKeyup = (event: KeyboardEvent) => {
-    this.updateKeyOnKeyup(event)
-    this.updateDownKeyCodesOnKeyup(event)
-    this.updateModifierKeysOnKeyup(event)
+    this
+      .updateKeyOnKeyup(event)
+      .updateDownKeyCodesOnKeyup(event)
+      .updateModifierKeysOnKeyup(event)
 
     this.previousKeyupKeyCode = event.keyCode
 

@@ -58,7 +58,7 @@ export class Color {
     return this
   }
 
-  equals(color: Color): Color {
+  equals(color: Color): this {
     this.r = color.r
     this.g = color.g
     this.b = color.b
@@ -479,12 +479,12 @@ export class Color {
 
   // MODIFIER
 
-  hueRotate(increment: number): Color {
+  public hueRotate(increment: number): this {
     this.hue = this.hue + increment
     return this
   }
 
-  invert(): Color {
+  public invert(): this {
     this.r = 1 - this.r
     this.g = 1 - this.g
     this.b = 1 - this.b
@@ -493,7 +493,7 @@ export class Color {
 
   // INTERPOLATION
 
-  lerp(target: Color, t: number): Color {
+  public lerp(target: Color, t: number): this {
     this.r = Num.lerp(this.r, target.r, t)
     this.g = Num.lerp(this.g, target.g, t)
     this.b = Num.lerp(this.b, target.b, t)
