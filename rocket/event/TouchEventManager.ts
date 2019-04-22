@@ -3,11 +3,11 @@ import {
   Util,
 } from '../rocket'
 
-interface TouchEventHandlers {
+export interface TouchEventHandlers {
   [name: string]: TouchEventHandler,
 }
 
-interface EventCallback {
+export interface TouchEventManagerHook {
   (
     event: TouchEvent,
     context: TouchEventManager,
@@ -17,17 +17,17 @@ interface EventCallback {
 export class TouchEventManager {
 
   // CALLBACKS
-  public onEvent: EventCallback = (event, context) => { }
+  public onEvent: TouchEventManagerHook = (event, context) => { }
 
-  public onTouchStart: EventCallback = (event, context) => { }
-  public onTouchMove: EventCallback = (event, context) => { }
-  public onTouchEnd: EventCallback = (event, context) => { }
+  public onTouchStart: TouchEventManagerHook = (event, context) => { }
+  public onTouchMove: TouchEventManagerHook = (event, context) => { }
+  public onTouchEnd: TouchEventManagerHook = (event, context) => { }
 
-  public onTouchCancel: EventCallback = (event, context) => { }
+  public onTouchCancel: TouchEventManagerHook = (event, context) => { }
 
   // DEBOUNCE
   private debounce_moveEnd: Function
-  private debounce_wait: number = 0.2
+  private debounceWait: number = 0.2
 
   // HANDLER
   private handlers: TouchEventHandlers = {}
@@ -120,7 +120,7 @@ export class TouchEventManager {
 
   public startListening() {
     this.debounce_moveEnd = Util.debounce(
-      this.debounce_wait, this.eventHandler_moveEnd
+      this.debounceWait, this.eventHandler_moveEnd
     )
     window.addEventListener('touchstart', this.eventHandler_touchStart)
     window.addEventListener('touchmove', this.eventHandler_move)

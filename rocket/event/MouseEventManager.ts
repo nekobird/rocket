@@ -3,20 +3,27 @@ import {
   Util,
 } from '../rocket'
 
-interface MouseEventHandlers {
+export interface MouseEventHandlers {
   [name: string]: MouseEventHandler
+}
+
+export interface MouseEventManagerHook {
+  (
+    event: MouseEvent
+  ): void
 }
 
 export class MouseEventManager {
 
-  public onEvent = (event) => { }
-  public onClick = (event) => { }
-  public onDown = (event) => { }
-  public onUp = (event) => { }
-  public onMove = (event) => { }
+  public onEvent: MouseEventManagerHook = (event) => { }
+
+  public onClick: MouseEventManagerHook = (event) => { }
+  public onDown: MouseEventManagerHook = (event) => { }
+  public onUp: MouseEventManagerHook = (event) => { }
+  public onMove: MouseEventManagerHook = (event) => { }
 
   public debounce: Function
-  public debounceTime: number = 0.2
+  public debounceWait: number = 0.2
 
   public handlers: MouseEventHandlers
 
@@ -25,24 +32,27 @@ export class MouseEventManager {
     this.startListening()
   }
 
-  public register(name: string, handler: MouseEventHandler): MouseEventManager {
+  public register(name: string, handler: MouseEventHandler): this {
     this.handlers[name] = handler
     this.handlers[name].name = name
     return this
   }
 
-  public remove(name: string): MouseEventManager {
+  public remove(name: string): this {
     delete this.handlers[name]
     return this
   }
 
-  public find(name: string): MouseEventHandler {
-    return this.handlers[name]
+  public find(name: string): MouseEventHandler | false {
+    if (typeof this.handlers[name] === 'object') {
+      return this.handlers[name]
+    }
+    return false
   }
 
   // EVENT HANDLER
 
-  eventHandler_mouseClick(event: MouseEvent) {
+  private eventHandlerMouseClick = (event: MouseEvent) => {
     this.onEvent(event)
     this.onClick(event)
     Object.keys(this.handlers).forEach(name => {
@@ -50,7 +60,7 @@ export class MouseEventManager {
     })
   }
 
-  eventHandler_mouseDown(event: MouseEvent) {
+  private eventHandlerMouseDown = (event: MouseEvent) => {
     this.onEvent(event)
     this.onDown(event)
     Object.keys(this.handlers).forEach(name => {
@@ -58,7 +68,7 @@ export class MouseEventManager {
     })
   }
 
-  eventHandler_mouseUp(event: MouseEvent) {
+  private eventHandlerMouseUp = (event: MouseEvent) => {
     this.onEvent(event)
     this.onUp(event)
     Object.keys(this.handlers).forEach(name => {
@@ -66,7 +76,7 @@ export class MouseEventManager {
     })
   }
 
-  eventHandler_mouseMove(event: MouseEvent) {
+  private eventHandlerMouseMove = (event: MouseEvent) => {
     this.onEvent(event)
     this.onMove(event)
     Object.keys(this.handlers).forEach(name => {
@@ -74,7 +84,7 @@ export class MouseEventManager {
     })
   }
 
-  eventHandler_mouseMoveEnd() {
+  private eventHandlerMouseMoveEnd = () => {
     Object.keys(this.handlers).forEach(name => {
       this.handlers[name].handleMoveEnd()
     })
@@ -82,23 +92,23 @@ export class MouseEventManager {
 
   // LISTEN
 
-  public startListening(): MouseEventManager {
+  public startListening(): this {
     this.debounce = Util.debounce(
-      this.debounceTime, this.eventHandler_mouseMoveEnd.bind(this)
+      this.debounceWait, this.eventHandlerMouseMoveEnd.bind(this)
     )
-    window.addEventListener('click', this.eventHandler_mouseClick)
-    window.addEventListener('mousedown', this.eventHandler_mouseDown)
-    window.addEventListener('mouseup', this.eventHandler_mouseUp)
-    window.addEventListener('mousemove', this.eventHandler_mouseMove)
+    window.addEventListener('click', this.eventHandlerMouseClick)
+    window.addEventListener('mousedown', this.eventHandlerMouseDown)
+    window.addEventListener('mouseup', this.eventHandlerMouseUp)
+    window.addEventListener('mousemove', this.eventHandlerMouseMove)
     window.addEventListener('mousemove', <EventListener>this.debounce)
     return this
   }
 
-  public stopListening(): MouseEventManager {
-    window.removeEventListener('click', this.eventHandler_mouseClick)
-    window.removeEventListener('mousedown', this.eventHandler_mouseDown)
-    window.removeEventListener('mouseup', this.eventHandler_mouseUp)
-    window.removeEventListener('mousemove', this.eventHandler_mouseMove)
+  public stopListening(): this {
+    window.removeEventListener('click', this.eventHandlerMouseClick)
+    window.removeEventListener('mousedown', this.eventHandlerMouseDown)
+    window.removeEventListener('mouseup', this.eventHandlerMouseUp)
+    window.removeEventListener('mousemove', this.eventHandlerMouseMove)
     window.removeEventListener('mousemove', <EventListener>this.debounce)
     return this
   }

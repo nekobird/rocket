@@ -5,6 +5,7 @@ export * from './core/stringUtil'
 
 // DOM
 export * from './dom/domUtil'
+export * from './dom/domHelper'
 
 // SCREEN
 export * from './screenModel'

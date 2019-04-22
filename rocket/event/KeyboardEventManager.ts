@@ -81,7 +81,6 @@ export class KeyboardEventManager {
     this.handlers = {}
     this.downKeyCodes = []
     this.keys = {}
-    this.startListening()
   }
 
   public register(name: string, handler: KeyboardEventHandler): this {
@@ -255,14 +254,14 @@ export class KeyboardEventManager {
 
   // LISTEN
 
-  public startListening(): this {
+  public listen(): this {
     window.addEventListener('keydown', this.eventHandlerKeydown)
     window.addEventListener('keypress', this.eventHandlerKeypress)
     window.addEventListener('keyup', this.eventHandlerKeyup)
     return this
   }
 
-  public stopListening(): this {
+  public stopListen(): this {
     window.removeEventListener('keydown', this.eventHandlerKeydown)
     window.removeEventListener('keypress', this.eventHandlerKeypress)
     window.removeEventListener('keyup', this.eventHandlerKeyup)
