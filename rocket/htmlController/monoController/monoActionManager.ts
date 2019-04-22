@@ -17,6 +17,7 @@ export interface MonoAction {
   currentItemId?: string,
   nextItem?: HTMLElement,
   nextItemId?: string,
+  targetId?: string,
   trigger?: HTMLElement,
 }
 
@@ -60,8 +61,9 @@ export class MonoActionManager implements ActionManager {
       return Promise.resolve()
     }
     if (
-      typeof action.nextItemId === 'string' &&
-      action.group.activeItemId === action.nextItemId
+      action.name === 'deactivate' &&
+      typeof action.targetId === 'string' &&
+      action.group.activeItemId === action.targetId
     ) {
       return Promise.resolve()
     }
@@ -113,6 +115,7 @@ export class MonoActionManager implements ActionManager {
       currentItemId: group.activeItemId,
       nextItem: undefined,
       nextItemId: undefined,
+      targetId: undefined,
       trigger: undefined,
     }
   }
@@ -125,6 +128,7 @@ export class MonoActionManager implements ActionManager {
         action.nextItem = nextItem
         action.nextItemId = id
       }
+      action.targetId = id
     }
     return action
   }
