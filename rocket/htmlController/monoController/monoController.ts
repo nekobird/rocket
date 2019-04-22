@@ -7,6 +7,7 @@ import {
   EventManager,
   MONO_DEFAULT_CONFIG,
   MONO_EVENT_ENTRY_LIST,
+  MonoAction,
   MonoActionManager,
   MonoConfig,
   MonoGroup,
@@ -21,7 +22,6 @@ export class MonoController {
 
   public elementManager: ElementManager
   public eventManager: EventManager
-
   public groupManager: MonoGroupManager
   public actionManager: MonoActionManager
 
@@ -36,14 +36,50 @@ export class MonoController {
     return this
   }
 
-  private initializeEventEntriesFromConfig(): this {
-    MONO_EVENT_ENTRY_LIST.forEach(eventEntry => {
-      this.eventManager.addEntry(eventEntry)
+  // ACTION
+
+  public activate(groupName: string, id: string): Promise<void> {
+    return new Promise(resolve => {
+      const actionManager: MonoActionManager = this.actionManager
+      if (actionManager.isRunning === true) {
+        actionManager.isNested = true
+      }
+      const action: MonoAction = actionManager.composeAction('activate', groupName, id)
+      actionManager.actionHub(action, () => { resolve() })
     })
-    return this
   }
 
-  private initialize(): MonoController {
+  public deactivate(groupName: string, id?: string): Promise<void> {
+    return new Promise(resolve => {
+      const actionManager: MonoActionManager = this.actionManager
+      if (actionManager.isRunning === true) {
+        actionManager.isNested = true
+      }
+      const action: MonoAction = actionManager.composeAction('deactivate', groupName, id)
+      actionManager.actionHub(action, () => { resolve() })
+    })
+  }
+
+  public groupIsActive(groupName: string): boolean {
+    if (
+      typeof this.groupManager.groups[groupName] === 'object' &&
+      this.groupManager.groups[groupName].isActive === true
+    ) {
+      return true
+    }
+    return false
+  }
+
+  public itemIsActive(groupName: string, id: string): boolean {
+    if (this.groupIsActive(groupName) === true) {
+      return (this.groupManager.groups[groupName].activeItemId === id)
+    }
+    return false
+  }
+
+  // INITIALIZE
+
+  public initialize(): MonoController {
     this.elementManager = new ElementManager(this)
     this.groupManager = new MonoGroupManager(this)
     this.actionManager = new MonoActionManager(this)
@@ -59,33 +95,14 @@ export class MonoController {
     return this
   }
 
-  // PUBLIC
-
-  public activate(groupName: string): Promise<void> {
-    return new Promise(resolve => {
-      const actionManager: MonoActionManager = this.actionManager
-      if (actionManager.isRunning === true) { actionManager.isNested = true }
-      actionManager.actionHub(
-        actionManager.composeAction('activate', groupName),
-        () => { resolve() }
-      )
+  private initializeEventEntriesFromConfig(): this {
+    MONO_EVENT_ENTRY_LIST.forEach(eventEntry => {
+      this.eventManager.addEntry(eventEntry)
     })
+    return this
   }
 
-  public deactivate(groupName: string): Promise<void> {
-    return new Promise(resolve => {
-      const actionManager: MonoActionManager = this.actionManager
-      if (actionManager.isRunning === true) { actionManager.isNested = true }
-      actionManager.actionHub(
-        actionManager.composeAction('deactivate', groupName),
-        () => { resolve() }
-      )
-    })
-  }
-
-  // EXTRA LISTENERS
-
-  public initializeExtraListeners() {
+  private initializeExtraListeners() {
     if (this.config.listenToClickOutside === true) {
       window.addEventListener('click', this.eventHandlerClickOutside)
     }

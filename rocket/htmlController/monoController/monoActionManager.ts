@@ -59,6 +59,12 @@ export class MonoActionManager implements ActionManager {
     if (action.group.isActive === false) {
       return Promise.resolve()
     }
+    if (
+      typeof action.nextItemId === 'string' &&
+      action.group.activeItemId === action.nextItemId
+    ) {
+      return Promise.resolve()
+    }
     if (config.conditionDeactivate(action, this.controller) === true) {
       return config
         .beforeDeactivate(action, this.controller)
@@ -105,14 +111,17 @@ export class MonoActionManager implements ActionManager {
       group: group,
       currentItem: group.activeItem,
       currentItemId: group.activeItemId,
+      nextItem: undefined,
+      nextItemId: undefined,
+      trigger: undefined,
     }
   }
 
   public composeAction(actionName: MonoActionName, groupName: string, id?: string): MonoAction {
     const action: MonoAction = this.createAction(actionName, groupName)
     if (typeof id === 'string') {
-      let nextItem: HTMLElement | false = this.getItemFromId(groupName, id)
-      if (nextItem) {
+      const nextItem: HTMLElement | false = this.getItemFromId(groupName, id)
+      if (typeof nextItem === 'object') {
         action.nextItem = nextItem
         action.nextItemId = id
       }

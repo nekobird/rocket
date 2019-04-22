@@ -21,7 +21,6 @@ export class PolyController {
 
   public elementManager: ElementManager
   public eventManager: EventManager
-
   public groupManager: PolyGroupManager
   public actionManager: PolyActionManager
 
@@ -37,28 +36,78 @@ export class PolyController {
     return this
   }
 
-  private initializeEventEntriesFromConfig(): this {
-    POLY_EVENT_ENTRY_LIST.forEach(eventEntry => {
-      this.eventManager.addEntry(eventEntry)
+  // ACTION
+
+  public activate(groupName: string, id: string): Promise<void> {
+    return new Promise(resolve => {
+      if (this.actionManager.isRunning === true) {
+        this.actionManager.isNested = true
+      }
+      this.actionManager.actionHub(
+        this.actionManager.composeAction('activate', groupName, id),
+        () => { resolve() }
+      )
     })
-    console.log(this.eventManager)
-    return this
   }
 
-  private initialize(): PolyController {
-    this.elementManager = new ElementManager(this)
-    this.groupManager = new PolyGroupManager(this)
-    this.actionManager = new PolyActionManager(this)
-    this.eventManager = new EventManager(this)
+  public deactivate(groupName: string, id: string): Promise<void> {
+    return new Promise(resolve => {
+      if (this.actionManager.isRunning === true) {
+        this.actionManager.isNested = true
+      }
+      this.actionManager.actionHub(
+        this.actionManager.composeAction('deactivate', groupName, id),
+        () => { resolve() }
+      )
+    })
+  }
 
-    this.elementManager.initialize()
-    this.groupManager.initialize()
+  public toggle(groupName: string, id: string): Promise<void> {
+    return new Promise(resolve => {
+      if (this.actionManager.isRunning === true) {
+        this.actionManager.isNested = true
+      }
+      this.actionManager.actionHub(
+        this.actionManager.composeAction('toggle', groupName, id),
+        () => { resolve() }
+      )
+    })
+  }
 
-    this.initializeEventEntriesFromConfig()
-    this.eventManager.listen()
+  public activateAll(groupName: string): Promise<void> {
+    return new Promise(resolve => {
+      if (this.actionManager.isRunning === true) {
+        this.actionManager.isNested = true
+      }
+      this.actionManager.actionHub(
+        this.actionManager.composeAction('activateAll', groupName),
+        () => { resolve() }
+      )
+    })
+  }
 
-    this.initializeExtraListeners()
-    return this
+  public deactivateAll(groupName: string): Promise<void> {
+    return new Promise(resolve => {
+      if (this.actionManager.isRunning === true) {
+        this.actionManager.isNested = true
+      }
+      this.actionManager.actionHub(
+        this.actionManager.composeAction('deactivateAll', groupName),
+        () => { resolve() }
+      )
+    })
+  }
+
+  public toggleAll(groupName: string): Promise<void> {
+    return new Promise(resolve => {
+      if (this.actionManager.isRunning === true) {
+        this.actionManager.isNested = true
+      }
+      this.actionManager.actionHub(
+        this.actionManager.composeAction('toggleAll', groupName),
+        () => { resolve() }
+      )
+    })
   }
 
   public itemIsActive(groupName: string, id: string): boolean {
@@ -76,71 +125,38 @@ export class PolyController {
 
   public groupIsActive(groupName: string): boolean {
     const group: PolyGroup = this.groupManager.groups[groupName]
-    if (typeof group !== 'undefined') {
+    if (typeof group === 'object') {
       return group.isActive
     }
     return false
   }
 
-  // ACTION
+  // INITIALIZE
 
-  public activate(groupName: string, id: string): Promise<void> {
-    return new Promise(resolve => {
-      this.actionManager.actionHub(
-        this.actionManager.composeAction('activate', groupName, id),
-        () => { resolve() }
-      )
-    })
+  public initialize(): PolyController {
+    this.elementManager = new ElementManager(this)
+    this.groupManager = new PolyGroupManager(this)
+    this.actionManager = new PolyActionManager(this)
+    this.eventManager = new EventManager(this)
+
+    this.elementManager.initialize()
+    this.groupManager.initialize()
+
+    this.initializeEventEntriesFromConfig()
+    this.eventManager.listen()
+
+    this.initializeExtraListeners()
+    return this
   }
 
-  public deactivate(groupName: string, id: string): Promise<void> {
-    return new Promise(resolve => {
-      this.actionManager.actionHub(
-        this.actionManager.composeAction('deactivate', groupName, id),
-        () => { resolve() }
-      )
+  private initializeEventEntriesFromConfig(): this {
+    POLY_EVENT_ENTRY_LIST.forEach(eventEntry => {
+      this.eventManager.addEntry(eventEntry)
     })
+    return this
   }
 
-  public toggle(groupName: string, id: string): Promise<void> {
-    return new Promise(resolve => {
-      this.actionManager.actionHub(
-        this.actionManager.composeAction('toggle', groupName, id),
-        () => { resolve() }
-      )
-    })
-  }
-
-  public activateAll(groupName: string): Promise<void> {
-    return new Promise(resolve => {
-      this.actionManager.actionHub(
-        this.actionManager.composeAction('activateAll', groupName),
-        () => { resolve() }
-      )
-    })
-  }
-
-  public deactivateAll(groupName: string): Promise<void> {
-    return new Promise(resolve => {
-      this.actionManager.actionHub(
-        this.actionManager.composeAction('deactivateAll', groupName),
-        () => { resolve() }
-      )
-    })
-  }
-
-  public toggleAll(groupName: string): Promise<void> {
-    return new Promise(resolve => {
-      this.actionManager.actionHub(
-        this.actionManager.composeAction('toggleAll', groupName),
-        () => { resolve() }
-      )
-    })
-  }
-
-  // EXTRA LISTENERS
-
-  public initializeExtraListeners() {
+  private initializeExtraListeners() {
     if (this.config.listenToClickOutside === true) {
       window.addEventListener('click', this.eventHandlerClickOutside)
     }

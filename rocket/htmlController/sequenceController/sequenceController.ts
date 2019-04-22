@@ -7,6 +7,7 @@ import {
   EventManager,
   SEQUENCE_DEFAULT_CONFIG,
   SEQUENCE_EVENT_ENTRY_LIST,
+  SequenceAction,
   SequenceActionManager,
   SequenceConfig,
   SequenceGroup,
@@ -35,7 +36,54 @@ export class SequenceController {
     return this
   }
 
-  private initialize(): SequenceController {
+  // ACTION
+
+  public previous(groupName: string): Promise<void> {
+    return new Promise(resolve => {
+      let actionManager: SequenceActionManager = this.actionManager
+      if (actionManager.isRunning === true) {
+        actionManager.isNested = true
+      }
+      const action: SequenceAction = actionManager.composeAction('previous', groupName)
+      actionManager.actionHub(action, () => { resolve() })
+    })
+  }
+
+  public next(groupName: string): Promise<void> {
+    return new Promise(resolve => {
+      let actionManager: SequenceActionManager = this.actionManager
+      if (actionManager.isRunning === true) {
+        actionManager.isNested = true
+      }
+      const action: SequenceAction = actionManager.composeAction('next', groupName)
+      actionManager.actionHub(action, () => { resolve() })
+    })
+  }
+
+  public jump(groupName: string, id: string): Promise<void> {
+    return new Promise(resolve => {
+      let actionManager: SequenceActionManager = this.actionManager
+      if (actionManager.isRunning === true) {
+        actionManager.isNested = true
+      }
+      const action: SequenceAction = actionManager.composeAction('jump', groupName, id)
+      actionManager.actionHub(action, () => { resolve() })
+    })
+  }
+
+  public itemIsActive(groupName: string, id: string): boolean {
+    if (
+      typeof this.groupManager[groupName] === 'object' &&
+      this.groupManager[groupName].activeItem.dataset.id === id
+    ) {
+      return true
+    }
+    return false
+  }
+
+  // INITIALIZE
+
+  public initialize(): SequenceController {
     this.elementManager = new ElementManager(this)
     this.groupManager = new SequenceGroupManager(this)
     this.actionManager = new SequenceActionManager(this)
@@ -56,44 +104,7 @@ export class SequenceController {
     return this
   }
 
-  // PUBLIC
-
-  public previous(groupName: string): Promise<void> {
-    return new Promise(resolve => {
-      let actionManager: SequenceActionManager = this.actionManager
-      if (actionManager.isRunning === true) { actionManager.isNested = true }
-      actionManager.actionHub(
-        actionManager.composeAction('previous', groupName),
-        () => { resolve() }
-      )
-    })
-  }
-
-  public next(groupName: string): Promise<void> {
-    return new Promise(resolve => {
-      let actionManager: SequenceActionManager = this.actionManager
-      if (actionManager.isRunning === true) { actionManager.isNested = true }
-      actionManager.actionHub(
-        actionManager.composeAction('next', groupName),
-        () => { resolve() }
-      )
-    })
-  }
-
-  public jump(groupName: string, id: string): Promise<void> {
-    return new Promise(resolve => {
-      let actionManager: SequenceActionManager = this.actionManager
-      if (actionManager.isRunning === true) { actionManager.isNested = true }
-      actionManager.actionHub(
-        actionManager.composeAction('jump', groupName, id),
-        () => { resolve() }
-      )
-    })
-  }
-
-  // EXTRA LISTENERS
-
-  public initializeExtraListeners() {
+  private initializeExtraListeners() {
     if (this.config.listenToClickOutside === true) {
       window.addEventListener('click', this.eventHandlerClickOutside)
     }
