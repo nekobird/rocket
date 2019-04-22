@@ -3,9 +3,9 @@ import {
 } from '../rocket'
 
 import {
-  AnimationTimingFunction,
+  DEFAULT_ANIMATION_CONFIG,
   AnimationConfig,
-} from './interfaces'
+} from './animationConfig'
 
 export class Animation {
 
@@ -15,30 +15,7 @@ export class Animation {
   public isPaused: boolean = false
   public isReversed: boolean = false
 
-  public alternate: boolean = false
-  public delay: number = 0 // Delay before animation starts.
-  public duration: number = 2 // In seconds.
-
-  public iterationDelay: number = 0 // Delay before next iteration.
-  public numberOfIterations: number | 'infinite' = 1
-
   public iterationCount: number = 0
-
-  public exports: any = undefined
-
-  public timingFunction: AnimationTimingFunction = (t: number): number => {
-    return t
-  }
-
-  // HOOKS
-  public onStart: Function | Function[] = () => { }
-  public onComplete: Function | Function[] = () => { }
-
-  public onIterationStart: Function | Function[] = () => { }
-  public onIterationComplete: Function | Function[] = () => { }
-
-  public callback: Function = () => { }
-  public onTick: Function | Function[] = (n, fn, data) => { }
 
   private direction: boolean = true
   private progress: number
@@ -50,48 +27,48 @@ export class Animation {
   private RAFID: number
   private timeoutID
 
+  public config: AnimationConfig
+
   constructor(config?: AnimationConfig) {
-    this.config = config
+    this.config = Object.assign({}, DEFAULT_ANIMATION_CONFIG)
     return this
   }
 
-  set config(config: AnimationConfig) {
-    Object.assign(this, config)
+  public setConfig(config: AnimationConfig): this {
+    if (typeof config === 'object') {
+      Object.assign(this.config, config)
+    }
+    return this
   }
 
   public goToBeginning(): this {
-    if (typeof this.onTick === 'function') {
-      this.onTick(0, this, undefined)
-    } else if (this.onTick.constructor === Array) {
-      this.onTick.forEach(tick => { tick(0, this, undefined) })
+    if (typeof this.config.onTick === 'function') {
+      this.config.onTick(0, this, undefined)
+    } else if (this.config.onTick.constructor === Array) {
+      this.config.onTick.forEach(tick => { tick(0, this, undefined) })
     }
     return this
   }
 
   public goToEnd(): this {
-    if (typeof this.onTick === 'function') {
-      this.onTick(1, this, undefined)
-    } else if (this.onTick.constructor === Array) {
-      this.onTick.forEach(tick => { tick(1, this, undefined) })
+    if (typeof this.config.onTick === 'function') {
+      this.config.onTick(1, this, undefined)
+    } else if (this.config.onTick.constructor === Array) {
+      this.config.onTick.forEach(tick => { tick(1, this, undefined) })
     }
     return this
   }
 
   public reset(): this {
     this.clearSessions()
-
     this.isActive = false
     this.isAnimating = false
     this.isPaused = false
-
     this.direction = true
-
     this.iterationCount = 0
-
     this.startTime = 0
     this.pauseTime = 0
     this.endTime = 0
-
     this.progress = 0
     return this
   }
@@ -112,8 +89,8 @@ export class Animation {
 
   public stop(): this {
     this.reset()
-    this.call_onComplete()
-    this.callback()
+    this.callHook('onComplete')
+    this.config.callback()
     return this
   }
 
@@ -121,8 +98,8 @@ export class Animation {
     this
       .reset()
       .goToEnd()
-      .call_onComplete()
-      .callback()
+      .callHook('onComplete')
+    this.config.callback()
     return this
   }
 
@@ -130,20 +107,20 @@ export class Animation {
     this
       .reset()
       .goToBeginning()
-      .call_onComplete()
-      .callback()
+      .callHook('onComplete')
+    this.config.callback()
     return this
   }
 
   // A
   public play(delay: number): this {
-    this.call_onStart()
+    this.callHook('onStart')
 
     // This is only called when it's not animating
     this.isActive = true
 
     if (typeof delay !== 'number') {
-      delay = this.delay
+      delay = this.config.delay
     }
 
     this.timeoutID = setTimeout(
@@ -175,12 +152,12 @@ export class Animation {
       this.isPaused = false
     } else {
       this.startTime = Date.now()
-      this.endTime = this.startTime + (this.duration * 1000)
+      this.endTime = this.startTime + (this.config.duration * 1000)
     }
 
     this.isAnimating = true
 
-    this.call_onIterationStart()
+    this.callHook('onIterationStart')
 
     // Begin loop
     this.loop()
@@ -205,13 +182,13 @@ export class Animation {
         } else {
           // End iteration.
           this.iterationCount++
-          this.call_onIterationComplete()
+          this.callHook('onIterationComplete')
 
           // Stop animation if exceeds number of iterations.
           // End animation if iteration count reach number of iterations.
           if (
-            typeof this.numberOfIterations === 'number' &&
-            this.iterationCount >= this.numberOfIterations
+            typeof this.config.numberOfIterations === 'number' &&
+            this.iterationCount >= this.config.numberOfIterations
           ) {
             this.stop()
             return
@@ -220,8 +197,8 @@ export class Animation {
           // Continue playing!
           // The cycle begins again.
           // Toggle direction if it's alternating.
-          if (this.alternate === true) { this.toggleDirection() }
-          this.play(this.iterationDelay)
+          if (this.config.alternate === true) { this.toggleDirection() }
+          this.play(this.config.iterationDelay)
         }
       }
 
@@ -238,7 +215,7 @@ export class Animation {
     this.progress = this.currentNValue
 
     // Modify N based on TimingFunction.
-    let n = this.timingFunction(
+    let n = this.config.timingFunction(
       this.progress
     )
 
@@ -248,10 +225,12 @@ export class Animation {
     }
 
     // Tick
-    if (typeof this.onTick === 'function') {
-      this.onTick(n, this.iterationCount, this.exports)
-    } else if (this.onTick.constructor === Array) {
-      this.onTick.forEach(tick => tick(n, this.iterationCount, this.exports))
+    if (typeof this.config.onTick === 'function') {
+      this.config.onTick(n, this, this.config.dataExport)
+    } else if (this.config.onTick.constructor === Array) {
+      this.config.onTick.forEach(tick => {
+        tick(n, this, this.config.dataExport)
+      })
     }
 
     return this
@@ -281,38 +260,11 @@ export class Animation {
 
   // CALLBACK
 
-  private call_onStart(): this {
-    if (typeof this.onStart === 'function') {
-      this.onStart(this)
-    } else if (this.onStart.constructor === Array) {
-      this.onStart.forEach(callback => callback(this))
-    }
-    return this
-  }
-
-  private call_onComplete(): this {
-    if (typeof this.onComplete === 'function') {
-      this.onComplete(this)
-    } else if (this.onComplete.constructor === Array) {
-      this.onComplete.forEach(callback => callback(this))
-    }
-    return this
-  }
-
-  private call_onIterationStart(): this {
-    if (typeof this.onIterationStart === 'function') {
-      this.onIterationStart(this)
-    } else if (this.onIterationStart.constructor === Array) {
-      this.onIterationStart.forEach(callback => callback(this))
-    }
-    return this
-  }
-
-  private call_onIterationComplete(): this {
-    if (typeof this.onIterationComplete === 'function') {
-      this.onIterationComplete(this)
-    } else if (this.onIterationComplete.constructor === Array) {
-      this.onIterationComplete.forEach(callback => callback(this))
+  private callHook(hookName: string): this {
+    if (typeof this.config[hookName] === 'function') {
+      this.config[hookName](this)
+    } else if (Array.isArray(this.config[hookName])) {
+      this.config[hookName].forEach(callback => callback(this))
     }
     return this
   }
