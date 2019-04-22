@@ -104,7 +104,7 @@ export class Color {
 
   // STRINGS
   set rgbString(input: string) {
-    let rgb: number[] = input.match(/(\d+)/g).map(v => {
+    const rgb: number[] = input.match(/(\d+)/g).map(v => {
       return Num.cycle(parseFloat(v) / 255, 1)
     })
     this.r = rgb[0]
@@ -113,7 +113,7 @@ export class Color {
   }
 
   set rgbaString(input: string) {
-    let rgba: number[] = input.match(/([\d]+(\.[\d]+)?)/g).map((v, index) => {
+    const rgba: number[] = input.match(/([\d]+(\.[\d]+)?)/g).map((v, index) => {
       if (index === 3) {
         return Num.cycle(parseFloat(v), 1)
       } else {
@@ -127,7 +127,7 @@ export class Color {
   }
 
   set hslString(input: string) {
-    let hsl: number[] = input.match(/(\d+)/g).map(v => {
+    const hsl: number[] = input.match(/(\d+)/g).map(v => {
       return parseFloat(v)
     })
     hsl[1] = hsl[1] / 100, 1
@@ -139,10 +139,10 @@ export class Color {
   }
 
   set hslaString(input: string) {
-    let hsla: number[] = input.match(/([\d]+(\.[\d]+)?)/g).map(v => {
+    const hsla: number[] = input.match(/([\d]+(\.[\d]+)?)/g).map(v => {
       return parseFloat(v)
     })
-    let hsl: number[] = hsla.slice(0, 3)
+    const hsl: number[] = hsla.slice(0, 3)
     hsl[1] = hsl[1] / 100
     hsl[2] = hsl[2] / 100
     const rgb: ColorArray3 = ConvertColor.HSLToRGB(<ColorArray3>hsl)
@@ -159,19 +159,19 @@ export class Color {
   }
 
   get rgbaString(): string {
-    let rgba: ColorArray3 = this.rgb255
+    const rgba: ColorArray3 = this.rgb255
     return `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, ${this.a})`
   }
 
   get hslString(): string {
-    let hsl: ColorArray3 = this.hsl
+    const hsl: ColorArray3 = this.hsl
     const s = (hsl[1] * 100).toFixed(0)
     const l = (hsl[2] * 100).toFixed(0)
     return `hsl(${hsl[0]}, %${s}, ${l})`
   }
 
   get hslaString(): string {
-    let hsl: ColorArray3 = this.hsl
+    const hsl: ColorArray3 = this.hsl
     const s = (hsl[1] * 100).toFixed(0)
     const l = (hsl[2] * 100).toFixed(0)
     return `hsl(${hsl[0]}, %${s}, ${l}, ${this.a})`
