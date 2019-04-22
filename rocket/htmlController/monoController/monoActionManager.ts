@@ -63,7 +63,7 @@ export class MonoActionManager implements ActionManager {
     if (
       action.name === 'deactivate' &&
       typeof action.targetId === 'string' &&
-      action.group.activeItemId === action.targetId
+      action.group.activeItemId !== action.targetId
     ) {
       return Promise.resolve()
     }
@@ -106,14 +106,6 @@ export class MonoActionManager implements ActionManager {
       }
     }
     return Promise.reject()
-  }
-
-  public endAction(callback?: Function): this {
-    this.isRunning = false
-    if (typeof callback === 'function') {
-      callback()
-    }
-    return this
   }
 
   // CREATE & COMPOSE ACTION
@@ -167,6 +159,8 @@ export class MonoActionManager implements ActionManager {
   // 1) ACTION HUB
 
   public actionHub(action: Action, callback?: Function): this {
+    this.isRunning = true
+
     const config: MonoConfig = this.controller.config
 
     let preAction: Promise<void>
@@ -188,15 +182,36 @@ export class MonoActionManager implements ActionManager {
     }
 
     preAction
-      .then(() => { return this.completeAction(<MonoAction>action) })
       .then(() => {
-        this.endAction(callback)
+        return this.completeAction(<MonoAction>action)
+      })
+      .then(() => {
+        return this.endAction(callback)
+      })
+      .then(() => {
         if (this.isNested === false) {
           config.afterAction(<MonoAction>action, this.controller)
         }
       })
-      .catch(() => { this.endAction(callback) })
+      .catch(() => {
+        return this.endAction(callback)
+      })
     return this
+  }
+
+  public endAction(callback?: Function): Promise<void> {
+    if (this.isNested === false) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          this.isRunning = false
+          resolve()
+        }, this.controller.config.cooldown)
+      })
+    }
+    if (typeof callback === 'function') {
+      callback()
+    }
+    return Promise.resolve()
   }
 
 }

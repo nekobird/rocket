@@ -11,6 +11,8 @@ import {
 } from '../index'
 
 export interface MonoConfig {
+  cooldown?: number,
+
   listenToClickOutside?: boolean,
   listenToTouchOutside?: boolean,
   listenToKeydown?: boolean,
@@ -40,6 +42,8 @@ export interface MonoConfig {
 }
 
 export const MONO_DEFAULT_CONFIG: MonoConfig = {
+  cooldown: 100,
+
   listenToClickOutside: false,
   listenToTouchOutside: false,
   listenToKeydown: false,

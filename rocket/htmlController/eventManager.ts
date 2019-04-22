@@ -121,7 +121,6 @@ export class EventManager {
       this.controller.isReady === true &&
       actionManager.isRunning === false
     ) {
-
       actionManager.isRunning = true
 
       const eventName: string = StringUtil.upperCaseFirstLetter(actionName)

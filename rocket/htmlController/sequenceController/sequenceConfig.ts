@@ -14,6 +14,8 @@ import {
 } from '../index'
 
 export interface SequenceConfig {
+  cooldown?: number,
+
   listenToClickOutside?: boolean,
   listenToTouchOutside?: boolean,
   listenToKeydown?: boolean,
@@ -44,6 +46,8 @@ export interface SequenceConfig {
 }
 
 export const SEQUENCE_DEFAULT_CONFIG: SequenceConfig = {
+  cooldown: 100,
+
   listenToClickOutside: false,
   listenToTouchOutside: false,
   listenToKeydown: false,

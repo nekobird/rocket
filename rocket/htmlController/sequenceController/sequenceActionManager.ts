@@ -37,7 +37,7 @@ export class SequenceActionManager implements ActionManager {
 
   // 5) COMPLETE ACTION
 
-  private completeAction(action: SequenceAction, callback?: Function): this {
+  private completeAction(action: SequenceAction, callback?: Function): Promise<void> {
     const config: SequenceConfig = this.controller.config
     const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
     // condition[actionName]
@@ -45,7 +45,7 @@ export class SequenceActionManager implements ActionManager {
       action.group.activeItem !== action.nextItem &&
       config[`condition${actionNameString}`](action, this) === true
     ) {
-      config
+      return config
         .beforeDeactivate(action, this.controller)
         .then(() => {
           this.deactivate(action)
@@ -64,27 +64,8 @@ export class SequenceActionManager implements ActionManager {
         .then(() => {
           return config.afterActivate(action, this.controller)
         })
-        .then(() => {
-          this.endAction(callback)
-          if (this.isNested === false) {
-            config.afterAction(action, this.controller)
-          }
-        })
-        .catch(error => {
-          this.endAction(callback)
-        })
-    } else {
-      this.endAction(callback)
     }
-    return this
-  }
-
-  public endAction(callback?: Function): this {
-    this.isRunning = false
-    if (typeof callback === 'function') {
-      callback()
-    }
-    return this
+    return Promise.resolve()
   }
 
   private deactivate(action: SequenceAction): this {
@@ -176,6 +157,8 @@ export class SequenceActionManager implements ActionManager {
   // 1) ACTION HUB
 
   public actionHub(action: Action, callback?: Function): this {
+    this.isRunning = true
+
     const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
     this[`setActionTarget${actionNameString}`](action)
 
@@ -201,16 +184,35 @@ export class SequenceActionManager implements ActionManager {
 
     preAction
       .then(() => {
-        this.completeAction(<SequenceAction>action, callback)
+        return this.completeAction(<SequenceAction>action, callback)
       })
-      .catch(() => {
-        this.endAction(callback)
+      .then(() => {
+        return this.endAction(callback)
+      })
+      .then(() => {
         if (this.isNested === false) {
           config.afterAction(<SequenceAction>action, this.controller)
         }
       })
-
+      .catch(() => {
+        return this.endAction(callback)
+      })
     return this
+  }
+
+  public endAction(callback?: Function): Promise<void> {
+    if (this.isNested === false) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          this.isRunning = false
+          resolve()
+        }, this.controller.config.cooldown)
+      })
+    }
+    if (typeof callback === 'function') {
+      callback()
+    }
+    return Promise.resolve()
   }
 
 }

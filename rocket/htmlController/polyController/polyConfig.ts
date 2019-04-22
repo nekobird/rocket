@@ -12,6 +12,8 @@ import {
 // INTERFACE
 
 export interface PolyConfig {
+  cooldown?: number,
+
   listenToClickOutside?: boolean,
   listenToTouchOutside?: boolean,
   listenToKeydown?: boolean,
@@ -46,6 +48,44 @@ export interface PolyConfig {
   onClickOutside?: ListenToHook<MouseEvent, PolyGroup, PolyController>,
   onTouchOutside?: ListenToHook<TouchEvent, PolyGroup, PolyController>,
   onKeydown?: ListenToHook<KeyboardEvent, PolyGroup, PolyController>,
+}
+
+export const POLY_DEFAULT_CONFIG: PolyConfig = {
+  cooldown: 100,
+
+  listenToClickOutside: false,
+  listenToTouchOutside: false,
+  listenToKeydown: false,
+
+  selectorItems: '.item',
+
+  classNameItemActive: '__active',
+  classNameJsActivate: 'js_activate',
+  classNameJsDeactivate: 'js_deactivate',
+  classNameJsToggle: 'js_toggle',
+  classNameJsActivateAll: 'js_activateAll',
+  classNameJsDeactivateAll: 'js_deactivateAll',
+  classNameJsToggleAll: 'js_toggleAll',
+
+  conditionActivate: (action, context) => { return true },
+  conditionDeactivate: (action, context) => { return true },
+  conditionToggle: (action, context) => { return true },
+  conditionActivateAll: (action, context) => { return true },
+  conditionDeactivateAll: (action, context) => { return true },
+  conditionToggleAll: (action, context) => { return true },
+
+  beforeDeactivate: (action, context) => { return Promise.resolve() },
+  afterDeactivate: (action, context) => { return Promise.resolve() },
+
+  beforeActivate: (action, context) => { return Promise.resolve() },
+  afterActivate: (action, context) => { return Promise.resolve() },
+
+  beforeAction: (action, context) => { return Promise.resolve() },
+  afterAction: (action, context) => { return Promise.resolve() },
+
+  onClickOutside: (event, group, context) => { },
+  onTouchOutside: (event, group, context) => { },
+  onKeydown: (event, group, context) => { },
 }
 
 export const POLY_EVENT_ENTRY_LIST: EventEntry[] = [
@@ -92,39 +132,3 @@ export const POLY_EVENT_ENTRY_LIST: EventEntry[] = [
     listener: undefined,
   },
 ]
-
-export const POLY_DEFAULT_CONFIG: PolyConfig = {
-  listenToClickOutside: false,
-  listenToTouchOutside: false,
-  listenToKeydown: false,
-
-  selectorItems: '.item',
-
-  classNameItemActive: '__active',
-  classNameJsActivate: 'js_activate',
-  classNameJsDeactivate: 'js_deactivate',
-  classNameJsToggle: 'js_toggle',
-  classNameJsActivateAll: 'js_activateAll',
-  classNameJsDeactivateAll: 'js_deactivateAll',
-  classNameJsToggleAll: 'js_toggleAll',
-
-  conditionActivate: (action, context) => { return true },
-  conditionDeactivate: (action, context) => { return true },
-  conditionToggle: (action, context) => { return true },
-  conditionActivateAll: (action, context) => { return true },
-  conditionDeactivateAll: (action, context) => { return true },
-  conditionToggleAll: (action, context) => { return true },
-
-  beforeDeactivate: (action, context) => { return Promise.resolve() },
-  afterDeactivate: (action, context) => { return Promise.resolve() },
-
-  beforeActivate: (action, context) => { return Promise.resolve() },
-  afterActivate: (action, context) => { return Promise.resolve() },
-
-  beforeAction: (action, context) => { return Promise.resolve() },
-  afterAction: (action, context) => { return Promise.resolve() },
-
-  onClickOutside: (event, group, context) => { },
-  onTouchOutside: (event, group, context) => { },
-  onKeydown: (event, group, context) => { },
-}

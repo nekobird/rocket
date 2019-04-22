@@ -156,16 +156,6 @@ export class PolyActionManager implements ActionManager {
     }
   }
 
-  public endAction(callback?: Function): this {
-    if (this.isNested === false) {
-      this.isRunning = false
-    }
-    if (typeof callback === 'function') {
-      callback()
-    }
-    return this
-  }
-
   // ACTION CREATOR AND COMPOSER
 
   private createAction(actionName: PolyActionName, groupName: string): PolyAction {
@@ -199,6 +189,8 @@ export class PolyActionManager implements ActionManager {
   // 1) ACTION HUB
 
   public actionHub(action: Action, callback?: Function): this {
+    this.isRunning = true
+
     const config: PolyConfig = this.controller.config
 
     let preAction: Promise<void>
@@ -233,15 +225,32 @@ export class PolyActionManager implements ActionManager {
         }
       })
       .then(() => {
-        this.endAction(callback)
+        return this.endAction(callback)
+      })
+      .then(() => {
         if (this.isNested === false) {
           config.afterAction(<PolyAction>action, this.controller)
         }
       })
       .catch(() => {
-        this.endAction(callback)
+        return this.endAction(callback)
       })
     return this
+  }
+
+  public endAction(callback?: Function): Promise<void> {
+    if (this.isNested === false) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          this.isRunning = false
+          resolve()
+        }, this.controller.config.cooldown)
+      })
+    }
+    if (typeof callback === 'function') {
+      callback()
+    }
+    return Promise.resolve()
   }
 
 }
