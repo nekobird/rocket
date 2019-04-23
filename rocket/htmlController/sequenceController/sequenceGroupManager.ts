@@ -34,9 +34,8 @@ export class SequenceGroupManager {
 
   private initializeGroups(): this {
     const items: ElementEntry | false = this.controller.elementManager.getEntry('items')
-
     if (
-      items !== false &&
+      typeof items === 'object' &&
       typeof items.elements === 'object'
     ) {
       items.elements.forEach(item => {

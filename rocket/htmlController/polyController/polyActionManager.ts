@@ -170,20 +170,23 @@ export class PolyActionManager implements ActionManager {
     const action: PolyAction = this.createAction(actionName, groupName)
     if (typeof id === 'string') {
       action.targetId = id
-      action.targetItem = document.querySelector(
+      action.targetItem = <HTMLElement>document.querySelector(
         `${this.controller.config.selectorItems}[data-group="${groupName}"][data-id="${id}"]`
       )
     }
     return action
   }
 
-  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action {
-    const groupName: string = trigger.dataset.group
-    const whitelist: string[] = ['activate', 'deactivate', 'toggle']
-    if (whitelist.indexOf(actionName) !== -1) {
-      return this.composeAction(<PolyActionName>actionName, groupName, trigger.dataset.target)
+  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action | false {
+    const groupName: string | undefined = trigger.dataset.group
+    if (typeof groupName === 'string') {
+      const whitelist: string[] = ['activate', 'deactivate', 'toggle']
+      if (whitelist.indexOf(actionName) !== -1) {
+        return this.composeAction(<PolyActionName>actionName, groupName, trigger.dataset.target)
+      }
+      return this.composeAction(<PolyActionName>actionName, groupName)
     }
-    return this.composeAction(<PolyActionName>actionName, groupName)
+    return false
   }
 
   // 1) ACTION HUB
@@ -257,6 +260,12 @@ export class PolyActionManager implements ActionManager {
           resolve()
         }, this.controller.config.cooldown)
       })
+    }
+    if (
+      this.isRunning === false &&
+      this.isNested === true
+    ) {
+      this.isNested = false;
     }
     if (typeof callback === 'function') {
       callback()

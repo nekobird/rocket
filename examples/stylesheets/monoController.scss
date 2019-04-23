@@ -34,7 +34,9 @@ html {
   padding: 20px;
 }
 
-.item {
+.item,
+.block {
+  font-size: 24px;
   background: hsl(220, 20, 5);
   border-radius: 20px;
   box-sizing: border-box;

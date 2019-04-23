@@ -39,7 +39,7 @@ export class SequenceActionManager implements ActionManager {
 
   private completeAction(action: SequenceAction, callback?: Function): Promise<void> {
     const config: SequenceConfig = this.controller.config
-    const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
+    const actionNameString: string = StringUtil.upperCaseFirstLetter(<string>action.name)
     // condition[actionName]
     if (
       action.group.activeItem !== action.nextItem &&
@@ -71,7 +71,7 @@ export class SequenceActionManager implements ActionManager {
   private deactivate(action: SequenceAction): this {
     action.group.items.forEach(item => {
       item.classList.remove(
-        this.controller.config.classNameItemActive
+        <string>this.controller.config.classNameItemActive
       )
     })
     action.group.activeItem = undefined
@@ -82,7 +82,7 @@ export class SequenceActionManager implements ActionManager {
 
   private activate(action: SequenceAction): this {
     action.nextItem.classList.add(
-      this.controller.config.classNameItemActive
+      <string>this.controller.config.classNameItemActive
     )
     action.group.activeItem = action.nextItem
     action.group.activeIndex = action.nextItemIndex
@@ -144,14 +144,17 @@ export class SequenceActionManager implements ActionManager {
     return action
   }
 
-  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action {
-    const groupName: string = trigger.dataset.group
-    const action: SequenceAction = this.createAction(<SequenceActionName>actionName, groupName)
-    if (typeof trigger.dataset.target === 'string') {
-      action.nextItemId = trigger.dataset.target
+  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action | false {
+    const groupName: string | undefined = trigger.dataset.group
+    if (typeof groupName === 'string') {
+      const action: SequenceAction = this.createAction(<SequenceActionName>actionName, groupName)
+      if (typeof trigger.dataset.target === 'string') {
+        action.nextItemId = trigger.dataset.target
+      }
+      action.trigger = trigger
+      return action
     }
-    action.trigger = trigger
-    return action
+    return false
   }
 
   // 1) ACTION HUB
@@ -165,7 +168,7 @@ export class SequenceActionManager implements ActionManager {
     }
     this.isRunning = true
 
-    const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
+    const actionNameString: string = StringUtil.upperCaseFirstLetter(<string>action.name)
     this[`setActionTarget${actionNameString}`](action)
 
     const config: SequenceConfig = this.controller.config
@@ -219,6 +222,12 @@ export class SequenceActionManager implements ActionManager {
           resolve()
         }, this.controller.config.cooldown)
       })
+    }
+    if (
+      this.isRunning === false &&
+      this.isNested === true
+    ) {
+      this.isNested = false;
     }
     if (typeof callback === 'function') {
       callback()

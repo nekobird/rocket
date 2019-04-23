@@ -1,11 +1,9 @@
 import {
-  ScrollEventManager,
   ScrollEventHandler,
+  ScrollEventManager,
 } from '../../rocket/rocket'
 
-
 const scrollManager = new ScrollEventManager()
-
 
 const scrollHandler = new ScrollEventHandler(window)
 scrollHandler.onScrollStart = (a) => {

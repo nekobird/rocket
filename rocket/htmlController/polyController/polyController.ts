@@ -26,6 +26,10 @@ export class PolyController {
   public actionManager: PolyActionManager
 
   constructor(config: PolyConfig) {
+    this.elementManager = new ElementManager(this)
+    this.groupManager = new PolyGroupManager(this)
+    this.actionManager = new PolyActionManager(this)
+    this.eventManager = new EventManager(this)
     this.config = Object.assign({}, POLY_DEFAULT_CONFIG)
     this
       .setConfig(config)
@@ -100,14 +104,14 @@ export class PolyController {
   }
 
   public itemIsActive(groupName: string, id: string): boolean {
-    const item: HTMLElement = document.querySelector(
+    const item: HTMLElement | null = document.querySelector(
       `${this.config.selectorItems}[data-group="${groupName}"][data-id="${id}"]`
     )
     if (
-      item !== null &&
-      item instanceof HTMLElement
+      typeof item === 'object' &&
+      item !== null
     ) {
-      return item.classList.contains(this.config.classNameItemActive)
+      return item.classList.contains(<string>this.config.classNameItemActive)
     }
     return false
   }
@@ -123,11 +127,6 @@ export class PolyController {
   // INITIALIZE
 
   public initialize(): PolyController {
-    this.elementManager = new ElementManager(this)
-    this.groupManager = new PolyGroupManager(this)
-    this.actionManager = new PolyActionManager(this)
-    this.eventManager = new EventManager(this)
-
     this.elementManager.initialize()
     this.groupManager.initialize()
 

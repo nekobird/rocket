@@ -35,7 +35,7 @@ export class MonoGroupManager {
 
   public initializeMonoGroups(): this {
     const items: ElementEntry | false = this.controller.elementManager.getEntry('items')
-    if (items) {
+    if (typeof items === 'object') {
       items.elements.forEach(item => {
         if (this.checkIfValidItem(item) === true) {
           const groupName: string = item.dataset.group

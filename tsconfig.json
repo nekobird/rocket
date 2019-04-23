@@ -4,6 +4,7 @@
     "declaration": true,
     "module": "commonjs",
     "noImplicitAny": false,
+    "noImplicitThis": false,
     "outDir": "build/",
     "preserveConstEnums": true,
     "removeComments": true,

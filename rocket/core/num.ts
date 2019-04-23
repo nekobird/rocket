@@ -65,6 +65,8 @@ export class Num {
       return Math.abs(min) + max
     } else if (min >= 0 && max >= 0) {
       return max - min
+    } else {
+      return 0
     }
   }
 
@@ -84,7 +86,7 @@ export class Num {
   }
 
   // Get reciprocal of a number.
-  static reciprocal(number: number): number {
+  static reciprocal(number: number): number | undefined {
     return number != 0 ? 1 / number : undefined
   }
 

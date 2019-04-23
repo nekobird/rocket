@@ -3,8 +3,8 @@ import {
 } from '../rocket'
 
 import {
-  DEFAULT_ANIMATION_CONFIG,
   AnimationConfig,
+  DEFAULT_ANIMATION_CONFIG,
 } from './animationConfig'
 
 export class Animation {
@@ -18,6 +18,7 @@ export class Animation {
   public iterationCount: number = 0
 
   private direction: boolean = true
+
   private progress: number
 
   private startTime: number
@@ -45,8 +46,10 @@ export class Animation {
   public goToBeginning(): this {
     if (typeof this.config.onTick === 'function') {
       this.config.onTick(0, this, undefined)
-    } else if (this.config.onTick.constructor === Array) {
-      this.config.onTick.forEach(tick => { tick(0, this, undefined) })
+    } else if (Array.isArray(this.config.onTick)) {
+      this.config.onTick.forEach(tick => {
+        tick(0, this, undefined)
+      })
     }
     return this
   }
@@ -54,8 +57,10 @@ export class Animation {
   public goToEnd(): this {
     if (typeof this.config.onTick === 'function') {
       this.config.onTick(1, this, undefined)
-    } else if (this.config.onTick.constructor === Array) {
-      this.config.onTick.forEach(tick => { tick(1, this, undefined) })
+    } else if (Array.isArray(this.config.onTick)) {
+      this.config.onTick.forEach(tick => {
+        tick(1, this, undefined)
+      })
     }
     return this
   }
@@ -228,7 +233,7 @@ export class Animation {
     // Tick
     if (typeof this.config.onTick === 'function') {
       this.config.onTick(n, this, this.config.dataExport)
-    } else if (this.config.onTick.constructor === Array) {
+    } else if (Array.isArray(this.config.onTick)) {
       this.config.onTick.forEach(tick => {
         tick(n, this, this.config.dataExport)
       })

@@ -138,19 +138,22 @@ export class MonoActionManager implements ActionManager {
     return action
   }
 
-  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action {
-    const groupName: string = trigger.dataset.group
-    const action: MonoAction = this.composeAction(
-      <MonoActionName>actionName, groupName, trigger.dataset.target
-    )
-    action.trigger = trigger
-    return action
+  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action | false {
+    const groupName: string | undefined = trigger.dataset.group
+    if (typeof groupName === 'string') {
+      const action: MonoAction = this.composeAction(
+        <MonoActionName>actionName, groupName, trigger.dataset.target
+      )
+      action.trigger = trigger
+      return action
+    }
+    return false
   }
 
   // HELPER
 
   private getItemFromId(groupName: string, id: string): HTMLElement | false {
-    const item: HTMLElement = document.querySelector(
+    const item: HTMLElement | null = document.querySelector(
       `${this.controller.config.selectorItems}[data-group="${groupName}"][data-id="${id}"]`
     )
     return item === null ? false : item
@@ -219,7 +222,10 @@ export class MonoActionManager implements ActionManager {
         }, this.controller.config.cooldown)
       })
     }
-    if (this.isRunning === false && this.isNested === true) {
+    if (
+      this.isRunning === false &&
+      this.isNested === true
+    ) {
       this.isNested = false;
     }
     if (typeof callback === 'function') {

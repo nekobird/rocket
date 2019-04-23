@@ -134,8 +134,12 @@ export class EventManager {
         typeof trigger !== 'undefined' &&
         trigger instanceof HTMLElement
       ) {
-        const action: Action = actionManager.composeActionFromEvent(actionName, trigger)
-        actionManager.actionHub(action)
+        const action: Action | false = actionManager.composeActionFromEvent(actionName, trigger)
+        if (typeof action === 'object') {
+          actionManager.actionHub(action)
+        } else {
+          actionManager.endAction()
+        }
       } else {
         actionManager.endAction()
       }
