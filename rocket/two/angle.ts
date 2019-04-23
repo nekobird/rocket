@@ -93,7 +93,6 @@ export class Angle {
     return result
   }
 
-
   static differenceCounterclockwise(from: number, to: number) {
     let result: number = 0
 

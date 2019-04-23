@@ -45,9 +45,8 @@ export class PolyController {
 
   public activate(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
-      const actionManager: PolyActionManager = this.actionManager
-      const action: PolyAction = actionManager.composeAction('activate', groupName, id)
-      actionManager.actionHub(action)
+      const action: PolyAction = this.actionManager.composeAction('activate', groupName, id)
+      this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
@@ -55,9 +54,8 @@ export class PolyController {
 
   public deactivate(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
-      const actionManager: PolyActionManager = this.actionManager
-      const action: PolyAction = actionManager.composeAction('deactivate', groupName, id)
-      actionManager.actionHub(action)
+      const action: PolyAction = this.actionManager.composeAction('deactivate', groupName, id)
+      this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
@@ -65,9 +63,8 @@ export class PolyController {
 
   public toggle(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
-      const actionManager: PolyActionManager = this.actionManager
-      const action: PolyAction = actionManager.composeAction('toggle', groupName, id)
-      actionManager.actionHub(action)
+      const action: PolyAction = this.actionManager.composeAction('toggle', groupName, id)
+      this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
@@ -75,9 +72,8 @@ export class PolyController {
 
   public activateAll(groupName: string): Promise<void> {
     return new Promise(resolve => {
-      const actionManager: PolyActionManager = this.actionManager
-      const action: PolyAction = actionManager.composeAction('activateAll', groupName)
-      actionManager.actionHub(action)
+      const action: PolyAction = this.actionManager.composeAction('activateAll', groupName)
+      this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
@@ -85,9 +81,8 @@ export class PolyController {
 
   public deactivateAll(groupName: string): Promise<void> {
     return new Promise(resolve => {
-      const actionManager: PolyActionManager = this.actionManager
-      const action: PolyAction = actionManager.composeAction('deactivateAll', groupName)
-      actionManager.actionHub(action)
+      const action: PolyAction = this.actionManager.composeAction('deactivateAll', groupName)
+      this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
@@ -95,9 +90,8 @@ export class PolyController {
 
   public toggleAll(groupName: string): Promise<void> {
     return new Promise(resolve => {
-      const actionManager: PolyActionManager = this.actionManager
-      const action: PolyAction = actionManager.composeAction('toggleAll', groupName)
-      actionManager.actionHub(action)
+      const action: PolyAction = this.actionManager.composeAction('toggleAll', groupName)
+      this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })

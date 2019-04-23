@@ -112,7 +112,7 @@ export class TouchEventHandler {
     this.doubleTapMaximumDelayTime = 500
   }
 
-  public handle_touchStart(event: TouchEvent, touch: Touch) {
+  public handleTouchStart(event: TouchEvent, touch: Touch) {
     this.lastFiredEvent = event
     this.touch = touch
     let point = new Vector2(touch.clientX, touch.clientY)
@@ -125,13 +125,13 @@ export class TouchEventHandler {
     }
   }
 
-  public handle_touchEnd(event, touch) {
+  public handleTouchEnd(event, touch) {
     if (
       this.identity === touch.identifier &&
       this.isTouching === true
     ) {
       if (this.isMoving === true) {
-        this.handle_moveEnd()
+        this.handleMoveEnd()
       }
       const point: Vector2 = new Vector2(touch.clientX, touch.clientY)
       this.touchEndPosition.equals(point)
@@ -141,11 +141,11 @@ export class TouchEventHandler {
       this.count_touch++
       this.identity = undefined
       this.onTouchEnd(point, this)
-      this.handle_doubleTap()
+      this.handleDoubleTap()
     }
   }
 
-  public handle_move(event, touch) {
+  public handleMove(event, touch) {
     if (
       this.identity === touch.identifier &&
       this.isTouching === true
@@ -175,7 +175,7 @@ export class TouchEventHandler {
     }
   }
 
-  public handle_moveEnd() {
+  public handleMoveEnd() {
     if (this.isMoving === true) {
       this.time_move_end = Date.now()
       this.duration_move = this.time_move_end - this.time_move_start
@@ -184,13 +184,13 @@ export class TouchEventHandler {
     }
   }
 
-  public handle_touchCancel(event, touch) {
+  public handleTouchCancel(event, touch) {
     if (
       this.identity === touch.identifier &&
       this.isTouching === true
     ) {
-      this.handle_moveEnd()
-      this.handle_touchEnd(event, touch)
+      this.handleMoveEnd()
+      this.handleTouchEnd(event, touch)
       let point = new Vector2(touch.clientX, touch.clientY)
       this.time_touchCancel = Date.now()
       this.cancelPosition.equals(point)
@@ -198,7 +198,7 @@ export class TouchEventHandler {
     }
   }
 
-  public handle_doubleTap() {
+  public handleDoubleTap() {
     if (
       this.duration_touch < this.doubleTapMaximumTouchTime &&
       this.doubleTapCounter === 0

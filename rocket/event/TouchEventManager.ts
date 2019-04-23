@@ -72,7 +72,7 @@ export class TouchEventManager {
     Array.from(event.targetTouches).forEach((touch: Touch) => {
       Object.keys(this.handlers).forEach(name => {
         if (this.isTouchIdentityTaken(touch.identifier) === false) {
-          this.handlers[name].handle_touchStart(event, touch)
+          this.handlers[name].handleTouchStart(event, touch)
         }
       })
     })
@@ -84,7 +84,7 @@ export class TouchEventManager {
     Object.keys(this.handlers).forEach(name => {
       for (let touch of event.changedTouches) {
         if (this.handlers[name].identity === touch.identifier) {
-          this.handlers[name].handle_touchEnd(event, touch)
+          this.handlers[name].handleTouchEnd(event, touch)
         }
       }
     })
@@ -95,7 +95,7 @@ export class TouchEventManager {
     this.onTouchCancel(event, this)
     Object.keys(this.handlers).forEach(name => {
       for (let touch of event.changedTouches) {
-        this.handlers[name].handle_move(event, touch)
+        this.handlers[name].handleMove(event, touch)
       }
     })
   }
@@ -105,14 +105,14 @@ export class TouchEventManager {
     this.onTouchMove(event, this)
     Object.keys(this.handlers).forEach(name => {
       for (let touch of event.touches) {
-        this.handlers[name].handle_move(event, touch)
+        this.handlers[name].handleMove(event, touch)
       }
     })
   }
 
   private eventHandler_moveEnd = () => {
     Object.keys(this.handlers).forEach(name => {
-      this.handlers[name].handle_moveEnd()
+      this.handlers[name].handleMoveEnd()
     })
   }
 

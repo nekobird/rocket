@@ -1,6 +1,5 @@
 import {
   Num,
-  Size,
   Vector2,
 } from './rocket'
 

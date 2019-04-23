@@ -26,6 +26,10 @@ export class SequenceController {
   public eventManager: EventManager
 
   constructor(config: SequenceConfig) {
+    this.elementManager = new ElementManager(this)
+    this.groupManager = new SequenceGroupManager(this)
+    this.actionManager = new SequenceActionManager(this)
+    this.eventManager = new EventManager(this)
     this.config = Object.assign({}, SEQUENCE_DEFAULT_CONFIG)
     this
       .setConfig(config)
@@ -41,9 +45,8 @@ export class SequenceController {
 
   public previous(groupName: string): Promise<void> {
     return new Promise(resolve => {
-      let actionManager: SequenceActionManager = this.actionManager
-      const action: SequenceAction = actionManager.composeAction('previous', groupName)
-      actionManager.actionHub(action)
+      const action: SequenceAction = this.actionManager.composeAction('previous', groupName)
+      this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
@@ -51,9 +54,8 @@ export class SequenceController {
 
   public next(groupName: string): Promise<void> {
     return new Promise(resolve => {
-      let actionManager: SequenceActionManager = this.actionManager
-      const action: SequenceAction = actionManager.composeAction('next', groupName)
-      actionManager.actionHub(action)
+      const action: SequenceAction = this.actionManager.composeAction('next', groupName)
+      this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
@@ -61,9 +63,8 @@ export class SequenceController {
 
   public jump(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
-      let actionManager: SequenceActionManager = this.actionManager
-      const action: SequenceAction = actionManager.composeAction('jump', groupName, id)
-      actionManager.actionHub(action)
+      const action: SequenceAction = this.actionManager.composeAction('jump', groupName, id)
+      this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
@@ -82,16 +83,13 @@ export class SequenceController {
   // INITIALIZE
 
   public initialize(): SequenceController {
-    this.elementManager = new ElementManager(this)
-    this.groupManager = new SequenceGroupManager(this)
-    this.actionManager = new SequenceActionManager(this)
-    this.eventManager = new EventManager(this)
-
     this.elementManager.initialize()
     this.groupManager.initialize()
 
     this.initializeEventEntriesFromConfig()
     this.eventManager.listen()
+
+    this.initializeExtraListeners()
     return this
   }
 

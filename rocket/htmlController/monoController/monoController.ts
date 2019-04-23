@@ -26,6 +26,10 @@ export class MonoController {
   public actionManager: MonoActionManager
 
   constructor(config: MonoConfig) {
+    this.elementManager = new ElementManager(this)
+    this.groupManager = new MonoGroupManager(this)
+    this.actionManager = new MonoActionManager(this)
+    this.eventManager = new EventManager(this)
     this.config = Object.assign(MONO_DEFAULT_CONFIG, config)
     this
       .setConfig(config)
@@ -41,9 +45,8 @@ export class MonoController {
 
   public activate(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
-      const actionManager: MonoActionManager = this.actionManager
-      const action: MonoAction = actionManager.composeAction('activate', groupName, id)
-      actionManager.actionHub(action)
+      const action: MonoAction = this.actionManager.composeAction('activate', groupName, id)
+      this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
@@ -51,9 +54,8 @@ export class MonoController {
 
   public deactivate(groupName: string, id?: string): Promise<void> {
     return new Promise(resolve => {
-      const actionManager: MonoActionManager = this.actionManager
-      const action: MonoAction = actionManager.composeAction('deactivate', groupName, id)
-      actionManager.actionHub(action)
+      const action: MonoAction = this.actionManager.composeAction('deactivate', groupName, id)
+      this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
@@ -61,9 +63,8 @@ export class MonoController {
 
   public toggle(groupName: string, id?: string): Promise<void> {
     return new Promise(resolve => {
-      const actionManager: MonoActionManager = this.actionManager
-      const action: MonoAction = actionManager.composeAction('toggle', groupName, id)
-      actionManager.actionHub(action)
+      const action: MonoAction = this.actionManager.composeAction('toggle', groupName, id)
+      this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
@@ -89,11 +90,6 @@ export class MonoController {
   // INITIALIZE
 
   public initialize(): MonoController {
-    this.elementManager = new ElementManager(this)
-    this.groupManager = new MonoGroupManager(this)
-    this.actionManager = new MonoActionManager(this)
-    this.eventManager = new EventManager(this)
-
     this.elementManager.initialize()
     this.groupManager.initialize()
 

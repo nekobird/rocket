@@ -339,7 +339,9 @@ export class Vector2 {
   }
 
   public scaleBy(by: number): this {
-    let magnitude: number = Math.abs(Math.sqrt(this.x * this.x + this.y * this.y))
+    let magnitude: number = Math.abs(
+      Math.sqrt(this.x * this.x + this.y * this.y)
+    )
     magnitude = magnitude === 0 ? 1 : magnitude
     this.x /= magnitude
     this.y /= magnitude
