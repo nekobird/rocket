@@ -44,20 +44,20 @@ export class TouchEventHandler {
   public moveEndPosition: Vector2
 
   // TIME
-  public time_touch_start: number
-  public time_touch_end: number
+  public touchStartTime: number
+  public touchEndTime: number
 
-  public time_move_start: number
-  public time_move_end: number
+  public moveStartTime: number
+  public moveEndTime: number
 
-  public time_touchCancel: number
-  public time_previousTap: number
+  public touchCancelTime: number
+  public previousTapTime: number
 
-  public duration_touch: number
+  public touchDuration: number
   public duration_move: number
 
   // CONDITION
-  public determine: ConditionHook
+  public condition: ConditionHook
 
   // HOOKS
   public onDoubleTap: Function
@@ -92,7 +92,7 @@ export class TouchEventHandler {
     this.moveEndPosition = new Vector2
 
     // CALLBACKS
-    this.determine = (point, touch, context): boolean => {
+    this.condition = (point, touch, context): boolean => {
       return false
     }
 
@@ -116,9 +116,9 @@ export class TouchEventHandler {
     this.lastFiredEvent = event
     this.touch = touch
     let point = new Vector2(touch.clientX, touch.clientY)
-    if (this.determine(point, touch, this) === true) {
+    if (this.condition(point, touch, this) === true) {
       this.touchStartPosition.equals(point)
-      this.time_touch_start = Date.now()
+      this.touchStartTime = Date.now()
       this.identity = touch.identifier
       this.isTouching = true
       this.onTouchStart(point, this)
@@ -135,8 +135,8 @@ export class TouchEventHandler {
       }
       const point: Vector2 = new Vector2(touch.clientX, touch.clientY)
       this.touchEndPosition.equals(point)
-      this.time_touch_end = Date.now()
-      this.duration_touch = this.time_touch_end - this.time_touch_start
+      this.touchEndTime = Date.now()
+      this.touchDuration = this.touchEndTime - this.touchStartTime
       this.isTouching = false
       this.count_touch++
       this.identity = undefined
@@ -158,16 +158,18 @@ export class TouchEventHandler {
         this.position.equals(point)
         this.previousPosition.equals(point)
         this.moveStartPosition.equals(point)
-        this.time_move_start = Date.now()
+        this.moveStartTime = Date.now()
         this.isMoving = true
         this.onMoveStart(point, this)
         // TouchMove
       } else {
         this.position.equals(point)
         this.velocity.equals(Vector2.subtract(this.position, this.previousPosition))
-        this.acceleration.equals(Vector2.subtract(this.velocity, this.previousVelocity))
-        this.time_move_end = Date.now()
-        this.duration_move = this.time_move_end - this.time_move_start
+        this.acceleration.equals(
+          Vector2.subtract(this.velocity, this.previousVelocity)
+        )
+        this.moveEndTime = Date.now()
+        this.duration_move = this.moveEndTime - this.moveStartTime
         this.onMove(point, this)
         this.previousPosition.equals(point)
         this.previousVelocity.equals(this.velocity)
@@ -177,8 +179,8 @@ export class TouchEventHandler {
 
   public handleMoveEnd() {
     if (this.isMoving === true) {
-      this.time_move_end = Date.now()
-      this.duration_move = this.time_move_end - this.time_move_start
+      this.moveEndTime = Date.now()
+      this.duration_move = this.moveEndTime - this.moveStartTime
       this.isMoving = false
       this.onMoveEnd(this.position, this)
     }
@@ -192,7 +194,7 @@ export class TouchEventHandler {
       this.handleMoveEnd()
       this.handleTouchEnd(event, touch)
       let point = new Vector2(touch.clientX, touch.clientY)
-      this.time_touchCancel = Date.now()
+      this.touchCancelTime = Date.now()
       this.cancelPosition.equals(point)
       this.onCancel(point, this)
     }
@@ -200,14 +202,14 @@ export class TouchEventHandler {
 
   public handleDoubleTap() {
     if (
-      this.duration_touch < this.doubleTapMaximumTouchTime &&
+      this.touchDuration < this.doubleTapMaximumTouchTime &&
       this.doubleTapCounter === 0
     ) {
-      this.time_previousTap = Date.now()
+      this.previousTapTime = Date.now()
       this.doubleTapCounter++
     } else if (
-      this.duration_touch < this.doubleTapMaximumTouchTime &&
-      Date.now() - this.time_previousTap < this.doubleTapMaximumDelayTime &&
+      this.touchDuration < this.doubleTapMaximumTouchTime &&
+      Date.now() - this.previousTapTime < this.doubleTapMaximumDelayTime &&
       this.doubleTapCounter === 1
     ) {
       this.doubleTapCounter = 0

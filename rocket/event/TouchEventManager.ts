@@ -66,7 +66,7 @@ export class TouchEventManager {
 
   // EVENT HANDLER
 
-  private eventHandler_touchStart = (event: TouchEvent) => {
+  private eventHandlerTouchStart = (event: TouchEvent) => {
     this.onEvent(event, this)
     this.onTouchStart(event, this)
     Array.from(event.targetTouches).forEach((touch: Touch) => {
@@ -78,7 +78,7 @@ export class TouchEventManager {
     })
   }
 
-  private eventHandler_touchEnd = (event: TouchEvent) => {
+  private eventHandlerTouchEnd = (event: TouchEvent) => {
     this.onEvent(event, this)
     this.onTouchEnd(event, this)
     Object.keys(this.handlers).forEach(name => {
@@ -90,7 +90,7 @@ export class TouchEventManager {
     })
   }
 
-  private eventHandler_touchCancel = (event: TouchEvent) => {
+  private eventHandlerTouchCancel = (event: TouchEvent) => {
     this.onEvent(event, this)
     this.onTouchCancel(event, this)
     Object.keys(this.handlers).forEach(name => {
@@ -100,7 +100,7 @@ export class TouchEventManager {
     })
   }
 
-  private eventHandler_move = (event: TouchEvent) => {
+  private eventHandlerMove = (event: TouchEvent) => {
     this.onEvent(event, this)
     this.onTouchMove(event, this)
     Object.keys(this.handlers).forEach(name => {
@@ -110,7 +110,7 @@ export class TouchEventManager {
     })
   }
 
-  private eventHandler_moveEnd = () => {
+  private eventHandlerMoveEnd = () => {
     Object.keys(this.handlers).forEach(name => {
       this.handlers[name].handleMoveEnd()
     })
@@ -120,21 +120,21 @@ export class TouchEventManager {
 
   public startListening() {
     this.debounce_moveEnd = Util.debounce(
-      this.debounceWait, this.eventHandler_moveEnd
+      this.debounceWait, this.eventHandlerMoveEnd
     )
-    window.addEventListener('touchstart', this.eventHandler_touchStart)
-    window.addEventListener('touchmove', this.eventHandler_move)
+    window.addEventListener('touchstart', this.eventHandlerTouchStart)
+    window.addEventListener('touchmove', this.eventHandlerMove)
     window.addEventListener('touchmove', <EventListener>this.debounce_moveEnd)
-    window.addEventListener('touchend', this.eventHandler_touchEnd)
-    window.addEventListener('touchcancel', this.eventHandler_touchCancel)
+    window.addEventListener('touchend', this.eventHandlerTouchEnd)
+    window.addEventListener('touchcancel', this.eventHandlerTouchCancel)
   }
 
   public stopListening() {
-    window.removeEventListener('touchstart', this.eventHandler_touchStart)
-    window.removeEventListener('touchmove', this.eventHandler_move)
+    window.removeEventListener('touchstart', this.eventHandlerTouchStart)
+    window.removeEventListener('touchmove', this.eventHandlerMove)
     window.removeEventListener('touchmove', <EventListener>this.debounce_moveEnd)
-    window.removeEventListener('touchend', this.eventHandler_touchEnd)
-    window.removeEventListener('touchcancel', this.eventHandler_touchCancel)
+    window.removeEventListener('touchend', this.eventHandlerTouchEnd)
+    window.removeEventListener('touchcancel', this.eventHandlerTouchCancel)
   }
 
 }
