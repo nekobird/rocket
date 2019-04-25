@@ -63,9 +63,7 @@ export class TextBoxModel {
 
   private modelElement: HTMLElement
 
-  constructor() {
-    this.modelElement = document.createElement('TEXTAREA')
-  }
+  constructor() {}
 
   public getTextBoxHeightFromElement(element: HTMLElement, text?: string): number {
     // Create and prepare model to measure height.
