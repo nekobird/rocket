@@ -30,7 +30,7 @@ export class MonoController {
     this.groupManager = new MonoGroupManager(this)
     this.actionManager = new MonoActionManager(this)
     this.eventManager = new EventManager(this)
-    this.config = Object.assign(MONO_DEFAULT_CONFIG, config)
+    this.config = Object.assign({}, MONO_DEFAULT_CONFIG)
     this
       .setConfig(config)
       .initialize()
