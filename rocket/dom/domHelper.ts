@@ -18,7 +18,7 @@ export class DOMHelper {
 
   public static getStyleValue(element: HTMLElement, propertyName: string, isNumber: boolean = false): number | string {
     const style: CSSStyleDeclaration = window.getComputedStyle(element)
-    const value = style.getPropertyValue(propertyName)
+    const value = style[propertyName]
     return isNumber === true ? parseFloat(value) : value
   }
 
@@ -33,7 +33,7 @@ export class DOMHelper {
 
   public static getLineHeight(element: HTMLElement): number {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
-    return parseFloat(style.getPropertyValue('line-height'))
+    return parseFloat(style['lineHeight'])
   }
 
   public static getText(element: HTMLElement): string {
@@ -51,39 +51,39 @@ export class DOMHelper {
   public static getHorizontalBorderWidth(element: HTMLElement) {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
     let width: number =
-      parseFloat(style.getPropertyValue('borderLeftWidth')) +
-      parseFloat(style.getPropertyValue('borderRightWidth'))
+      parseFloat(style['borderLeftWidth']) +
+      parseFloat(style['borderRightWidth'])
     return width
   }
 
   public static getHorizontalPaddingWidth(element: HTMLElement): number {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
     let width: number =
-      parseFloat(style.getPropertyValue('paddingLeft')) +
-      parseFloat(style.getPropertyValue('paddingRight'))
+      parseFloat(style['paddingLeft']) +
+      parseFloat(style['paddingRight'])
     return width
   }
 
   public static getVerticalBorderHeight(element: HTMLElement): number {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
     let height: number =
-      parseFloat(style.getPropertyValue('borderBottomWidth')) +
-      parseFloat(style.getPropertyValue('borderTopWidth'))
+      parseFloat(style['borderBottomWidth']) +
+      parseFloat(style['borderTopWidth'])
     return height
   }
 
   public static getVerticalPaddingHeight(element: HTMLElement): number {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
     let height: number =
-      parseFloat(style.getPropertyValue('paddingBottom')) +
-      parseFloat(style.getPropertyValue('paddingTop'))
+      parseFloat(style['paddingBottom']) +
+      parseFloat(style['paddingTop'])
     return height
   }
 
   static getAnimationDuration(element: HTMLElement): number {
     let computedStyle: CSSStyleDeclaration = getComputedStyle(element)
     return parseFloat(
-      computedStyle.getPropertyValue('animation-duration')
+      computedStyle['animationDuration']
     ) * 1000
   }
 

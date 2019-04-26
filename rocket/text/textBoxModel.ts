@@ -89,16 +89,15 @@ export class TextBoxModel {
     // Set offset for when boxSizing is set to border-box.
     let offset: number = 0
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
-    if (style.getPropertyValue('boxSizing') === 'border-box') {
+    if (style['boxSizing'] === 'border-box') {
       offset = TextBoxModel.getElementVerticalBorderHeight(element)
     } else {
       // Minus vertical padding.
       let padding: number =
-        parseInt(style.getPropertyValue('paddingTop')) +
-        parseInt(style.getPropertyValue('paddingBottom'))
+        parseInt(style['paddingTop']) +
+        parseInt(style['paddingBottom'])
       offset -= padding
     }
-
     // Return calculated height value.
     return this.modelElement.scrollHeight + offset
   }
@@ -169,35 +168,35 @@ export class TextBoxModel {
     Object.assign(this.modelElement.style, style)
   }
 
-  public applyModelAttributes(): TextBoxModel {
+  public applyModelAttributes(): this {
     Object.assign(this.modelElement.style, MODEL_ATTRIBUTES)
     return this
   }
 
-  public applyBoxModelPropertiesFromElement(element: HTMLElement): TextBoxModel {
+  public applyBoxModelPropertiesFromElement(element: HTMLElement): this {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
-    for (let name of STYLE_PROPERTIES) {
-      this.modelElement.style[name] = style.getPropertyValue(name)
-    }
+    STYLE_PROPERTIES.forEach(name => {
+      this.modelElement.style[name] = style[name]
+    })
     return this
   }
 
-  public applyFontPropertiesFromElement(element: HTMLElement): TextBoxModel {
+  public applyFontPropertiesFromElement(element: HTMLElement): this {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
-    for (let name of FONT_STYLE_PROPERTIES) {
-      this.modelElement.style[name] = style.getPropertyValue(name)
-    }
+    FONT_STYLE_PROPERTIES.forEach(name => {
+      this.modelElement.style[name] = style[name]
+    })
     return this
   }
 
-  public create(type?: string): TextBoxModel {
+  public create(type?: string): this {
     type = typeof type === 'string' ? type : 'TEXTAREA'
     this.modelElement = document.createElement(type)
     document.body.appendChild(this.modelElement)
     return this
   }
 
-  public destroy(): TextBoxModel {
+  public destroy(): this {
     if (
       typeof this.modelElement !== 'undefined' &&
       this.modelElement.nodeType === 1
@@ -212,7 +211,7 @@ export class TextBoxModel {
 
   public static getElementFontSize(element: HTMLElement): number {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
-    return parseFloat(style.getPropertyValue('font-size'))
+    return parseFloat(style['fontSize'])
   }
 
   public static getTextFromElement(element: HTMLElement): string {
@@ -230,41 +229,41 @@ export class TextBoxModel {
   public static getElementHorizontalBorderWidth(element: HTMLElement) {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
     let width: number =
-      parseFloat(style.getPropertyValue('borderLeftWidth')) +
-      parseFloat(style.getPropertyValue('borderRightWidth'))
+      parseInt(style['borderLeftWidth']) +
+      parseInt(style['borderRightWidth'])
     return width
   }
 
   public static getElementHorizontalPaddingWidth(element: HTMLElement): number {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
     let width: number =
-      parseFloat(style.getPropertyValue('paddingLeft')) +
-      parseFloat(style.getPropertyValue('paddingRight'))
+      parseInt(style['paddingLeft']) +
+      parseInt(style['paddingRight'])
     return width
   }
 
   public static getElementLineHeight(element: HTMLElement): number {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
-    return parseFloat(style.getPropertyValue('line-height'))
+    return parseInt(style['line-height'])
   }
 
   public static getElementVerticalBorderHeight(element: HTMLElement): number {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
     let height: number =
-      parseFloat(style.getPropertyValue('borderBottomWidth')) +
-      parseFloat(style.getPropertyValue('borderTopWidth'))
+      parseInt(style['borderBottomWidth']) +
+      parseInt(style['borderTopWidth'])
     return height
   }
 
   public static getElementVerticalPaddingHeight(element: HTMLElement): number {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
     let height: number =
-      parseFloat(style.getPropertyValue('paddingBottom')) +
-      parseFloat(style.getPropertyValue('paddingTop'))
+      parseInt(style['paddingBottom']) +
+      parseInt(style['paddingTop'])
     return height
   }
 
-  public setElementFontSize(element: HTMLElement, fontSize: number): TextBoxModel {
+  public setElementFontSize(element: HTMLElement, fontSize: number): this {
     element.style.fontSize = `${fontSize}px`
     return this
   }

@@ -2,7 +2,7 @@ import {
   TextBoxModel,
 } from '../rocket'
 
-interface Config {
+export interface UITextAreaConfig {
   disableLineBreaks?: boolean,
   disableTabs?: boolean,
   isInFocus?: boolean,
@@ -45,7 +45,7 @@ export class UITextArea {
   // PROPERTIES
   public lastKeyCode: number = NaN
 
-  constructor(element: HTMLTextAreaElement, config?: Config) {
+  constructor(element: HTMLTextAreaElement, config?: UITextAreaConfig) {
     this[_textBoxModel] = new TextBoxModel
 
     // EVENT NAMES
@@ -78,7 +78,7 @@ export class UITextArea {
     return this
   }
 
-  set config(config: Config) {
+  set config(config: UITextAreaConfig) {
     Object.assign(this, config)
   }
 
