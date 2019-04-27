@@ -101,10 +101,7 @@ export class PolyController {
     const item: HTMLElement | null = document.querySelector(
       `${this.config.selectorItems}[data-group="${groupName}"][data-id="${id}"]`
     )
-    if (
-      typeof item === 'object' &&
-      item !== null
-    ) {
+    if (item !== null) {
       return item.classList.contains(<string>this.config.classNameItemActive)
     }
     return false

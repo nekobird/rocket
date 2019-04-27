@@ -41,9 +41,15 @@ export class SequenceGroupManager {
       items.elements.forEach(item => {
         const groupName: string | undefined = item.dataset.group
         if (typeof groupName === 'string') {
-          const groupItems: HTMLElement[] = Array.from(document.querySelectorAll(
+          const groupItemElements: NodeListOf<HTMLElement> = document.querySelectorAll(
             `${this.controller.config.selectorItems}[data-group="${groupName}"]`
-          ))
+          )
+          let groupItems: HTMLElement[]
+          if (groupItemElements !== null) {
+            groupItems = Array.from(groupItemElements)
+          } else {
+            groupItems = []
+          }
           this.groups[groupName] = {
             name: groupName,
             items: groupItems,

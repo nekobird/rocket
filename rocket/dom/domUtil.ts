@@ -18,7 +18,7 @@ export class DOMUtil {
   //
   // Returns false if no matching ancestor is found.
 
-  static findAncestor(
+  public static findAncestor(
     element: HTMLElement, identifierFn: DOMUtilIdentifierFn, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
     const results: HTMLElement[] = []
@@ -46,7 +46,7 @@ export class DOMUtil {
   }
 
   // Find ancestor with given class name.
-  static findAncestorWithClass(
+  public static findAncestorWithClass(
     element: HTMLElement, className: string, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
     const identifierFn: DOMUtilIdentifierFn = _element => {
@@ -56,7 +56,7 @@ export class DOMUtil {
   }
 
   // Find ancestor with given ID.
-  static findAncestorWithID(
+  public static findAncestorWithID(
     element: HTMLElement, ID: string, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
     const identifierFn: DOMUtilIdentifierFn = _element => {
@@ -65,7 +65,7 @@ export class DOMUtil {
     return this.findAncestor(element, identifierFn, isMoreThanOneResults)
   }
 
-  static hasAncestor(
+  public static hasAncestor(
     element: HTMLElement, ancestors: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>
   ): DOMUtilResult {
     const identifierFn: DOMUtilIdentifierFn = _element => {
@@ -81,7 +81,7 @@ export class DOMUtil {
   // DESCENDANT
 
   // Find descendant that match the identifierFn.
-  static findDescendant(
+  public static findDescendant(
     element: HTMLElement, identifierFn: DOMUtilIdentifierFn, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
     const results: HTMLElement[] = []
@@ -112,7 +112,7 @@ export class DOMUtil {
   }
 
   // Find descendant with ID.
-  static findDescendantWithID(
+  public static findDescendantWithID(
     element: HTMLElement, ID: string, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
     const identifierFn: DOMUtilIdentifierFn = _element => {
@@ -122,7 +122,7 @@ export class DOMUtil {
   }
 
   // Find descendant with given class name.
-  static findDescendantWithClass(
+  public static findDescendantWithClass(
     element: HTMLElement, className: string, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
     const identifierFn: DOMUtilIdentifierFn = _element => {
@@ -131,7 +131,7 @@ export class DOMUtil {
     return this.findDescendant(element, identifierFn, isMoreThanOneResults)
   }
 
-  static hasDescendant(
+  public static hasDescendant(
     element: HTMLElement, descendants: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>
   ): DOMUtilResult {
     const identifierFn: DOMUtilIdentifierFn = _element => {
@@ -146,7 +146,7 @@ export class DOMUtil {
 
   // SIBLING
 
-  static getSiblings(element: HTMLElement): HTMLCollection | false {
+  public static getSiblings(element: HTMLElement): HTMLCollection | false {
     if (element.parentElement !== null) {
       const siblings: HTMLCollection = element.parentElement.children
       return siblings.length > 0 ? siblings : false
@@ -154,7 +154,7 @@ export class DOMUtil {
     return false
   }
 
-  static findSibling(
+  public static findSibling(
     element: HTMLElement, identifierFn: Function, isMoreThanOneResults = true
   ): DOMUtilResult {
     const siblings: HTMLCollection | false = this.getSiblings(element)
@@ -178,7 +178,7 @@ export class DOMUtil {
     return false
   }
 
-  static findSiblingWithClass(
+  public static findSiblingWithClass(
     element: HTMLElement, className: string, isMoreThanOneResults: boolean = true
   ): DOMUtilResult {
     const identifierFn: DOMUtilIdentifierFn = _element => {
@@ -187,7 +187,36 @@ export class DOMUtil {
     return this.findSibling(element, identifierFn, isMoreThanOneResults)
   }
 
-  static getOffset(element: HTMLElement): [number, number] {
+  public static removeChildren(parent: HTMLElement): number {
+    let deleteCount: number = 0
+    while (parent.firstChild !== null) {
+      parent.removeChild(parent.firstChild)
+      deleteCount++
+    }
+    return deleteCount
+  }
+
+  public static removeChild(element: HTMLElement, identifierFn: DOMUtilIdentifierFn): number {
+    let deleteCount: number = 0
+    const inspect: Function = (parent: HTMLElement) => {
+      const children: HTMLCollection = parent.children
+      if (children.length > 0) {
+        for (let i = 0; i < children.length; i++) {
+          if (identifierFn(<HTMLElement>children[i]) === true) {
+            parent.removeChild(children[i])
+            deleteCount++
+          }
+          if (children[i].children.length > 0) {
+            inspect(children[i])
+          }
+        }
+      }
+    } // inspect
+    inspect(element)
+    return deleteCount
+  }
+
+  public static getOffset(element: HTMLElement): [number, number] {
     const boundingBox: DOMRect | ClientRect = element.getBoundingClientRect()
     return [
       window.scrollX + boundingBox.left,
@@ -195,7 +224,7 @@ export class DOMUtil {
     ]
   }
 
-  static isAnElement(element: HTMLElement): boolean {
+  public static isAnElement(element: HTMLElement): boolean {
     return (
       typeof element === 'object' &&
       typeof element.nodeType === 'number' &&
@@ -203,7 +232,7 @@ export class DOMUtil {
     )
   }
 
-  static isElementNodeName(element: HTMLElement, name: string): boolean {
+  public static isElementNodeName(element: HTMLElement, name: string): boolean {
     return (
       typeof element === 'object' &&
       typeof element.nodeName === 'string' &&

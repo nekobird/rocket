@@ -36,11 +36,15 @@ export class PolyGroupManager {
     if (typeof items === 'object') {
       items.elements.forEach(item => {
         const groupName: string = item.dataset.group
-        const groupItems: HTMLElement[] = Array.from(
-          document.querySelectorAll(
-            `${this.controller.config.selectorItems}[data-group="${groupName}"]`
-          )
+        const groupItemElements: NodeListOf<HTMLElement> = document.querySelectorAll(
+          `${this.controller.config.selectorItems}[data-group="${groupName}"]`
         )
+        let groupItems: HTMLElement[]
+        if (groupItemElements !== null) {
+          groupItems = Array.from(groupItemElements)
+        } else {
+          groupItems = []
+        }
         this.groups[groupName] = {
           name: groupName,
           items: groupItems,

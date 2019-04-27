@@ -8,11 +8,6 @@ export class StringUtil {
     return string.charAt(0).toLowerCase() + string.slice(1)
   }
 
-  public static trim(string: string): string {
-    string = string.replace(/^[\s]+/g, '');
-    return string.replace(/[\s]+$/g, '');
-  }
-
   public static removeExtraWhitespaces(string: string): string {
     return string.replace(/[\s]+/g, ' ');
   }

@@ -65,7 +65,12 @@ export class ElementManager {
     Object.keys(this.elementEntries).forEach(name => {
       const entry: ElementEntry = this.elementEntries[name]
       if (typeof entry.selector === 'string') {
-        entry.elements = [...document.querySelectorAll<HTMLElement>(entry.selector)]
+        const elements: NodeListOf<HTMLElement> = document.querySelectorAll<HTMLElement>(entry.selector)
+        if (elements !== null) {
+          entry.elements = Array.from(elements)
+        } else {
+          entry.elements = []
+        }
       }
     })
     return this

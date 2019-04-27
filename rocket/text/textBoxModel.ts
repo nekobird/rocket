@@ -244,7 +244,7 @@ export class TextBoxModel {
 
   public static getElementLineHeight(element: HTMLElement): number {
     let style: CSSStyleDeclaration = window.getComputedStyle(element)
-    return parseInt(style['line-height'])
+    return parseInt(style['lineHeight'])
   }
 
   public static getElementVerticalBorderHeight(element: HTMLElement): number {

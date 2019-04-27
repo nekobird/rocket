@@ -39,9 +39,15 @@ export class MonoGroupManager {
       items.elements.forEach(item => {
         if (this.checkIfValidItem(item) === true) {
           const groupName: string = item.dataset.group
-          const groupItems: HTMLElement[] = Array.from(document.querySelectorAll(
+          const groupItemElements: NodeListOf<HTMLElement> = document.querySelectorAll(
             `${this.controller.config.selectorItems}[data-group="${groupName}"]`
-          ))
+          )
+          let groupItems: HTMLElement[]
+          if (groupItemElements !== null) {
+            groupItems = Array.from(groupItemElements)
+          } else {
+            groupItems = []
+          }
           this.groups[groupName] = {
             name: groupName,
             items: groupItems,
