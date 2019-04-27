@@ -56,17 +56,17 @@ export class Num {
   // Get number-line distance between two numbers
   // For example (-4, -2) = 2, (-4, 5) = 9
   static getNumberLineDistance(a: number, b: number): number {
-    let min = Math.min(a, b)
-    let max = Math.max(a, b)
-
-    if (min < 0 && max < 0) {
-      return Math.abs(min) - Math.abs(max)
-    } else if (min < 0 && max >= 0) {
-      return Math.abs(min) + max
-    } else if (min >= 0 && max >= 0) {
-      return max - min
-    } else {
+    if (a === b) {
       return 0
+    }
+    const min: number = Math.min(a, b)
+    const max: number = Math.max(a, b)
+    if (min >= 0 && max > 0) {
+      return max - min
+    } else if (min < 0 && max > 0) {
+      return Math.abs(min) + max
+    } else if (min < 0 && max <= 0) {
+      return Math.abs(min) - Math.abs(max)
     }
   }
 

@@ -10,7 +10,7 @@ export class Geo2Util {
   // positive  = /
   // 0         = horizontal
   // undefined = vertical
-  static getSlopeOfLine(ls: Point, le: Point): number | false {
+  public static getSlopeOfLine(ls: Point, le: Point): number | false {
     if (le.x === ls.x) {
       return false
     } else {
@@ -20,7 +20,7 @@ export class Geo2Util {
     }
   }
 
-  static checkIfTwoLineSegmentsAreParallel(
+  public static checkIfTwoLineSegmentsAreParallel(
     ls1: Point, le1: Point, ls2: Point, le2: Point
   ): boolean {
     let s1: number | false = Geo2Util.getSlopeOfLine(ls1, le1)
@@ -30,7 +30,7 @@ export class Geo2Util {
 
   // Two lines will always intersect unless they are parallel.
   // Check if two line segments intersect each other.
-  static checkIfTwoLineSegmentsIntersect(
+  public static checkIfTwoLineSegmentsIntersect(
     ls1: Point, le1: Point, ls2: Point, le2: Point
   ): boolean {
     const pi: Point | false = Geo2Util.getPointOfIntersectionBetweenTwoLineSegments(ls1, le1, ls2, le2)
@@ -54,7 +54,7 @@ export class Geo2Util {
     return true
   }
 
-  static getPointOfIntersectionBetweenTwoLineSegments(
+  public static getPointOfIntersectionBetweenTwoLineSegments(
     ls1: Point, le1: Point, ls2: Point, le2: Point
   ): Vector2 | false {
     if (Geo2Util.checkIfTwoLineSegmentsAreParallel(ls1, le1, ls2, le2) === true) {

@@ -1,17 +1,33 @@
 import {
-  Vector2,
+  Num,
+  Point,
 } from '../rocket'
 
 export class DOMHelper {
 
-  public static elementOffset(element: HTMLElement): Vector2 {
+  public static getOffsetFrom(target: HTMLElement, from: HTMLElement): Point {
+    const targetRect: DOMRect | ClientRect = target.getBoundingClientRect()
+    const fromRect: DOMRect | ClientRect = from.getBoundingClientRect()
+    const left: number = Num.getNumberLineDistance(targetRect.left, fromRect.left)
+    const top: number = Num.getNumberLineDistance(targetRect.top, fromRect.top)
+    return {
+      left: left,
+      right: Num.getNumberLineDistance(targetRect.right, fromRect.right),
+      top: top,
+      bottom: Num.getNumberLineDistance(targetRect.bottom, fromRect.bottom),
+      x: left,
+      y: top,
+    }
+  }
+
+  public static getOffset(element: HTMLElement): Point {
     const rect = element.getBoundingClientRect()
     const scrollLeft: number = window.pageXOffset || document.documentElement.scrollLeft
     const scrollTop: number = window.pageYOffset || document.documentElement.scrollTop
-    return new Vector2(
-      rect.left + scrollLeft,
-      rect.top + scrollTop
-    )
+    return {
+      x: rect.left + scrollLeft,
+      y: rect.top + scrollTop,
+    }
   }
 
   // ELEMENT

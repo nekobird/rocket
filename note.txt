@@ -7,9 +7,24 @@ https://stackoverflow.com/questions/42441408/typescript-how-to-declare-array-of-
 
 https://github.com/thedaviddias/Front-End-Checklist
 
-
 HTMLController
 
 Nested Actions can be called from:
 BeforeAction
 Manual action call
+
+Form
+Input Restrictions
+disabled
+max
+maxlength
+min
+pattern
+readonly
+required
+size
+step
+value
+
+https://developer.mozilla.org/en-US/docs/Web/CSS/orphans
+

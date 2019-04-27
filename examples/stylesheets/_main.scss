@@ -23,6 +23,15 @@ $_fontFamily: (
   }
 };
 
+.inputGroup {
+
+  label {
+    display: block;
+  }
+
+  margin-bottom: 20px;
+}
+
 html {
   font-family: map-get($_fontFamily, primary);
   padding: 20px;

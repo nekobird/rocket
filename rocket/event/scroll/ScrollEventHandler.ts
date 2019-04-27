@@ -1,7 +1,7 @@
 import {
   Point,
   Vector2,
-} from '../rocket'
+} from '../../rocket'
 
 export interface ScrollEventHandlerConditionHook {
   (

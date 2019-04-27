@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Rocket | Forms</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible"
+        content="IE=edge">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet"
+        type="text/css"
+        href="stylesheets/uiTextArea.scss">
+</head>
+
+<body>
+
+  <div class="site_content">
+    <form>
+      <div class="inputGroup">
+        <label name="name">Name</label>
+        <input name="name"
+               type="text">
+      </div>
+
+      <div class="inputGroup">
+        <label name="email">Email</label>
+        <input name="email"
+               type="email">
+      </div>
+
+      <div class="inputGroup">
+        <input name="gender"
+               type="radio"
+               value="female"
+               checked>
+        <input name="gender"
+               type="radio"
+               value="male">
+      </div>
+
+      <div class="inputGroup">
+        <input name="gender"
+               type="radio"
+               value="female"
+               checked>
+        <input name="gender"
+               type="radio"
+               value="male">
+      </div>
+
+      <div class="inputGroup">
+        <select name="cars">
+          <option value="volvo" selected>Volvo</option>
+          <option value="saab">Saab</option>
+          <option value="fiat">Fiat</option>
+          <option value="audi">Audi</option>
+        </select>
+      </div>
+
+      <div class="inputGroup">
+        <select name="cars" multiple>
+          <option value="volvo" selected>Volvo</option>
+          <option value="saab">Saab</option>
+          <option value="fiat" selected>Fiat</option>
+          <option value="audi">Audi</option>
+        </select>
+      </div>
+
+      <div class="inputGroup">
+        <input type="checkbox" name="vehicle1" value="Bike">
+      </div>
+
+      <div class="inputGroup">
+        <label name="email">Email</label>
+        <textarea name="email"></textarea>
+      </div>
+
+      <div class="inputGroup">
+        <input name="email"
+               type="email">
+      </div>
+    </form>
+  </div>
+
+  </div><!-- site_content -->
+
+  <script src="javascripts/form.ts"></script>
+</body>
+
+</html>

@@ -2,21 +2,6 @@ import {
   TextBoxModel,
 } from '../rocket'
 
-export interface UITextAreaConfig {
-  disableLineBreaks?: boolean,
-  disableTabs?: boolean,
-  isInFocus?: boolean,
-
-  limitNumberOfCharacters?: boolean,
-  removeLeadingWhitespaces?: boolean,
-  removeMultipleWhitespaces?: boolean,
-
-  onBlur?: Function,
-  onFocus?: Function,
-  onInput?: Function,
-  onPaste?: Function,
-}
-
 export const _UITextArea_eventName_input: unique symbol = Symbol()
 export const _UITextArea_eventName_keydown: unique symbol = Symbol()
 export const _UITextArea_event_input: unique symbol = Symbol()
@@ -24,26 +9,40 @@ export const _UITextArea_event_keydown: unique symbol = Symbol()
 
 export const _textBoxModel: unique symbol = Symbol()
 
+export interface UITextAreaConfig {
+  disableLineBreaks?: boolean,
+  disableTabs?: boolean,
+
+  limitNumberOfCharacters?: boolean,
+  removeLeadingWhitespaces?: boolean,
+  removeMultipleWhitespaces?: boolean,
+
+  onBlur?: (context: UITextArea) => void,
+  onFocus?: (context: UITextArea) => void,
+  onInput?: (context: UITextArea) => void,
+  onPaste?: (context: UITextArea) => void,
+}
+
+const UITEXTAREA_CONFIG: UITextAreaConfig = {
+  disableLineBreaks: false,
+  disableTabs: false,
+  limitNumberOfCharacters: false,
+  removeLeadingWhitespaces: false,
+  removeMultipleWhitespaces: false,
+
+  onBlur: () => {},
+  onFocus: () => {},
+  onInput: () => {},
+  onPaste: () => {},
+}
+
 export class UITextArea {
 
-  public element: HTMLTextAreaElement
-
-  // FLAGS
-  public disableLineBreaks: boolean = false
-  public disableTabs: boolean = false
   public isInFocus: boolean = false
-  public limitNumberOfCharacters: boolean = false
-  public removeLeadingWhitespaces: boolean = false
-  public removeMultipleWhitespaces: boolean = false
+  public lastKeyCode: number = undefined
 
-  // CALLBACKS
-  public onBlur: Function = () => { }
-  public onFocus: Function = () => { }
-  public onInput: Function = () => { }
-  public onPaste: Function = () => { }
-
-  // PROPERTIES
-  public lastKeyCode: number = NaN
+  public element: HTMLTextAreaElement
+  public config: UITextAreaConfig
 
   constructor(element: HTMLTextAreaElement, config?: UITextAreaConfig) {
     this[_textBoxModel] = new TextBoxModel
@@ -62,6 +61,7 @@ export class UITextArea {
 
     this.element = element
 
+    this.config = Object.assign({}, UITEXTAREA_CONFIG)
     if (typeof config === 'object') {
       this.config = config
     }
@@ -70,16 +70,16 @@ export class UITextArea {
     return this
   }
 
+  public setConfig(config: UITextAreaConfig) {
+    Object.assign(this.config, config)
+  }
+
   public initialize(): UITextArea {
     this
       .filterInput()
       .grow()
       .startListening()
     return this
-  }
-
-  set config(config: UITextAreaConfig) {
-    Object.assign(this, config)
   }
 
   get value(): string {
@@ -111,25 +111,25 @@ export class UITextArea {
 
   public filterInput(): UITextArea {
     // Remove new lines.
-    if (this.disableLineBreaks === true) {
+    if (this.config.disableLineBreaks === true) {
       this.element.value = this.element.value.replace(/[\r\n]+/g, '')
     }
     // Remove tabs.
-    if (this.disableTabs === true) {
+    if (this.config.disableTabs === true) {
       this.element.value = this.element.value.replace(/[\t]+/g, '')
     }
     // Remove multiple whitespaces to one.
-    if (this.removeMultipleWhitespaces === true) {
+    if (this.config.removeMultipleWhitespaces === true) {
       this.element.value = this.element.value.replace(/[\s]+/g, ' ')
     }
     // Remove leading whitespaces.
-    if (this.removeLeadingWhitespaces === true) {
+    if (this.config.removeLeadingWhitespaces === true) {
       this.element.value = this.element.value.replace(/^[\s]+/g, '')
     }
     // Trim element value if limit number of characters is a number.
-    if (typeof this.limitNumberOfCharacters === 'number') {
+    if (typeof this.config.limitNumberOfCharacters === 'number') {
       this.element.value = this.element.value.substring(
-        0, this.limitNumberOfCharacters
+        0, this.config.limitNumberOfCharacters
       )
     }
     // Replace tabs with spaces.
@@ -164,7 +164,7 @@ export class UITextArea {
   }
 
   private handleInput = event => {
-    this.onInput(this)
+    this.config.onInput(this)
     this.processText()
     window.dispatchEvent(this[_UITextArea_event_input])
   }
@@ -177,7 +177,7 @@ export class UITextArea {
     }
     if (
       keyCode === 13 &&
-      this.disableLineBreaks === true
+      this.config.disableLineBreaks === true
     ) {
       event.preventDefault()
     }
@@ -186,7 +186,7 @@ export class UITextArea {
   }
 
   private handlePaste = event => {
-    this.onPaste(this)
+    this.config.onPaste(this)
     this.processText()
   }
 

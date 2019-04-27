@@ -32,8 +32,8 @@ export * from './color/convertColor'
 export * from './color/color'
 
 // EVENT
-export * from './event/ScrollEventHandler'
-export * from './event/ScrollEventManager'
+export * from './event/scroll/ScrollEventHandler'
+export * from './event/scroll/ScrollEventManager'
 
 export * from './event/KeyboardEventHandler'
 export * from './event/KeyboardEventManager'
@@ -58,3 +58,6 @@ export * from './ui/uiTextField'
 export * from './htmlController/monoController/monoController'
 export * from './htmlController/polyController/polyController'
 export * from './htmlController/sequenceController/sequenceController'
+
+// STACKUP
+export * from './stackUp/stackUp'

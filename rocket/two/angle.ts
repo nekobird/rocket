@@ -4,15 +4,15 @@ import {
 
 export class Angle {
 
-  static toDegrees(radians: number): number {
+  public static toDegrees(radians: number): number {
     return radians * (180 / Math.PI)
   }
 
-  static toRadians(degrees: number): number {
+  public static toRadians(degrees: number): number {
     return degrees * (Math.PI / 180)
   }
 
-  static deltaClockwise(from: number, to: number, direction: boolean = false): number {
+  public static deltaClockwise(from: number, to: number, direction: boolean = false): number {
     let sign: number = 1
     let range: number = from - Math.PI
 
@@ -46,7 +46,7 @@ export class Angle {
     return result * sign
   }
 
-  static deltaCounterclockwise(from: number, to: number, direction: boolean = false): number {
+  public static deltaCounterclockwise(from: number, to: number, direction: boolean = false): number {
     let sign: number = 1
     let range: number = from + Math.PI
 
@@ -81,7 +81,7 @@ export class Angle {
     return result * sign
   }
 
-  static differenceClockwise(from: number, to: number) {
+  public static differenceClockwise(from: number, to: number) {
     let result: number = 0
 
     if (from > to) {
@@ -93,7 +93,7 @@ export class Angle {
     return result
   }
 
-  static differenceCounterclockwise(from: number, to: number) {
+  public static differenceCounterclockwise(from: number, to: number) {
     let result: number = 0
 
     if (from > to) {

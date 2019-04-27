@@ -28,32 +28,32 @@ export class ScreenModel {
 
   // MODEL PROPERTIES
 
-  static get centerPoint(): Vector2 {
+  public static get centerPoint(): Vector2 {
     this.createModel()
     return new Vector2(this.centerX, this.centerY)
   }
 
-  static get centerX(): number {
+  public static get centerX(): number {
     this.createModel()
     return modelElement.offsetWidth / 2
   }
 
-  static get centerY(): number {
+  public static get centerY(): number {
     this.createModel()
     return modelElement.offsetHeight / 2
   }
 
-  static get width(): number {
+  public static get width(): number {
     this.createModel()
     return modelElement.offsetWidth
   }
 
-  static get height(): number {
+  public static get height(): number {
     this.createModel()
     return modelElement.offsetHeight
   }
 
-  static get diagonal(): number {
+  public static get diagonal(): number {
     this.createModel()
     const w: number = modelElement.offsetWidth
     const h: number = modelElement.offsetHeight
@@ -62,23 +62,23 @@ export class ScreenModel {
 
   // MODEL
 
-  static get modelElement(): HTMLElement {
+  public static get modelElement(): HTMLElement {
     this.createModel()
     return modelElement
   }
 
-  static get modelIsReady(): boolean {
+  public static get modelIsReady(): boolean {
     return modelIsReady
   }
 
-  static get modelIsCreated(): boolean {
+  public static get modelIsCreated(): boolean {
     return (
       typeof modelElement !== 'undefined' &&
       modelElement.nodeType === 1
     )
   }
 
-  static createModel(): ScreenModel {
+  public static createModel(): ScreenModel {
     if (modelIsReady === false) {
       modelElement = document.createElement('DIV')
       document.body.appendChild(modelElement)
@@ -88,7 +88,7 @@ export class ScreenModel {
     return this
   }
 
-  static destroyModel(): ScreenModel {
+  public static destroyModel(): ScreenModel {
     if (modelIsReady === true) {
       document.body.removeChild(modelElement)
       modelElement.remove()
