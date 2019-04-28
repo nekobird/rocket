@@ -154,9 +154,7 @@ export class DOMUtil {
     return false
   }
 
-  public static findSibling(
-    element: HTMLElement, identifierFn: Function, getAll = true
-  ): DOMUtilResult {
+  public static findSibling(element: HTMLElement, identifierFn: Function, getAll = true): DOMUtilResult {
     const siblings: HTMLElement[] | false = this.getSiblings(element)
     if (siblings === false) {
       return false
