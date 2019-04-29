@@ -8,12 +8,10 @@ import {
 } from './animationConfig'
 
 export class Animation {
-
-  // STATES
-  public isActive: boolean = false
+  public isActive   : boolean = false
   public isAnimating: boolean = false
-  public isPaused: boolean = false
-  public isReversed: boolean = false
+  public isPaused   : boolean = false
+  public isReversed : boolean = false
 
   public iterationCount: number = 0
 
@@ -22,11 +20,12 @@ export class Animation {
   private progress: number
 
   private startTime: number
+  private endTime  : number
   private pauseTime: number
-  private endTime: number
+  
 
-  private RAFID: number
-  private timeoutID
+  private RAFID    : number
+  private timeoutID: number
 
   public config: AnimationConfig
 
@@ -67,28 +66,32 @@ export class Animation {
 
   public reset(): this {
     this.clearSessions()
-    this.isActive = false
+
+    this.isActive    = false
     this.isAnimating = false
-    this.isPaused = false
+    this.isPaused    = false
+
     this.direction = true
+
     this.iterationCount = 0
+
     this.startTime = 0
+    this.endTime   = 0
     this.pauseTime = 0
-    this.endTime = 0
-    this.progress = 0
+    this.progress  = 0
     return this
   }
 
   public pause(): this {
     if (
-      this.isActive === true &&
-      this.isAnimating == true &&
-      this.isPaused === false
+      this.isActive    === true &&
+      this.isAnimating === true &&
+      this.isPaused    === false
     ) {
       this.clearSessions()
       this.isAnimating = false
-      this.isPaused = true
-      this.pauseTime = Date.now()
+      this.isPaused    = true
+      this.pauseTime   = Date.now()
     }
     return this
   }
@@ -119,7 +122,7 @@ export class Animation {
   }
 
   // A
-  public play(delay: number): this {
+  public play(delay?: number): this {
     this.callHook('onStart')
 
     // This is only called when it's not animating
@@ -128,59 +131,54 @@ export class Animation {
     if (typeof delay !== 'number') {
       delay = this.config.delay
     }
-
     this.timeoutID = setTimeout(
-      this.start.bind(this),
+      this.start,
       delay * 1000
     )
     return this
   }
 
   // B, Similar to play but without the delay :D
-  public start(): this {
+  public start = () => {
     this.isActive = true
 
-    // Set beginning direction
+    // Set starting direction.
     if (this.isReversed === true) {
       this.direction = false
     }
 
-    // Handle pause
     if (this.isPaused === true) {
       const startTimeDelta = this.pauseTime - this.startTime
-      const endTimeDelta = this.endTime - this.pauseTime
+      const endTimeDelta   = this.endTime   - this.pauseTime
 
       const now = Date.now()
 
       this.startTime = now - startTimeDelta
-      this.endTime = now + endTimeDelta
+      this.endTime   = now + endTimeDelta
 
       this.isPaused = false
     } else {
       this.startTime = Date.now()
-      this.endTime = this.startTime + (this.config.duration * 1000)
+      this.endTime   = this.startTime + (this.config.duration * 1000)
     }
 
     this.isAnimating = true
-
     this.callHook('onIterationStart')
 
-    // Begin loop
     this.loop()
-    return this
   }
 
   // C
   private loop(): this {
-    let frame = () => {
+    const frame = () => {
 
       // Tick, this also moves progress forward!
       this.tick()
 
       if (
-        this.isActive === true &&
+        this.isActive    === true &&
         this.isAnimating === true &&
-        this.isPaused === false
+        this.isPaused    === false
       ) {
         if (this.progress < 1) {
           this.loop()
@@ -203,7 +201,9 @@ export class Animation {
           // Continue playing!
           // The cycle begins again.
           // Toggle direction if it's alternating.
-          if (this.config.alternate === true) { this.toggleDirection() }
+          if (this.config.alternate === true) {
+            this.toggleDirection()
+          }
           this.play(this.config.iterationDelay)
         }
       }
@@ -221,16 +221,14 @@ export class Animation {
     this.progress = this.currentNValue
 
     // Modify N based on TimingFunction.
-    let n = this.config.timingFunction(
-      this.progress
-    )
+    let n = this.config.timingFunction(this.progress)
 
     // Reverse N depending on current direction.
     if (this.direction === false) {
       n = 1 - n
     }
 
-    // Tick
+    // Tick.
     if (typeof this.config.onTick === 'function') {
       this.config.onTick(n, this, this.config.dataExport)
     } else if (Array.isArray(this.config.onTick)) {

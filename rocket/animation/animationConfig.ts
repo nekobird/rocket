@@ -10,6 +10,10 @@ export interface AnimationTickFunction {
   (n: number, context: Animation, data?: any): void
 }
 
+export interface BeforeHook<T=void> {
+  (context: Animation, data?: any): Promise<T>
+}
+
 export interface AnimationConfig {
   alternate?: boolean,
   delay?: number,
@@ -21,6 +25,8 @@ export interface AnimationConfig {
   dataExport?: object,
 
   timingFunction?: AnimationTimingFunction,
+
+  beforeStart?: BeforeHook | BeforeHook[],
 
   onStart?: Function | Function[],
   onComplete?: Function | Function[],
@@ -46,12 +52,12 @@ export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = {
     return t
   },
 
-  onStart: () => { },
+  onStart   : () => { },
   onComplete: () => { },
 
-  onIterationStart: () => { },
+  onIterationStart   : () => { },
   onIterationComplete: () => { },
 
   callback: () => { },
-  onTick: (n, fn, data) => { }
+  onTick  : (n, fn, data) => { }
 }
