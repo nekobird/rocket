@@ -1,5 +1,4 @@
 import {
-  StringUtil,
   ScreenModel,
 } from '../rocket'
 
@@ -30,6 +29,8 @@ export class StackUp {
 
   public config: StackUpConfig
   public layout: StackUpLayout
+
+  public resizeDebounceTimeout
 
   constructor(config?: StackUpConfig) {
     this.config = Object.assign({}, STACKUP_DEFAULT_CONFIG)
@@ -64,7 +65,10 @@ export class StackUp {
   }
 
   public boundaryUpdate() {
-    if (this.config.boundary !== window) {
+    if (
+      this.config.boundary !== window &&
+      this.config.boundary !== null
+    ) {
       const boundary: HTMLElement = <HTMLElement>this.config.boundary
       const style: CSSStyleDeclaration = window.getComputedStyle(boundary)
       let horizontal: number = 0
@@ -77,16 +81,14 @@ export class StackUp {
         horizontal = horizontalBorderWidths + horizontalPaddings
         vertical   = verticalBorderWidths   + verticalPaddings
       }
-      this.boundaryHeight = boundary.offsetHeight - horizontal
-      this.boundaryWidth  = boundary.offsetWidth  - vertical
+      this.boundaryWidth  = boundary.offsetWidth  - horizontal
+      this.boundaryHeight = boundary.offsetHeight - vertical
     } else {
-      this.boundaryHeight = ScreenModel.height
       this.boundaryWidth  = ScreenModel.width
+      this.boundaryHeight = ScreenModel.height
     }
     return this
   }
-
-  public resizeDebounceTimeout
 
   public resizeDebounce = (fn, delay) => {
     clearTimeout(this.resizeDebounceTimeout)
@@ -107,7 +109,8 @@ export class StackUp {
   public eventHandlerResize = event => {
     this.boundaryUpdate()
     this.resizeDebounce(
-      this.eventHandlerResizeComplete, this.config.debounceResizeWait
+      this.eventHandlerResizeComplete,
+      this.config.debounceResizeWait
     )
     return this
   }
