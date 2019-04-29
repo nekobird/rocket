@@ -30,7 +30,7 @@ export class StackUp {
   public config: StackUpConfig
   public layout: StackUpLayout
 
-  public resizeDebounceTimeout
+  public resizeDebounceTimeout: number
 
   constructor(config?: StackUpConfig) {
     this.config = Object.assign({}, STACKUP_DEFAULT_CONFIG)
@@ -49,7 +49,7 @@ export class StackUp {
     return this
   }
 
-  public initialize() {
+  public initialize(): this {
     window.addEventListener('resize', this.eventHandlerResize)
     this.boundaryUpdate()
 
@@ -64,7 +64,7 @@ export class StackUp {
     return this
   }
 
-  public boundaryUpdate() {
+  public boundaryUpdate(): this {
     if (
       this.config.boundary !== window &&
       this.config.boundary !== null
@@ -90,35 +90,32 @@ export class StackUp {
     return this
   }
 
-  public resizeDebounce = (fn, delay) => {
+  public resizeDebounce = (fn: Function, delay: number): void => {
     clearTimeout(this.resizeDebounceTimeout)
     this.resizeDebounceTimeout = window.setTimeout(fn, delay)
-    return this
   }
 
-  public eventHandlerResizeComplete = () => {
+  public eventHandlerResizeComplete = (): void => {
     if (
       this.calculateNumberOfColumns() !== this.numberOfColumns &&
       this.config.isFluid === true
     ) {
       this.restack()
     }
-    return this
   }
 
-  public eventHandlerResize = event => {
+  public eventHandlerResize = (event: Event): void => {
     this.boundaryUpdate()
     this.resizeDebounce(
       this.eventHandlerResizeComplete,
       this.config.debounceResizeWait
     )
-    return this
   }
 
   // Update grid selectors. (1) - reset
   // Required stack-up.initialize to be called first.
 
-  private getElements() {
+  private getElements(): this {
     const containerElement: HTMLElement = document.querySelector(this.config.selectorContainer)
     const itemElements: NodeListOf<HTMLElement> = document.querySelectorAll(
       `${this.config.selectorContainer} > ${this.config.selectorItems}`
@@ -134,7 +131,7 @@ export class StackUp {
 
   // This only updates this.items, it does not update the selectors
 
-  public appendItem(item: HTMLElement) {
+  public appendItem(item: HTMLElement): this {
     item.style.width = `${this.config.columnWidth}px`
     this.items.push(
       [item, item.offsetHeight, 0, 0]
@@ -143,7 +140,7 @@ export class StackUp {
   }
 
   // Populate grid items (2) - reset
-  public populateItems() {
+  public populateItems(): this {
     // Clear items before populating
     this.items = []
 
@@ -153,7 +150,7 @@ export class StackUp {
     return this
   }
 
-  public calculateNumberOfColumns() {
+  public calculateNumberOfColumns(): number {
     let numberOfColumns: number
 
     if (this.config.isFluid === true) {
@@ -180,13 +177,13 @@ export class StackUp {
   }
 
   // Update numberOfColumns (3) - stack
-  public updateNumberOfColumns() {
+  public updateNumberOfColumns(): this {
     this.numberOfColumns = this.calculateNumberOfColumns()
     return this
   }
 
   // Scale container and move items (5) - stack
-  public draw() {
+  public draw(): this {
     this.containerWidth = (this.config.columnWidth + this.config.gutter) * this.numberOfColumns
 
     const height = this.containerHeight + this.config.gutter
@@ -204,7 +201,7 @@ export class StackUp {
   //stack (4)
   //layout updates the containerHeight and updates items
 
-  private applyLayout() {
+  private applyLayout(): this {
     this.layout.setup()
     if (this.items.length) {
       this.layout.loop()
@@ -212,14 +209,14 @@ export class StackUp {
     return this
   }
 
-  public resetLayout() {
+  public resetLayout(): this {
     this.containerHeight = 0
     this.layout.columnPointer = 0
     return this
   }
 
   // This should be called when any of the item(s) are being modified, added, or removed
-  public reset() {
+  public reset(): this {
     this.containerWidth  = 0
     this.containerHeight = 0
     this.items = []
@@ -231,7 +228,7 @@ export class StackUp {
     return this
   }
 
-  public append(item: HTMLElement) {
+  public append(item: HTMLElement): this {
     const itemIndex: number = this.items.length
     this.appendItem(item)
     if (this.calculateNumberOfColumns() === this.numberOfColumns) {
@@ -243,7 +240,7 @@ export class StackUp {
     return this
   }
 
-  public restack() {
+  public restack(): this {
     this
       .updateNumberOfColumns()
       .resetLayout()
