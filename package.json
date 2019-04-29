@@ -16,7 +16,7 @@
   "license": "ISC",
   "devDependencies": {
     "sass": "^1.19.0",
-    "typescript": "^3.4.4"
+    "typescript": "^3.4.5"
   },
   "files": [
     "build/**/*"

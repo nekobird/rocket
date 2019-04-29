@@ -1,5 +1,6 @@
 import {
   ScreenModel,
+  Util,
 } from '../rocket'
 
 import {
@@ -160,17 +161,16 @@ export class StackUp {
       )
     } else {
       numberOfColumns = this.config.numberOfColumns
-
       if (numberOfColumns > this.items.length) {
         numberOfColumns = this.items.length
       }
+    }
 
-      if (
-        this.items.length &&
-        numberOfColumns <= 0
-      ) {
-        numberOfColumns = 1
-      }
+    if (
+      this.items.length === 0 ||
+      numberOfColumns <= 0
+    ) {
+      numberOfColumns = 1
     }
 
     return numberOfColumns
@@ -189,13 +189,41 @@ export class StackUp {
     const height = this.containerHeight + this.config.gutter
     const width  = this.containerWidth  + this.config.gutter
 
-    this.config.scaleContainer(this.containerElement, width, height)
+    this.config
+      .scaleContainer(this.containerElement, width, height)
       .then(() => {
-        this.items.forEach(item => {
-          this.config.moveItem(item[0], item[2], item[3])
-        })
+        return this.moveItems()
+      })
+      .then(() => {
+        this.config.afterMove()
       })
     return this
+  }
+
+  private moveItems(): Promise<void> {
+    const moveItem: (item: StackUpItem) => Promise<void> = item => {
+      return new Promise(resolve => {
+        this.config
+          .moveItem(item[0], item[2], item[3])
+          .then(() => resolve())
+      })
+    }
+    if (this.config.moveInSequence === true) {
+      return Util.PromiseEach<StackUpItem>(this.items, moveItem)
+    } else {
+      const moveItems: Promise<void>[] = []
+      this.items.forEach(item => {
+        moveItems.push(
+          moveItem(item)
+        )
+      })
+      console.log("All")
+      return Promise
+        .all(moveItems)
+        .then(() => {
+          return Promise.resolve()
+        })
+    }
   }
 
   //stack (4)

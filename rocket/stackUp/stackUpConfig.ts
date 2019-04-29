@@ -12,6 +12,7 @@ export const STACKUP_DEFAULT_CONFIG = {
   isFluid: true,
   
   debounceResizeWait: 350,
+  moveInSequence: false,
 
   moveItem: (item, left, top) => {
     item.style.left = `${left}px`
@@ -22,7 +23,8 @@ export const STACKUP_DEFAULT_CONFIG = {
     container.style.height = `${height}px`
     container.style.width  = `${width}px`
     return Promise.resolve()
-  }
+  },
+  afterMove: () => {}
 }
 
 export type StackUpLayoutOption = 'ordinal' | 'optimized'
@@ -41,7 +43,10 @@ export interface StackUpConfig {
   isFluid?: boolean,
   
   debounceResizeWait?: number,
+  moveInSequence?: boolean,
 
-  moveItem?: (item: HTMLElement, left: number, top: number) => Promise<void>,
   scaleContainer?: (container: HTMLElement, width: number, height: number) => Promise<void>,
+  moveItem?: (item: HTMLElement, left: number, top: number) => Promise<void>,
+  afterMove?: () => void,
+  
 }

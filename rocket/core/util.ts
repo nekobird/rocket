@@ -2,7 +2,28 @@ import {
   Num
 } from '../rocket'
 
+interface UtilPromiseEachFn<A> {
+  (value: A): Promise<void>
+}
+
 export class Util {
+
+  static PromiseEach<A>(array: A[], fn: UtilPromiseEachFn<A>) {
+    if (Array.isArray(array) === false) {
+      return Promise.reject(
+        new Error('Non array passed to each')
+      )
+    }
+    if (array.length === 0) {
+      return Promise.resolve()
+    }
+    return array.reduce(
+      (previous: Promise<void>, current: A) => { 
+        return previous.then(() => fn(current))
+      },
+      Promise.resolve()
+    )
+  }
 
   static cycle(array: any[]): Function {
     let index: number = -1
