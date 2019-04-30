@@ -5,6 +5,16 @@ import {
 
 export class DOMHelper {
 
+  public static onImageLoad(src: string): Promise<void> {
+    return new Promise(resolve => {
+      let img = new Image()
+      img.onload = () => {
+        resolve()
+      }
+      img.src = src
+    })
+  }
+
   public static getOffsetFrom(target: HTMLElement, from: HTMLElement): Point {
     const targetRect: DOMRect | ClientRect = target.getBoundingClientRect()
     const fromRect: DOMRect | ClientRect = from.getBoundingClientRect()

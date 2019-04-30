@@ -161,9 +161,10 @@ export class StackUp {
       )
     } else {
       numberOfColumns = this.config.numberOfColumns
-      if (numberOfColumns > this.items.length) {
-        numberOfColumns = this.items.length
-      }
+    }
+
+    if (numberOfColumns > this.items.length) {
+      numberOfColumns = this.items.length
     }
 
     if (
@@ -191,6 +192,9 @@ export class StackUp {
 
     this.config
       .scaleContainer(this.containerElement, width, height)
+      .then(() => {
+        return this.config.beforeMove(this.items)
+      })
       .then(() => {
         return this.moveItems()
       })

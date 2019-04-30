@@ -8,7 +8,7 @@ interface UtilPromiseEachFn<A> {
 
 export class Util {
 
-  static PromiseEach<A>(array: A[], fn: UtilPromiseEachFn<A>) {
+  static PromiseEach<A>(array: A[], fn: UtilPromiseEachFn<A>): Promise<void> {
     if (Array.isArray(array) === false) {
       return Promise.reject(
         new Error('Non array passed to each')

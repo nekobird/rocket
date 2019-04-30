@@ -22,7 +22,6 @@ export class Animation {
   private startTime: number
   private endTime  : number
   private pauseTime: number
-  
 
   private RAFID    : number
   private timeoutID: number

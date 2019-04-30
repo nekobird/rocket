@@ -1,5 +1,6 @@
 import {
-  StackUp
+  Animation,
+  StackUp,
 } from '../../rocket/rocket'
 
 const stackup: StackUp = new StackUp({
@@ -9,9 +10,19 @@ const stackup: StackUp = new StackUp({
   moveInSequence   : true,
   moveItem: (item, left, top) => {
     return new Promise(resolve => {
-      item.style.left = `${left}px`
-      item.style.top  = `${top}px`
-      resolve()
+      new Animation({
+        duration: 0.1,
+        onTick: n => {
+          item.style.left = `${left * n}px`
+          item.style.top  = `${top}px`
+        },
+        callback: () => {
+          resolve()
+        }
+      }).play()
+      // item.style.left = `${left}px`
+      // item.style.top  = `${top}px`
+      // resolve()
     })
   },
   afterMove: () => {

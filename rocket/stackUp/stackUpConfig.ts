@@ -1,3 +1,7 @@
+import {
+  StackUpItem,
+} from './stackUp'
+
 export const STACKUP_DEFAULT_CONFIG = {
   boundary: window,
 
@@ -24,6 +28,7 @@ export const STACKUP_DEFAULT_CONFIG = {
     container.style.width  = `${width}px`
     return Promise.resolve()
   },
+  beforeMove: (items: StackUpItem[]) => { return Promise.resolve() },
   afterMove: () => {}
 }
 
@@ -47,6 +52,7 @@ export interface StackUpConfig {
 
   scaleContainer?: (container: HTMLElement, width: number, height: number) => Promise<void>,
   moveItem?: (item: HTMLElement, left: number, top: number) => Promise<void>,
+  beforeMove?: (items: StackUpItem[]) => Promise<void>,
   afterMove?: () => void,
   
 }
