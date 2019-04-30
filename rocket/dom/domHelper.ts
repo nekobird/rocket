@@ -7,7 +7,7 @@ export class DOMHelper {
 
   public static onImageLoad(src: string): Promise<void> {
     return new Promise(resolve => {
-      let img = new Image()
+      const img = new Image()
       img.onload = () => {
         resolve()
       }
@@ -58,7 +58,7 @@ export class DOMHelper {
   }
 
   public static getLineHeight(element: HTMLElement): number {
-    let style: CSSStyleDeclaration = window.getComputedStyle(element)
+    const style: CSSStyleDeclaration = window.getComputedStyle(element)
     return parseFloat(style['lineHeight'])
   }
 
@@ -75,41 +75,48 @@ export class DOMHelper {
   }
 
   public static getHorizontalBorderWidth(element: HTMLElement) {
-    let style: CSSStyleDeclaration = window.getComputedStyle(element)
-    let width: number =
+    const style: CSSStyleDeclaration = window.getComputedStyle(element)
+    const width: number =
       parseFloat(style['borderLeftWidth']) +
       parseFloat(style['borderRightWidth'])
     return width
   }
 
   public static getHorizontalPaddingWidth(element: HTMLElement): number {
-    let style: CSSStyleDeclaration = window.getComputedStyle(element)
-    let width: number =
+    const style: CSSStyleDeclaration = window.getComputedStyle(element)
+    const width: number =
       parseFloat(style['paddingLeft']) +
       parseFloat(style['paddingRight'])
     return width
   }
 
   public static getVerticalBorderHeight(element: HTMLElement): number {
-    let style: CSSStyleDeclaration = window.getComputedStyle(element)
-    let height: number =
+    const style: CSSStyleDeclaration = window.getComputedStyle(element)
+    const height: number =
       parseFloat(style['borderBottomWidth']) +
       parseFloat(style['borderTopWidth'])
     return height
   }
 
   public static getVerticalPaddingHeight(element: HTMLElement): number {
-    let style: CSSStyleDeclaration = window.getComputedStyle(element)
-    let height: number =
+    const style: CSSStyleDeclaration = window.getComputedStyle(element)
+    const height: number =
       parseFloat(style['paddingBottom']) +
       parseFloat(style['paddingTop'])
     return height
   }
 
   static getAnimationDuration(element: HTMLElement): number {
-    let computedStyle: CSSStyleDeclaration = getComputedStyle(element)
+    const computedStyle: CSSStyleDeclaration = getComputedStyle(element)
     return parseFloat(
       computedStyle['animationDuration']
+    ) * 1000
+  }
+
+  static getTransitionDuration(element: HTMLElement): number {
+    const computedStyle: CSSStyleDeclaration = getComputedStyle(element)
+    return parseFloat(
+      computedStyle['transitionDuration']
     ) * 1000
   }
 
