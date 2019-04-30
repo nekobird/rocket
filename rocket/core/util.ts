@@ -9,11 +9,6 @@ interface UtilPromiseEachFn<A> {
 export class Util {
 
   static promiseEach<A>(array: A[], fn: UtilPromiseEachFn<A>): Promise<void> {
-    if (Array.isArray(array) === false) {
-      return Promise.reject(
-        new Error('Non array passed to each')
-      )
-    }
     if (array.length === 0) {
       return Promise.resolve()
     }

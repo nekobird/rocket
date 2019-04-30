@@ -18,9 +18,9 @@ export interface StackUpItem {
   item  : HTMLElement,
   height: number,
   left: number,
-  top: number,
+  top : number,
   currentLeft: number,
-  currentTop: number,
+  currentTop : number,
 }
 
 export interface StackUpItemData extends StackUpItem {

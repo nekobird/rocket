@@ -14,6 +14,7 @@ export interface StackUpContainerScaleData {
   maxHeight: number,
   requireScale: boolean,
 }
+
 export interface StackUpConfig {
   boundary?: HTMLElement | Window,
 
