@@ -11,14 +11,11 @@ export class Num {
     if (typeof range === 'number') {
       range = [0, range]
     }
-    if (range[0] === range[1]) {
-      return 0
-    }
-    let max: number = Math.max(range[0], range[1])
-    let min: number = Math.min(range[0], range[1])
-    if (number > max) {
+    const max: number = Math.max(range[0], range[1])
+    const min: number = Math.min(range[0], range[1])
+    if (number >= max) {
       return max
-    } else if (number < min) {
+    } else if (number <= min) {
       return min
     }
     return number
@@ -30,14 +27,14 @@ export class Num {
       range = [0, range]
     }
 
-    let max = Math.max(range[0], range[1])
-    let min = Math.min(range[0], range[1])
+    const max = Math.max(range[0], range[1])
+    const min = Math.min(range[0], range[1])
 
     if (max === 0 && min === 0) {
       return 0
     }
 
-    let da: number = this.getNumberLineDistance(min, max)
+    const da: number = this.getNumberLineDistance(min, max)
     let db: number
     let c: number
 
@@ -74,13 +71,13 @@ export class Num {
   static hypotenuse(x: number, y: number): number {
     // http://www.johndcook.com/blog/2010/06/02/whats-so-hard-about-finding-a-hypotenuse/
     let max = Math.max(Math.abs(x), Math.abs(y))
-    let min = Math.min(Math.abs(x), Math.abs(y))
+    const min = Math.min(Math.abs(x), Math.abs(y))
 
     if (max === 0) {
       max = 1
     }
 
-    let n = min / max
+    const n = min / max
 
     return max * Math.sqrt(1 + n * n)
   }
@@ -111,7 +108,7 @@ export class Num {
       to = [0, to]
     }
 
-    let percent: number = (number - from[0]) / (from[1] - from[0])
+    const percent: number = (number - from[0]) / (from[1] - from[0])
     let result: number
 
     if (to[1] > to[0]) {

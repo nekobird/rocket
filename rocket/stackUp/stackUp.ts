@@ -275,11 +275,18 @@ export class StackUp {
   }
 
   public append(item: HTMLElement): this {
-    const itemIndex: number = this.items.length
-    this.appendItem(item)
     if (this.calculateNumberOfColumns() === this.numberOfColumns) {
-      this.layout.plot(itemIndex)
-      this.draw()
+      const draw = () => {
+        const itemIndex: number = this.items.length
+        this.appendItem(item)
+        this.layout.plot(itemIndex)
+        this.draw()
+      }
+      if (this.isTransitioning === true) {
+        this.doneMoving = draw
+      } else {
+        draw()
+      }
     } else {
       this.restack()
     }

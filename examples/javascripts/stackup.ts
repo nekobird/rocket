@@ -12,19 +12,19 @@ const stackup: StackUp = new StackUp({
   layout           : 'ordinal',
   moveInSequence   : true,
   moveItem: (item, left, top) => {
-    console.log(left, top)
     return new Promise(resolve => {
       new Animation({
-        duration: 0.2,
+        duration: 1,
         timingFunction: Easings.QuadEaseInEaseOut,
         beforeStart: (context, data) => {
+          console.log("Before Start")
           data.left = DOMHelper.getStyleValue(item, 'left', true)
           data.top  = DOMHelper.getStyleValue(item, 'top', true)
           return Promise.resolve()
         },
         onTick: (n, ic, a, data) => {
-          item.style.left = `${left * n}px`
-          item.style.top  = `${top * n}px`
+          item.style.left = `${Num.modulate(n, 1, [data.left, left], true)}px`
+          item.style.top  = `${Num.modulate(n, 1, [data.top, top], true)}px`
         },
       })
       .play()
