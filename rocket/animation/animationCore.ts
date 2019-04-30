@@ -37,8 +37,8 @@ export class AnimationCore {
   }
 
   // 1)
-  public startWithDelay(delay?: number): this {
-    // This is only called when it's not animating.
+  public startWithDelay(delay?: number): Promise<void> {
+    // This is only called when not animating.
     this.isActive = true
 
     if (typeof delay !== 'number') {
@@ -46,7 +46,7 @@ export class AnimationCore {
     }
 
     if (delay > 0) {
-      this.animation.config
+      return this.animation.config
         .beforeStartWithDelay(this.animation)
         .then(() => {
           this.runCallback('onStart')
@@ -59,7 +59,7 @@ export class AnimationCore {
           this.end()
         })
     } else {
-      this.animation.config
+      return this.animation.config
         .beforeStart(this.animation)
         .then(() => {
           this.runCallback('onStart')
@@ -69,7 +69,6 @@ export class AnimationCore {
           this.end()
         })
     }
-    return this
   }
 
   // 2) Start Animation.

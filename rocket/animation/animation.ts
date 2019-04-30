@@ -28,7 +28,7 @@ export class Animation {
 
   public play(delay?: number): Promise<void> {
     return new Promise(resolve => {
-      this.core.callback = () => { resolve() }
+      this.core.callback = () => resolve()
       this.core.startWithDelay(delay)
     })
   }

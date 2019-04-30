@@ -16,7 +16,7 @@ const stackup: StackUp = new StackUp({
         timingFunction: Easings.QuadEaseInEaseOut,
         onTick: n => {
           item.style.left = `${left * n}px`
-          item.style.top  = `${top}px`
+          item.style.top  = `${top * n}px`
         },
       })
       .play()
