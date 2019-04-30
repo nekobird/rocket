@@ -1,17 +1,17 @@
 import {
   Animation,
-  Easings,
-  StackUp,
   DOMHelper,
+  Easings,
   Num,
+  StackUp,
   Util,
 } from '../../rocket/rocket'
 
 const stackup: StackUp = new StackUp({
   selectorContainer: '.container',
   selectorItems    : '.item',
-  layout           : 'ordinal',
-  moveInSequence   : true,
+  layout           : 'optimized',
+  moveInSequence   : false,
   scaleContainerInitial: (container, data) => {
     if (data.requireScale === true) {
       return new Animation({
@@ -29,11 +29,11 @@ const stackup: StackUp = new StackUp({
   moveItem: (data) => {
     if (data.requireMove === true) {
       return new Animation({
-          duration: 0.1,
+          duration: 0.4,
           timingFunction: Easings.QuadEaseInEaseOut,
           onTick: (n, ic, a) => {
             data.item.style.left = `${Num.modulate(n, 1, [data.currentLeft, data.left], true)}px`
-            data.item.style.top  = `${Num.modulate(n, 1, [data.currentTop , data.top], true)}px`
+            data.item.style.top  = `${Num.modulate(n, 1, [data.currentTop , data.top ], true)}px`
           },
         }).play()
     } else {
