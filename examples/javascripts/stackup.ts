@@ -14,11 +14,11 @@ const stackup: StackUp = new StackUp({
   moveItem: (item, left, top) => {
     return new Promise(resolve => {
       new Animation({
-        duration: 1,
+        duration: 0.2,
         timingFunction: Easings.QuadEaseInEaseOut,
         beforeStart: (context, data) => {
           data.left = DOMHelper.getStyleValue(item, 'left', true)
-          data.top  = DOMHelper.getStyleValue(item, 'top', true)
+          data.top  = DOMHelper.getStyleValue(item, 'top' , true)
           return Promise.resolve()
         },
         onTick: (n, ic, a, data) => {

@@ -21,6 +21,7 @@ export interface StackUpConfig {
   moveInSequence?: boolean,
 
   scaleContainer?: (container: HTMLElement, width: number, height: number) => Promise<void>,
+  scaleContainerFinal?: (container: HTMLElement, width: number, height: number) => Promise<void>,
   moveItem?: (item: HTMLElement, left: number, top: number) => Promise<void>,
 
   beforeTransition?: (container: HTMLElement, items: StackUpItem[]) => Promise<void>,
@@ -46,8 +47,13 @@ export const STACKUP_DEFAULT_CONFIG = {
   moveInSequence: false,
 
   scaleContainer: (container, width, height) => {
-    container.style.height = `${height}px`
     container.style.width  = `${width}px`
+    container.style.height = `${height}px`
+    return Promise.resolve()
+  },
+  scaleContainerFinal: (container, width, height) => {
+    container.style.width  = `${width}px`
+    container.style.height = `${height}px`
     return Promise.resolve()
   },
   moveItem: (item, left, top) => {
@@ -56,8 +62,12 @@ export const STACKUP_DEFAULT_CONFIG = {
     return Promise.resolve()
   },
 
-  beforeTransition: (container: HTMLElement, items: StackUpItem[]) => { return Promise.resolve() },
-  beforeMove: (items: StackUpItem[]) => { return Promise.resolve() },
+  beforeTransition: (container: HTMLElement, items: StackUpItem[]) => {
+    return Promise.resolve()
+  },
+  beforeMove: (items: StackUpItem[]) => {
+    return Promise.resolve()
+  },
   afterMove: () => {},
   afterTransition: () => {}
 }

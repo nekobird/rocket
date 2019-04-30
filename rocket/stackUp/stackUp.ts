@@ -21,8 +21,11 @@ export class StackUp {
   public boundaryWidth  = 0
 
   public containerElement = undefined
-  public containerHeight  = 0
   public containerWidth   = 0
+  public containerHeight  = 0
+  
+  public previousContainerWidth  = 0
+  public previousContainerHeight = 0
 
   public itemElements = undefined
   public items: StackUpItem[] = []
@@ -125,10 +128,17 @@ export class StackUp {
     )
     if (containerElement !== null) {
       this.containerElement = containerElement
+      this.updatePreviousContainerSize()
     }
     if (itemElements !== null) {
       this.itemElements = Array.from(itemElements)
     }
+    return this
+  }
+
+  public updatePreviousContainerSize(): this {
+    this.previousContainerWidth  = this.containerElement.offsetWidth
+    this.previousContainerHeight = this.containerElement.offsetHeight
     return this
   }
 
@@ -192,12 +202,14 @@ export class StackUp {
 
       this.containerWidth = (this.config.columnWidth + this.config.gutter) * this.numberOfColumns
 
-      const height = this.containerHeight + this.config.gutter
-      const width  = this.containerWidth  + this.config.gutter
+      const finalHeight = this.containerHeight + this.config.gutter
+      const finalWidth  = this.containerWidth  + this.config.gutter
 
       this.config
         .beforeTransition(this.containerElement, this.items)
         .then(() => {
+          const width : number = Math.max(this.previousContainerWidth,  finalWidth)
+          const height: number = Math.max(this.previousContainerHeight, finalHeight)
           return this.config.scaleContainer(this.containerElement, width, height)
         })
         .then(() => {
@@ -211,13 +223,24 @@ export class StackUp {
           return Promise.resolve()
         })
         .then(() => {
-          this.isTransitioning = false
-          this.config.afterTransition()
-          if (typeof this.doneTransitioning === 'function') {
-            this.doneTransitioning()
-            this.doneTransitioning = undefined
-          }
+          return this.config.scaleContainerFinal(this.containerElement, finalWidth, finalHeight)
         })
+        .then(() => {
+          this.endTransition()
+        })
+        .catch(() => {
+          this.endTransition()
+        })
+    }
+    return this
+  }
+
+  private endTransition(): this {
+    this.isTransitioning = false
+    this.config.afterTransition()
+    if (typeof this.doneTransitioning === 'function') {
+      this.doneTransitioning()
+      this.doneTransitioning = undefined
     }
     return this
   }

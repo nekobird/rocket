@@ -49,6 +49,8 @@ export class StackUpLayout {
 
   private plotOrdinal(itemIndex: number) {
     const config: StackUpConfig = this.stackUp.config
+    this.stackUp.updatePreviousContainerSize()
+
     this.stackUp.items[itemIndex][2] = config.gutter + (config.columnWidth + config.gutter) * this.columnPointer
     this.stackUp.items[itemIndex][3] = config.gutter + this.stack[this.columnPointer]
 
@@ -67,6 +69,7 @@ export class StackUpLayout {
 
   private plotOptimized(itemIndex: number) {
     const config: StackUpConfig = this.stackUp.config
+    this.stackUp.updatePreviousContainerSize()
 
     this.stackUp.items[itemIndex][2] = config.gutter + (config.columnWidth + config.gutter) * this.stack[0][0]
     this.stackUp.items[itemIndex][3] = config.gutter + this.stack[0][1]
