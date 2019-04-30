@@ -18,11 +18,11 @@ export type StackUpItem = [HTMLElement, number, number, number]
 export class StackUp {
 
   public boundaryHeight = 0
-  public boundaryWidth = 0
+  public boundaryWidth  = 0
 
   public containerElement = undefined
-  public containerHeight = 0
-  public containerWidth = 0
+  public containerHeight  = 0
+  public containerWidth   = 0
 
   public itemElements = undefined
   public items: StackUpItem[] = []
@@ -31,11 +31,10 @@ export class StackUp {
   public config: StackUpConfig
   public layout: StackUpLayout
 
-  public isTransitioning: boolean = false
-
   public resizeDebounceTimeout: number
 
-  public doneMoving: Function
+  public isTransitioning: boolean = false
+  private doneTransitioning: Function
 
   constructor(config?: StackUpConfig) {
     this.config = Object.assign({}, STACKUP_DEFAULT_CONFIG)
@@ -45,7 +44,6 @@ export class StackUp {
     }
 
     this.layout = new StackUpLayout(this, this.config.layout)
-    this.initialize()
     return this
   }
 
@@ -69,7 +67,7 @@ export class StackUp {
     return this
   }
 
-  public boundaryUpdate(): this {
+  private boundaryUpdate(): this {
     if (
       this.config.boundary !== window &&
       this.config.boundary !== null
@@ -95,12 +93,12 @@ export class StackUp {
     return this
   }
 
-  public resizeDebounce = (fn: Function, delay: number): void => {
+  private resizeDebounce = (fn: Function, delay: number): void => {
     clearTimeout(this.resizeDebounceTimeout)
     this.resizeDebounceTimeout = window.setTimeout(fn, delay)
   }
 
-  public eventHandlerResizeComplete = (): void => {
+  private eventHandlerResizeComplete = (): void => {
     if (
       this.calculateNumberOfColumns() !== this.numberOfColumns &&
       this.config.isFluid === true
@@ -109,7 +107,7 @@ export class StackUp {
     }
   }
 
-  public eventHandlerResize = (event: Event): void => {
+  private eventHandlerResize = (event: Event): void => {
     this.boundaryUpdate()
     this.resizeDebounce(
       this.eventHandlerResizeComplete,
@@ -136,7 +134,7 @@ export class StackUp {
 
   // This only updates this.items, it does not update the selectors
 
-  public appendItem(item: HTMLElement): this {
+  private appendItem(item: HTMLElement): this {
     item.style.width = `${this.config.columnWidth}px`
     this.items.push(
       [item, item.offsetHeight, 0, 0]
@@ -145,7 +143,7 @@ export class StackUp {
   }
 
   // Populate grid items (2) - reset
-  public populateItems(): this {
+  private populateItems(): this {
     // Clear items before populating
     this.items = []
 
@@ -155,7 +153,7 @@ export class StackUp {
     return this
   }
 
-  public calculateNumberOfColumns(): number {
+  private calculateNumberOfColumns(): number {
     let numberOfColumns: number
 
     if (this.config.isFluid === true) {
@@ -182,7 +180,7 @@ export class StackUp {
   }
 
   // Update numberOfColumns (3) - stack
-  public updateNumberOfColumns(): this {
+  private updateNumberOfColumns(): this {
     this.numberOfColumns = this.calculateNumberOfColumns()
     return this
   }
@@ -198,7 +196,10 @@ export class StackUp {
       const width  = this.containerWidth  + this.config.gutter
 
       this.config
-        .scaleContainer(this.containerElement, width, height)
+        .beforeTransition(this.containerElement, this.items)
+        .then(() => {
+          return this.config.scaleContainer(this.containerElement, width, height)
+        })
         .then(() => {
           return this.config.beforeMove(this.items)
         })
@@ -206,13 +207,15 @@ export class StackUp {
           return this.moveItems()
         })
         .then(() => {
-          this.isTransitioning = false
           this.config.afterMove()
+          return Promise.resolve()
         })
         .then(() => {
-          if (typeof this.doneMoving === 'function') {
-            this.doneMoving()
-            this.doneMoving = undefined
+          this.isTransitioning = false
+          this.config.afterTransition()
+          if (typeof this.doneTransitioning === 'function') {
+            this.doneTransitioning()
+            this.doneTransitioning = undefined
           }
         })
     }
@@ -255,22 +258,30 @@ export class StackUp {
     return this
   }
 
-  public resetLayout(): this {
+  private resetLayout(): this {
     this.containerHeight = 0
     this.layout.columnPointer = 0
     return this
   }
 
-  // This should be called when any of the item(s) are being modified, added, or removed
+  // This should be called after if any the item(s)
+  // have been modified, added, or removed.
   public reset(): this {
-    this.containerWidth  = 0
-    this.containerHeight = 0
-    this.items = []
-    this
-      .getElements()
-      .populateItems()
-      .resetLayout()
-      .restack()
+    const reset = () => {
+      this.containerWidth  = 0
+      this.containerHeight = 0
+      this.items = []
+      this
+        .getElements()
+        .populateItems()
+        .resetLayout()
+        .restack()
+    }
+    if (this.isTransitioning === true) {
+      this.doneTransitioning = reset
+    } else {
+      reset()
+    }
     return this
   }
 
@@ -283,7 +294,7 @@ export class StackUp {
         this.draw()
       }
       if (this.isTransitioning === true) {
-        this.doneMoving = draw
+        this.doneTransitioning = draw
       } else {
         draw()
       }
@@ -302,7 +313,7 @@ export class StackUp {
         .draw()
     }
     if (this.isTransitioning === true) {
-      this.doneMoving = restack
+      this.doneTransitioning = restack
     } else {
       restack()
     }

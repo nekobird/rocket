@@ -17,7 +17,6 @@ const stackup: StackUp = new StackUp({
         duration: 1,
         timingFunction: Easings.QuadEaseInEaseOut,
         beforeStart: (context, data) => {
-          console.log("Before Start")
           data.left = DOMHelper.getStyleValue(item, 'left', true)
           data.top  = DOMHelper.getStyleValue(item, 'top', true)
           return Promise.resolve()
@@ -29,7 +28,6 @@ const stackup: StackUp = new StackUp({
       })
       .play()
       .then(() => {
-        console.log("done")
         resolve()
       })
       // item.style.left = `${left}px`
@@ -38,6 +36,7 @@ const stackup: StackUp = new StackUp({
     })
   },
   afterMove: () => {
-    console.log("Done moving")
   }
 })
+
+stackup.initialize()

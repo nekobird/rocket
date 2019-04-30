@@ -15,12 +15,10 @@ export type StackUpLayoutOption = 'ordinal' | 'optimized'
 export class StackUpLayout {
 
   public stackUp: StackUp
+  public layoutOption: StackUpLayoutOption
 
   public columnPointer: number = 0
-
   public stack
-
-  public layoutOption: StackUpLayoutOption
 
   constructor(stackUp: StackUp, layoutOption: StackUpLayoutOption) {
     this.stackUp = stackUp
@@ -39,14 +37,14 @@ export class StackUpLayout {
     }
   }
 
-  public plot(itemIndex: number) {
-    this[`plot${StringUtil.upperCaseFirstLetter(this.layoutOption)}`](itemIndex)
-  }
-
   public loop() {
     for (let i = 0; i < this.stackUp.items.length; i++) {
       this.plot(i)
     }
+  }
+
+  public plot(itemIndex: number) {
+    this[`plot${StringUtil.upperCaseFirstLetter(this.layoutOption)}`](itemIndex)
   }
 
   private plotOrdinal(itemIndex: number) {
@@ -79,7 +77,7 @@ export class StackUpLayout {
       this.stackUp.containerHeight = this.stack[0][1]
     }
 
-    this.stack.sort((a, b) => {
+    this.stack.sort((a: number[], b: number[]) => {
       return a[1] - b[1]
     })
 
