@@ -6,6 +6,7 @@ import {
 import {
   STACKUP_DEFAULT_CONFIG,
   StackUpConfig,
+  StackUpContainerScaleData,
 } from './stackUpConfig'
 
 import {
@@ -13,7 +14,18 @@ import {
 } from './stackUpLayout'
 
 // [index][item, itemHeight, left, top]
-export type StackUpItem = [HTMLElement, number, number, number]
+export interface StackUpItem {
+  item  : HTMLElement,
+  height: number,
+  left: number,
+  top: number,
+  currentLeft: number,
+  currentTop: number,
+}
+
+export interface StackUpItemData extends StackUpItem {
+  requireMove: boolean,
+}
 
 export class StackUp {
 
@@ -147,7 +159,14 @@ export class StackUp {
   private appendItem(item: HTMLElement): this {
     item.style.width = `${this.config.columnWidth}px`
     this.items.push(
-      [item, item.offsetHeight, 0, 0]
+      {
+        item: item,
+        height: item.offsetHeight,
+        left: 0,
+        top : 0,
+        currentLeft: 0,
+        currentTop : 0,
+      }
     )
     return this
   }
@@ -205,12 +224,14 @@ export class StackUp {
       const finalHeight = this.containerHeight + this.config.gutter
       const finalWidth  = this.containerWidth  + this.config.gutter
 
+      const scaleData: StackUpContainerScaleData = this.composeContainerScaleData(finalWidth, finalHeight)
       this.config
-        .beforeTransition(this.containerElement, this.items)
+        .beforeTransition(scaleData, this.items)
         .then(() => {
-          const width : number = Math.max(this.previousContainerWidth,  finalWidth)
-          const height: number = Math.max(this.previousContainerHeight, finalHeight)
-          return this.config.scaleContainer(this.containerElement, width, height)
+          return this.config.scaleContainerInitial(
+            this.containerElement,
+            scaleData
+          )
         })
         .then(() => {
           return this.config.beforeMove(this.items)
@@ -223,7 +244,11 @@ export class StackUp {
           return Promise.resolve()
         })
         .then(() => {
-          return this.config.scaleContainerFinal(this.containerElement, finalWidth, finalHeight)
+          this.updatePreviousContainerSize()
+          return this.config.scaleContainerFinal(
+            this.containerElement,
+            this.composeContainerScaleData(finalWidth, finalHeight)
+          )
         })
         .then(() => {
           this.endTransition()
@@ -235,7 +260,26 @@ export class StackUp {
     return this
   }
 
+  private composeContainerScaleData(width: number, height: number): StackUpContainerScaleData  {
+    const maxWidth : number = Math.max(this.previousContainerWidth ,  width)
+    const maxHeight: number = Math.max(this.previousContainerHeight, height)
+    const requireScale: boolean = (
+      this.previousContainerWidth !== width ||
+      this.previousContainerHeight !== height
+    )
+    return {
+      width : width,
+      height: height,
+      currentWidth : this.previousContainerWidth,
+      currentHeight: this.previousContainerHeight,
+      maxWidth : maxWidth,
+      maxHeight: maxHeight,
+      requireScale: requireScale,
+    }
+  }
+
   private endTransition(): this {
+    this.updateItemsCurrentOffset()
     this.isTransitioning = false
     this.config.afterTransition()
     if (typeof this.doneTransitioning === 'function') {
@@ -245,16 +289,21 @@ export class StackUp {
     return this
   }
 
+  private updateItemsCurrentOffset(): this {
+    this.items.forEach(item => {
+      item.currentLeft = item.left
+      item.currentTop  = item.top
+    })
+    return this
+  }
+
   private moveItems(): Promise<void> {
     const moveItem: (item: StackUpItem) => Promise<void> = item => {
-      return new Promise(resolve => {
-        this.config
-          .moveItem(item[0], item[2], item[3])
-          .then(() => resolve())
-      })
+      return this.config
+          .moveItem(this.composeMoveItemdata(item))
     }
     if (this.config.moveInSequence === true) {
-      return Util.PromiseEach<StackUpItem>(this.items, moveItem)
+      return Util.promiseEach<StackUpItem>(this.items, moveItem)
     } else {
       const moveItems: Promise<void>[] = []
       this.items.forEach(item => {
@@ -268,6 +317,16 @@ export class StackUp {
           return Promise.resolve()
         })
     }
+  }
+
+  private composeMoveItemdata(item: StackUpItem): StackUpItemData {
+    const requireMove: boolean = (
+      item.currentLeft !== item.left ||
+      item.currentTop  !== item.top
+    )
+    return Object.assign({
+      requireMove: requireMove
+    }, item)
   }
 
   //stack (4)
@@ -289,58 +348,60 @@ export class StackUp {
 
   // This should be called after if any the item(s)
   // have been modified, added, or removed.
-  public reset(): this {
-    const reset = () => {
-      this.containerWidth  = 0
-      this.containerHeight = 0
-      this.items = []
-      this
-        .getElements()
-        .populateItems()
-        .resetLayout()
-        .restack()
-    }
-    if (this.isTransitioning === true) {
-      this.doneTransitioning = reset
-    } else {
-      reset()
-    }
-    return this
+  public reset(): Promise<void> {
+    return new Promise(resolve => {
+      const reset = () => {
+        this.containerWidth  = 0
+        this.containerHeight = 0
+        this.items = []
+        this
+          .getElements()
+          .populateItems()
+          .resetLayout()
+          .restack()
+        resolve()
+      }
+      if (this.isTransitioning === true) {
+        this.doneTransitioning = reset
+      } else {
+        reset()
+      }  
+    })
   }
 
-  public append(item: HTMLElement): this {
-    if (this.calculateNumberOfColumns() === this.numberOfColumns) {
-      const draw = () => {
+  public append(item: HTMLElement): Promise<void> {
+    return new Promise(resolve => {
+      const append = () => {
         const itemIndex: number = this.items.length
         this.appendItem(item)
         this.layout.plot(itemIndex)
         this.draw()
+        resolve()
       }
       if (this.isTransitioning === true) {
-        this.doneTransitioning = draw
+        this.doneTransitioning = append
       } else {
-        draw()
-      }
-    } else {
-      this.restack()
-    }
-    return this
+        append()
+      }  
+    })
   }
 
-  public restack(): this {
-    const restack = () => {
-      this
-        .updateNumberOfColumns()
-        .resetLayout()
-        .applyLayout()
-        .draw()
-    }
-    if (this.isTransitioning === true) {
-      this.doneTransitioning = restack
-    } else {
-      restack()
-    }
-    return this
+  public restack(): Promise<void> {
+    return new Promise(resolve => {
+      const restack = () => {
+        this
+          .updateNumberOfColumns()
+          .resetLayout()
+          .applyLayout()
+          .draw()
+        resolve()
+      }
+      if (this.isTransitioning === true) {
+        this.doneTransitioning = restack
+      } else {
+        restack()
+      }
+    })
   }
 
 }

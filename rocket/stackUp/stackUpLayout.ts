@@ -4,6 +4,7 @@ import {
 
 import {
   StackUp,
+  StackUpItem,
 } from './stackUp'
 
 import {
@@ -51,10 +52,14 @@ export class StackUpLayout {
     const config: StackUpConfig = this.stackUp.config
     this.stackUp.updatePreviousContainerSize()
 
-    this.stackUp.items[itemIndex][2] = config.gutter + (config.columnWidth + config.gutter) * this.columnPointer
-    this.stackUp.items[itemIndex][3] = config.gutter + this.stack[this.columnPointer]
+    const item: StackUpItem = this.stackUp.items[itemIndex]
+    item.currentLeft = item.left
+    item.currentTop  = item.top
 
-    this.stack[this.columnPointer] += this.stackUp.items[itemIndex][1] + config.gutter
+    item.left = config.gutter + (config.columnWidth + config.gutter) * this.columnPointer
+    item.top  = config.gutter + this.stack[this.columnPointer]
+
+    this.stack[this.columnPointer] += item.height + config.gutter
 
     if (this.stack[this.columnPointer] > this.stackUp.containerHeight) {
       this.stackUp.containerHeight = this.stack[this.columnPointer]
@@ -71,10 +76,14 @@ export class StackUpLayout {
     const config: StackUpConfig = this.stackUp.config
     this.stackUp.updatePreviousContainerSize()
 
-    this.stackUp.items[itemIndex][2] = config.gutter + (config.columnWidth + config.gutter) * this.stack[0][0]
-    this.stackUp.items[itemIndex][3] = config.gutter + this.stack[0][1]
+    const item: StackUpItem = this.stackUp.items[itemIndex]
+    item.currentLeft = item.left
+    item.currentTop  = item.top
 
-    this.stack[0][1] += this.stackUp.items[itemIndex][1] + config.gutter
+    item.left = config.gutter + (config.columnWidth + config.gutter) * this.stack[0][0]
+    item.top  = config.gutter + this.stack[0][1]
+
+    this.stack[0][1] += item.height + config.gutter
 
     if (this.stack[0][1] > this.stackUp.containerHeight) {
       this.stackUp.containerHeight = this.stack[0][1]

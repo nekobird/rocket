@@ -1,9 +1,19 @@
 import {
   StackUpItem,
+  StackUpItemData,
 } from './stackUp'
 
 export type StackUpLayoutOption = 'ordinal' | 'optimized'
 
+export interface StackUpContainerScaleData {
+  width: number,
+  height: number,
+  currentWidth: number,
+  currentHeight: number,
+  maxWidth: number,
+  maxHeight: number,
+  requireScale: boolean,
+}
 export interface StackUpConfig {
   boundary?: HTMLElement | Window,
 
@@ -20,11 +30,11 @@ export interface StackUpConfig {
   debounceResizeWait?: number,
   moveInSequence?: boolean,
 
-  scaleContainer?: (container: HTMLElement, width: number, height: number) => Promise<void>,
-  scaleContainerFinal?: (container: HTMLElement, width: number, height: number) => Promise<void>,
-  moveItem?: (item: HTMLElement, left: number, top: number) => Promise<void>,
+  scaleContainerInitial?: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>,
+  scaleContainerFinal?: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>,
+  moveItem?: (item: StackUpItemData) => Promise<void>,
 
-  beforeTransition?: (container: HTMLElement, items: StackUpItem[]) => Promise<void>,
+  beforeTransition?: (container: StackUpContainerScaleData, items: StackUpItem[]) => Promise<void>,
   beforeMove?: (items: StackUpItem[]) => Promise<void>,
   afterMove?: () => void,
   afterTransition?: () => void,
@@ -46,28 +56,29 @@ export const STACKUP_DEFAULT_CONFIG = {
   debounceResizeWait: 350,
   moveInSequence: false,
 
-  scaleContainer: (container, width, height) => {
-    container.style.width  = `${width}px`
-    container.style.height = `${height}px`
+  scaleContainerInitial: (container, data) => {
+    container.style.width  = `${data.width }px`
+    container.style.height = `${data.height}px`
     return Promise.resolve()
   },
-  scaleContainerFinal: (container, width, height) => {
-    container.style.width  = `${width}px`
-    container.style.height = `${height}px`
+  scaleContainerFinal: (container, data) => {
+    container.style.width  = `${data.width }px`
+    container.style.height = `${data.height}px`
     return Promise.resolve()
   },
-  moveItem: (item, left, top) => {
-    item.style.left = `${left}px`
-    item.style.top  = `${top}px`
+  moveItem: (data) => {
+    data.item.style.left = `${data.left}px`
+    data.item.style.top  = `${data.top }px`
     return Promise.resolve()
   },
 
-  beforeTransition: (container: HTMLElement, items: StackUpItem[]) => {
+  beforeTransition: (container: StackUpContainerScaleData, items: StackUpItem[]) => {
     return Promise.resolve()
   },
   beforeMove: (items: StackUpItem[]) => {
     return Promise.resolve()
   },
+
   afterMove: () => {},
   afterTransition: () => {}
 }
