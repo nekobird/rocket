@@ -7,11 +7,15 @@ export interface AnimationTimingFunction {
 }
 
 export interface AnimationTickFunction {
-  (n: number, context: Animation, data?: any): void
+  (n: number, iterationCount:number, context: Animation, data: any): void
 }
 
-export interface BeforeHook<T=void> {
-  (context: Animation, data?: any): Promise<T>
+export interface AnimationBeforeHook<T=void> {
+  (context: Animation, data: any): Promise<T>
+}
+
+export interface AnimationCallback {
+  (context: Animation, data: any): void
 }
 
 export interface AnimationConfig {
@@ -26,16 +30,16 @@ export interface AnimationConfig {
 
   timingFunction?: AnimationTimingFunction,
 
-  beforeStart?: BeforeHook,
-  beforeStartWithDelay?: BeforeHook,
-  beforeIterationStart?: BeforeHook,
-  beforeSubsequentIteration?: BeforeHook,
+  beforeStart?: AnimationBeforeHook,
+  beforeStartWithDelay?: AnimationBeforeHook,
+  beforeIterationStart?: AnimationBeforeHook,
+  beforeSubsequentIteration?: AnimationBeforeHook,
 
-  onStart?: Function | Function[],
-  onComplete?: Function | Function[],
+  onStart?: AnimationCallback | AnimationCallback[],
+  onComplete?: AnimationCallback | AnimationCallback[],
 
-  onIterationStart?: Function | Function[],
-  onIterationComplete?: Function | Function[],
+  onIterationStart?: AnimationCallback | AnimationCallback[],
+  onIterationComplete?: AnimationCallback | AnimationCallback[],
 
   callback?: Function,
 

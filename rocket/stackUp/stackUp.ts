@@ -31,7 +31,11 @@ export class StackUp {
   public config: StackUpConfig
   public layout: StackUpLayout
 
+  public isTransitioning: boolean = false
+
   public resizeDebounceTimeout: number
+
+  public doneMoving: Function
 
   constructor(config?: StackUpConfig) {
     this.config = Object.assign({}, STACKUP_DEFAULT_CONFIG)
@@ -185,22 +189,33 @@ export class StackUp {
 
   // Scale container and move items (5) - stack
   public draw(): this {
-    this.containerWidth = (this.config.columnWidth + this.config.gutter) * this.numberOfColumns
+    if (this.isTransitioning === false) {
+      this.isTransitioning = true
 
-    const height = this.containerHeight + this.config.gutter
-    const width  = this.containerWidth  + this.config.gutter
+      this.containerWidth = (this.config.columnWidth + this.config.gutter) * this.numberOfColumns
 
-    this.config
-      .scaleContainer(this.containerElement, width, height)
-      .then(() => {
-        return this.config.beforeMove(this.items)
-      })
-      .then(() => {
-        return this.moveItems()
-      })
-      .then(() => {
-        this.config.afterMove()
-      })
+      const height = this.containerHeight + this.config.gutter
+      const width  = this.containerWidth  + this.config.gutter
+
+      this.config
+        .scaleContainer(this.containerElement, width, height)
+        .then(() => {
+          return this.config.beforeMove(this.items)
+        })
+        .then(() => {
+          return this.moveItems()
+        })
+        .then(() => {
+          this.isTransitioning = false
+          this.config.afterMove()
+        })
+        .then(() => {
+          if (typeof this.doneMoving === 'function') {
+            this.doneMoving()
+            this.doneMoving = undefined
+          }
+        })
+    }
     return this
   }
 
@@ -221,7 +236,6 @@ export class StackUp {
           moveItem(item)
         )
       })
-      console.log("All")
       return Promise
         .all(moveItems)
         .then(() => {
@@ -273,11 +287,18 @@ export class StackUp {
   }
 
   public restack(): this {
-    this
-      .updateNumberOfColumns()
-      .resetLayout()
-      .applyLayout()
-      .draw()
+    const restack = () => {
+      this
+        .updateNumberOfColumns()
+        .resetLayout()
+        .applyLayout()
+        .draw()
+    }
+    if (this.isTransitioning === true) {
+      this.doneMoving = restack
+    } else {
+      restack()
+    }
     return this
   }
 

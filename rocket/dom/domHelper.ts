@@ -17,13 +17,13 @@ export class DOMHelper {
 
   public static getOffsetFrom(target: HTMLElement, from: HTMLElement): Point {
     const targetRect: DOMRect | ClientRect = target.getBoundingClientRect()
-    const fromRect: DOMRect | ClientRect = from.getBoundingClientRect()
+    const fromRect  : DOMRect | ClientRect = from.getBoundingClientRect()
     const left: number = Num.getNumberLineDistance(targetRect.left, fromRect.left)
-    const top: number = Num.getNumberLineDistance(targetRect.top, fromRect.top)
+    const top : number = Num.getNumberLineDistance(targetRect.top , fromRect.top)
     return {
-      left: left,
-      right: Num.getNumberLineDistance(targetRect.right, fromRect.right),
-      top: top,
+      left  : left,
+      right : Num.getNumberLineDistance(targetRect.right, fromRect.right),
+      top   : top,
       bottom: Num.getNumberLineDistance(targetRect.bottom, fromRect.bottom),
       x: left,
       y: top,
@@ -33,7 +33,7 @@ export class DOMHelper {
   public static getOffset(element: HTMLElement): Point {
     const rect = element.getBoundingClientRect()
     const scrollLeft: number = window.pageXOffset || document.documentElement.scrollLeft
-    const scrollTop: number = window.pageYOffset || document.documentElement.scrollTop
+    const scrollTop : number = window.pageYOffset || document.documentElement.scrollTop
     return {
       x: rect.left + scrollLeft,
       y: rect.top + scrollTop,

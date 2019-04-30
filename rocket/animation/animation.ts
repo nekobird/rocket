@@ -14,6 +14,7 @@ export class Animation {
 
   constructor(config?: AnimationConfig) {
     this.config = Object.assign({}, DEFAULT_ANIMATION_CONFIG)
+    this.config.dataExport = {}
     this.setConfig(config)
     this.core = new AnimationCore(this)
     return this
@@ -45,21 +46,25 @@ export class Animation {
 
   public goToBeginning(): this {
     if (typeof this.config.onTick === 'function') {
-      this.config.onTick(0, this, undefined)
+      this.config.onTick(0, this.core.iterationCount, this, undefined)
     } else if (Array.isArray(this.config.onTick)) {
       this.config.onTick.forEach(tick => {
-        tick(0, this, this.config.dataExport)
+        tick(0, this.core.iterationCount, this, this.config.dataExport)
       })
     }
     return this
   }
 
   public goToEnd(): this {
+    let iterationCount: number = this.core.iterationCount
+    if (typeof this.config.numberOfIterations === 'number') {
+      iterationCount = this.config.numberOfIterations
+    }
     if (typeof this.config.onTick === 'function') {
-      this.config.onTick(1, this, undefined)
+      this.config.onTick(1, iterationCount, this, undefined)
     } else if (Array.isArray(this.config.onTick)) {
       this.config.onTick.forEach(tick => {
-        tick(1, this, this.config.dataExport)
+        tick(1, iterationCount, this, this.config.dataExport)
       })
     }
     return this

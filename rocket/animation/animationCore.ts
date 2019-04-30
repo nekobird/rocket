@@ -47,7 +47,10 @@ export class AnimationCore {
 
     if (delay > 0) {
       return this.animation.config
-        .beforeStartWithDelay(this.animation)
+        .beforeStartWithDelay(
+          this.animation,
+          this.animation.config.dataExport
+        )
         .then(() => {
           this.runCallback('onStart')
           this.timeoutID = setTimeout(
@@ -60,7 +63,10 @@ export class AnimationCore {
         })
     } else {
       return this.animation.config
-        .beforeStart(this.animation)
+        .beforeStart(
+          this.animation,
+          this.animation.config.dataExport
+        )
         .then(() => {
           this.runCallback('onStart')
           this.start()
@@ -97,7 +103,10 @@ export class AnimationCore {
 
     this.isAnimating = true
     this.animation.config
-      .beforeIterationStart(this.animation)
+      .beforeIterationStart(
+        this.animation,
+        this.animation.config.dataExport
+      )
       .then(() => {
         this.runCallback('onIterationStart')
         this.loop()    
@@ -177,7 +186,10 @@ export class AnimationCore {
 
           // Continue animation.
           this.animation.config
-            .beforeSubsequentIteration(this.animation)
+            .beforeSubsequentIteration(
+              this.animation,
+              this.animation.config.dataExport
+            )
             .then(resolve => {
               // Toggle direction if it's alternating.
               if (this.animation.config.alternate === true) {
@@ -214,10 +226,10 @@ export class AnimationCore {
 
     // Tick.
     if (typeof config.onTick === 'function') {
-      config.onTick(n, this.animation, config.dataExport)
+      config.onTick(n, this.iterationCount, this.animation, config.dataExport)
     } else if (Array.isArray(config.onTick)) {
       config.onTick.forEach(tick => {
-        tick(n, this.animation, config.dataExport)
+        tick(n, this.iterationCount, this.animation, config.dataExport)
       })
     }
 
@@ -251,9 +263,11 @@ export class AnimationCore {
   public runCallback(callbackName: string): this {
     const config: AnimationConfig = this.animation.config
     if (typeof config[callbackName] === 'function') {
-      config[callbackName](this)
+      config[callbackName](this.animation, config.dataExport)
     } else if (Array.isArray(config[callbackName])) {
-      config[callbackName].forEach(callback => callback(this))
+      config[callbackName].forEach(callback => {
+        callback(this.animation, config.dataExport)
+      })
     }
     return this
   }

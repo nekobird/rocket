@@ -7,7 +7,7 @@ export class Num {
     return this.sum(numbers) / numbers.length
   }
 
-  static constrain(number: number, range: number | number[]): number {
+  static constrain(number: number, range: number | [number, number]): number {
     if (typeof range === 'number') {
       range = [0, range]
     }
@@ -25,7 +25,7 @@ export class Num {
   }
 
   // Range can be a number or an array with two numbers [0, 10].
-  static cycle(number: number, range): number {
+  static cycle(number: number, range: number | [number, number]): number {
     if (typeof range === 'number') {
       range = [0, range]
     }
@@ -101,7 +101,7 @@ export class Num {
   }
 
   static modulate(
-    number: number, from: number | number[], to: number | number[], constrain: boolean
+    number: number, from: number | [number, number], to: number | [number, number], constrain: boolean
   ): number {
     if (typeof from === 'number') {
       from = [0, from]
@@ -123,7 +123,7 @@ export class Num {
     return constrain === true ? Num.constrain(result, to) : result
   }
 
-  static random(range: number | number[], whole: boolean = false, fixed: number = 2): number {
+  static random(range: number | [number, number], whole: boolean = false, fixed: number = 2): number {
     if (typeof range === 'number') {
       range = [0, range]
     }
@@ -152,7 +152,7 @@ export class Num {
     return sum
   }
 
-  static within(number: number, range: number | number[]): boolean {
+  static within(number: number, range: number | [number, number]): boolean {
     if (typeof range === 'number') {
       range = [0, range]
     }

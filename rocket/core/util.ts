@@ -25,7 +25,7 @@ export class Util {
     )
   }
 
-  static cycle(array: any[]): Function {
+  static cycle<A>(array: A[]): Function {
     let index: number = -1
     return () => {
       index++
@@ -76,7 +76,7 @@ export class Util {
     return value
   }
 
-  static randomChoice(array: any[]): any {
+  static randomChoice<A>(array: A[]): any {
     let index = Num.random(array.length - 1, true)
     return array[index]
   }
