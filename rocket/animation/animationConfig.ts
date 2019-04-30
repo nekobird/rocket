@@ -26,7 +26,10 @@ export interface AnimationConfig {
 
   timingFunction?: AnimationTimingFunction,
 
-  beforeStart?: BeforeHook | BeforeHook[],
+  beforeStart?: BeforeHook,
+  beforeStartWithDelay?: BeforeHook,
+  beforeIterationStart?: BeforeHook,
+  beforeSubsequentIteration?: BeforeHook,
 
   onStart?: Function | Function[],
   onComplete?: Function | Function[],
@@ -35,22 +38,26 @@ export interface AnimationConfig {
   onIterationComplete?: Function | Function[],
 
   callback?: Function,
+
   onTick?: AnimationTickFunction | AnimationTickFunction[],
 }
 
 export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = {
   alternate: false,
   delay: 0,
-  duration: 2,
+  duration: 0.4,
 
   iterationDelay: 0,
   numberOfIterations: 1,
 
   dataExport: undefined,
 
-  timingFunction: (t) => {
-    return t
-  },
+  timingFunction: (t) => { return t },
+
+  beforeStart: () => { return Promise.resolve() },
+  beforeStartWithDelay: () => { return Promise.resolve() },
+  beforeIterationStart: () => { return Promise.resolve() },
+  beforeSubsequentIteration: () => { return Promise.resolve() },
 
   onStart   : () => { },
   onComplete: () => { },
@@ -59,5 +66,6 @@ export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = {
   onIterationComplete: () => { },
 
   callback: () => { },
+
   onTick  : (n, fn, data) => { }
 }

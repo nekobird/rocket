@@ -1,5 +1,6 @@
 import {
   Animation,
+  Easings,
   StackUp,
 } from '../../rocket/rocket'
 
@@ -12,14 +13,16 @@ const stackup: StackUp = new StackUp({
     return new Promise(resolve => {
       new Animation({
         duration: 0.1,
+        timingFunction: Easings.QuadEaseInEaseOut,
         onTick: n => {
           item.style.left = `${left * n}px`
           item.style.top  = `${top}px`
         },
-        callback: () => {
-          resolve()
-        }
-      }).play()
+      })
+      .play()
+      .then(() => {
+        resolve()
+      })
       // item.style.left = `${left}px`
       // item.style.top  = `${top}px`
       // resolve()
