@@ -67,7 +67,7 @@ export class StackUp {
     return this
   }
 
-  public initialize(): this {
+  public initialize(): Promise<void> {
     window.addEventListener('resize', this.eventHandlerResize)
     this.boundaryUpdate()
 
@@ -78,8 +78,7 @@ export class StackUp {
     // Update grid selectors - stacking
     this.updateNumberOfColumns()
     this.applyLayout()
-    this.draw()
-    return this
+    return this.draw()
   }
 
   private boundaryUpdate(): this {
@@ -215,7 +214,7 @@ export class StackUp {
   }
 
   // Scale container and move items (5) - stack
-  public draw(): this {
+  public draw(): Promise<void> {
     if (this.isTransitioning === false) {
       this.isTransitioning = true
 
@@ -225,7 +224,7 @@ export class StackUp {
       const finalWidth  = this.containerWidth  + this.config.gutter
 
       const scaleData: StackUpContainerScaleData = this.composeContainerScaleData(finalWidth, finalHeight)
-      this.config
+      return this.config
         .beforeTransition(scaleData, this.items)
         .then(() => {
           return this.config.scaleContainerInitial(
@@ -257,7 +256,7 @@ export class StackUp {
           this.endTransition()
         })
     }
-    return this
+    return Promise.resolve()
   }
 
   private composeContainerScaleData(width: number, height: number): StackUpContainerScaleData  {
