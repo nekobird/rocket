@@ -62,7 +62,7 @@ export class CanvasDraw {
     const m: number = this.resolutionMultiplier
     return this.context.createLinearGradient(
       from.x * m, from.y * m,
-      to.x * m, to.y * m
+      to.x   * m, to.y   * m
     )
   }
 
@@ -70,7 +70,7 @@ export class CanvasDraw {
     const m: number = this.resolutionMultiplier
     return this.context.createRadialGradient(
       from.x * m, from.y * m, fromRadius * m,
-      to.x * m, to.y * m, toRadius * m
+      to.x   * m, to.y   * m, toRadius   * m
     )
   }
 
@@ -81,11 +81,11 @@ export class CanvasDraw {
       Object.assign(computedStyle, style)
     }
 
-    this.context.fillStyle = computedStyle.fillColor
-    this.context.lineCap = computedStyle.strokeCap
-    this.context.lineJoin = computedStyle.strokeJoin
+    this.context.fillStyle   = computedStyle.fillColor
+    this.context.lineCap     = computedStyle.strokeCap
+    this.context.lineJoin    = computedStyle.strokeJoin
     this.context.strokeStyle = computedStyle.strokeColor
-    this.context.lineWidth = computedStyle.strokeWidth
+    this.context.lineWidth   = computedStyle.strokeWidth
 
     if (computedStyle.noFill === false) {
       this.context.fill()
@@ -110,13 +110,13 @@ export class CanvasDraw {
     const m: number = this.resolutionMultiplier
     if (
       typeof height === 'number' &&
-      typeof width === 'number'
+      typeof width  === 'number'
     ) {
       this.element.height = height * m
-      this.element.width = width * m
+      this.element.width  = width  * m
     } else {
       this.element.height = this.element.offsetHeight * m
-      this.element.width = this.element.offsetWidth * m
+      this.element.width  = this.element.offsetWidth  * m
     }
     return this
   }
@@ -143,10 +143,10 @@ export class CanvasDraw {
   public putPixelColor(point: Point, color: Color) {
     const m = this.resolutionMultiplier
     let pixel = this.context.getImageData(point.x * m, point.y * m, 1, 1)
-    let data = pixel.data
-    data[0] = color.red * 255
-    data[1] = color.green * 255
-    data[2] = color.blue * 255
+    let data  = pixel.data
+    data[0] = color.red255
+    data[1] = color.green255
+    data[2] = color.blue255
     data[3] = color.alpha * 255
     return this.context.putImageData(pixel, 0, 0)
   }
@@ -161,8 +161,8 @@ export class CanvasDraw {
     if (color instanceof Color) {
       color = color.rgbaString
     }
-    this.context.shadowBlur = blur * m
-    this.context.shadowColor = color
+    this.context.shadowBlur    = blur * m
+    this.context.shadowColor   = color
     this.context.shadowOffsetX = offsetX * m
     this.context.shadowOffsetY = offsetY * m
     return this
@@ -231,7 +231,7 @@ export class CanvasDraw {
     const m: number = this.resolutionMultiplier
     this.context.arcTo(
       from.x * m, from.y * m,
-      to.x * m, to.y * m,
+      to.x   * m, to.y   * m,
       r * m
     )
     return this
@@ -242,7 +242,7 @@ export class CanvasDraw {
     this.context.bezierCurveTo(
       cp1.x * m, cp1.y * m,
       cp2.x * m, cp2.y * m,
-      to.x * m, to.y * m
+      to.x  * m, to.y  * m
     )
     return this
   }

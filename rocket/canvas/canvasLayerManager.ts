@@ -60,19 +60,19 @@ export class CanvasLayerManager {
 
   public resize = () => {
     let height: number = 0
-    let width: number = 0
+    let width : number = 0
 
     if (this.isFullScreen === true) {
       this.layerStackElement.style.height = `${ScreenModel.height}px`
-      this.layerStackElement.style.width = `${ScreenModel.width}px`
+      this.layerStackElement.style.width  = `${ScreenModel.width}px`
     } else {
       height = this.layerStackElement.offsetHeight
-      width = this.layerStackElement.offsetWidth
+      width  = this.layerStackElement.offsetWidth
     }
 
     this.layers.forEach(layer => {
       layer.element.style.height = `${height}px`
-      layer.element.style.width = `${width}px`
+      layer.element.style.width  = `${width}px`
       layer.draw.resize()
     })
   }

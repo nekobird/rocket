@@ -11,7 +11,7 @@ export class CanvasLayer {
     this.element = element
     this.element.style.position = 'absolute'
     this.element.style.left = '0px'
-    this.element.style.top = '0px'
+    this.element.style.top  = '0px'
 
     this.draw = new CanvasDraw(this.element)
   }
