@@ -19,6 +19,7 @@ export interface ElementEntry {
 export class ElementManager {
 
   private controller: HTMLController
+
   public elementEntries: ElementEntries
 
   constructor(controller: HTMLController) {

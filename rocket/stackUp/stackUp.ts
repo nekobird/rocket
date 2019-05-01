@@ -248,7 +248,7 @@ export class StackUp {
             this.composeContainerScaleData(finalWidth, finalHeight)
           )
         })
-        .then(() => { this.endTransition() })
+        .then(()  => { this.endTransition() })
         .catch(() => { this.endTransition() })
     }
     return Promise.resolve()
@@ -375,9 +375,7 @@ export class StackUp {
         }
         this
           .draw()
-          .then(() => {
-            resolve()
-          })
+          .then(() => resolve())
       }
       if (this.isTransitioning === true) {
         this.doneTransitioning = append

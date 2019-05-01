@@ -35,7 +35,7 @@ export class DOMHelper {
     const scrollTop : number = window.pageYOffset || document.documentElement.scrollTop
     return {
       x: rect.left + scrollLeft,
-      y: rect.top + scrollTop,
+      y: rect.top  + scrollTop,
     }
   }
 

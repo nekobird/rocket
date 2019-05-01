@@ -11,6 +11,7 @@ export interface ScrollEventHandlers {
 export class ScrollEventManager {
 
   public handlers: ScrollEventHandlers
+
   public debounceWait: number = 0.2
 
   constructor() {

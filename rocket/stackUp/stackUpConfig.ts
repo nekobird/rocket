@@ -36,6 +36,7 @@ export interface StackUpConfig {
 
   beforeTransition?: (container: StackUpContainerScaleData, items: StackUpItem[]) => Promise<void>,
   beforeMove?: (items: StackUpItem[]) => Promise<void>,
+
   afterMove?: (items: StackUpItem[]) => Promise<void>,
   afterTransition?: () => void,
 }
