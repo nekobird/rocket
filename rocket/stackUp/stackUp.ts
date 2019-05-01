@@ -23,9 +23,6 @@ export interface StackUpItem {
   top : number,
   currentLeft: number,
   currentTop : number,
-}
-
-export interface StackUpItemData extends StackUpItem {
   requireMove: boolean,
 }
 
@@ -167,6 +164,7 @@ export class StackUp {
         top : offset.y,
         currentLeft: offset.x,
         currentTop : offset.y,
+        requireMove: false,
       }
     )
     return this
@@ -226,12 +224,12 @@ export class StackUp {
       const finalWidth  = this.containerWidth  + this.config.gutter
 
       const scaleData: StackUpContainerScaleData = this.composeContainerScaleData(finalWidth, finalHeight)
+      this.prepareItemsBeforeMove()
       return this.config
         .beforeTransition(scaleData, this.items)
         .then(() => {
           return this.config.scaleContainerInitial(
-            this.containerElement,
-            scaleData
+            this.containerElement, scaleData
           )
         })
         .then(() => {
@@ -241,8 +239,7 @@ export class StackUp {
           return this.moveItems()
         })
         .then(() => {
-          this.config.afterMove()
-          return Promise.resolve()
+          return this.config.afterMove(this.items)
         })
         .then(() => {
           this.updatePreviousContainerSize()
@@ -251,14 +248,38 @@ export class StackUp {
             this.composeContainerScaleData(finalWidth, finalHeight)
           )
         })
-        .then(() => {
-          this.endTransition()
-        })
-        .catch(() => {
-          this.endTransition()
-        })
+        .then(() => { this.endTransition() })
+        .catch(() => { this.endTransition() })
     }
     return Promise.resolve()
+  }
+
+  private moveItems(): Promise<void> {
+    const moveItem: (item: StackUpItem) => Promise<void> = item => {
+      return this.config.moveItem(item)
+    }
+    if (this.config.moveInSequence === true) {
+      return Util.promiseEach<StackUpItem>(this.items, moveItem)
+    } else {
+      const moveItems: Promise<void>[] = []
+      this.items.forEach(item => {
+        moveItems.push(moveItem(item))
+      })
+      return Promise
+        .all(moveItems)
+        .then(() => Promise.resolve())
+    }
+  }
+
+  private endTransition(): this {
+    this.updateItemsCurrentOffset()
+    this.isTransitioning = false
+    this.config.afterTransition()
+    if (typeof this.doneTransitioning === 'function') {
+      this.doneTransitioning()
+      this.doneTransitioning = undefined
+    }
+    return this
   }
 
   private composeContainerScaleData(width: number, height: number): StackUpContainerScaleData  {
@@ -279,14 +300,14 @@ export class StackUp {
     }
   }
 
-  private endTransition(): this {
-    this.updateItemsCurrentOffset()
-    this.isTransitioning = false
-    this.config.afterTransition()
-    if (typeof this.doneTransitioning === 'function') {
-      this.doneTransitioning()
-      this.doneTransitioning = undefined
-    }
+  private prepareItemsBeforeMove(): this {
+    this.items.forEach(item => {
+      const requireMove: boolean = (
+        item.currentLeft !== item.left ||
+        item.currentTop  !== item.top
+      )
+      item.requireMove = requireMove
+    })
     return this
   }
 
@@ -296,38 +317,6 @@ export class StackUp {
       item.currentTop  = item.top
     })
     return this
-  }
-
-  private moveItems(): Promise<void> {
-    const moveItem: (item: StackUpItem) => Promise<void> = item => {
-      return this.config
-          .moveItem(this.composeMoveItemdata(item))
-    }
-    if (this.config.moveInSequence === true) {
-      return Util.promiseEach<StackUpItem>(this.items, moveItem)
-    } else {
-      const moveItems: Promise<void>[] = []
-      this.items.forEach(item => {
-        moveItems.push(
-          moveItem(item)
-        )
-      })
-      return Promise
-        .all(moveItems)
-        .then(() => {
-          return Promise.resolve()
-        })
-    }
-  }
-
-  private composeMoveItemdata(item: StackUpItem): StackUpItemData {
-    const requireMove: boolean = (
-      item.currentLeft !== item.left ||
-      item.currentTop  !== item.top
-    )
-    return Object.assign({
-      requireMove: requireMove
-    }, item)
   }
 
   //stack (4)

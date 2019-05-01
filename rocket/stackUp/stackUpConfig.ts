@@ -1,6 +1,5 @@
 import {
   StackUpItem,
-  StackUpItemData,
 } from './stackUp'
 
 export type StackUpLayoutOption = 'ordinal' | 'optimized'
@@ -33,11 +32,11 @@ export interface StackUpConfig {
 
   scaleContainerInitial?: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>,
   scaleContainerFinal?: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>,
-  moveItem?: (item: StackUpItemData) => Promise<void>,
+  moveItem?: (item: StackUpItem) => Promise<void>,
 
   beforeTransition?: (container: StackUpContainerScaleData, items: StackUpItem[]) => Promise<void>,
   beforeMove?: (items: StackUpItem[]) => Promise<void>,
-  afterMove?: () => void,
+  afterMove?: (items: StackUpItem[]) => Promise<void>,
   afterTransition?: () => void,
 }
 
@@ -81,6 +80,6 @@ export const STACKUP_DEFAULT_CONFIG = {
     return Promise.resolve()
   },
 
-  afterMove: () => {},
+  afterMove: (items: StackUpItem[]) => { return Promise.resolve() },
   afterTransition: () => {}
 }
