@@ -70,7 +70,7 @@ export class Num {
   // A more efficient way to calculate hypotenuse.
   static hypotenuse(x: number, y: number): number {
     // http://www.johndcook.com/blog/2010/06/02/whats-so-hard-about-finding-a-hypotenuse/
-    let max = Math.max(Math.abs(x), Math.abs(y))
+    let max   = Math.max(Math.abs(x), Math.abs(y))
     const min = Math.min(Math.abs(x), Math.abs(y))
 
     if (max === 0) {
@@ -97,9 +97,7 @@ export class Num {
     return (1 - t) * from + t * to
   }
 
-  static modulate(
-    number: number, from: number | [number, number], to: number | [number, number], constrain: boolean
-  ): number {
+  static modulate(number: number, from: number | [number, number], to: number | [number, number], constrain: boolean): number {
     if (typeof from === 'number') {
       from = [0, from]
     }

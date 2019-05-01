@@ -17,7 +17,7 @@ export interface UITextAreaConfig {
   removeLeadingWhitespaces?: boolean,
   removeMultipleWhitespaces?: boolean,
 
-  onBlur?: (context: UITextArea) => void,
+  onBlur?:  (context: UITextArea) => void,
   onFocus?: (context: UITextArea) => void,
   onInput?: (context: UITextArea) => void,
   onPaste?: (context: UITextArea) => void,
@@ -26,11 +26,12 @@ export interface UITextAreaConfig {
 const UITEXTAREA_CONFIG: UITextAreaConfig = {
   disableLineBreaks: false,
   disableTabs: false,
-  limitNumberOfCharacters: false,
-  removeLeadingWhitespaces: false,
+
+  limitNumberOfCharacters  : false,
+  removeLeadingWhitespaces : false,
   removeMultipleWhitespaces: false,
 
-  onBlur: () => {},
+  onBlur : () => {},
   onFocus: () => {},
   onInput: () => {},
   onPaste: () => {},
@@ -140,7 +141,7 @@ export class UITextArea {
 
   public insertString(string: string): UITextArea {
     const start: number = this.element.selectionStart
-    const end: number = this.element.selectionEnd
+    const end  : number = this.element.selectionEnd
     const text: string = this.element.value
     this.element.value = text.substring(0, start) + string + text.substring(end)
     this.element.selectionEnd = start + string.length

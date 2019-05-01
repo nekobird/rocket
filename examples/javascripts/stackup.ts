@@ -32,9 +32,15 @@ const stackup: StackUp = new StackUp({
           duration: 0.4,
           timingFunction: Easings.QuadEaseInEaseOut,
           onTick: (n, ic, a) => {
-            data.item.style.left = `${Num.modulate(n, 1, [data.currentLeft, data.left], true)}px`
-            data.item.style.top  = `${Num.modulate(n, 1, [data.currentTop , data.top ], true)}px`
+            const x: number = Num.modulate(n, 1, data.left - data.currentLeft, true)
+            const y: number = Num.modulate(n, 1, data.top  - data.currentTop , true)
+            data.item.style.transform = `translateX(${x}px) translateY(${y}px)`
           },
+          onComplete: () => {
+            data.item.style.transform = ``
+            data.item.style.left = `${data.left}px`
+            data.item.style.top  = `${data.top}px`
+          }
         }).play()
     } else {
       return Promise.resolve()

@@ -35,11 +35,10 @@ export class Util {
   // will only be invoked after the given delay timeout (in seconds).
   static debounce(delay: number, fn: Function): Function {
     let timeout: number
-    return function (...args) {
+    return function() {
       clearTimeout(timeout)
-      let context = this
       timeout = setTimeout(() => {
-        fn.apply(context, args)
+        fn.apply(this, arguments)
       }, 1000 * delay)
     }
   }
@@ -62,7 +61,7 @@ export class Util {
   }
 
   static match(string: string, _with: RegExp): string | RegExpMatchArray | false {
-    let value = String(string).match(_with)
+    const value = String(string).match(_with)
     if (value === null) {
       return false
     } else if (value.length === 1) {
@@ -72,31 +71,30 @@ export class Util {
   }
 
   static randomChoice<A>(array: A[]): any {
-    let index = Num.random(array.length - 1, true)
+    const index = Num.random(array.length - 1, true)
     return array[index]
   }
 
   static throttle(threshold: number, fn: Function): Function {
-    let timeout
+    let timeout: number
     let last: number
-
+    
     threshold = 1000 * threshold
 
-    return function () {
-      let context = this
-      let args = arguments
-      let now = +new Date
-
-      if (last && now < last + threshold) {
+    return function() {
+      const now = Date.now()
+      if (
+        typeof last === 'number' &&
+        now < last + threshold
+      ) {
         clearTimeout(timeout)
-
         timeout = setTimeout(() => {
           last = now
-          fn.apply(context, args)
+          fn.apply(this, arguments)
         }, threshold)
       } else {
         last = now
-        fn.apply(context, args)
+        fn.apply(this, arguments)
       }
     }
   }

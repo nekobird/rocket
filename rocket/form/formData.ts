@@ -20,7 +20,7 @@ export const FORMDATA_DEFAULT_CONFIG: FormDataConfig = {
 
 }
 
-// type Data = field: string
+// Type Data = field: string
 
 const INPUT_TYPES_VALUE = [
   'color',
