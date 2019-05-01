@@ -158,7 +158,6 @@ export class StackUp {
   // This only updates this.items, it does not update the selectors
 
   private appendItem(item: HTMLElement): this {
-    item.style.width = `${this.config.columnWidth}px`
     const offset: Point = DOMHelper.getOffsetFrom(item, this.containerElement)
     this.items.push(
       {

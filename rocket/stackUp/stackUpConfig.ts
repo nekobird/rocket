@@ -53,7 +53,7 @@ export const STACKUP_DEFAULT_CONFIG = {
 
   layout: <StackUpLayoutOption>'ordinal',
   isFluid: true,
-  
+
   debounceResizeWait: 350,
   moveInSequence: false,
 
@@ -67,6 +67,7 @@ export const STACKUP_DEFAULT_CONFIG = {
     container.style.height = `${data.height}px`
     return Promise.resolve()
   },
+
   moveItem: (data) => {
     data.item.style.left = `${data.left}px`
     data.item.style.top  = `${data.top }px`

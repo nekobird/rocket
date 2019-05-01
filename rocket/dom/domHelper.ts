@@ -5,12 +5,11 @@ import {
 
 export class DOMHelper {
 
-  public static onImageLoad(src: string): Promise<void> {
-    return new Promise(resolve => {
-      const img = new Image()
-      img.onload = () => {
-        resolve()
-      }
+  private static onImageLoad(src: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const img   = new Image()
+      img.onerror = () => reject()
+      img.onload  = () => resolve()
       img.src = src
     })
   }
