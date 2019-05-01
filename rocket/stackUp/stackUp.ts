@@ -1,4 +1,6 @@
 import {
+  DOMHelper,
+  Point,
   ScreenModel,
   Util,
 } from '../rocket'
@@ -157,14 +159,15 @@ export class StackUp {
 
   private appendItem(item: HTMLElement): this {
     item.style.width = `${this.config.columnWidth}px`
+    const offset: Point = DOMHelper.getOffsetFrom(item, this.containerElement)
     this.items.push(
       {
         item: item,
         height: item.offsetHeight,
-        left: 0,
-        top : 0,
-        currentLeft: 0,
-        currentTop : 0,
+        left: offset.x,
+        top : offset.y,
+        currentLeft: offset.x,
+        currentTop : offset.y,
       }
     )
     return this
@@ -263,7 +266,7 @@ export class StackUp {
     const maxWidth : number = Math.max(this.previousContainerWidth ,  width)
     const maxHeight: number = Math.max(this.previousContainerHeight, height)
     const requireScale: boolean = (
-      this.previousContainerWidth !== width ||
+      this.previousContainerWidth  !== width ||
       this.previousContainerHeight !== height
     )
     return {
@@ -368,14 +371,25 @@ export class StackUp {
     })
   }
 
-  public append(item: HTMLElement): Promise<void> {
+  public append(items: HTMLElement | HTMLElement[]): Promise<void> {
     return new Promise(resolve => {
       const append = () => {
-        const itemIndex: number = this.items.length
-        this.appendItem(item)
-        this.layout.plot(itemIndex)
-        this.draw()
-        resolve()
+        if (Array.isArray(items)) {
+          items.forEach(item => {
+            const itemIndex: number = this.items.length
+            this.appendItem(item)
+            this.layout.plot(itemIndex)  
+          })
+        } else {
+          const itemIndex: number = this.items.length
+          this.appendItem(items)
+          this.layout.plot(itemIndex)  
+        }
+        this
+          .draw()
+          .then(() => {
+            resolve()
+          })
       }
       if (this.isTransitioning === true) {
         this.doneTransitioning = append

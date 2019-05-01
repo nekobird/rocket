@@ -59,6 +59,8 @@ const appendItem = (src: string) => {
       const img: HTMLImageElement = <HTMLImageElement>document.createElement('IMG')
       img.setAttribute('src', src)
       const item: HTMLElement = document.createElement('DIV')
+      item.style.left = `500px`
+      item.style.top = `1000px`
       item.classList.add('item')
       item.appendChild(img)
       containerElement.appendChild(item)
@@ -66,9 +68,43 @@ const appendItem = (src: string) => {
     })
 }
 
+const appendItems = () => {
+  const items = []
+  const promises = []
+  images.forEach(url => {
+    const promise = DOMHelper
+      .onImageLoad(url)
+      .then(() => {
+        const img: HTMLImageElement = <HTMLImageElement>document.createElement('IMG')
+        img.setAttribute('src', url)
+        const item: HTMLElement = document.createElement('DIV')
+        item.style.left = `500px`
+        item.style.top = `1000px`
+        item.classList.add('item')
+        item.appendChild(img)
+        containerElement.appendChild(item)
+        items.push(item)
+        return Promise.resolve()
+      })
+    promises.push(promise)
+  })
+  Promise
+    .all(promises)
+    .then(() => {
+      stackup.append(items)
+    })
+}
 const images = [
   'https://images.unsplash.com/photo-1556624651-1f527cdf6508?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
-  'https://images.unsplash.com/photo-1556624651-70ad2f7e8364?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60'
+  'https://images.unsplash.com/photo-1556624651-70ad2f7e8364?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+  'https://images.unsplash.com/photo-1556624651-1f527cdf6508?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+  'https://images.unsplash.com/photo-1556624651-70ad2f7e8364?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+  'https://images.unsplash.com/photo-1556624651-1f527cdf6508?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+  'https://images.unsplash.com/photo-1556624651-70ad2f7e8364?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+  'https://images.unsplash.com/photo-1556624651-1f527cdf6508?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
+  'https://images.unsplash.com/photo-1556624651-70ad2f7e8364?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
 ]
 
-Util.promiseEach(images, appendItem)
+// Util.promiseEach(images, appendItem)
+
+appendItems()
