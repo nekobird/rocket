@@ -5,7 +5,7 @@ import {
 
 export class DOMHelper {
 
-  private static onImageLoad(src: string): Promise<void> {
+  public static onImageLoad(src: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const img   = new Image()
       img.onerror = () => reject()
