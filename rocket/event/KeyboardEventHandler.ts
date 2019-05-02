@@ -19,6 +19,7 @@ export interface KeyboardEventHandlerConfig {
   conditionKeydown?: KeyboardEventHandlerConditionHook,
   conditionKeyup?: KeyboardEventHandlerConditionHook,
   conditionKeypress?: KeyboardEventHandlerConditionHook,
+
   onKeydown?: KeyboardEventHandlerHook | KeyboardEventHandlerHook[],
   onKeyup?: KeyboardEventHandlerHook | KeyboardEventHandlerHook[],
   onKeypress?: KeyboardEventHandlerHook | KeyboardEventHandlerHook[],
