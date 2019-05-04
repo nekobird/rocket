@@ -1,0 +1,44 @@
+@function borderRadius($size) {
+  @return map-get($_borderRadius, $size);
+}
+
+@function fontFamily($fontFamily) {
+  @return map-get($_fontFamily, $fontFamily);
+}
+
+@function fontSize($size) {
+  @return map-get(map-get($_fontSize, $size), fontSize);
+}
+
+@function fontWeight($weight) {
+  @return map-get($_fontWeight, $weight);
+}
+
+@function lineHeight($size) {
+  @return map-get(map-get($_fontSize, $size), lineHeight);
+}
+
+@function color($color) {
+  @return map-get($_color, $color);
+}
+
+@function breakpoint($breakpoint) {
+  @return map-get($_breakpoint, $breakpoint);
+}
+
+@function columnWidth($col) {
+  @return (base(width) / 12) * $col;
+}
+
+@function space($size) {
+  @return map-get($_space, $size);
+}
+
+@function base($key) {
+  @return map-get($_base, $key);
+}
+
+@mixin applyFontSize($size) {
+  font-size: map-get(map-get($_fontSize, $size), fontSize);
+  line-height: map-get(map-get($_fontSize, $size), lineHeight);
+}

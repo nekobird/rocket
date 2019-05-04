@@ -1,0 +1,122 @@
+// GLOBAL
+
+$_fontFamily: (
+  primary: ('Avenir Next', 'Open Sans', 'Helvetica Neue', Arial, sans-serif),
+  condensed: ('Avenir Next Condensed', 'Open Sans Condensed', 'Helvetica Neue', Arial, sans-serif),
+);
+
+$_fontSize: (
+  xSmall: (
+    fontSize: 12px,
+    lineHeight: 20px,
+  ),
+  small: (
+    fontSize: 14px,
+    lineHeight: 20px,
+  ),
+  normal: (
+    fontSize: 16px,
+    lineHeight: 24px,
+  ),
+  medium: (
+    fontSize: 18px,
+    lineHeight: 24px,
+  ),
+  large: (
+    fontSize: 24px,
+    lineHeight: 30px,
+  ),
+  xLarge: (
+    fontSize: 36px,
+    lineHeight: 42px,
+  ),
+  xxLarge: (
+    fontSize: 48px,
+    lineHeight: 56px,
+  ),
+);
+
+$_fontWeight: (
+  normal: 400,
+  medium: 500,
+  semiBold: 600,
+  bold: 700,
+  extraBold: 900,
+);
+
+$_borderRadius: (
+  xSmall: 4px,
+  small: 8px,
+  medium: 12px,
+  large: 24px,
+);
+
+$_space: (
+  xSmall: 8px,
+  small: 12px,
+  medium: 20px,
+  large: 40px,
+  xLarge: 80px,
+);
+
+$_color: (
+  primary: hsl(220, 100, 50),
+  primary__hover: hsl(220, 100, 40),
+  primary__active: hsl(220, 100, 20),
+  primary__lighter: hsl(220, 100, 90),
+  primary__darker: hsl(220, 100, 20),
+  extraLight: hsl(220, 40, 98),
+  light: hsl(220, 40, 96),
+  light__hover: hsl(220, 30, 92),
+  light__active: hsl(220, 20, 88),
+  medium: hsl(220, 20, 70),
+  dark: hsl(220, 40, 5),
+  dark__hover: hsl(220, 40, 20),
+  dark__active: hsl(220, 40, 10),
+  dark__lighter: hsl(220, 40, 40),
+  error: hsl(340, 50, 50),
+  error__light: hsl(340, 50, 96),
+  success: hsl(180, 100, 50),
+  success__light: hsl(180, 100, 90),
+  white: white,
+  black: black,
+);
+
+$_breakpoint: (
+  xSmall: 320px,
+  small: 480px,
+  medium: 768px,
+  large: 960px,
+  xLarge: 1200px
+);
+
+$_base: (
+  color: map-get($_color, dark),
+  fontFamily: map-get($_fontFamily, primary),
+  labelHeight: 30px,
+  inputHeight: 60px,
+  buttonHeight: 44px,
+  width: 1366px,
+);
+
+// SITE
+
+$site_header: (
+  height: 72px,
+);
+
+$site_headerMenu: (
+  maxWidth: 320px,
+);
+
+$site_footer: (
+  minHeight: 320px,
+);
+
+$site_copyright: (
+  minHeight: 80px,
+);
+
+$site_content: (
+  height: calc(100vh - #{map-get($site_header, height) + map-get($site_footer, minHeight) + map-get($site_copyright, minHeight)})
+);

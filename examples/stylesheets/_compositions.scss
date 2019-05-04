@@ -1,0 +1,26 @@
+%style_normalizeAnchor {
+  color: base(color);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+// Text Styles
+
+%style_text_heading {
+  @include applyFontSize(large);
+
+  color: base(color);
+  font-family: base(fontFamily);
+  font-weight: fontWeight(bold);
+}
+
+%style_text_body {
+  @include applyFontSize(normal);
+
+  color: base(dark);
+  font-family: base(fontFamily);
+  font-weight: fontWeight(medium);
+}

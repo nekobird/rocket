@@ -1,0 +1,16 @@
+@import 'reset';
+
+@import 'variables';
+@import 'utilities';
+
+@import 'compositions';
+
+html {
+  @extend %style_text_body;
+
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  text-rendering: optimizeLegibility;
+}
+

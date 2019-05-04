@@ -20,11 +20,10 @@ ul.inputErrors {
 .input {
   $height: 44px;
 
-  @extend %style_input_normalize;
-
+  appearance: none;
+  display: block;
   height: $height;
   line-height: $height;
-  padding: 20px 1em;
 
   &:focus {
     outline: none;

@@ -9,12 +9,14 @@
     "buildDocumentation": "parcel build ./documentation/index.html --public-url ./",
     "buildExamples": "parcel build ./examples/index.html --public-url ./",
     "prepare": "npm run build",
-    "start": "parcel ./documentation/index.html ./examples/index.html"
+    "documentation": "parcel ./documentation/index.html",
+    "examples": "parcel ./examples/index.html"
   },
   "keywords": [],
   "author": "Andrew Prasetya",
   "license": "ISC",
   "devDependencies": {
+    "posthtml-include": "^1.2.0",
     "sass": "^1.19.0",
     "typescript": "^3.4.5"
   },
