@@ -1,10 +1,10 @@
 .inputGroup {
+
   label {
     display: block;
-    font-size: 16px;
-    line-height: 22px;
   }
-  margin-bottom: 20px;
+
+  margin-bottom: space(medium);
 
   &:last-child {
     margin-bottom: 0px;

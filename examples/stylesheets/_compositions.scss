@@ -20,7 +20,7 @@
 %style_text_body {
   @include applyFontSize(normal);
 
-  color: base(dark);
+  color: base(color);
   font-family: base(fontFamily);
   font-weight: fontWeight(medium);
 }

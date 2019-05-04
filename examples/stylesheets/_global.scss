@@ -1,0 +1,44 @@
+html {
+  @extend %style_text_body;
+
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @extend %style_text_heading;
+
+  margin-bottom: space(medium);
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
+}
+
+p {
+  margin-bottom: space(medium);
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
+}
+
+ul, ol {
+  margin-bottom: space(medium);
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
+}
+
+a:link,
+a:visited {
+  color: color(primary);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

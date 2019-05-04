@@ -1,0 +1,76 @@
+@mixin input() {
+  appearance: none;
+  box-sizing: border-box;
+  display: block;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+@mixin button($height: base(buttonHeight), $lineHeight: base(buttonHeight), $padding: space(large)) {
+  @extend %style_normalizeAnchor;
+  @extend %style_text_body;
+
+  appearance: none;
+  background: color(primary);
+  border-radius: borderRadius(small);
+  border: 0;
+  box-sizing: border-box;
+  color: color(white);
+  cursor: pointer;
+  display: inline-block;
+  font-weight: fontWeight(semiBold);
+  height: $height;
+  line-height: $lineHeight;
+  max-height: $height;
+  padding: #{($height - $lineHeight) / 2} $padding;
+  padding: 0px space(large);
+  text-align: center;
+  transition-duration: 0.2s;
+  transition-property: background-color, border-color, opacity;
+  transition-timing-function: ease-out;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+@mixin input($height: base(inputHeight), $fontSize: normal, $padding: fontSize(normal)) {
+  $_fontSize: fontSize($fontSize);
+  $lineHeight: lineHeight($fontSize);
+
+  @extend %style_text_body;
+
+  appearance: none;
+  background-color: white;
+  border-radius: borderRadius(xSmall);
+  border: 1px solid color(medium);
+  box-sizing: border-box;
+  display: block;
+  font-size: $_fontSize;
+  height: $height;
+  line-height: $lineHeight;
+  padding: #{($height - $lineHeight) / 2} $padding;
+  tab-size : 2;
+  transition-duration: 0.2s;
+  transition-property: background-color, border-color, opacity;
+  transition-timing-function: ease-out;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+@mixin bottomLeftBar($width: 40px, $height: 2px, $color: color(black), $spacing: space(xSmall)) {
+  &:after {
+    background-color: $color;
+    bottom: - $spacing;
+    content: '';
+    height: $height;
+    left: 0px;
+    position: absolute;
+    width: $width;
+  }
+}
