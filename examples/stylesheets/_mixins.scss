@@ -36,7 +36,7 @@
   }
 }
 
-@mixin input($height: base(inputHeight), $fontSize: normal, $padding: fontSize(normal)) {
+@mixin ainput($height: base(inputHeight), $fontSize: normal, $padding: fontSize(normal)) {
   $_fontSize: fontSize($fontSize);
   $lineHeight: lineHeight($fontSize);
 

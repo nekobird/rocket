@@ -13,15 +13,41 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: space(medium);
 
   &:last-child {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 }
 
+h1 {
+  @include applyFontSize(huge);
+}
+
+h2 {
+  @include applyFontSize(xxxlarge);
+}
+
+h3 {
+  @include applyFontSize(xxlarge);
+}
+
+h4 {
+  @include applyFontSize(xlarge);
+}
+
+h5 {
+  @include applyFontSize(large);
+}
+
+h6 {
+  @include applyFontSize(medium);
+}
+
 p {
+  @extend %style_text_body;
+
   margin-bottom: space(medium);
 
   &:last-child {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 }
 
@@ -29,13 +55,13 @@ ul, ol {
   margin-bottom: space(medium);
 
   &:last-child {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 }
 
 a:link,
 a:visited {
-  color: color(primary);
+  color: color();
   text-decoration: none;
 
   &:hover {

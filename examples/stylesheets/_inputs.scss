@@ -1,5 +1,4 @@
 .inputGroup {
-
   label {
     display: block;
   }
@@ -7,7 +6,7 @@
   margin-bottom: space(medium);
 
   &:last-child {
-    margin-bottom: 0px;
+    margin-bottom: 0;
   }
 }
 
@@ -37,7 +36,7 @@ textarea.input {
 
 select {
   appearance: none;
-  border: 1px solid black;
+  border: 1px solid color(black);
   display: block;
   width: 100%;
 }

@@ -1,4 +1,4 @@
-// GLOBAL
+// Global
 
 $_fontFamily: (
   primary: ('Avenir Next', 'Open Sans', 'Helvetica Neue', Arial, sans-serif),
@@ -6,7 +6,7 @@ $_fontFamily: (
 );
 
 $_fontSize: (
-  xSmall: (
+  xsmall: (
     fontSize: 12px,
     lineHeight: 20px,
   ),
@@ -26,13 +26,47 @@ $_fontSize: (
     fontSize: 24px,
     lineHeight: 30px,
   ),
-  xLarge: (
+  xlarge: (
     fontSize: 36px,
     lineHeight: 42px,
   ),
-  xxLarge: (
-    fontSize: 48px,
-    lineHeight: 56px,
+);
+
+$_fontSize_heading: (
+  normal: (
+    fontSize: 42px,
+    lineHeight: 46px,
+  ),
+  medium: (
+    fontSize: 56px,
+    lineHeight: 58px,
+  ),
+  large: (
+    fontSize: 24px,
+    lineHeight: 30px,
+  ),
+  xlarge: (
+    fontSize: 36px,
+    lineHeight: 42px,
+  ),
+);
+
+$_fontSize_display: (
+  normal: (
+    fontSize: 64px,
+    lineHeight: 68px,
+  ),
+  medium: (
+    fontSize: 72px,
+    lineHeight: 76px,
+  ),
+  large: (
+    fontSize: 84px,
+    lineHeight: 88px,
+  ),
+  xlarge: (
+    fontSize: 96px,
+    lineHeight: 96px,
   ),
 );
 
@@ -45,32 +79,34 @@ $_fontWeight: (
 );
 
 $_borderRadius: (
-  xSmall: 4px,
-  small: 8px,
-  medium: 12px,
-  large: 24px,
+  xsmall: 4px,
+  small : 8px,
+  normal: 12px,
+  large : 24px,
 );
 
 $_space: (
-  xs: 8px,
-  s : 12px,
-  m : 20px,
-  l : 40px,
-  xl: 80px,
+  xsmall : 4px,
+  small  : 8px,
+  normal : 12px,
+  medium : 20px,
+  large  : 40px,
+  xlarge : 80px,
+  xxlarge: 100px,
 );
 
 $_color: (
   primary: hsl(340, 50, 50),
-  white: white,
-  black: black,
+  white  : white,
+  black  : black,
 );
 
 $_breakpoint: (
-  xSmall: 320px,
-  small: 480px,
-  medium: 768px,
-  large: 960px,
-  xLarge: 1200px
+  xsmall: 320px,
+  small : 576px,
+  normal: 768px,
+  medium: 992px,
+  large : 1200px,
 );
 
 $_ui: (

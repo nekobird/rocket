@@ -1,44 +1,90 @@
-@function borderRadius($size) {
-  @return map-get($_borderRadius, $size);
+@function borderRadius($key: normal) {
+  @if map-get($_borderRadius, $key) {
+    @return map-get($_borderRadius, $key);
+  } @else {
+    @return map-get($_borderRadius, normal);
+  }
 }
 
-@function fontFamily($fontFamily) {
-  @return map-get($_fontFamily, $fontFamily);
+@function fontFamily($key: normal) {
+  @if map-has-key($_fontFamily, $key) == true {
+    @return map-get($_fontFamily, $key);
+   } @else {
+     @return map-get($_fontFamily, primary);
+   }
 }
 
-@function fontSize($size) {
-  @return map-get(map-get($_fontSize, $size), fontSize);
+@function fontSize($key: normal, $target: null) {
+  @if $target == heading and map-has-key($_fontSize_heading, $key) == true {
+    @return map-get(map-get($_fontSize_heading, $key), fontSize);
+  } @else if $target == display and map-has-key($_fontSize_display, $key) == true {
+    @return map-get(map-get($_fontSize_display, $key), fontSize);
+  } @else {
+    @if map-has-key($_fontSize, $key) == true {
+      @return map-get(map-get($_fontSize, $key), fontSize);
+    } @else {
+      @return map-get(map-get($_fontSize, normal), fontSize);
+    }
+  }
 }
 
-@function fontWeight($weight) {
-  @return map-get($_fontWeight, $weight);
+@function lineHeight($key: normal, $target: null) {
+  @if $target == heading and map-has-key($_fontSize_heading, $key) == true {
+    @return map-get(map-get($_fontSize_heading, $key), lineHeight);
+  } @else if $target == display and map-has-key($_fontSize_display, $key) == true {
+    @return map-get(map-get($_fontSize_display, $key), lineHeight);
+  } @else {
+    @if map-has-key($_fontSize, $key) == true {
+      @return map-get(map-get($_fontSize, $key), lineHeight);
+    } @else {
+      @return map-get(map-get($_fontSize, normal), lineHeight);
+    }
+  }
 }
 
-@function lineHeight($size) {
-  @return map-get(map-get($_fontSize, $size), lineHeight);
+@function fontWeight($key: normal) {
+  @if map-has-key($_fontWeight, $key) == true {
+    @return map-get($_fontWeight, $key);
+  } @else {
+    @return 400;
+  }
 }
 
-@function color($color) {
-  @return map-get($_color, $color);
+@function color($key: primary) {
+  @if map-has-key($_color, $key) == true {
+    @return map-get($_color, $key);
+  } @else {
+    @return map-get($_color, primary);
+  }
 }
 
-@function breakpoint($breakpoint) {
-  @return map-get($_breakpoint, $breakpoint);
+@function breakpoint($key: normal) {
+  @if map-has-key($_breakpoint, $key) == true {
+    @return map-get($_breakpoint, $key);
+  } @else {
+    @return map-get($_breakpoint, normal);
+  }
 }
 
-@function columnWidth($col) {
-  @return (base(width) / 12) * $col;
+@function columnWidth($col: 12, $nOfCol: 12) {
+  @return (base(width) /$nOfCol) * $col;
 }
 
-@function space($size) {
-  @return map-get($_space, $size);
+@function space($key: normal) {
+  @if map-has-key($_space, $key) == true {
+    @return map-get($_space, $key);
+  } @else {
+    @return map-get($_space, normal);
+  }
 }
 
 @function base($key) {
-  @return map-get($_base, $key);
+  @if map-has-key($_base, $key) == true {
+    @return map-get($_base, $key);
+  }
 }
 
-@mixin applyFontSize($size) {
-  font-size: map-get(map-get($_fontSize, $size), fontSize);
-  line-height: map-get(map-get($_fontSize, $size), lineHeight);
+@mixin applyFontSize($key: 'normal', $target: null) {
+  font-size: fontSize($key, $target);
+  line-height: lineHeight($key, $target);
 }
