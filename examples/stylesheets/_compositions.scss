@@ -9,8 +9,16 @@
 
 // Text Styles
 
+%style_text_display {
+  @include applyFontSize(normal, display);
+
+  color: base(color);
+  font-family: base(fontFamily);
+  font-weight: fontWeight(medium);
+}
+
 %style_text_heading {
-  @include applyFontSize(large);
+  @include applyFontSize(normal, heading);
 
   color: base(color);
   font-family: base(fontFamily);

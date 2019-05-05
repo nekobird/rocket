@@ -15,10 +15,18 @@
 }
 
 @function fontSize($key: normal, $target: null) {
-  @if $target == heading and map-has-key($_fontSize_heading, $key) == true {
-    @return map-get(map-get($_fontSize_heading, $key), fontSize);
-  } @else if $target == display and map-has-key($_fontSize_display, $key) == true {
-    @return map-get(map-get($_fontSize_display, $key), fontSize);
+  @if $target == heading {
+    @if map-has-key($_fontSize_heading, $key) == true {
+      @return map-get(map-get($_fontSize_heading, $key), fontSize);
+    } @else {
+      @return map-get(map-get($_fontSize_heading, 'normal'), fontSize);
+    }
+  } @else if $target == display {
+    @if map-has-key($_fontSize_display, $key) == true {
+      @return map-get(map-get($_fontSize_display, $key), fontSize);
+    } @else {
+      @return map-get(map-get($_fontSize_display, 'normal'), fontSize);
+    }
   } @else {
     @if map-has-key($_fontSize, $key) == true {
       @return map-get(map-get($_fontSize, $key), fontSize);
@@ -29,10 +37,18 @@
 }
 
 @function lineHeight($key: normal, $target: null) {
-  @if $target == heading and map-has-key($_fontSize_heading, $key) == true {
-    @return map-get(map-get($_fontSize_heading, $key), lineHeight);
-  } @else if $target == display and map-has-key($_fontSize_display, $key) == true {
-    @return map-get(map-get($_fontSize_display, $key), lineHeight);
+  @if $target == heading {
+    @if map-has-key($_fontSize_heading, $key) == true {
+      @return map-get(map-get($_fontSize_heading, $key), lineHeight);
+    } @else {
+      @return map-get(map-get($_fontSize_heading, 'normal'), lineHeight);
+    }
+  } @else if $target == display {
+    @if map-has-key($_fontSize_display, $key) == true {
+      @return map-get(map-get($_fontSize_display, $key), lineHeight);
+    } @else {
+      @return map-get(map-get($_fontSize_display, 'normal'), lineHeight);
+    }
   } @else {
     @if map-has-key($_fontSize, $key) == true {
       @return map-get(map-get($_fontSize, $key), lineHeight);
@@ -40,6 +56,11 @@
       @return map-get(map-get($_fontSize, normal), lineHeight);
     }
   }
+}
+
+@mixin applyFontSize($key: 'normal', $target: null) {
+  font-size  :   fontSize($key, $target);
+  line-height: lineHeight($key, $target);
 }
 
 @function fontWeight($key: normal) {
@@ -79,12 +100,5 @@
 }
 
 @function base($key) {
-  @if map-has-key($_base, $key) == true {
-    @return map-get($_base, $key);
-  }
-}
-
-@mixin applyFontSize($key: 'normal', $target: null) {
-  font-size: fontSize($key, $target);
-  line-height: lineHeight($key, $target);
+  @return map-get($_base, $key);
 }

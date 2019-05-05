@@ -1,80 +1,80 @@
 // Global
 
 $_fontFamily: (
-  primary: ('Avenir Next', 'Open Sans', 'Helvetica Neue', Arial, sans-serif),
-  condensed: ('Avenir Next Condensed', 'Open Sans Condensed', 'Helvetica Neue', Arial, sans-serif),
+  primary  : ('Avenir Next', 'Helvetica Neue', Arial, sans-serif),
+  condensed: ('Avenir Next Condensed', 'Helvetica Neue', Arial, sans-serif),
 );
 
 $_fontSize: (
   xsmall: (
-    fontSize: 12px,
+    fontSize  : 12px,
     lineHeight: 20px,
   ),
   small: (
-    fontSize: 14px,
+    fontSize  : 14px,
     lineHeight: 20px,
   ),
   normal: (
-    fontSize: 16px,
+    fontSize  : 16px,
     lineHeight: 24px,
   ),
   medium: (
-    fontSize: 18px,
+    fontSize  : 18px,
     lineHeight: 24px,
   ),
   large: (
-    fontSize: 24px,
+    fontSize  : 20px,
     lineHeight: 30px,
   ),
   xlarge: (
-    fontSize: 36px,
-    lineHeight: 42px,
+    fontSize  : 24px,
+    lineHeight: 28px,
   ),
 );
 
 $_fontSize_heading: (
   normal: (
-    fontSize: 42px,
-    lineHeight: 46px,
+    fontSize  : 36px,
+    lineHeight: 44px,
   ),
   medium: (
-    fontSize: 56px,
+    fontSize  : 42px,
     lineHeight: 58px,
   ),
   large: (
-    fontSize: 24px,
-    lineHeight: 30px,
+    fontSize  : 48px,
+    lineHeight: 54px,
   ),
   xlarge: (
-    fontSize: 36px,
-    lineHeight: 42px,
+    fontSize  : 56px,
+    lineHeight: 64px,
   ),
 );
 
 $_fontSize_display: (
   normal: (
-    fontSize: 64px,
+    fontSize  : 64px,
     lineHeight: 68px,
   ),
   medium: (
-    fontSize: 72px,
+    fontSize  : 72px,
     lineHeight: 76px,
   ),
   large: (
-    fontSize: 84px,
+    fontSize  : 84px,
     lineHeight: 88px,
   ),
   xlarge: (
-    fontSize: 96px,
+    fontSize  : 96px,
     lineHeight: 96px,
   ),
 );
 
 $_fontWeight: (
-  normal: 400,
-  medium: 500,
-  semiBold: 600,
-  bold: 700,
+  normal   : 400,
+  medium   : 500,
+  semiBold : 600,
+  bold     : 700,
   extraBold: 900,
 );
 

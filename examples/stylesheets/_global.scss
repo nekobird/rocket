@@ -7,6 +7,17 @@ html {
   text-rendering: optimizeLegibility;
 }
 
+.display1, .display2, .display3,
+.display4, .display5, .display6 {
+  @extend %style_text_display;
+
+  margin-bottom: space(medium);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
 h1, h2, h3, h4, h5, h6 {
   @extend %style_text_heading;
 
@@ -17,28 +28,36 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+h1.display1 {
+  @include applyFontSize(xlarge, display);
+}
+
+h1.display2 {
+  @include applyFontSize(large, display);
+}
+
 h1 {
-  @include applyFontSize(huge);
+  @include applyFontSize(xlarge, heading);
 }
 
 h2 {
-  @include applyFontSize(xxxlarge);
+  @include applyFontSize(large, heading);
 }
 
 h3 {
-  @include applyFontSize(xxlarge);
+  @include applyFontSize(medium, heading);
 }
 
 h4 {
-  @include applyFontSize(xlarge);
+  @include applyFontSize(normal, heading);
 }
 
 h5 {
-  @include applyFontSize(large);
+  @include applyFontSize(small, heading);
 }
 
 h6 {
-  @include applyFontSize(medium);
+  @include applyFontSize(xsmall, heading);
 }
 
 p {
@@ -49,6 +68,28 @@ p {
   &:last-child {
     margin-bottom: 0;
   }
+}
+
+// inline
+
+strong {
+  font-weight: fontWeight(bold);
+}
+
+em {
+  font-style: italic;
+}
+
+u {
+  text-decoration: underline;
+}
+
+small {
+  @include applyFontSize(small);
+}
+
+del, s {
+  text-decoration: line-through;
 }
 
 ul, ol {

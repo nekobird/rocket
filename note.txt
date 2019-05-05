@@ -28,3 +28,6 @@ value
 
 https://developer.mozilla.org/en-US/docs/Web/CSS/orphans
 
+https://csswizardry.com/2014/01/extending-silent-classes-in-sass/
+
+https://getbootstrap.com/docs/4.0/content/typography/

@@ -17,12 +17,7 @@ ul.inputErrors {
 }
 
 .input {
-  $height: 44px;
-
-  appearance: none;
-  display: block;
-  height: $height;
-  line-height: $height;
+  @include input();
 
   &:focus {
     outline: none;
@@ -36,7 +31,56 @@ textarea.input {
 
 select {
   appearance: none;
-  border: 1px solid color(black);
   display: block;
+
+  border: 1px solid color(black);
+
   width: 100%;
+}
+
+.inputPlaceholder {
+  $height: 60px;
+
+  height: $height;
+  position: relative;
+
+  input.input {
+    background-color: transparent;
+    height: $height;
+    position: absolute;
+    z-index: 1;
+  }
+
+  label.label {
+    height: 44px;
+    position: absolute;
+    line-height: 60px;
+    top: 0px;
+    z-index: 0;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+    font-size: 14px;
+    padding-left: 16px;
+    padding-right: 16px;
+  
+  }
+
+  &.__focus {
+    input.input {
+      border-radius: 8px;
+      border: 1px solid black;
+      line-height: 20px;
+      padding-left: 16px;
+      padding-right: 16px;
+      padding-top: 18px;
+    }
+    label.label {
+      top: 0px;
+      height: 18px;
+      font-size: 12px;
+      line-height: 16px;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
 }
