@@ -50,52 +50,52 @@ export const SEQUENCE_DEFAULT_CONFIG: SequenceConfig = {
 
   listenToClickOutside: false,
   listenToTouchOutside: false,
-  listenToKeydown: false,
+  listenToKeydown     : false,
 
-  selectorItems: '.item',
+  selectorItems: '.js-sequence-item',
 
-  classNameItemActive: '__active',
-  classNameJsPrevious: 'js_previous',
-  classNameJsNext: 'js_next',
-  classNameJsJump: 'js_jump',
+  classNameItemActive: 'js-sequence-item--active',
+  classNameJsPrevious: 'js-sequence-item-previous',
+  classNameJsNext    : 'js-sequence-item-next',
+  classNameJsJump    : 'js-sequence-item-jump',
 
   beforeDeactivate: (action, context) => { return Promise.resolve() },
-  beforeActivate: (action, context) => { return Promise.resolve() },
-  afterDeactivate: (action, context) => { return Promise.resolve() },
-  afterActivate: (action, context) => { return Promise.resolve() },
+  beforeActivate  : (action, context) => { return Promise.resolve() },
+  afterDeactivate : (action, context) => { return Promise.resolve() },
+  afterActivate   : (action, context) => { return Promise.resolve() },
 
   conditionPrevious: (action, context) => { return true },
-  conditionNext: (action, context) => { return true },
-  conditionJump: (action, context) => { return true },
+  conditionNext    : (action, context) => { return true },
+  conditionJump    : (action, context) => { return true },
 
   beforeAction: (action, context) => { return Promise.resolve() },
-  afterAction: (action, context) => { },
+  afterAction : (action, context) => { },
 
   onClickOutside: (event, group, context) => { },
   onTouchOutside: (event, group, context) => { },
-  onKeydown: (event, group, context) => { },
+  onKeydown     : (event, group, context) => { },
 }
 
 export const SEQUENCE_EVENT_ENTRY_LIST: EventEntry[] = [
   {
-    name: 'previous',
-    action: 'previous',
-    target: 'jsPrevious',
-    event: ['click', 'touch'],
+    name    : 'previous',
+    action  : 'previous',
+    target  : 'jsPrevious',
+    event   : ['click', 'touch'],
     listener: undefined,
   },
   {
-    name: 'next',
-    action: 'next',
-    target: 'jsNext',
-    event: ['click', 'touch'],
+    name    : 'next',
+    action  : 'next',
+    target  : 'jsNext',
+    event   : ['click', 'touch'],
     listener: undefined,
   },
   {
-    name: 'jump',
-    action: 'jump',
-    target: 'jsJump',
-    event: ['click', 'touch'],
+    name    : 'jump',
+    action  : 'jump',
+    target  : 'jsJump',
+    event   : ['click', 'touch'],
     listener: undefined,
   },
 ]

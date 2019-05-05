@@ -48,50 +48,51 @@ export const MONO_DEFAULT_CONFIG: MonoConfig = {
   listenToTouchOutside: false,
   listenToKeydown: false,
 
-  selectorItems: '.item',
+  selectorItems: '.js-mono-item',
 
-  classNameItemActive: '__active',
-  classNameJsActivate: 'js_activate',
-  classNameJsDeactivate: 'js_deactivate',
-  classNameJsToggle: 'js_toggle',
+  classNameItemActive: 'js-mono-item--active',
 
-  beforeActivate: (action, context) => { return Promise.resolve() },
+  classNameJsActivate  : 'js-mono-item-activate',
+  classNameJsDeactivate: 'js-mono-item-deactivate',
+  classNameJsToggle    : 'js-mono-item-toggle',
+
+  beforeActivate  : (action, context) => { return Promise.resolve() },
   beforeDeactivate: (action, context) => { return Promise.resolve() },
 
-  afterActivate: (action, context) => { return Promise.resolve() },
+  afterActivate  : (action, context) => { return Promise.resolve() },
   afterDeactivate: (action, context) => { return Promise.resolve() },
 
-  conditionActivate: (action, context) => { return true },
+  conditionActivate  : (action, context) => { return true },
   conditionDeactivate: (action, context) => { return true },
 
   beforeAction: (action, context) => { return Promise.resolve() },
-  afterAction: (action, context) => { },
+  afterAction : (action, context) => { },
 
   onClickOutside: (event, group, context) => { },
   onTouchOutside: (event, group, context) => { },
-  onKeydown: (event, group, context) => { },
+  onKeydown     : (event, group, context) => { },
 }
 
 export const MONO_EVENT_ENTRY_LIST: EventEntry[] = [
   {
-    name: 'activate',
-    action: 'activate',
-    target: 'jsActivate',
-    event: ['click', 'touchstart'],
+    name    : 'activate',
+    action  : 'activate',
+    target  : 'jsActivate',
+    event   : ['click', 'touchstart'],
     listener: undefined,
   },
   {
-    name: 'deactivate',
-    action: 'deactivate',
-    target: 'jsDeactivate',
-    event: ['click', 'touchstart'],
+    name    : 'deactivate',
+    action  : 'deactivate',
+    target  : 'jsDeactivate',
+    event   : ['click', 'touchstart'],
     listener: undefined,
   },
   {
-    name: 'toggle',
-    action: 'toggle',
-    target: 'jsToggle',
-    event: ['click', 'touchstart'],
+    name    : 'toggle',
+    action  : 'toggle',
+    target  : 'jsToggle',
+    event   : ['click', 'touchstart'],
     listener: undefined,
   },
 ]

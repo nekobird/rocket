@@ -3,12 +3,12 @@ import {
 } from '../../rocket/rocket'
 
 const controller = new MonoController({
-  selectorItems: '.item',
+  selectorItems: '.js-item',
 
-  classNameItemActive: '__active',
-  classNameJsActivate: 'js_activate',
-  classNameJsDeactivate: 'js_deactivate',
-  classNameJsToggle: 'js_toggle',
+  classNameItemActive: '.js-item--active',
+  classNameJsActivate: 'js-item-activate',
+  classNameJsDeactivate: 'js-item-deactivate',
+  classNameJsToggle: 'js-item-toggle',
 
   beforeDeactivate: (action, context) => {
     return new Promise(resolve => {

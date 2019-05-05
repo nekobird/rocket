@@ -1,13 +1,16 @@
 @import 'reset';
 
-@import 'variables';
+@import 'base';
 @import 'utilities';
-@import 'mixins';
+
+@import 'variables';
+@import 'variableUtilities';
 
 @import 'compositions';
 
-@import 'global';
+@import 'mixins';
 
+@import 'global';
 @import 'inputs';
 
 .row {

@@ -53,6 +53,7 @@ export * from './text/textBoxModel'
 // UI
 export * from './ui/uiTextArea'
 export * from './ui/uiTextField'
+export * from './ui/inputPlaceholderManager'
 
 // HTML
 export * from './htmlController/monoController/monoController'
