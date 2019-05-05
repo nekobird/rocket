@@ -11,7 +11,7 @@ html {
 .display4, .display5, .display6 {
   @extend %style-text-display;
 
-  margin-bottom: space(medium);
+  margin-bottom: space('medium');
 
   &:last-child {
     margin-bottom: 0;
@@ -21,7 +21,7 @@ html {
 h1, h2, h3, h4, h5, h6 {
   @extend %style-text-heading;
 
-  margin-bottom: space(medium);
+  margin-bottom: space('medium');
 
   &:last-child {
     margin-bottom: 0;
@@ -29,41 +29,41 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1.display1 {
-  @include apply-font-size(xlarge, display);
+  @include apply-font-size('x-large', 'display');
 }
 
 h1.display2 {
-  @include apply-font-size(large, display);
+  @include apply-font-size('large', 'display');
 }
 
 h1 {
-  @include apply-font-size(xlarge, heading);
+  @include apply-font-size('x-large', 'heading');
 }
 
 h2 {
-  @include apply-font-size(large, heading);
+  @include apply-font-size('large', 'heading');
 }
 
 h3 {
-  @include apply-font-size(medium, heading);
+  @include apply-font-size('medium', 'heading');
 }
 
 h4 {
-  @include apply-font-size(base, heading);
+  @include apply-font-size('base', 'heading');
 }
 
 h5 {
-  @include apply-font-size(small, heading);
+  @include apply-font-size('small', 'heading');
 }
 
 h6 {
-  @include apply-font-size(xsmall, heading);
+  @include apply-font-size('x-small', 'heading');
 }
 
 p {
   @extend %style-text-body;
 
-  margin-bottom: space(medium);
+  margin-bottom: space('medium');
 
   &:last-child {
     margin-bottom: 0;
@@ -73,7 +73,7 @@ p {
 // inline
 
 strong {
-  font-weight: font-weight(bold);
+  font-weight: font-weight('bold');
 }
 
 em {
@@ -85,7 +85,7 @@ u {
 }
 
 small {
-  @include apply-font-size(small);
+  @include apply-font-size('small');
 }
 
 del, s {
@@ -93,7 +93,7 @@ del, s {
 }
 
 ul, ol {
-  margin-bottom: space(medium);
+  margin-bottom: space('medium');
 
   &:last-child {
     margin-bottom: 0;

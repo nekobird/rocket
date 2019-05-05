@@ -1,4 +1,4 @@
-@mixin button($height: base(button-height), $line-height: base(button-height), $padding: space(large)) {
+@mixin button($height: base('button-height'), $line-height: base('button-height'), $padding: space('large')) {
   @extend %style-normalizeAnchor;
   @extend %style-text-body;
 
@@ -10,14 +10,14 @@
   height: $height;
   max-height: $height;
   padding: #{($height - $line-height) / 2} $padding;
-  padding: 0px space(large);
+  padding: 0px space('large');
 
-  background: color(primary);
-  border-radius: border-radius(small);
+  background: color('primary');
+  border-radius: border-radius('small');
   border: 0;
 
-  color: color(white);
-  font-weight: font-weight(semi-bold);
+  color: color('white');
+  font-weight: font-weight('semi-bold');
   line-height: $line-height;
   text-align: center;
 
@@ -30,9 +30,9 @@
   }
 }
 
-@mixin input($height: base(input-height), $padding: font-size(base), $font-size: base) {
-  $_font-size: font-size($font-size);
-  $line-height: line-height($font-size);
+@mixin input($height: base('input-height'), $padding: font-size('base'), $font-size: 'base') {
+  $_font-size  : font-size($font-size);
+  $_line-height: line-height($font-size);
 
   @extend %style-text-body;
 
@@ -42,15 +42,15 @@
   tab-size : 2;
 
   height: $height;
-  padding: #{($height - $line-height) / 2} $padding;  
+  padding: #{($height - $_line-height) / 2} $padding;  
   width: 100%;
 
-  background-color: white;
-  border-radius: borderRadius(xSmall);
-  border: 1px solid color(medium);
+  background-color: color('white');
+  border-radius: border-radius('x=small');
+  border: 1px solid color('medium');
 
-  font-size: $_font-size;
-  line-height: $line-height;
+  font-size  : $_font-size;
+  line-height: $_line-height;
 
   transition-duration: 0.2s;
   transition-property: background-color, border-color, opacity;
@@ -63,7 +63,7 @@
   }
 }
 
-@mixin bottom-left-bar($width: 40px, $height: 2px, $color: color(black), $spacing: space(x-small)) {
+@mixin bottom-left-bar($width: 40px, $height: 2px, $color: color('black'), $spacing: space('x-small')) {
   &:after {
     content: '';
     position: absolute;
