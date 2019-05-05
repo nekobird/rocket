@@ -1,5 +1,5 @@
 @function border-radius($key: 'base') {
-  @if map-get($border-radius, $key) {
+  @if map-has-key($border-radius, $key) == true {
     @return map-get($border-radius, $key);
   } @else {
     @return map-get($border-radius, 'base');
@@ -58,6 +58,14 @@
   }
 }
 
+@function get-line-height-px($font-size: 'base') {
+  @return (line-height($font-size) * (base('font-size') * strip-unit(font-size($font-size)))) + 0px;
+}
+
+@function get-line-height-rem($font-size: 'base') {
+  @return strip-unit(font-size($font-size)) * strip-unit(line-height($font-size)) + 0rem;
+}
+
 @mixin apply-font-size($key: 'base', $target: null) {
   font-size  :   font-size($key, $target);
   line-height: line-height($key, $target);
@@ -97,6 +105,10 @@
   } @else {
     @return map-get($space, 'base');
   }
+}
+
+@function ui($key: 'base') {
+  @return map-get($ui, $key);
 }
 
 @function base($key) {

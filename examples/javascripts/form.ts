@@ -120,6 +120,6 @@ export class InputPlaceholderManager {
 }
 
 new InputPlaceholderManager({
-  activeClassName: '__focus',
-  inputPlaceholderClassName: 'inputPlaceholder'
+  activeClassName: 'input-placeholder--focus',
+  inputPlaceholderClassName: 'input-placeholder'
 })

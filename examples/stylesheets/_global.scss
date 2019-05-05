@@ -28,34 +28,34 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-h1.display1 {
+.display1 {
   @include apply-font-size('x-large', 'display');
 }
-
-h1.display2 {
+.display2 {
   @include apply-font-size('large', 'display');
+}
+.display3 {
+  @include apply-font-size('medium', 'display');
+}
+.display4 {
+  @include apply-font-size('base', 'display');
 }
 
 h1 {
   @include apply-font-size('x-large', 'heading');
 }
-
 h2 {
   @include apply-font-size('large', 'heading');
 }
-
 h3 {
   @include apply-font-size('medium', 'heading');
 }
-
 h4 {
   @include apply-font-size('base', 'heading');
 }
-
 h5 {
   @include apply-font-size('small', 'heading');
 }
-
 h6 {
   @include apply-font-size('x-small', 'heading');
 }
@@ -70,7 +70,7 @@ p {
   }
 }
 
-// inline
+// Inline
 
 strong {
   font-weight: font-weight('bold');

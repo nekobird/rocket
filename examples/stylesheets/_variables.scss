@@ -1,6 +1,6 @@
 $base: (
-  width    : 1366px,
-  font-size: 16px,
+  'width'    : 1366px,
+  'font-size': 16px,
 );
 
 // Unit utilities
@@ -12,7 +12,7 @@ $base: (
   @return $number;
 }
 
-@function calculate-rem($px, $base: map-get($base, font-size)) {
+@function calculate-rem($px, $base: map-get($base, 'font-size')) {
   @return strip-unit($px) / strip-unit($base) + 0rem;
 }
 
@@ -22,6 +22,10 @@ $base: (
 
 @function column-width($col: 12, $nOfCol: 12) {
   @return (base(width) /$nOfCol) * $col;
+}
+
+@function convert-rem-to-px($rem) {
+  @return strip-unit($rem) * base('font-size');
 }
 
 // Global
@@ -113,13 +117,13 @@ $border-radius: (
 );
 
 $space: (
-  'x-small' : 4px,
-  'small'   : 8px,
-  'base'    : 12px,
-  'medium'  : 20px,
-  'large'   : 40px,
-  'x-large' : 80px,
-  'xx-large': 100px,
+  'x-small' : calculate-rem(4),
+  'small'   : calculate-rem(8),
+  'base'    : calculate-rem(12),
+  'medium'  : calculate-rem(20),
+  'large'   : calculate-rem(40),
+  'x-large' : calculate-rem(80),
+  'xx-large': calculate-rem(100),
 );
 
 $color: (

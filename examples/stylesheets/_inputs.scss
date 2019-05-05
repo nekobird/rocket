@@ -16,17 +16,20 @@ ul.input-errors {
   }
 }
 
-.input {
-  @include input();
-
-  &:focus {
-    outline: none;
-  }
+.label {
+  margin-bottom: space('x-small');
 }
 
-textarea.input {
-  display: block;
-  resize: none;
+.input {
+  @include input();
+}
+
+textarea.textarea {
+  @include textarea();
+}
+
+.button {
+  @include button();
 }
 
 select {
@@ -39,29 +42,27 @@ select {
 }
 
 .input-placeholder {
-  $height: 60px;
-
-  height: $height;
+  height: ui('input-height');
   position: relative;
 
   input.input {
     background-color: transparent;
-    height: $height;
     position: absolute;
     z-index: 1;
   }
 
   label.label {
-    height: 44px;
+    font-size: font-size('small');
+    height: ui('label-height');
+    line-height: ui('input-height');
+    padding-left: font-size('base');
+    padding-right: space('base');
     position: absolute;
-    line-height: 60px;
-    top: 0px;
+    top: 0;
     z-index: 0;
+
     transition-duration: 0.2s;
     transition-timing-function: ease-out;
-    font-size: 14px;
-    padding-left: 16px;
-    padding-right: 16px;
   }
 
   &.input-placeholder--focus {
@@ -69,12 +70,13 @@ select {
       border-radius: 8px;
       border: 1px solid color('black');
       line-height: 20px;
-      padding-left: 16px;
-      padding-right: 16px;
+      padding-left: font-size('base');
+      padding-right: font-size('base');
       padding-top: 18px;
     }
+
     label.label {
-      top: 0px;
+      top: 0;
       height: 18px;
       font-size: 12px;
       line-height: 16px;
