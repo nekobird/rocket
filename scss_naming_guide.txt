@@ -1,0 +1,29 @@
+full path
+
+parent_children
+  child
+  child
+
+something something__modifier
+something something__state
+something something__variant
+something something__variant_subvariant
+
+element
+
+for javascript related things
+js_
+block
+elements
+
+js_<selection><action>
+
+http://getbem.com/
+
+https://github.com/airbnb/css#oocss-and-bem
+
+https://css-tricks.com/sass-style-guide/
+
+https://github.com/bigcommerce/sass-style-guide
+
+https://allthingssmitty.com/2017/01/30/nope-nope-nope-line-height-is-unitless/

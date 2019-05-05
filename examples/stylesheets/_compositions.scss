@@ -1,4 +1,4 @@
-%style_normalizeAnchor {
+%style-normalizeAnchor {
   color: base(color);
   text-decoration: none;
 
@@ -9,26 +9,26 @@
 
 // Text Styles
 
-%style_text_display {
-  @include applyFontSize(normal, display);
+%style-text-display {
+  @include apply-font-size(normal, display);
 
   color: base(color);
-  font-family: base(fontFamily);
-  font-weight: fontWeight(medium);
+  font-family: base(font-family);
+  font-weight: font-weight(medium);
 }
 
-%style_text_heading {
-  @include applyFontSize(normal, heading);
+%style-text-heading {
+  @include apply-font-size(normal, heading);
 
   color: base(color);
-  font-family: base(fontFamily);
-  font-weight: fontWeight(bold);
+  font-family: base(font-family);
+  font-weight: font-weight(bold);
 }
 
-%style_text_body {
-  @include applyFontSize(normal);
+%style-text-body {
+  @include apply-font-size(normal);
 
   color: base(color);
-  font-family: base(fontFamily);
-  font-weight: fontWeight(medium);
+  font-family: base(font-family);
+  font-weight: font-weight(medium);
 }

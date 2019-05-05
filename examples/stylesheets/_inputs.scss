@@ -1,4 +1,4 @@
-.inputGroup {
+.input-group {
   label {
     display: block;
   }
@@ -10,7 +10,7 @@
   }
 }
 
-ul.inputErrors {
+ul.input-errors {
   li {
     display: block;
   }
@@ -38,7 +38,7 @@ select {
   width: 100%;
 }
 
-.inputPlaceholder {
+.input-placeholder {
   $height: 60px;
 
   height: $height;
@@ -62,10 +62,9 @@ select {
     font-size: 14px;
     padding-left: 16px;
     padding-right: 16px;
-  
   }
 
-  &.__focus {
+  &.input-placeholder--focus {
     input.input {
       border-radius: 8px;
       border: 1px solid black;

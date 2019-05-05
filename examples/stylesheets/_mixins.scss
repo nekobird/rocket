@@ -1,6 +1,6 @@
-@mixin button($height: base(buttonHeight), $lineHeight: base(buttonHeight), $padding: space(large)) {
-  @extend %style_normalizeAnchor;
-  @extend %style_text_body;
+@mixin button($height: base(button-height), $line-height: base(button-height), $padding: space(large)) {
+  @extend %style-normalizeAnchor;
+  @extend %style-text-body;
 
   appearance: none;
   box-sizing: border-box;
@@ -9,16 +9,16 @@
 
   height: $height;
   max-height: $height;
-  padding: #{($height - $lineHeight) / 2} $padding;
+  padding: #{($height - $line-height) / 2} $padding;
   padding: 0px space(large);
 
   background: color(primary);
-  border-radius: borderRadius(small);
+  border-radius: border-radius(small);
   border: 0;
 
   color: color(white);
-  font-weight: fontWeight(semiBold);
-  line-height: $lineHeight;
+  font-weight: font-weight(semi-bold);
+  line-height: $line-height;
   text-align: center;
 
   transition-duration: 0.2s;
@@ -30,11 +30,11 @@
   }
 }
 
-@mixin input($height: base(inputHeight), $padding: fontSize(normal), $fontSize: normal) {
-  $_fontSize: fontSize($fontSize);
-  $lineHeight: lineHeight($fontSize);
+@mixin input($height: base(input-height), $padding: font-size(base), $font-size: base) {
+  $_font-size: font-size($font-size);
+  $line-height: line-height($font-size);
 
-  @extend %style_text_body;
+  @extend %style-text-body;
 
   appearance: none;
   box-sizing: border-box;
@@ -42,15 +42,15 @@
   tab-size : 2;
 
   height: $height;
-  padding: #{($height - $lineHeight) / 2} $padding;  
+  padding: #{($height - $line-height) / 2} $padding;  
   width: 100%;
 
   background-color: white;
   border-radius: borderRadius(xSmall);
   border: 1px solid color(medium);
 
-  font-size: $_fontSize;
-  line-height: $lineHeight;
+  font-size: $_font-size;
+  line-height: $line-height;
 
   transition-duration: 0.2s;
   transition-property: background-color, border-color, opacity;
@@ -63,7 +63,7 @@
   }
 }
 
-@mixin bottomLeftBar($width: 40px, $height: 2px, $color: color(black), $spacing: space(xSmall)) {
+@mixin bottom-left-bar($width: 40px, $height: 2px, $color: color(black), $spacing: space(x-small)) {
   &:after {
     content: '';
     position: absolute;

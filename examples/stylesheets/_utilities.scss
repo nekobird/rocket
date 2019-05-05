@@ -1,104 +1,108 @@
-@function borderRadius($key: normal) {
-  @if map-get($_borderRadius, $key) {
-    @return map-get($_borderRadius, $key);
+@function border-radius($key: base) {
+  @if map-get($border-radius, $key) {
+    @return map-get($border-radius, $key);
   } @else {
-    @return map-get($_borderRadius, normal);
+    @return map-get($border-radius, base);
   }
 }
 
-@function fontFamily($key: normal) {
-  @if map-has-key($_fontFamily, $key) == true {
-    @return map-get($_fontFamily, $key);
+@function font-family($key: base) {
+  @if map-has-key($font-family, $key) == true {
+    @return map-get($font-family, $key);
    } @else {
-     @return map-get($_fontFamily, primary);
+     @return map-get($font-family, base);
    }
 }
 
-@function fontSize($key: normal, $target: null) {
+@function font-size($key: base, $target: null) {
   @if $target == heading {
-    @if map-has-key($_fontSize_heading, $key) == true {
-      @return map-get(map-get($_fontSize_heading, $key), fontSize);
+    @if map-has-key($font-size-heading, $key) == true {
+      @return map-get(map-get($font-size-heading, $key), font-size);
     } @else {
-      @return map-get(map-get($_fontSize_heading, 'normal'), fontSize);
+      @return map-get(map-get($font-size-heading, base), font-size);
     }
   } @else if $target == display {
-    @if map-has-key($_fontSize_display, $key) == true {
-      @return map-get(map-get($_fontSize_display, $key), fontSize);
+    @if map-has-key($font-size-display, $key) == true {
+      @return map-get(map-get($font-size-display, $key), font-size);
     } @else {
-      @return map-get(map-get($_fontSize_display, 'normal'), fontSize);
+      @return map-get(map-get($font-size-display, base), font-size);
     }
   } @else {
-    @if map-has-key($_fontSize, $key) == true {
-      @return map-get(map-get($_fontSize, $key), fontSize);
+    @if map-has-key($font-size, $key) == true {
+      @return map-get(map-get($font-size, $key), font-size);
     } @else {
-      @return map-get(map-get($_fontSize, normal), fontSize);
+      @return map-get(map-get($font-size, base), font-size);
     }
   }
 }
 
-@function lineHeight($key: normal, $target: null) {
+@function line-height($key: base, $target: null) {
   @if $target == heading {
-    @if map-has-key($_fontSize_heading, $key) == true {
-      @return map-get(map-get($_fontSize_heading, $key), lineHeight);
+    @if map-has-key($font-size-heading, $key) == true {
+      @return map-get(map-get($font-size-heading, $key), line-height);
     } @else {
-      @return map-get(map-get($_fontSize_heading, 'normal'), lineHeight);
+      @return map-get(map-get($font-size-heading, base), line-height);
     }
   } @else if $target == display {
-    @if map-has-key($_fontSize_display, $key) == true {
-      @return map-get(map-get($_fontSize_display, $key), lineHeight);
+    @if map-has-key($font-size-display, $key) == true {
+      @return map-get(map-get($font-size-display, $key), line-height);
     } @else {
-      @return map-get(map-get($_fontSize_display, 'normal'), lineHeight);
+      @return map-get(map-get($font-size-display, base), line-height);
     }
   } @else {
-    @if map-has-key($_fontSize, $key) == true {
-      @return map-get(map-get($_fontSize, $key), lineHeight);
+    @if map-has-key($font-size, $key) == true {
+      @return map-get(map-get($font-size, $key), line-height);
     } @else {
-      @return map-get(map-get($_fontSize, normal), lineHeight);
+      @return map-get(map-get($font-size, base), line-height);
     }
   }
 }
 
-@mixin applyFontSize($key: 'normal', $target: null) {
-  font-size  :   fontSize($key, $target);
-  line-height: lineHeight($key, $target);
+@mixin apply-font-size($key: base, $target: null) {
+  font-size  :   font-size($key, $target);
+  line-height: line-height($key, $target);
 }
 
-@function fontWeight($key: normal) {
-  @if map-has-key($_fontWeight, $key) == true {
-    @return map-get($_fontWeight, $key);
+@function font-weight($_weight: normal) {
+  @if map-has-key($font-weight, $_weight) == true {
+    @return map-get($font-weight, $_weight);
   } @else {
     @return 400;
   }
 }
 
-@function color($key: primary) {
-  @if map-has-key($_color, $key) == true {
-    @return map-get($_color, $key);
+@function color($_color: primary, $_variant: base) {
+  @if map-has-key($color, $_color) == true {
+    @if map-has-key(map-get($color, $_color), $_variant) == true {
+      @return map-get(map-get($color, $_color), $_variant);
+    } @else {
+      @return map-get(map-get($color, $_color), base);
+    }
   } @else {
-    @return map-get($_color, primary);
+    @return map-get(map-get($color, primary), base);
   }
 }
 
-@function breakpoint($key: normal) {
-  @if map-has-key($_breakpoint, $key) == true {
-    @return map-get($_breakpoint, $key);
+@function breakpoint($key: base) {
+  @if map-has-key($breakpoint, $key) == true {
+    @return map-get($breakpoint, $key);
   } @else {
-    @return map-get($_breakpoint, normal);
+    @return map-get($breakpoint, base);
   }
 }
 
-@function columnWidth($col: 12, $nOfCol: 12) {
+@function column-width($col: 12, $nOfCol: 12) {
   @return (base(width) /$nOfCol) * $col;
 }
 
-@function space($key: normal) {
-  @if map-has-key($_space, $key) == true {
-    @return map-get($_space, $key);
+@function space($key: base) {
+  @if map-has-key($space, $key) == true {
+    @return map-get($space, $key);
   } @else {
-    @return map-get($_space, normal);
+    @return map-get($space, base);
   }
 }
 
 @function base($key) {
-  @return map-get($_base, $key);
+  @return map-get($base, $key);
 }

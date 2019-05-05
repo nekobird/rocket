@@ -1,5 +1,5 @@
 html {
-  @extend %style_text_body;
+  @extend %style-text-body;
 
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -9,7 +9,7 @@ html {
 
 .display1, .display2, .display3,
 .display4, .display5, .display6 {
-  @extend %style_text_display;
+  @extend %style-text-display;
 
   margin-bottom: space(medium);
 
@@ -19,7 +19,7 @@ html {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @extend %style_text_heading;
+  @extend %style-text-heading;
 
   margin-bottom: space(medium);
 
@@ -29,39 +29,39 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1.display1 {
-  @include applyFontSize(xlarge, display);
+  @include apply-font-size(xlarge, display);
 }
 
 h1.display2 {
-  @include applyFontSize(large, display);
+  @include apply-font-size(large, display);
 }
 
 h1 {
-  @include applyFontSize(xlarge, heading);
+  @include apply-font-size(xlarge, heading);
 }
 
 h2 {
-  @include applyFontSize(large, heading);
+  @include apply-font-size(large, heading);
 }
 
 h3 {
-  @include applyFontSize(medium, heading);
+  @include apply-font-size(medium, heading);
 }
 
 h4 {
-  @include applyFontSize(normal, heading);
+  @include apply-font-size(base, heading);
 }
 
 h5 {
-  @include applyFontSize(small, heading);
+  @include apply-font-size(small, heading);
 }
 
 h6 {
-  @include applyFontSize(xsmall, heading);
+  @include apply-font-size(xsmall, heading);
 }
 
 p {
-  @extend %style_text_body;
+  @extend %style-text-body;
 
   margin-bottom: space(medium);
 
@@ -73,7 +73,7 @@ p {
 // inline
 
 strong {
-  font-weight: fontWeight(bold);
+  font-weight: font-weight(bold);
 }
 
 em {
@@ -85,7 +85,7 @@ u {
 }
 
 small {
-  @include applyFontSize(small);
+  @include apply-font-size(small);
 }
 
 del, s {
