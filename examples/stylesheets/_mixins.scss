@@ -2,7 +2,7 @@
   $_height: calculate-rem($height);
   $_padding-vertical: ($_height - get-line-height-rem($font-size)) / 2;
 
-  @extend %style-normalizeAnchor;
+  @extend %style-normalize-anchor;
 
   @include apply-font-size($font-size);
 
