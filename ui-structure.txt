@@ -1,0 +1,39 @@
+button
+styles
+--primary
+--secondary
+--dark
+--transparent
+
+sizes
+--small
+--medium
+--large
+--jumbo
+
+height
+padding
+font
+
+button (
+  height: (
+    small: 
+    base: 
+  )
+  padding: (
+    small
+    base:
+  )
+  font-size: (
+    small
+    base ..etc
+  )
+)
+
+%button-size-small {
+
+}
+
+%button-style-primary {
+
+}

@@ -65,6 +65,7 @@ export class InputPlaceholderManager {
 
     this.getElements()
     this.listen()
+    this.initialize()
   }
 
   private setConfig(config: InputPlaceholderConfig) {
