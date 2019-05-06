@@ -1,8 +1,8 @@
 $border-radius: (
-  'x-small': 4px,
-  'small'  : 8px,
-  'base'   : 12px,
-  'large'  : 24px,
+  'x-small': calculate-rem(4),
+  'small'  : calculate-rem(8),
+  'base'   : calculate-rem(12),
+  'large'  : calculate-rem(24),
 );
 
 $border-width: (
