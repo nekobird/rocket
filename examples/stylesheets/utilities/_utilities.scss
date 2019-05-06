@@ -16,7 +16,7 @@
 }
 
 @function column-width($col: 12, $nOfCol: 12) {
-  @return (base(width) /$nOfCol) * $col;
+  @return (base('width') /$nOfCol) * $col;
 }
 
 @function width-percentage($number, $base: 12) {

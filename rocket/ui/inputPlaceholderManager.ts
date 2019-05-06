@@ -8,20 +8,30 @@ export interface InputPlaceholderConfig {
 
   activateOnFocus?: boolean,
 
-  beforeActivate?: (inputPlaceholder: HTMLElement, input: HTMLInputElement) => Promise<void>,
-  afterActivate?: (inputPlaceholder: HTMLElement, input: HTMLInputElement) => void,
+  beforeActivate?: (inputPlaceholder: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => Promise<void>,
+  afterActivate?: (inputPlaceholder: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => void,
 
-  beforeDeactivate?: (inputPlaceholder: HTMLElement, input: HTMLInputElement) => Promise<void>,
-  afterDeactivate?: (inputPlaceholder: HTMLElement, input: HTMLInputElement) => void,
+  conditionActivate?: (inputPlaceholder: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => boolean,
 
-  activate?: (inputPlaceholder: HTMLElement, input: HTMLInputElement, activeClassName: string) => Promise<void>,
-  deactivate?: (inputPlaceholder: HTMLElement, input: HTMLInputElement, activeClassName: string) => Promise<void>,
+  beforeDeactivate?: (inputPlaceholder: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => Promise<void>,
+  afterDeactivate?: (inputPlaceholder: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => void,
+
+  activate?: (inputPlaceholder: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, activeClassName: string) => Promise<void>,
+  deactivate?: (inputPlaceholder: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, activeClassName: string) => Promise<void>,
 }
 
-export const INPUTPLACEHOLDER_CONFIG = {
+export const INPUTPLACEHOLDER_CONFIG: InputPlaceholderConfig = {
   activeClassName          : 'input-placeholder--active',
   inputPlaceholderClassName: 'input-placeholder',
   activateOnFocus          : true,
+
+  conditionActivate: (inputPlaceholder, input) => {
+    if (input.value === '') {
+      return true
+    } else {
+      return false
+    }
+  },
 
   beforeActivate: (inputPlaceholder, input) => { return Promise.resolve() },
   afterActivate : (inputPlaceholder, input) => { return Promise.resolve() },
@@ -41,7 +51,7 @@ export const INPUTPLACEHOLDER_CONFIG = {
 
 export class InputPlaceholderManager {
 
-  public inputElements: HTMLInputElement[]
+  public inputElements: (HTMLInputElement | HTMLTextAreaElement)[]
   public inputPlaceholderElements: HTMLElement[]
 
   public config: InputPlaceholderConfig
@@ -78,7 +88,7 @@ export class InputPlaceholderManager {
           false
         )
         if (input !== false) {
-          this.inputElements.push(<HTMLInputElement>input)
+          this.inputElements.push(<HTMLInputElement | HTMLTextAreaElement>input)
         }
       })
     }
@@ -86,16 +96,21 @@ export class InputPlaceholderManager {
 
   public initialize() {
     this.inputElements.forEach(input => {
-      if (input.value !== '') {
-        input.classList.add(this.config.activeClassName)
-      } else {
-        input.classList.remove(this.config.activeClassName)
+      const inputPlaceholder = DOMUtil.findAncestorWithClass(
+        input, this.config.inputPlaceholderClassName, false
+      )
+      if (inputPlaceholder !== false) {
+        if (this.config.conditionActivate(<HTMLElement>inputPlaceholder, input) === true) {
+          this.activate(<HTMLElement>inputPlaceholder, input);
+        } else {
+          this.deactivate(<HTMLElement>inputPlaceholder, input);
+        }
       }
     })
   }
 
-  private activate(inputPlaceholder: HTMLElement, input: HTMLInputElement) {
-    this.config
+  private activate(inputPlaceholder: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement): Promise<void> {
+    return this.config
       .beforeActivate(inputPlaceholder, input)
       .then(() => {
         return this.config.activate(inputPlaceholder, input, this.config.activeClassName)
@@ -105,8 +120,8 @@ export class InputPlaceholderManager {
       })
   }
 
-  private deactivate(inputPlaceholder: HTMLElement, input: HTMLInputElement) {
-    this.config
+  private deactivate(inputPlaceholder: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement): Promise<void> {
+    return this.config
       .beforeDeactivate(inputPlaceholder, input)
       .then(() => {
         return this.config.deactivate(inputPlaceholder, input, this.config.activeClassName)
@@ -116,7 +131,7 @@ export class InputPlaceholderManager {
       })
   }
 
-  private getInputPlaceholderElement(input: HTMLInputElement): HTMLElement | false {
+  private getInputPlaceholderElement(input: HTMLInputElement | HTMLTextAreaElement): HTMLElement | false {
     const result = DOMUtil.findAncestorWithClass(
       input, this.config.inputPlaceholderClassName, false
     )
@@ -137,24 +152,27 @@ export class InputPlaceholderManager {
 
   private eventHandlerBlur = event => {
     if (this.config.activateOnFocus === true) {
-      const inputPlaceholderElement = this.getInputPlaceholderElement(event.target)
-      if (
-        inputPlaceholderElement !== false &&
-        event.target.value === ''
-      ) {
-        this.deactivate(inputPlaceholderElement, event.target)
+      const inputPlaceholder = this.getInputPlaceholderElement(event.target)
+      if (inputPlaceholder !== false) {
+        if (
+          this.config.conditionActivate(<HTMLElement>inputPlaceholder, event.target) === true
+        ) {
+          this.deactivate(inputPlaceholder, event.target)
+        }
       }
     }
   }
 
   private eventHandlerInput = event => {
     if (this.config.activateOnFocus === false) {
-      const inputPlaceholderElement = this.getInputPlaceholderElement(event.target)
-      if (inputPlaceholderElement !== false) {
-        if (event.target.value === '') {
-          this.deactivate(inputPlaceholderElement, event.target)
+      const inputPlaceholder = this.getInputPlaceholderElement(event.target)
+      if (inputPlaceholder !== false) {
+        if (
+          this.config.conditionActivate(<HTMLElement>inputPlaceholder, event.target) === true
+        ) {
+          this.deactivate(inputPlaceholder, event.target)
         } else {
-          this.activate(inputPlaceholderElement, event.target)
+          this.activate(inputPlaceholder, event.target)
         }
       }
     }

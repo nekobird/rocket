@@ -1,0 +1,9 @@
+$space: (
+  'x-small' : calculate-rem(4),
+  'small'   : calculate-rem(8),
+  'base'    : calculate-rem(12),
+  'medium'  : calculate-rem(20),
+  'large'   : calculate-rem(40),
+  'x-large' : calculate-rem(80),
+  'xx-large': calculate-rem(100),
+);
