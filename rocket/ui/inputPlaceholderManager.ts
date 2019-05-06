@@ -1,6 +1,6 @@
 import {
   DOMUtil,
-} from '../../rocket/rocket'
+} from '../rocket'
 
 export interface InputPlaceholderConfig {
   activeClassName?: string,
