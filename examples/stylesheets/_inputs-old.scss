@@ -1,0 +1,108 @@
+.input-group {
+  label {
+    display: block;
+  }
+
+  margin-bottom: space('medium');
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+ul.input-errors {
+  li {
+    display: block;
+  }
+}
+
+.label {
+  margin-bottom: space('x-small');
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.input {
+  @include input();
+}
+
+textarea.textarea {
+  @include textarea();
+}
+
+.button {
+  @include button();
+}
+
+select {
+  appearance: none;
+  display: block;
+
+  border: 1px solid color('black');
+
+  width: 100%;
+}
+
+.input-placeholder {
+  $_height: ui('input-height');
+  box-sizing: border-box;
+  height: $_height;
+  position: relative;
+
+  .input {
+    height: $_height;
+    line-height: $_height;
+
+    background-color: transparent;
+    font-size: font-size('base');
+    left: 0;
+    padding: 0 font-size('small');
+    position: absolute;
+    top: 0;
+    z-index: 1;
+
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+  }
+
+  .label {
+    display: block;
+    height: $_height;
+    line-height: $_height;
+
+    font-size: font-size('base');
+
+    margin: 0;
+    padding: 0 font-size('small');
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+  }
+
+  &.input-placeholder--active {
+    $_label-line-height: line-height('small');
+
+    .input {
+      $_line-height: font-size('base');
+
+      font-size: font-size('base');
+      line-height: #{calculate-rem($_height) / 2};
+      padding-top: #{(calculate-rem($_height) / 2) - ($_line-height + 0rem)};
+      z-index: 2;
+    }
+
+    .label {
+      font-size: font-size('small');
+      font-weight: font-weight('semi-bold');
+      line-height: $_label-line-height;
+      padding-top: #{(calculate-rem($_height) / 2) - ($_label-line-height + 0rem)};
+    }
+  }
+}

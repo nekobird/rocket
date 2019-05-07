@@ -1,8 +1,4 @@
 .input-group {
-  label {
-    display: block;
-  }
-
   margin-bottom: space('medium');
 
   &:last-child {
@@ -10,102 +6,67 @@
   }
 }
 
-ul.input-errors {
-  li {
-    display: block;
-  }
-}
-
 .label {
+  @include apply-font-size('small');
+
   margin-bottom: space('x-small');
-
-  &:last-child {
-    margin-bottom: 0;
-  }
 }
 
-.input {
-  @include input();
-}
-
-textarea.textarea {
-  @include textarea();
-}
-
-.button {
-  @include button();
-}
-
-select {
+%button-normalize {
   appearance: none;
-  display: block;
+  box-sizing: border-box;
+  display: inline-block;
+  text-decoration: none;
 
-  border: 1px solid color('black');
+  transition-duration: 0.2s;
+  transition-property: background-color, border-color, opacity;
+  transition-timing-function: ease-out;
 
-  width: 100%;
+  &:hover {
+    text-decoration: none;
+  }
 }
 
-.input-placeholder {
-  $_height: ui('input-height');
+%button-style-primary {
+  background-color: color('primary');
+  color: color('white');
 
-  box-sizing: border-box;
-  height: $_height;
-  position: relative;
+  &:hover {
+    background-color: color('primary', 'hover');
+  }
 
-  .input {
-    height: $_height;
-    line-height: $_height;
+  &:active {
+    background-color: color('primary', 'active');
+  }
+}
 
+%button-style-secondary {
+  background-color: color('light');
+  color: color('black');
+
+  &:hover {
+    background-color: color('light', 'hover');
+  }
+
+  &:active {
+    background-color: color('light', 'active');
+  }
+}
+
+%button-style-transparent {
+  background-color: transparent;
+
+  &:hover {
     background-color: transparent;
-    font-size: font-size('base');
-    
-    padding: 0 font-size('small');
-
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-
-    transition-duration: 0.2s;
-    transition-timing-function: ease-out;
   }
 
-  .label {
-    display: block;
-    height: $_height;
-    line-height: $_height;
-
-    font-size: font-size('base');
-
-    margin: 0;
-    padding: 0 font-size('small');
-
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
-
-    transition-duration: 0.2s;
-    transition-timing-function: ease-out;
+  &:active {
+    background-color: transparent;
   }
+}
 
-  &.input-placeholder--active {
-    $_label-line-height: line-height('small');
+%button-size-base {
+  @include apply-font-size('base');
 
-    .input {
-      $_line-height: font-size('base');
-
-      font-size: font-size('base');
-      line-height: #{calculate-rem($_height) / 2};
-      padding-top: #{(calculate-rem($_height) / 2) - ($_line-height + 0rem)};
-      z-index: 2;
-    }
-
-    .label {
-      font-size: font-size('small');
-      font-weight: font-weight('semi-bold');
-      line-height: $_label-line-height;
-      padding-top: #{(calculate-rem($_height) / 2) - ($_label-line-height + 0rem)};
-    }
-  }
+  padding: font-size('base');
 }
