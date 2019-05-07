@@ -7,7 +7,7 @@ import {
 export interface ScrollEventHandlers {
   [name: string]: ScrollEventHandler
 }
-
+// get document height: document.body.clientHeight
 export class ScrollEventManager {
 
   public handlers: ScrollEventHandlers
