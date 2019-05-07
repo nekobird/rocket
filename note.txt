@@ -35,3 +35,5 @@ https://getbootstrap.com/docs/4.0/content/typography/
 https://gist.github.com/AllThingsSmitty/3bcc79da563df756be46#introspection-functions
 
 https://www.glispa.com/
+
+https://material.io/design/components/text-fields.html#anatomy
