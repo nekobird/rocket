@@ -21,6 +21,7 @@ export interface UITextAreaConfig {
   onFocus?: (context: UITextArea) => void,
   onInput?: (context: UITextArea) => void,
   onPaste?: (context: UITextArea) => void,
+  onGrow?:  (height: number, context: UITextArea) => void,
 }
 
 const UITEXTAREA_CONFIG: UITextAreaConfig = {
@@ -35,6 +36,7 @@ const UITEXTAREA_CONFIG: UITextAreaConfig = {
   onFocus: () => {},
   onInput: () => {},
   onPaste: () => {},
+  onGrow : () => {},
 }
 
 export class UITextArea {
@@ -102,6 +104,7 @@ export class UITextArea {
     const height: number =
       this[_textBoxModel].getTextBoxHeightFromElement(this.element)
     this.element.style.height = `${height}px`
+    this.config.onGrow(height, this);
     return this
   }
 
