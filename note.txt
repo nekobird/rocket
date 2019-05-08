@@ -37,3 +37,5 @@ https://gist.github.com/AllThingsSmitty/3bcc79da563df756be46#introspection-funct
 https://www.glispa.com/
 
 https://material.io/design/components/text-fields.html#anatomy
+
+https://tylercipriani.com/blog/2014/07/12/crossbrowser-javascript-scrollbar-detection/

@@ -28,6 +28,14 @@ export class ScreenModel {
 
   // MODEL PROPERTIES
 
+  public static get hasVerticalScrollbar(): boolean {
+    return window.innerWidth > document.documentElement.clientWidth
+  }
+
+  public static get hasHorizontalScrollbar(): boolean {
+    return window.innerHeight > document.documentElement.clientHeight
+  }
+
   public static get centerPoint(): Vector2 {
     this.createModel()
     return new Vector2(this.centerX, this.centerY)
