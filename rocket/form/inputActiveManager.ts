@@ -2,25 +2,29 @@ import {
   DOMUtil,
 } from '../rocket'
 
-export interface InputFocusManagerConfig {
+export interface InputActiveManagerConfig {
   activeClassName?: string,
   containerClassName?: string,
 
   activateOnFocus?: boolean,
 
   beforeActivate?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => Promise<void>,
-  afterActivate?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => void,
+  afterActivate?:  (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => void,
 
   conditionActivate?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => boolean,
 
   beforeDeactivate?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => Promise<void>,
-  afterDeactivate?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => void,
+  afterDeactivate?:  (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => void,
 
-  activate?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, activeClassName: string) => Promise<void>,
+  activate?:   (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, activeClassName: string) => Promise<void>,
   deactivate?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, activeClassName: string) => Promise<void>,
+
+  onFocus?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, context: InputActiveManager) => void,
+  onBlur?:  (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, context: InputActiveManager) => void,
+  onInput?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, context: InputActiveManager) => void,
 }
 
-export const INPUT_FOCUS_MANAGER_CONFIG: InputFocusManagerConfig = {
+export const INPUT_FOCUS_MANAGER_CONFIG: InputActiveManagerConfig = {
   activeClassName   : 'floating-label-field--focus',
   containerClassName: 'floating-label-field',
   activateOnFocus   : true,
@@ -45,17 +49,21 @@ export const INPUT_FOCUS_MANAGER_CONFIG: InputFocusManagerConfig = {
   deactivate: (container, input, activeClassName) => {
     container.classList.remove(activeClassName)
     return Promise.resolve()
-  }
+  },
+
+  onFocus: () => {},
+  onBlur : () => {},
+  onInput: () => {},
 }
 
-export class InputFocusManager {
+export class InputActiveManager {
 
   public inputElements: (HTMLInputElement | HTMLTextAreaElement)[]
   public containerElements: HTMLElement[]
 
-  public config: InputFocusManagerConfig
+  public config: InputActiveManagerConfig
 
-  constructor(config?: InputFocusManagerConfig) {
+  constructor(config?: InputActiveManagerConfig) {
     this.config = Object.assign({}, INPUT_FOCUS_MANAGER_CONFIG)
 
     if (typeof config === 'object') {
@@ -67,7 +75,7 @@ export class InputFocusManager {
     this.initialize()
   }
 
-  private setConfig(config: InputFocusManagerConfig) {
+  private setConfig(config: InputActiveManagerConfig) {
     Object.assign(this.config, config)
   }
 
@@ -99,17 +107,17 @@ export class InputFocusManager {
 
   public initialize() {
     this.inputElements.forEach(input => {
-      const container = DOMUtil.findAncestorWithClass(
+      const containerElement = DOMUtil.findAncestorWithClass(
         input, this.config.containerClassName, false
       )
-      if (container !== false) {
-        if (this.config.conditionActivate(<HTMLElement>container, input) === true) {
-          if (this.isActive(<HTMLElement>container) === false) {
-            this.activate(<HTMLElement>container, input);
+      if (containerElement !== false) {
+        if (this.config.conditionActivate(<HTMLElement>containerElement, input) === true) {
+          if (this.isActive(<HTMLElement>containerElement) === false) {
+            this.activate(<HTMLElement>containerElement, input);
           }
         } else {
-          if (this.isActive(<HTMLElement>container) === true) {
-            this.deactivate(<HTMLElement>container, input);
+          if (this.isActive(<HTMLElement>containerElement) === true) {
+            this.deactivate(<HTMLElement>containerElement, input);
           }
         }
       }
@@ -138,7 +146,7 @@ export class InputFocusManager {
       })
   }
 
-  private getInputFocusManagerElement(input: HTMLInputElement | HTMLTextAreaElement): HTMLElement | false {
+  private getInputActiveManagerElement(input: HTMLInputElement | HTMLTextAreaElement): HTMLElement | false {
     const result = DOMUtil.findAncestorWithClass(
       input, this.config.containerClassName, false
     )
@@ -149,50 +157,53 @@ export class InputFocusManager {
   }
 
   private eventHandlerFocus = event => {
-    if (this.config.activateOnFocus === true) {
-      const containerElement = this.getInputFocusManagerElement(event.target)
-      if (
-        containerElement !== false &&
-        this.isActive(<HTMLElement>containerElement) === false
-      ) {
-        this.activate(containerElement, event.target)
-      }
-    }
-  }
-
-  private eventHandlerBlur = event => {
-    if (this.config.activateOnFocus === true) {
-      const container = this.getInputFocusManagerElement(event.target)
-      if (
-        container !== false &&
-        this.config.conditionActivate(<HTMLElement>container, event.target) === false &&
-        this.isActive(<HTMLElement>container) === true
-      ) {
-        this.deactivate(container, event.target)
-      }
-    }
-  }
-
-  private eventHandlerInput = event => {
-    if (this.config.activateOnFocus === false) {
-      const container = this.getInputFocusManagerElement(event.target)
-      if (container !== false) {
-        if (
-          this.config.conditionActivate(<HTMLElement>container, event.target) === true &&
-          this.isActive(<HTMLElement>container) === false
-        ) {
-          this.activate(container, event.target)
-        } else {
-          if (this.isActive(<HTMLElement>container) === true) {
-            this.deactivate(container, event.target)
-          }
+    const containerElement = this.getInputActiveManagerElement(event.target)
+    if (containerElement !== false) {
+      this.config.onFocus(containerElement, event.target, this)
+      if (this.config.activateOnFocus === true) {
+        if (this.isActive(<HTMLElement>containerElement) === false) {
+          this.activate(containerElement, event.target)
         }
       }
     }
   }
 
-  private isActive(container: HTMLElement): boolean {
-    return container.classList.contains(this.config.activeClassName)
+  private eventHandlerBlur = event => {
+    const containerElement = this.getInputActiveManagerElement(event.target)
+    if (containerElement !== false) {
+      this.config.onBlur(containerElement, event.target, this)  
+      if (this.config.activateOnFocus === true) {   
+        if (
+          this.config.conditionActivate(<HTMLElement>containerElement, event.target) === false &&
+          this.isActive(<HTMLElement>containerElement) === true
+        ) {
+          this.deactivate(containerElement, event.target)
+        }
+      }
+    } // If container element is valid.
+  }
+
+  private eventHandlerInput = event => {
+    const containerElement = this.getInputActiveManagerElement(event.target)
+    if (containerElement !== false) {
+      this.config.onInput(containerElement, event.target, this)
+      if (this.config.activateOnFocus === false) {
+        if (
+          this.config.conditionActivate(<HTMLElement>containerElement, event.target) === true &&
+          this.isActive(<HTMLElement>containerElement) === false
+        ) {
+          this.activate(containerElement, event.target)
+        } else {
+          if (this.isActive(<HTMLElement>containerElement) === true) {
+            this.deactivate(containerElement, event.target)
+          }
+        }
+      }
+    } // if containerElement is valid
+  }
+
+  private isActive(containerElement: HTMLElement): boolean {
+    return containerElement.classList.contains(this.config.activeClassName)
   }
 
   public listen() {

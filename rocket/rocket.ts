@@ -55,7 +55,7 @@ export * from './ui/uiTextArea'
 export * from './ui/uiTextField'
 
 // FORM
-export * from './form/inputFocusManager'
+export * from './form/inputActiveManager'
 
 // HTML
 export * from './htmlController/monoController/monoController'
