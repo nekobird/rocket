@@ -21,9 +21,9 @@ export interface InputFocusManagerConfig {
 }
 
 export const INPUT_FOCUS_MANAGER_CONFIG: InputFocusManagerConfig = {
-  activeClassName          : 'floating-label-field--focus',
-  containerClassName  : 'floating-label-field',
-  activateOnFocus          : true,
+  activeClassName   : 'floating-label-field--focus',
+  containerClassName: 'floating-label-field',
+  activateOnFocus   : true,
 
   conditionActivate: (container, input) => {
     if (input.value !== '') {
@@ -83,7 +83,10 @@ export class InputFocusManager {
         const input = DOMUtil.findDescendant(
           container,
           element => {
-            return (element.nodeName === 'INPUT')
+            return (
+              element.nodeName === 'INPUT' ||
+              element.nodeName === 'TEXTAREA'
+            )
           },
           false
         )
