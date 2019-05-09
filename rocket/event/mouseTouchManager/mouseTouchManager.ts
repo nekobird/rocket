@@ -1,15 +1,22 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Touch_events/Supporting_both_TouchEvent_and_MouseEvent
 
 export interface MouseTouchManagerConfig {
-
+  onDown?: () => void,
+  onMove?: () => void,
+  onUp?: () => void,
 }
 
 export interface MouseTouchEventData {
-  downElement: HTMLElement,
-  upElement: HTMLElement,
+  identifier: string,
+  downTargetElement: HTMLElement,
+  upTargetElement: HTMLElement,
   downTime: number,
   upTime: number,
   duration: number,
+  type: 'MOUSE' | 'TOUCH',
+}
+export interface ActiveMouseTouchEventData {
+  [identifier: string]: MouseTouchEventData
 }
 
 export class MouseTouchManager {
@@ -21,13 +28,33 @@ export class MouseTouchManager {
 
   public config: MouseTouchManagerConfig
 
+  public activeEvents: MouseTouchEventData[]
+
+  public mouseIsDown: boolean = false
+
   constructor() {
+    this.activeEvents = []
+  }
+
+  private getActiveEventDataFromIdentifier(identifier: number | 'mouse'): MouseTouchEventData | false {
+    this.activeEvents.forEach(eventData => {
+      if (eventData.identifier === identifier) {
+        return eventData
+      }
+    })
+    return false
+  }
+
+  private composeEventData(eventName: string, event: Touch | MouseEvent) {
 
   }
 
-
-  public eventHandlerTouchStart = event => {
-    
+  public eventHandlerTouchStart = (event: TouchEvent) => {
+    Array.from(event.targetTouches).forEach((touch: Touch) => {
+      if (typeof this.getActiveEventDataFromIdentifier(touch.identifier) === 'object') {
+        let data = this.composeEventData('start', touch)
+      }
+    })
   }
 
   public eventHandlerTouchMove = event => {

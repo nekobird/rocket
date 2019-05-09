@@ -1,3 +1,7 @@
+import {
+  DOMHelper,
+} from '../../rocket'
+
 export interface ScrollToData {
   targetX?: number,
   targetY?: number
@@ -17,7 +21,6 @@ export interface ScrollHelperConfig {
 export const SCROLLHELPER_DEFAULT_CONFIG = {
   parentSelector: undefined, 
   parentElement: document.documentElement,
-
 }
 
 export class ScrollHelper {
