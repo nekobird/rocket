@@ -62,8 +62,7 @@ export class FormData {
   }
 
   public initialize(): this {
-    this
-      .getElements()
+    this.getElements()
     return this
   }
 
