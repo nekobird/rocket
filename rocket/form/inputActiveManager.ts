@@ -174,7 +174,9 @@ export class InputActiveManager {
       this.config.onBlur(containerElement, event.target, this)  
       if (this.config.activateOnFocus === true) {   
         if (
-          this.config.conditionActivate(<HTMLElement>containerElement, event.target) === false &&
+          this.config.conditionActivate(
+            <HTMLElement>containerElement, event.target
+          ) === false &&
           this.isActive(<HTMLElement>containerElement) === true
         ) {
           this.deactivate(containerElement, event.target)
@@ -189,7 +191,9 @@ export class InputActiveManager {
       this.config.onInput(containerElement, event.target, this)
       if (this.config.activateOnFocus === false) {
         if (
-          this.config.conditionActivate(<HTMLElement>containerElement, event.target) === true &&
+          this.config.conditionActivate(
+            <HTMLElement>containerElement, event.target
+          ) === true &&
           this.isActive(<HTMLElement>containerElement) === false
         ) {
           this.activate(containerElement, event.target)

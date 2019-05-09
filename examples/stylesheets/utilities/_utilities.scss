@@ -1,4 +1,4 @@
-// Unit utilities
+// Unit Utilities
 
 @function strip-unit($number) {
   @if type-of($number) == 'number' and not unitless($number) {
@@ -7,18 +7,18 @@
   @return $number;
 }
 
-@function calculate-rem($px, $base: map-get($base, 'font-size')) {
+@function px-to-rem($px, $base: map-get($base, 'font-size')) {
   @return strip-unit($px) / strip-unit($base) + 0rem;
 }
 
-@function convert-rem-to-px($rem) {
-  @return strip-unit($rem) * base('font-size');
-}
-
 @function column-width($col: 12, $nOfCol: 12) {
-  @return (base('width') /$nOfCol) * $col;
+  @return ((px-to-rem(base('width')) / $nOfCol) * $col) + 0rem;
 }
 
 @function width-percentage($number, $base: 12) {
   @return (strip-unit($number) / strip-unit($base)) * 100 + 0%;
+}
+
+@function rem-to-px($rem) {
+  @return strip-unit($rem) * base('font-size');
 }
