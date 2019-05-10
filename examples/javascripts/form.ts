@@ -1,9 +1,9 @@
 import {
-  InputPlaceholderManager
+  InputActiveManager
 } from '../../rocket/rocket'
 
-new InputPlaceholderManager({
-  activeClassName          : 'input-placeholder--active',
-  inputPlaceholderClassName: 'input-placeholder',
-  activateOnFocus: false,
+new InputActiveManager({
+  activeClassName   : 'floating-label-field--active',
+  containerClassName: 'floating-label-field',
+  activateOnFocus   : false,
 })

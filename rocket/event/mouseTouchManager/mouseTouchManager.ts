@@ -3,7 +3,7 @@
 export interface MouseTouchManagerConfig {
   onDown?: () => void,
   onMove?: () => void,
-  onUp?: () => void,
+  onUp?:   () => void,
 }
 
 export interface MouseTouchEventData {
@@ -49,6 +49,14 @@ export class MouseTouchManager {
 
   }
 
+  public eventHandlerMouseDown = (event: MouseEvent) => {
+
+  }
+
+  public eventHandlerMouseMove = (event: MouseEvent) => {
+    
+  }
+
   public eventHandlerTouchStart = (event: TouchEvent) => {
     Array.from(event.targetTouches).forEach((touch: Touch) => {
       if (typeof this.getActiveEventDataFromIdentifier(touch.identifier) === 'object') {
@@ -58,11 +66,19 @@ export class MouseTouchManager {
   }
 
   public eventHandlerTouchMove = event => {
-
+    Array.from(event.targetTouches).forEach((touch: Touch) => {
+      if (typeof this.getActiveEventDataFromIdentifier(touch.identifier) === 'object') {
+        let data = this.composeEventData('start', touch)
+      }
+    })
   }
 
   public eventHandlerTouchEnd = event => {
-
+    Array.from(event.targetTouches).forEach((touch: Touch) => {
+      if (typeof this.getActiveEventDataFromIdentifier(touch.identifier) === 'object') {
+        let data = this.composeEventData('start', touch)
+      }
+    })
   }
 
   public listen() {

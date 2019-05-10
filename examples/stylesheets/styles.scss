@@ -1,14 +1,3 @@
 @import 'reset';
 
-@import 'variables';
-
-@import 'compositions';
-
-@import 'mixins';
-
-@import 'global';
-@import 'inputs';
-
-.row {
-  padding: space('large');
-}
+@import 'base';
