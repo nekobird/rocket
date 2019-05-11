@@ -40,4 +40,8 @@ https://material.io/design/components/text-fields.html#anatomy
 
 https://tylercipriani.com/blog/2014/07/12/crossbrowser-javascript-scrollbar-detection/
 
-// https://developer.mozilla.org/en-US/docs/Web/API/Touch_events/Supporting_both_TouchEvent_and_MouseEvent
+https://developer.mozilla.org/en-US/docs/Web/API/Touch_events/Supporting_both_TouchEvent_and_MouseEvent
+
+https://stackoverflow.com/questions/3918842/how-to-find-out-the-actual-event-target-of-touchmove-javascript-event
+
+https://medium.com/@wiekatz/testing-web-applications-running-on-localhost-with-an-iphone-7db6258b8f2

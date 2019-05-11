@@ -19,54 +19,59 @@ export class TouchSensor {
     this.manager.sensorHub.receive(data)
   }
 
-  public composeData(name: EventName, event: Touch): SensorData {
+  public composeData(name: EventName, event: TouchEvent, touch: Touch): SensorData {
     return {
-      identifier: event.identifier,
+      identifier: touch.identifier.toString(),
       type: 'MOUSE',
       name: name,
       time: Date.now(),
-      target: <HTMLElement>event.target,
-      x: event.clientX,
-      y: event.clientY,
+      target: <HTMLElement>touch.target,
+      screenX: touch.screenX,
+      screenY: touch.screenY,
+      pageX: touch.pageX,
+      pageY: touch.pageY,
+      clientX: touch.clientX,
+      clientY: touch.clientY,
       event: event,
+      touch: touch,
     }
   }
 
   public eventHandlerTouchStart = (event: TouchEvent) => {
     Array.from(event.changedTouches).forEach(touch => {
-      this.dispatch(this.composeData('down', touch))
+      this.dispatch(this.composeData('down', event, touch))
     })
   }
 
   public eventHandlerTouchMove = (event: TouchEvent) => {
     Array.from(event.changedTouches).forEach(touch => {
-      this.dispatch(this.composeData('drag', touch))
+      this.dispatch(this.composeData('drag', event, touch))
     })
   }
 
   public eventHandlerTouchEnd = (event: TouchEvent) => {
     Array.from(event.changedTouches).forEach(touch => {
-      this.dispatch(this.composeData('up', touch))
+      this.dispatch(this.composeData('up', event, touch))
     })
   }
 
   public eventHandlerTouchCancel = (event: TouchEvent) => {
     Array.from(event.changedTouches).forEach(touch => {
-      this.dispatch(this.composeData('cancel', touch))
+      this.dispatch(this.composeData('cancel', event, touch))
     })
   }
 
   public listen() {
-    window.addEventListener('touchstart',  this.eventHandlerTouchStart)
-    window.addEventListener('touchmove',   this.eventHandlerTouchMove)
-    window.addEventListener('touchend',    this.eventHandlerTouchEnd)
-    window.addEventListener('touchcancel', this.eventHandlerTouchCancel)
+    this.manager.config.parent.addEventListener('touchstart',  this.eventHandlerTouchStart)
+    this.manager.config.parent.addEventListener('touchmove',   this.eventHandlerTouchMove)
+    this.manager.config.parent.addEventListener('touchend',    this.eventHandlerTouchEnd)
+    this.manager.config.parent.addEventListener('touchcancel', this.eventHandlerTouchCancel)
   }
 
   public stop() {
-    window.removeEventListener('touchstart',  this.eventHandlerTouchStart)
-    window.removeEventListener('touchmove',   this.eventHandlerTouchMove)
-    window.removeEventListener('touchend',    this.eventHandlerTouchEnd)
-    window.removeEventListener('touchcancel', this.eventHandlerTouchCancel)
+    this.manager.config.parent.removeEventListener('touchstart',  this.eventHandlerTouchStart)
+    this.manager.config.parent.removeEventListener('touchmove',   this.eventHandlerTouchMove)
+    this.manager.config.parent.removeEventListener('touchend',    this.eventHandlerTouchEnd)
+    this.manager.config.parent.removeEventListener('touchcancel', this.eventHandlerTouchCancel)
   }
 } 

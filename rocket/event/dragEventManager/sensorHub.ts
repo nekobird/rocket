@@ -8,17 +8,22 @@ import {
 
 export type EventName = 'down' | 'drag' | 'up' | 'cancel'
 
-export type Identifier = 'mouse-event' | number
+export type Identifier = 'mouse-event' | string
 
 export interface SensorData {
   identifier: Identifier,
   name: EventName,
   time: number,
-  x: number,
-  y: number,
+  screenX: number,
+  screenY: number,
+  pageX: number,
+  pageY: number,
+  clientX: number,
+  clientY: number,
   target: HTMLElement,
   type: 'MOUSE' | 'TOUCH',
-  event: MouseEvent | Touch,
+  event: MouseEvent | TouchEvent,
+  touch: Touch | undefined
 }
 
 export interface DragEvents {

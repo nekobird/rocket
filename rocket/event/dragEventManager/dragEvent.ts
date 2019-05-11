@@ -24,6 +24,7 @@ export class DragEvent {
   public isActive   : boolean = false
 
   public longPressTimeout
+  public longPressIsCleared: boolean = false
 
   public manager: DragEventManager
 
@@ -44,6 +45,17 @@ export class DragEvent {
     return undefined
   }
 
+  public get currentTargetElement(): HTMLElement | false {
+    if (typeof this.currentEvent === 'string') {
+      return this.getTargetElementFromData(this[`${this.currentEvent}Data`])
+    }
+    return false
+  }
+
+  public getTargetElementFromData(data: SensorData): HTMLElement {
+    return <HTMLElement>document.elementFromPoint(data.screenX, data.screenY)
+  }
+
   public get previousEventData(): SensorData | false {
     if (typeof this.previousEvent === 'string') {
       return this[`${this.previousEvent}Data`]
@@ -61,6 +73,7 @@ export class DragEvent {
   public update(data: SensorData): this {
     switch (data.name) {
       case 'down': {
+        console.log(data)
         this.onDown(data)
         break
       }
@@ -145,5 +158,6 @@ export class DragEvent {
 
   public clearLongPress() {
     clearTimeout(this.longPressTimeout)
+    this.longPressIsCleared = true
   }
 }

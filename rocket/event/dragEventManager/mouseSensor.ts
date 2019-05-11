@@ -28,9 +28,14 @@ export class MouseSensor {
       name: name,
       time: Date.now(),
       target: <HTMLElement>event.target,
-      x: event.clientX,
-      y: event.clientY,
+      screenX: event.screenX,
+      screenY: event.screenY,
+      pageX: event.pageX,
+      pageY: event.pageY,
+      clientX: event.clientX,
+      clientY: event.clientY,
       event: event,
+      touch: undefined
     }
   }
 
@@ -57,14 +62,14 @@ export class MouseSensor {
   }
 
   public listen() {
-    window.addEventListener('mousedown', this.eventHandlerMouseDown)
-    window.addEventListener('mousemove', this.eventHandlerMouseMove)
-    window.addEventListener('mouseup',   this.eventHandlerMouseUp)
+    this.manager.config.parent.addEventListener('mousedown', this.eventHandlerMouseDown)
+    this.manager.config.parent.addEventListener('mousemove', this.eventHandlerMouseMove)
+    this.manager.config.parent.addEventListener('mouseup',   this.eventHandlerMouseUp)
   }
 
   public stop() {
-    window.removeEventListener('mousedown', this.eventHandlerMouseDown)
-    window.removeEventListener('mousemove', this.eventHandlerMouseMove)
-    window.removeEventListener('mouseup',   this.eventHandlerMouseUp)
+    this.manager.config.parent.removeEventListener('mousedown', this.eventHandlerMouseDown)
+    this.manager.config.parent.removeEventListener('mousemove', this.eventHandlerMouseMove)
+    this.manager.config.parent.removeEventListener('mouseup',   this.eventHandlerMouseUp)
   }
 }

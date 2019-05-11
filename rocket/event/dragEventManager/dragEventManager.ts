@@ -19,6 +19,8 @@ export interface DragEventManagerConfig {
   enableLongPress?: boolean,
   longPressWait?: number, // In seconds.
 
+  parent?: HTMLElement | Window,
+
   onLongPress?: (event: DragEvent, manager: DragEventManager) => void,
 
   onDown?:   (event: DragEvent, manager: DragEventManager) => void,
@@ -30,6 +32,8 @@ export interface DragEventManagerConfig {
 export const DRAG_EVENT_MANAGER_DEFAULT_CONFIG: DragEventManagerConfig = {
   enableLongPress: false,
   longPressWait: 2,
+
+  parent: window,
 
   onLongPress: (event, manager) => {},
 
