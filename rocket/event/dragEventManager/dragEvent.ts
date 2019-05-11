@@ -73,7 +73,6 @@ export class DragEvent {
   public update(data: SensorData): this {
     switch (data.name) {
       case 'down': {
-        console.log(data)
         this.onDown(data)
         break
       }
@@ -127,7 +126,7 @@ export class DragEvent {
 
       this.isActive = false
 
-      this.upData   = data
+      this.upData = data
 
       this.previousEvent = this.currentEvent
       this.currentEvent  = data.name
@@ -143,7 +142,7 @@ export class DragEvent {
       this.isCancelled = true
       this.isActive    = false
 
-      this.cancelData  = data
+      this.cancelData = data
 
       this.previousEvent = this.currentEvent
       this.currentEvent  = data.name

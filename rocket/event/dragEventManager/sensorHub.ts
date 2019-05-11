@@ -27,8 +27,7 @@ export interface SensorData {
 }
 
 export interface DragEvents {
-  // @ts-ignore
-  [identifier: Identifier]: DragEvent
+  [identifier: string]: DragEvent
 }
 
 export class SensorHub {
@@ -72,7 +71,6 @@ export class SensorHub {
   }
 
   private hasEvent(identifier: Identifier) {
-    // @ts-ignore
     return (Object.keys(this.events).indexOf(identifier) !== -1)
   }
 
