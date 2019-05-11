@@ -32,6 +32,8 @@ export * from './color/convertColor'
 export * from './color/color'
 
 // EVENT
+export * from './event/dragEventManager/dragEventManager'
+
 export * from './event/scroll/ScrollEventHandler'
 export * from './event/scroll/ScrollEventManager'
 

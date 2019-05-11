@@ -1,19 +1,19 @@
 import {
-  MouseTouchManager
-} from './mouseTouchManager'
+  DragEventManager,
+} from './dragEventManager'
 
 import {
-  SensorEventName,
+  EventName,
   SensorData,
 } from './sensorHub'
 
 export class MouseSensor {
 
-  public isDown: boolean = false
-  public isDrag: boolean = false
-  public manager: MouseTouchManager
+  public manager: DragEventManager
 
-  constructor(manager: MouseTouchManager) {
+  public isDown: boolean = false
+
+  constructor(manager: DragEventManager) {
     this.manager = manager
   }
 
@@ -21,7 +21,7 @@ export class MouseSensor {
     this.manager.sensorHub.receive(data)
   }
 
-  public composeData(name: SensorEventName, event: MouseEvent): SensorData {
+  public composeData(name: EventName, event: MouseEvent): SensorData {
     return {
       identifier: 'mouse-event',
       type: 'MOUSE',

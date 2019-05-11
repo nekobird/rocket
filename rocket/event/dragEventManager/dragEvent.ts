@@ -1,15 +1,19 @@
 import {
-  MouseTouchManager,
-} from './mouseTouchManager'
+  DragEventManager,
+} from './dragEventManager'
 
 import {
   Identifier,
+  EventName,
   SensorData,
 } from './sensorHub'
 
-export class MouseTouchEvent {
+export class DragEvent {
 
   public identifier: Identifier
+
+  public previousEvent: EventName
+  public currentEvent: EventName
 
   public downData  : SensorData
   public dragData  : SensorData
@@ -19,12 +23,11 @@ export class MouseTouchEvent {
   public isCancelled: boolean = false
   public isActive   : boolean = false
 
-
   public longPressTimeout
 
-  public manager: MouseTouchManager
+  public manager: DragEventManager
 
-  constructor(manager: MouseTouchManager) {
+  constructor(manager: DragEventManager) {
     this.manager = manager
   }
   
@@ -39,6 +42,20 @@ export class MouseTouchEvent {
       return this.upData.time - this.downData.time
     }
     return undefined
+  }
+
+  public get previousEventData(): SensorData | false {
+    if (typeof this.previousEvent === 'string') {
+      return this[`${this.previousEvent}Data`]
+    }
+    return false
+  }
+
+  public get currentEventData(): SensorData | false {
+    if (typeof this.currentEvent === 'string') {
+      return this[`${this.currentEvent}Data`]
+    }
+    return false
   }
 
   public update(data: SensorData): this {

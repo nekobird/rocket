@@ -1,10 +1,10 @@
 import {
-  MouseTouchManager,
-} from './mouseTouchManager'
+  DragEventManager,
+} from './dragEventManager'
 
 import {
-  MouseTouchEvent,
-} from './MouseTouchEvent'
+  DragEvent,
+} from './dragEvent'
 
 export type EventName = 'down' | 'drag' | 'up' | 'cancel'
 
@@ -21,23 +21,23 @@ export interface SensorData {
   event: MouseEvent | Touch,
 }
 
-export interface MouseTouchEvents {
-  [identifier: number | string]: MouseTouchEvent
+export interface DragEvents {
+  // @ts-ignore
+  [identifier: Identifier]: DragEvent
 }
 
 export class SensorHub {
 
-  public manager: MouseTouchManager
+  public manager: DragEventManager
 
-  public events: MouseTouchEvents
+  public events: DragEvents
 
-  constructor(manager: MouseTouchManager) {
+  constructor(manager: DragEventManager) {
     this.manager = manager
   }
 
   public receive(data: SensorData) {
     // TODO set manager is active to true
-
     // Check if there's no other active events and set it to false.
     if (
       this.hasEvent(data.identifier) === false ||
@@ -46,14 +46,10 @@ export class SensorHub {
         data.name === 'down'
       )
     ) {
-      this.events[data.identifier] = new MouseTouchEvent().update(data)
+      this.events[data.identifier] = new DragEvent(this.manager).update(data)
     } else {
       this.events[data.identifier].update(data)
     }
-  }
-
-  public pass(name: EventName, event: MouseTouchEvent) {
-    this.manager.receive(name, event)
   }
 
   private destroyEvent(identifier: Identifier): boolean {
@@ -65,10 +61,11 @@ export class SensorHub {
   }
 
   private hasEvent(identifier: Identifier) {
+    // @ts-ignore
     return (Object.keys(this.events).indexOf(identifier) !== -1)
   }
 
-  public get activeEvents(): MouseTouchEvent[] {
+  public get activeEvents(): DragEvent[] {
     return Object.keys(this.events).map(identifier => {
       if (this.events[identifier].isActive === true) {
         return this.events[identifier]

@@ -39,3 +39,5 @@ https://www.glispa.com/
 https://material.io/design/components/text-fields.html#anatomy
 
 https://tylercipriani.com/blog/2014/07/12/crossbrowser-javascript-scrollbar-detection/
+
+// https://developer.mozilla.org/en-US/docs/Web/API/Touch_events/Supporting_both_TouchEvent_and_MouseEvent
