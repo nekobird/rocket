@@ -34,11 +34,12 @@ export class SensorHub {
 
   constructor(manager: DragEventManager) {
     this.manager = manager
+
+    this.events = {}
   }
 
   public receive(data: SensorData) {
-    // TODO set manager is active to true
-    // Check if there's no other active events and set it to false.
+    this.manager.isActive = true
     if (
       this.hasEvent(data.identifier) === false ||
       (
@@ -50,6 +51,11 @@ export class SensorHub {
     } else {
       this.events[data.identifier].update(data)
     }
+  }
+
+  public get hasActiveEvents(): boolean {
+    return (Object.keys(this.events).length > 0)
+
   }
 
   private destroyEvent(identifier: Identifier): boolean {

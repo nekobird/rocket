@@ -16,23 +16,27 @@ import {
 } from './dragEvent'
 
 export interface DragEventManagerConfig {
-  isLongPressEnabled?: boolean,
+  enableLongPress?: boolean,
   longPressWait?: number, // In seconds.
 
   onLongPress?: (event: DragEvent, manager: DragEventManager) => void,
 
-  onDown?: (event: DragEvent, manager: DragEventManager) => void,
-  onDrag?: (event: DragEvent, manager: DragEventManager) => void,
-  onUp?:   (event: DragEvent, manager: DragEventManager) => void,
+  onDown?:   (event: DragEvent, manager: DragEventManager) => void,
+  onDrag?:   (event: DragEvent, manager: DragEventManager) => void,
+  onUp?:     (event: DragEvent, manager: DragEventManager) => void,
+  onCancel?: (event: DragEvent, manager: DragEventManager) => void,
 }
 
 export const DRAG_EVENT_MANAGER_DEFAULT_CONFIG: DragEventManagerConfig = {
-  isLongPressEnabled: false,
+  enableLongPress: false,
   longPressWait: 2,
 
   onLongPress: (event, manager) => {},
-  onDrag:      (event, manager) => {},
-  onUp:        (event, manager) => {}
+
+  onDown:   (event, manager) => {},
+  onDrag:   (event, manager) => {},
+  onUp:     (event, manager) => {},
+  onCancel: (event, manager) => {},
 }
 
 export class DragEventManager {
@@ -42,10 +46,19 @@ export class DragEventManager {
   public touchSensor: TouchSensor
   public sensorHub  : SensorHub
 
-  constructor() {
+  public isActive: boolean = false
+
+  constructor(config?: DragEventManagerConfig) {
+    this.config = Object.assign({}, DRAG_EVENT_MANAGER_DEFAULT_CONFIG)
+    if (typeof config === 'object') {
+      this.config = Object.assign(this.config, config)
+    }
+
     this.mouseSensor = new MouseSensor(this)
     this.touchSensor = new TouchSensor(this)
     this.sensorHub   = new SensorHub(this)
+
+    this.initialize()
   }
 
   public initialize() {

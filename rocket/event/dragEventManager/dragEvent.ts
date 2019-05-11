@@ -61,41 +61,89 @@ export class DragEvent {
   public update(data: SensorData): this {
     switch (data.name) {
       case 'down': {
-        this.isActive   = true
-        this.identifier = data.identifier
-        this.downData   = data
-
-        this.manager.config.onDown(this, this.manager)
-
-        if (this.manager.config.isLongPressEnabled === true) {
-          this.longPressTimeout = setTimeout(() => {
-            this.manager.config.onLongPress(this, this.manager)
-          }, this.manager.config.longPressWait * 1000)
-        }
+        this.onDown(data)
         break
       }
       case 'drag': {
-        if (this.isActive === true) {
-          this.dragData = data
-        }
+        this.onDrag(data)
         break
       }
       case 'up': {
-        if (this.isActive === true) {
-          this.upData   = data
-          this.isActive = false
-        }
+        this.onUp(data)
         break
       }
       case 'cancel': {
-        if (this.isActive === true) {
-          this.cancelData  = data
-          this.isCancelled = true
-          this.isActive    = false
-        }
+        this.onCancel(data)
         break
       }
     }
     return this
+  }
+
+  public onDown(data: SensorData) {
+    this.isActive   = true
+    this.identifier = data.identifier
+    this.downData   = data
+
+    this.currentEvent = data.name
+
+    this.manager.config.onDown(this, this.manager)
+
+    if (this.manager.config.enableLongPress === true) {
+      this.longPressTimeout = setTimeout(
+        () => this.onLongPress(data),
+        this.manager.config.longPressWait * 1000
+      )
+    }
+  }
+
+  public onDrag(data: SensorData) {
+    if (this.isActive === true) {
+      this.dragData = data
+
+      this.previousEvent = this.currentEvent
+      this.currentEvent  = data.name
+
+      this.manager.config.onDrag(this, this.manager)
+    }
+  }
+
+  public onUp(data: SensorData) {
+    if (this.isActive === true) {
+      this.clearLongPress()
+
+      this.isActive = false
+
+      this.upData   = data
+
+      this.previousEvent = this.currentEvent
+      this.currentEvent  = data.name
+
+      this.manager.config.onUp(this, this.manager)
+    }
+  }
+
+  public onCancel(data: SensorData) {
+    if (this.isActive === true) {
+      this.clearLongPress()
+
+      this.isCancelled = true
+      this.isActive    = false
+
+      this.cancelData  = data
+
+      this.previousEvent = this.currentEvent
+      this.currentEvent  = data.name
+
+      this.manager.config.onCancel(this, this.manager)
+    }
+  }
+
+  public onLongPress(data: SensorData) {
+    this.manager.config.onLongPress(this, this.manager)
+  }
+
+  public clearLongPress() {
+    clearTimeout(this.longPressTimeout)
   }
 }
