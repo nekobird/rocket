@@ -4,6 +4,7 @@ import {
   ConditionHook,
   EventEntry,
   ListenToHook,
+  OutsideActionHook,
   PolyAction,
   PolyController,
   PolyGroup,
@@ -14,9 +15,9 @@ import {
 export interface PolyConfig {
   cooldown?: number,
 
-  listenToClickOutside?: boolean,
-  listenToTouchOutside?: boolean,
   listenToKeydown?: boolean,
+
+  closeOnOutsideAction?: boolean,
 
   selectorItems?: string,
 
@@ -46,17 +47,17 @@ export interface PolyConfig {
   beforeAction?: BeforeActionCallback<PolyAction, PolyController>,
   afterAction?: AfterActionCallback<PolyAction, PolyController>,
 
-  onClickOutside?: ListenToHook<MouseEvent, PolyGroup, PolyController>,
-  onTouchOutside?: ListenToHook<TouchEvent, PolyGroup, PolyController>,
   onKeydown?: ListenToHook<KeyboardEvent, PolyGroup, PolyController>,
+
+  onOutsideAction?: OutsideActionHook<PolyGroup, PolyController>,
 }
 
 export const POLY_DEFAULT_CONFIG: PolyConfig = {
   cooldown: 200,
 
-  listenToClickOutside: false,
-  listenToTouchOutside: false,
-  listenToKeydown     : false,
+  listenToKeydown: false,
+
+  closeOnOutsideAction: false, 
 
   selectorItems: '.js-poly-item',
 
@@ -86,10 +87,10 @@ export const POLY_DEFAULT_CONFIG: PolyConfig = {
 
   beforeAction: (action, context) => { return Promise.resolve() },
   afterAction : (action, context) => { return Promise.resolve() },
+  
+  onKeydown: (event, group, context) => { },
 
-  onClickOutside: (event, group, context) => { },
-  onTouchOutside: (event, group, context) => { },
-  onKeydown     : (event, group, context) => { },
+  onOutsideAction: (group, context) => { },
 }
 
 export const POLY_EVENT_ENTRY_LIST: EventEntry[] = [

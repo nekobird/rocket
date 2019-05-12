@@ -56,6 +56,13 @@ export interface ListenToHook<E, G, C> {
   ): void
 }
 
+export interface OutsideActionHook<G, C> {
+  (
+    group: G,
+    context: C,
+  ): void
+}
+
 export interface ActionManager {
   composeActionFromEvent: (actionName: ActionName, trigger: HTMLElement) => Action | false,
   actionHub: (action: Action, isNestedAction: boolean, callback?: Function) => void,

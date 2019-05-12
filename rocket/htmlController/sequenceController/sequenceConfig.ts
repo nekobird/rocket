@@ -16,8 +16,6 @@ import {
 export interface SequenceConfig {
   cooldown?: number,
 
-  listenToClickOutside?: boolean,
-  listenToTouchOutside?: boolean,
   listenToKeydown?: boolean,
 
   selectorItems?: string,
@@ -27,30 +25,26 @@ export interface SequenceConfig {
   classNameJsNext?: string,
   classNameJsJump?: string,
 
-  beforeActivate?: Hook<SequenceAction, SequenceController>,
+  beforeActivate?  : Hook<SequenceAction, SequenceController>,
   beforeDeactivate?: Hook<SequenceAction, SequenceController>,
 
-  afterActivate?: Hook<SequenceAction, SequenceController>,
+  afterActivate?  : Hook<SequenceAction, SequenceController>,
   afterDeactivate?: Hook<SequenceAction, SequenceController>,
 
   conditionPrevious?: ConditionHook<SequenceAction, SequenceController>,
-  conditionNext?: ConditionHook<SequenceAction, SequenceController>,
-  conditionJump?: ConditionHook<SequenceAction, SequenceController>,
+  conditionNext?    : ConditionHook<SequenceAction, SequenceController>,
+  conditionJump?    : ConditionHook<SequenceAction, SequenceController>,
 
   beforeAction?: BeforeActionCallback<SequenceAction, SequenceController>,
-  afterAction?: AfterActionCallback<SequenceAction, SequenceController>,
+  afterAction? : AfterActionCallback<SequenceAction, SequenceController>,
 
-  onClickOutside?: ListenToHook<MouseEvent, SequenceGroup, SequenceController>,
-  onTouchOutside?: ListenToHook<TouchEvent, SequenceGroup, SequenceController>,
   onKeydown?: ListenToHook<KeyboardEvent, SequenceGroup, SequenceController>,
 }
 
 export const SEQUENCE_DEFAULT_CONFIG: SequenceConfig = {
   cooldown: 100,
 
-  listenToClickOutside: false,
-  listenToTouchOutside: false,
-  listenToKeydown     : false,
+  listenToKeydown: false,
 
   selectorItems: '.js-sequence-item',
 
@@ -71,9 +65,7 @@ export const SEQUENCE_DEFAULT_CONFIG: SequenceConfig = {
   beforeAction: (action, context) => { return Promise.resolve() },
   afterAction : (action, context) => { },
 
-  onClickOutside: (event, group, context) => { },
-  onTouchOutside: (event, group, context) => { },
-  onKeydown     : (event, group, context) => { },
+  onKeydown: (event, group, context) => { },
 }
 
 export const SEQUENCE_EVENT_ENTRY_LIST: EventEntry[] = [

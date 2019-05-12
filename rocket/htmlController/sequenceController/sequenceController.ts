@@ -21,15 +21,15 @@ export class SequenceController {
   public config: SequenceConfig
 
   public elementManager: ElementManager
-  public groupManager: SequenceGroupManager
-  public actionManager: SequenceActionManager
-  public eventManager: EventManager
+  public groupManager  : SequenceGroupManager
+  public actionManager : SequenceActionManager
+  public eventManager  : EventManager
 
   constructor(config: SequenceConfig) {
     this.elementManager = new ElementManager(this)
-    this.groupManager = new SequenceGroupManager(this)
-    this.actionManager = new SequenceActionManager(this)
-    this.eventManager = new EventManager(this)
+    this.groupManager   = new SequenceGroupManager(this)
+    this.actionManager  = new SequenceActionManager(this)
+    this.eventManager   = new EventManager(this)
     this.config = Object.assign({}, SEQUENCE_DEFAULT_CONFIG)
     this
       .setConfig(config)
@@ -101,54 +101,14 @@ export class SequenceController {
   }
 
   private initializeExtraListeners() {
-    if (this.config.listenToClickOutside === true) {
-      window.addEventListener('click', this.eventHandlerClickOutside)
-    }
-    if (this.config.listenToTouchOutside === true) {
-      window.addEventListener('touchstart', this.eventHandlerTouchOutside)
-    }
     if (this.config.listenToKeydown === true) {
       window.addEventListener('keydown', this.eventHandlerKeydown)
     }
   }
 
-  private eventHandlerClickOutside = (event: MouseEvent) => {
-    if (
-      this.config.listenToClickOutside === true &&
-      this.actionManager.isRunning === false
-    ) {
-      Object.keys(this.groupManager.groups).forEach(groupName => {
-        const group: SequenceGroup = this.groupManager.groups[groupName]
-        if (
-          group.isActive == true &&
-          DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItem) === false
-        ) {
-          this.config.onClickOutside(event, group, this)
-        }
-      })
-    }
-  }
-
-  private eventHandlerTouchOutside = (event: TouchEvent) => {
-    if (
-      this.config.listenToTouchOutside === true &&
-      this.actionManager.isRunning === false
-    ) {
-      Object.keys(this.groupManager.groups).forEach(groupName => {
-        const group: SequenceGroup = this.groupManager.groups[groupName]
-        if (
-          group.isActive == true &&
-          DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItem) === false
-        ) {
-          this.config.onTouchOutside(event, group, this)
-        }
-      })
-    }
-  }
-
   private eventHandlerKeydown = (event: KeyboardEvent) => {
     if (
-      this.config.listenToKeydown === true &&
+      this.config.listenToKeydown  === true &&
       this.actionManager.isRunning === false
     ) {
       Object.keys(this.groupManager.groups).forEach(groupName => {

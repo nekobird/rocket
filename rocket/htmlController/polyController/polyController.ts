@@ -1,5 +1,6 @@
 import {
   DOMUtil,
+  DragEventManager,
 } from '../../rocket'
 
 import {
@@ -24,6 +25,8 @@ export class PolyController {
   public eventManager:   EventManager
   public groupManager:   PolyGroupManager
   public actionManager:  PolyActionManager
+
+  public dragEventManager: DragEventManager
 
   constructor(config: PolyConfig) {
     this.elementManager = new ElementManager(this)
@@ -136,46 +139,48 @@ export class PolyController {
   }
 
   private initializeExtraListeners() {
-    if (this.config.listenToClickOutside === true) {
-      window.addEventListener('click', this.eventHandlerClickOutside)
+    if (this.config.closeOnOutsideAction === true) {
+      this.dragEventManager = new DragEventManager({
+        enableLongPress: false,
+        onUp: (event, manager) => {
+          this.handleOutsideAction(event)
+        }
+      })
     }
-    if (this.config.listenToTouchOutside === true) {
-      window.addEventListener('touchstart', this.eventHandlerTouchOutside)
-    }
+
     if (this.config.listenToKeydown === true) {
       window.addEventListener('keydown', this.eventHandlerKeydown)
     }
   }
 
-  private eventHandlerClickOutside = (event: MouseEvent) => {
+  private handleOutsideAction = (event) => {
     if (
-      this.config.listenToClickOutside === true &&
-      this.actionManager.isRunning === false
-    ) {
-      Object.keys(this.groupManager.groups).forEach(groupName => {
-        const group: PolyGroup = this.groupManager.groups[groupName]
-        if (
-          group.isActive === true &&
-          DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItems) === false
-        ) {
-          this.config.onClickOutside(event, group, this)
-        }
-      })
-    }
-  }
-
-  private eventHandlerTouchOutside = (event: TouchEvent) => {
-    if (
-      this.config.listenToTouchOutside === true &&
+      this.config.closeOnOutsideAction === true &&
       this.actionManager.isRunning     === false
     ) {
+
       Object.keys(this.groupManager.groups).forEach(groupName => {
         const group: PolyGroup = this.groupManager.groups[groupName]
+
+        const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
+        const targetUpElement  : HTMLElement | false = event.getTargetElementFromData(event.upData)
+
+        let classNames: string[] = [
+          this.config.classNameJsActivate,
+          this.config.classNameJsDeactivate,
+          this.config.classNameJsToggle
+        ]
+
         if (
-          group.isActive == true &&
-          DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItems) === false
+          group.isActive    === true  &&
+          targetDownElement !== false &&
+          targetUpElement   !== false &&
+          DOMUtil.hasAncestor(targetDownElement, group.activeItems) === false &&
+          DOMUtil.hasAncestor(targetUpElement,   group.activeItems) === false &&
+          DOMUtil.findAncestorWithClass(targetDownElement, classNames) === false
         ) {
-          this.config.onTouchOutside(event, group, this)
+          this.deactivateAll(groupName)
+          this.config.onOutsideAction(group, this)
         }
       })
     }

@@ -1,6 +1,6 @@
 import {
-  DragEventManager,
   DOMUtil,
+  DragEventManager,
 } from '../../rocket'
 
 import {
@@ -75,7 +75,7 @@ export class MonoController {
 
   public groupIsActive(groupName: string): boolean {
     if (
-      typeof this.groupManager.groups[groupName] === 'object' &&
+      typeof this.groupManager.groups[groupName]   === 'object' &&
       this.groupManager.groups[groupName].isActive === true
     ) {
       return true
@@ -115,7 +115,7 @@ export class MonoController {
       this.dragEventManager = new DragEventManager({
         enableLongPress: false,
         onUp: (event, manager) => {
-          this.handleTapOutside(event)
+          this.handleOutsideAction(event)
         }
       })
     }
@@ -125,7 +125,7 @@ export class MonoController {
     }
   }
 
-  private handleTapOutside = (event) => {
+  private handleOutsideAction = (event) => {
     if (
       this.config.closeOnOutsideAction === true &&
       this.actionManager.isRunning     === false
@@ -152,7 +152,7 @@ export class MonoController {
           DOMUtil.findAncestorWithClass(targetDownElement, classNames) === false
         ) {
           this.deactivate(groupName)
-          this.config.onOutsideAction(event, group, this)
+          this.config.onOutsideAction(group, this)
         }
       })
     }
