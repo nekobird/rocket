@@ -1,0 +1,38 @@
+%textarea-normalize {
+  @extend %style-text-body;
+
+  appearance: none;
+  box-sizing: border-box;
+  display: block;
+  resize: none;  
+  tab-size: 2;
+  width: 100%;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+$sizes : 'small', 'large';
+$styles: 'primary', 'transparent';
+
+.textarea {
+  @extend %textarea-normalize;
+
+  border-radius: border-radius(input-config('border-radius'));
+
+  @include textarea-apply-size('base');
+  @include input-apply-style('base');
+
+  @each $size in $sizes {
+    &.textarea--#{$size} {
+      @include textarea-apply-size($size);
+    }
+  }
+
+  @each $style in $styles {
+    &.textarea--#{$style} {
+      @include input-apply-style($style);
+    }
+  }
+}

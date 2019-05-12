@@ -12,8 +12,6 @@ const controller = new MonoController({
   classNameJsDeactivate: 'js-item-deactivate',
   classNameJsToggle    : 'js-item-toggle',
 
-  listenToClickOutside: true,
-
   beforeDeactivate: (action, context) => {
     return new Promise(resolve => {
       action.currentItem.classList.remove('item--animate-in', 'item--animate-out')
@@ -38,8 +36,5 @@ const controller = new MonoController({
     if (event.keyCode === 27) {
       context.deactivate(group.name)
     }
-  },
-  onClickOutside: (event, group, context) => {
-    console.log("click outside")
   }
 })

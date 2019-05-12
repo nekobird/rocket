@@ -1,0 +1,155 @@
+@import 'config';
+@import 'mixins';
+
+// Padding must be in rem.
+$floating-label-field-sizes: (
+  'small': (
+    'label-text-size'   : 'x-small',
+    'label-focus-size'  : 'x-small',
+    'input-text-size'   : 'small',
+    'vertical-padding'  : 0.5rem,
+    'horizontal-padding': 1rem,
+  ),
+  'base': (
+    'label-text-size'      : 'medium',
+    'label-focus-text-size': 'small',
+    'input-text-size'      : 'base',
+    'vertical-padding'     : 0.5rem,
+    'horizontal-padding'   : 1rem,
+  ),
+);
+
+// Float Label Input
+
+@function floating-label-field-size($size: 'base', $property: 'base') {
+  $__size: map-get($floating-label-field-sizes, 'base');
+  @if map-has-key($floating-label-field-sizes, $size) {
+    $__size: map-get($floating-label-field-sizes, $size);
+  }
+  $__result: map-get($__size, 'input-text-size');
+  @if map-has-key($__size, $property) == true {
+    $__result: map-get($__size, $property);
+  }
+  @return $__result;
+}
+
+@function floating-label-height($size) {
+  $label-focus-text-size: floating-label-field-size($size, 'label-focus-text-size');
+  $input-text-size      : floating-label-field-size($size, 'input-text-size');
+  $vertical-padding     : floating-label-field-size($size, 'vertical-padding');
+
+  @return (
+    line-height-rem($label-focus-text-size) +
+    line-height-rem($input-text-size) +
+    ($vertical-padding * 2)
+  );
+}
+
+@function floating-label-field-input-padding-top($size) {
+
+}
+
+@function floating-label-field-get-vertical-padding($height) {
+  
+}
+
+$sizes : 'small', 'large';
+$styles: 'primary', 'transparent';
+
+// Compose Input
+
+.floating-label-field {
+  $_height: floating-label-height('base');
+
+  background-color: color('extra-light');
+  border-color: color('medium');
+  border-radius: border-radius('base');
+  border-style: solid;
+  border-width: border-width('base');
+  box-sizing: border-box;
+  display: block;
+  margin-bottom: space('medium');
+  min-height: $_height;
+  position: relative;
+
+  transition-duration: 0.2s;
+  transition-property: background-color, border-color;
+  transition-timing-function: ease-out;
+
+  &:hover {
+    border-color: color('medium-dark');
+  }
+
+  &:active {
+    border-color: color('medium-dark');
+  }
+
+  .floating-label {
+    @include apply-text-size('medium');
+
+    border-radius: border-radius('small');
+    box-sizing: border-box;
+    box-sizing: border-box;
+    color: color('medium');
+    height: $_height;
+    left: 0;
+    line-height: $_height;
+    padding-left: floating-label-field-size('base', 'horizontal-padding');
+    position: absolute;
+    top: 0;
+    z-index: 0;
+
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out;
+    transition-property: color, font-size, line-height;
+  }
+
+  .floating-label-input {
+    @extend %style-text-body;
+
+    appearance: none;
+    background: transparent;
+    border: 0;
+    box-sizing: border-box;
+    display: block;
+    font-size: font-size('medium');
+    height: floating-label-height('base');
+    line-height: font-size('medium');
+    padding-bottom: floating-label-field-size('base', 'vertical-padding');
+    padding-left : floating-label-field-size('base', 'horizontal-padding');
+    padding-right: floating-label-field-size('base', 'horizontal-padding');
+    padding-top: font-size('small') + floating-label-field-size('base', 'vertical-padding') !important;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+  }
+
+  .floating-label-textarea {
+    @extend %style-text-body;
+
+    background: transparent;
+    border: 0;
+    font-size: font-size('medium');
+    height: floating-label-height('base');
+    min-height: floating-label-height('base');
+    padding-left: floating-label-field-size('base', 'horizontal-padding');
+    padding-right: floating-label-field-size('base', 'horizontal-padding');
+    padding-top: font-size('small') + floating-label-field-size('base', 'vertical-padding');
+    padding-bottom: floating-label-field-size('base', 'vertical-padding');
+    position: absolute;
+    resize: none;
+    top: 0;
+    z-index: 1;
+  }
+
+  &.floating-label-field--active {
+
+    label.floating-label {
+      color: color('primary');
+      font-size: font-size('small');
+      font-weight: font-weight('semi-bold');
+      line-height: font-size('small');
+      padding-top: floating-label-field-size('base', 'vertical-padding');
+    }
+  }
+}

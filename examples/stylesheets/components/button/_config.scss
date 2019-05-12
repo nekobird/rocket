@@ -1,0 +1,122 @@
+$button-config: (
+  'border-width' : 'thin',
+  'border-radius': 'base',
+);
+
+$button-sizes: (
+  'small': (
+    'height'   : px-to-rem(40),
+    'text-size': 'small',
+    'padding'  : 2em,
+  ),
+  'base' : (
+    'height'   : px-to-rem(44),
+    'text-size': 'base',
+    'padding'  : 2em,
+  ),
+  'large': (
+    'height'   : px-to-rem(60),
+    'text-size': 'medium',
+    'padding'  : 2em,
+  ),
+);
+
+$button-styles: (
+  'base': (
+    'base': (
+      'color'     : color('light'),
+      'text-color': color('black'),
+    ),
+    'hover': (
+      'color'     : color('light', 'hover'),
+      'text-color': color('black'),
+    ),
+    'active': (
+      'color'     : color('light', 'active'),
+      'text-color': color('black'),
+    ),
+    'disabled': (
+      'color'     : color('light', 'active'),
+      'text-color': color('black'),
+    ),
+  ),
+  'primary': (
+    'base': (
+      'color'     : color('primary'),
+      'text-color': color('white'),
+    ),
+    'hover': (
+      'color'     : color('primary', 'hover'),
+      'text-color': color('white'),
+    ),
+    'active': (
+      'color'     : color('primary', 'active'),
+      'text-color': color('white'),
+    ),
+    'disabled': (
+      'color'     : color('primary', 'disabled'),
+      'text-color': color('white'),
+    ),
+  ),
+  'transparent': (
+    'base': (
+      'color'     : transparent,
+      'text-color': color('black'),
+    ),
+    'hover': (
+      'color'     : transparent,
+      'text-color': color('black'),
+    ),
+    'active': (
+      'color'     : transparent,
+      'text-color': color('black'),
+    ),
+    'disabled': (
+      'color'     : transparent,
+      'text-color': color('black'),
+    ),
+  ),
+);
+
+// Getter
+
+@function button-config($_key) {
+  @return map-get($button-config, $_key);
+}
+
+@function button-style($_style: 'base', $_state: 'base', $_property: 'color') {
+  $__style: map-get($button-styles, 'base');
+  @if map-has-key($button-styles, $_style) == true {
+    $__style: map-get($button-styles, $_style);
+  }
+  $__state: map-get($__style, 'base');
+  @if map-has-key($__style, $_state) == true {
+    $__state: map-get($__style, $_state);
+  }
+  $__result: map-get($__state, 'color');
+  @if map-has-key($__state, $_property) == true {
+    $__result: map-get($__state, $_property);
+  }
+  @return $__result;
+}
+
+@function button-size($_size: 'base', $_property: 'base') {
+  $__size: map-get($button-sizes, 'base');
+  @if map-has-key($button-sizes, $_size) {
+    $__size: map-get($button-sizes, $_size);
+  }
+  $__result: map-get($__size, 'height');
+  @if map-has-key($__size, $_property) == true {
+    $__result: map-get($__size, $_property);
+  } @else {
+    @if $_property == 'border-width' {
+      $__result: border-width(button-config('border-width'))
+    }
+  }
+  @return $__result;
+}
+
+@function button-vertical-padding($_height, $_border-width: 0, $_text-size: 'base') {
+  $__height: $_height - ($_border-width * 2);
+  @return ($__height - line-height-rem($_text-size)) / 2;
+}

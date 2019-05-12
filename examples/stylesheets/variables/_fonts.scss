@@ -15,15 +15,15 @@ $font-sizes: (
     'line-height': 1.8,
   ),
   'base': (
-    'font-size'  : px-to-rem(16),
-    'line-height': 1.5,
-  ),
-  'medium': (
     'font-size'  : px-to-rem(18),
     'line-height': 1.5,
   ),
-  'large': (
+  'medium': (
     'font-size'  : px-to-rem(20),
+    'line-height': 1.5,
+  ),
+  'large': (
+    'font-size'  : px-to-rem(22),
     'line-height': 1.5,
   ),
 );

@@ -1,0 +1,69 @@
+// Input Sizes
+
+@mixin input-apply-style-helper($style, $state) {
+  background-color: input-style($style, $state, 'background-color');
+  border-color    : input-style($style, $state, 'border-color');
+  color           : input-style($style, $state, 'text-color');
+}
+
+@mixin input-apply-style($style) {
+  @include input-apply-style-helper($style, 'base');
+  &:hover {
+    @include input-apply-style-helper($style, 'hover');
+  }
+  &:active {
+    @include input-apply-style-helper($style, 'active');
+  }
+  &:focus {
+    @include input-apply-style-helper($style, 'focus');
+  }
+  &[disabled=disabled],
+  &:disabled,
+  &.input--disabled {
+    @include input-apply-style-helper($style, 'disabled');
+  }
+}
+
+@mixin input-apply-all-states() {
+  &:hover {
+    @content;
+  }
+  &:active {
+    @content;
+  }
+  &:focus {
+    @content;
+  }
+  &[disabled=disabled],
+  &:disabled,
+  &.input--disabled {
+    @content;
+  }
+}
+
+@mixin input-apply-size($size) {
+  $_height: input-size($size, 'height');
+  $_border-width: border-width(
+    input-size($size, 'border-width')
+  );
+  $_text-size: input-size($size, 'text-size');
+
+  @include apply-text-size($_text-size);
+
+  border-width: $_border-width;
+  height: $_height;
+  padding: input-vertical-padding(
+    $_height, $_border-width, $_text-size
+  ) input-size('base', 'padding');
+}
+
+@mixin textarea-apply-size($size) {
+  $_text-size: input-size($size, 'text-size');
+
+  @include apply-text-size(nput-size($size, 'text-size'));
+
+  border-width: border-width(input-size($size, 'border-width'));
+  min-height: textarea-get-min-height($size);
+  height: textarea-get-min-height($size);
+  padding: input-size($size, 'padding');
+}

@@ -111,7 +111,7 @@ export class MonoController {
   }
 
   private initializeExtraListeners() {
-    if (this.config.listenToClickOutside === true) {
+    if (this.config.closeOnOutsideAction === true) {
       this.dragEventManager = new DragEventManager({
         enableLongPress: false,
         onUp: (event, manager) => {
@@ -127,7 +127,7 @@ export class MonoController {
 
   private handleTapOutside = (event) => {
     if (
-      this.config.listenToClickOutside === true &&
+      this.config.closeOnOutsideAction === true &&
       this.actionManager.isRunning     === false
     ) {
 
@@ -137,14 +137,22 @@ export class MonoController {
         const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
         const targetUpElement  : HTMLElement | false = event.getTargetElementFromData(event.upData)
 
+        let classNames: string[] = [
+          this.config.classNameJsActivate,
+          this.config.classNameJsDeactivate,
+          this.config.classNameJsToggle
+        ]
+
         if (
           group.isActive    === true  &&
           targetDownElement !== false &&
           targetUpElement   !== false &&
           DOMUtil.hasAncestor(targetDownElement, group.activeItem) === false &&
-          DOMUtil.hasAncestor(targetUpElement, group.activeItem)   === false
+          DOMUtil.hasAncestor(targetUpElement,   group.activeItem) === false &&
+          DOMUtil.findAncestorWithClass(targetDownElement, classNames) === false
         ) {
-          this.config.onClickOutside(event, group, this)
+          this.deactivate(groupName)
+          this.config.onOutsideAction(event, group, this)
         }
       })
     }

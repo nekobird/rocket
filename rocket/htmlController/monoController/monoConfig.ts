@@ -13,8 +13,7 @@ import {
 export interface MonoConfig {
   cooldown?: number,
 
-  listenToClickOutside?: boolean,
-  listenToTouchOutside?: boolean,
+  closeOnOutsideAction?: boolean,
   listenToKeydown?: boolean,
 
   selectorItems?: string,
@@ -36,16 +35,14 @@ export interface MonoConfig {
   beforeAction?: BeforeActionCallback<MonoAction, MonoController>,
   afterAction? : AfterActionCallback<MonoAction, MonoController>,
 
-  onClickOutside?: ListenToHook<MouseEvent, MonoGroup, MonoController>,
-  onTouchOutside?: ListenToHook<TouchEvent, MonoGroup, MonoController>,
-  onKeydown?     : ListenToHook<KeyboardEvent, MonoGroup, MonoController>,
+  onOutsideAction?: ListenToHook<MouseEvent, MonoGroup, MonoController>,
+  onKeydown?      : ListenToHook<KeyboardEvent, MonoGroup, MonoController>,
 }
 
 export const MONO_DEFAULT_CONFIG: MonoConfig = {
   cooldown: 200,
 
-  listenToClickOutside: false,
-  listenToTouchOutside: false,
+  closeOnOutsideAction: true,
   listenToKeydown: false,
 
   selectorItems: '.js-mono-item',
@@ -68,8 +65,7 @@ export const MONO_DEFAULT_CONFIG: MonoConfig = {
   beforeAction: (action, context) => { return Promise.resolve() },
   afterAction : (action, context) => { },
 
-  onClickOutside: (event, group, context) => { },
-  onTouchOutside: (event, group, context) => { },
+  onOutsideAction: (event, group, context) => { },
   onKeydown     : (event, group, context) => { },
 }
 

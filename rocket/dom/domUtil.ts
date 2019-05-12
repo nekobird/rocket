@@ -47,9 +47,23 @@ export class DOMUtil {
     return false
   }
 
-  public static findAncestorWithClass(element: HTMLElement, className: string, getAll: boolean = true): DOMUtilResult {
-    const identifierFn: DOMUtilIdentifierFn = _element => {
-      return _element.classList.contains(className)
+  public static findAncestorWithClass(element: HTMLElement, classNames: string | string[], getAll: boolean = true): DOMUtilResult {
+    let identifierFn: DOMUtilIdentifierFn
+
+    if (typeof classNames === 'string') {    
+      identifierFn = _element => {
+        return _element.classList.contains(classNames)
+      }
+    } else if (Array.isArray(classNames) === true) {
+      identifierFn = _element => {
+        let containsClassName: boolean = false
+        classNames.forEach(className => {
+          if (_element.classList.contains(className) === true) {
+            containsClassName = true
+          }
+        })
+        return containsClassName
+      }
     }
 
     return this.findAncestor(element, identifierFn, getAll)
@@ -120,9 +134,23 @@ export class DOMUtil {
     return this.findDescendant(element, identifierFn, getAll)
   }
 
-  public static findDescendantWithClass(element: HTMLElement, className: string, getAll: boolean = true): DOMUtilResult {
-    const identifierFn: DOMUtilIdentifierFn = _element => {
-      return _element.classList.contains(className)
+  public static findDescendantWithClass(element: HTMLElement, classNames: string | string[], getAll: boolean = true): DOMUtilResult {
+    let identifierFn: DOMUtilIdentifierFn
+
+    if (typeof classNames === 'string') {    
+      identifierFn = _element => {
+        return _element.classList.contains(classNames)
+      }
+    } else if (Array.isArray(classNames) === true) {
+      identifierFn = _element => {
+        let containsClassName: boolean = false
+        classNames.forEach(className => {
+          if (_element.classList.contains(className) === true) {
+            containsClassName = true
+          }
+        })
+        return containsClassName
+      }
     }
 
     return this.findDescendant(element, identifierFn, getAll)

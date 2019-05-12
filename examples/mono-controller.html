@@ -6,10 +6,9 @@
 </head>
 
 <body>
+  <include src="_site-header.html"></include>
   <div class="site-content">
     <div class="page-monoController">
-
-      <a href="index.html">Go Back</a>
 
       <div class="items">
         <div class="item item--active js-item"
@@ -32,34 +31,27 @@
       </div>
 
       <div class="controls">
-        <a class="js-item-toggle"
+        <a class="button button--primary js-item-activate"
            data-group="a"
            data-target="1"
            href="javascript:void(0)">
-          A - Toggle One
+          A - 1
         </a>
 
-        <a class="js-item-activate"
+        <a class="button button--primary js-item-activate"
            data-group="a"
            data-target="2"
            href="javascript:void(0)">
-          A - Open Two
+          A - 2
         </a>
 
-        <a class="js-item-activate"
+        <a class="button button--primary js-item-activate"
            data-group="a"
            data-target="3"
            href="javascript:void(0)">
-          A - Open Three
+          A - 3
         </a>
-
-        <a class="js-item-deactivate"
-           data-group="a"
-           data-target="3"
-           href="javascript:void(0)">
-          A - Deactivate
-        </a>
-      </div>
+      </div><!-- controls -->
 
     </div><!-- page-monoController -->
   </div><!-- site-content -->

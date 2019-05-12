@@ -1,0 +1,12 @@
+$_height: px-to-rem(60);
+
+.site-header {
+  background-color: color('extra-light');
+  box-sizing: border-box;
+  height: $_height;
+  line-height: $_height;
+  max-width: 100%;
+  padding: 0 space('medium');
+  position: relative;
+  width: 100vw;
+}
