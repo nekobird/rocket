@@ -144,8 +144,6 @@ export class EventManager {
         actionManager.endAction()
       }
     }
-
     return this
   }
-
 }

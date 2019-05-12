@@ -1,9 +1,15 @@
 $spaces: (
-  'x-small' : calculate-rem(4),
-  'small'   : calculate-rem(8),
-  'base'    : calculate-rem(12),
-  'medium'  : calculate-rem(20),
-  'large'   : calculate-rem(40),
-  'x-large' : calculate-rem(80),
-  'xx-large': calculate-rem(100),
+  'x-small': px-to-rem(8),
+  'small'  : px-to-rem(12),
+  'medium' : px-to-rem(20),
+  'large'  : px-to-rem(40),
+  'x-large': px-to-rem(80),
 );
+
+@function space($key: 'base') {
+  @if map-has-key($spaces, $key) == true {
+    @return map-get($spaces, $key);
+  } @else {
+    @return map-get($spaces, 'base');
+  }
+}

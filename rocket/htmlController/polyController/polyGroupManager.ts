@@ -83,5 +83,4 @@ export class PolyGroupManager {
     }
     return false
   }
-
 }

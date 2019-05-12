@@ -21,15 +21,15 @@ export class PolyController {
   public config: PolyConfig
 
   public elementManager: ElementManager
-  public eventManager: EventManager
-  public groupManager: PolyGroupManager
-  public actionManager: PolyActionManager
+  public eventManager:   EventManager
+  public groupManager:   PolyGroupManager
+  public actionManager:  PolyActionManager
 
   constructor(config: PolyConfig) {
     this.elementManager = new ElementManager(this)
-    this.groupManager = new PolyGroupManager(this)
-    this.actionManager = new PolyActionManager(this)
-    this.eventManager = new EventManager(this)
+    this.groupManager   = new PolyGroupManager(this)
+    this.actionManager  = new PolyActionManager(this)
+    this.eventManager   = new EventManager(this)
     this.config = Object.assign({}, POLY_DEFAULT_CONFIG)
     this
       .setConfig(config)
@@ -155,7 +155,7 @@ export class PolyController {
       Object.keys(this.groupManager.groups).forEach(groupName => {
         const group: PolyGroup = this.groupManager.groups[groupName]
         if (
-          group.isActive == true &&
+          group.isActive === true &&
           DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItems) === false
         ) {
           this.config.onClickOutside(event, group, this)
@@ -167,7 +167,7 @@ export class PolyController {
   private eventHandlerTouchOutside = (event: TouchEvent) => {
     if (
       this.config.listenToTouchOutside === true &&
-      this.actionManager.isRunning === false
+      this.actionManager.isRunning     === false
     ) {
       Object.keys(this.groupManager.groups).forEach(groupName => {
         const group: PolyGroup = this.groupManager.groups[groupName]
@@ -183,7 +183,7 @@ export class PolyController {
 
   private eventHandlerKeydown = (event: KeyboardEvent) => {
     if (
-      this.config.listenToKeydown === true &&
+      this.config.listenToKeydown  === true &&
       this.actionManager.isRunning === false
     ) {
       Object.keys(this.groupManager.groups).forEach(groupName => {
@@ -192,5 +192,4 @@ export class PolyController {
       })
     }
   }
-
 }

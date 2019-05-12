@@ -1,10 +1,11 @@
 @import 'reset';
 
 @import 'base';
+@import 'utilities/utilities';
+@import 'variables/index';
 
-.box {
-  height: 400px;
-  width: 500px;
-  display: block;
-  background: red;
-}
+@import 'compositions';
+
+@import 'global';
+
+@import 'pages/index';

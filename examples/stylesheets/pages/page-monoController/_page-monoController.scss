@@ -1,0 +1,77 @@
+
+@keyframes item_animation_in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+@keyframes item_animation_out {
+  from {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.page-monoController {
+  .items {
+    height: 220px;
+    background: hsl(0, 0, 99);
+    margin-bottom: 0px;
+    position: relative;
+    padding: 20px;
+  }
+
+  .item,
+  .block {
+    font-size: 24px;
+    background: hsl(220, 20, 5);
+    border-radius: 20px;
+    box-sizing: border-box;
+    color: white;
+    display: none;
+    height: 140px;
+    margin: 20px;
+    padding: 20px;
+    width: 140px;
+
+    &.item--active {
+      display: block;
+    }
+
+    &.item--animate-in {
+      animation-duration: 0.4s;
+      animation-fill-mode: forwards;
+      animation-name: item_animation_in;
+      animation-timing-function: ease-out;
+    }
+
+    &.item--animate-out {
+      animation-duration: 0.4s;
+      animation-fill-mode: forwards;
+      animation-name: item_animation_out;
+      animation-timing-function: ease-out;
+    }
+  }
+
+  .controls {
+    padding: 20px;
+    background-color: hsl(0, 0, 95);
+
+    a:link,
+    a:visited {
+      display: inline-block;
+      padding: 10px;
+    }
+  }
+}

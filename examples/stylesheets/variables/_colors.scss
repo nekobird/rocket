@@ -1,6 +1,47 @@
 $colors: (
   'primary': (
-    'base': hsl(340, 50, 50),
+    'base'    : hsl(220, 100, 50),
+    'hover'   : hsl(220, 100, 40),
+    'active'  : hsl(220, 100, 20),
+    'disabled': hsl(220, 100, 20),
+    'lighter' : hsl(220, 100, 60),
+    'darker'  : hsl(220, 100, 20),
+  ),
+  'extra-light': (
+    'base': hsl(220, 40, 98),
+  ),
+  'light': (
+    'base'  :hsl(220, 40, 96),
+    'hover' :hsl(220, 30, 92),
+    'active':hsl(220, 20, 88),
+  ),
+  'medium-light': (
+    'base': hsl(220, 20, 90),
+  ),
+  'medium': (
+    'base'  : hsl(220, 20, 70),
+    'hover' : hsl(220, 50, 60),
+    'active': hsl(220, 50, 50),
+  ),
+  'medium-dark': (
+    'base': hsl(220, 20, 50),
+  ),
+  'dark': (
+    'base'   : hsl(220, 40, 5),
+    'hover'  : hsl(220, 40, 20),
+    'active' : hsl(220, 40, 10),
+    'lighter': hsl(220, 40, 40),  
+  ),
+  'error': (
+    'base' : hsl(340, 50, 50),
+    'light': hsl(340, 50, 96),
+  ),
+  'success': (
+    'base' : hsl(180, 50, 40),
+    'light': hsl(180, 50, 90),
+  ),
+  'gray': (
+    'base': hsl(220, 40, 50),
   ),
   'white': (
     'base': white,
@@ -9,3 +50,15 @@ $colors: (
     'base': black,
   ),
 );
+
+@function color($color: 'primary', $variant: 'base') {
+  @if map-has-key($colors, $color) == true {
+    @if map-has-key(map-get($colors, $color), $variant) == true {
+      @return map-get(map-get($colors, $color), $variant);
+    } @else {
+      @return map-get(map-get($colors, $color), 'base');
+    }
+  } @else {
+    @return map-get(map-get($colors, 'primary'), 'base');
+  }
+}

@@ -10,7 +10,7 @@
 // Text Styles
 
 %style-text-display {
-  @include apply-font-size('base', 'display');
+  @include apply-text-size('base', 'display');
 
   color: color('black');
   font-family: font-family('primary');
@@ -18,7 +18,7 @@
 }
 
 %style-text-heading {
-  @include apply-font-size('base', 'heading');
+  @include apply-text-size('base', 'heading');
 
   color: color('black');
   font-family: font-family('primary');
@@ -26,7 +26,7 @@
 }
 
 %style-text-body {
-  @include apply-font-size('base');
+  @include apply-text-size('base');
 
   color: color('black');
   font-family: font-family('primary');

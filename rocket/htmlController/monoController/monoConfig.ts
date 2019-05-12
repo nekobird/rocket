@@ -19,26 +19,26 @@ export interface MonoConfig {
 
   selectorItems?: string,
 
-  classNameItemActive?: string,
-  classNameJsActivate?: string,
+  classNameItemActive?  : string,
+  classNameJsActivate?  : string,
   classNameJsDeactivate?: string,
-  classNameJsToggle?: string,
+  classNameJsToggle?    : string,
 
-  beforeActivate?: Hook<MonoAction, MonoController>,
+  beforeActivate?  : Hook<MonoAction, MonoController>,
   beforeDeactivate?: Hook<MonoAction, MonoController>,
 
-  afterActivate?: Hook<MonoAction, MonoController>,
+  afterActivate?  : Hook<MonoAction, MonoController>,
   afterDeactivate?: Hook<MonoAction, MonoController>,
 
-  conditionActivate?: ConditionHook<MonoAction, MonoController>,
+  conditionActivate?  : ConditionHook<MonoAction, MonoController>,
   conditionDeactivate?: ConditionHook<MonoAction, MonoController>,
 
   beforeAction?: BeforeActionCallback<MonoAction, MonoController>,
-  afterAction?: AfterActionCallback<MonoAction, MonoController>,
+  afterAction? : AfterActionCallback<MonoAction, MonoController>,
 
   onClickOutside?: ListenToHook<MouseEvent, MonoGroup, MonoController>,
   onTouchOutside?: ListenToHook<TouchEvent, MonoGroup, MonoController>,
-  onKeydown?: ListenToHook<KeyboardEvent, MonoGroup, MonoController>,
+  onKeydown?     : ListenToHook<KeyboardEvent, MonoGroup, MonoController>,
 }
 
 export const MONO_DEFAULT_CONFIG: MonoConfig = {

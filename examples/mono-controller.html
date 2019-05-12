@@ -6,75 +6,47 @@
 </head>
 
 <body>
-  <div class="site_content">
+  <div class="site-content">
+   <div class="page-monoController">
+
     <a href="index.html">Go Back</a>
 
     <div class="items">
-      <div class="item __active"
+      <div class="item item--active js-item"
            data-group="a"
-           data-id="one">A - one</div>
-      <div class="item"
+           data-id="1">A - one</div>
+      <div class="item js-item"
            data-group="a"
-           data-id="two">A - two</div>
-      <div class="item"
+           data-id="2">A - two</div>
+      <div class="item js-item"
            data-group="a"
-           data-id="three">A - three</div>
-    </div>
-
-    <div class="items">
-      <div class="item __active"
-           data-group="b"
-           data-id="one">B - one</div>
-      <div class="item"
-           data-group="b"
-           data-id="two">B - two</div>
-      <div class="item"
-           data-group="b"
-           data-id="three">B - three</div>
+           data-id="3">A - three</div>
     </div>
 
     <div class="controls">
-      <a class="js_toggle"
+      <a class="js-item-toggle"
          data-group="a"
-         data-target="one"
+         data-target="1"
          href="javascript:void(0)">A - Toggle One</a>
-      <a class="js_activate"
+
+      <a class="js-item-activate"
          data-group="a"
-         data-target="two"
+         data-target="2"
          href="javascript:void(0)">A - Open Two</a>
-      <a class="js_activate"
+
+      <a class="js-item-activate"
          data-group="a"
-         data-target="three"
+         data-target="3"
          href="javascript:void(0)">A - Open Three</a>
-      <a class="js_deactivate"
+
+      <a class="js-item-deactivate"
          data-group="a"
+         data-target="3"
          href="javascript:void(0)">A - Deactivate</a>
     </div>
 
-    <div class="controls">
-      <a class="js_activate"
-         data-group="b"
-         data-target="one"
-         href="javascript:void(0)">B - Open One</a>
-      <a class="js_activate"
-         data-group="b"
-         data-target="two"
-         href="javascript:void(0)">B - Open Two</a>
-      <a class="js_activate"
-         data-group="b"
-         data-target="three"
-         href="javascript:void(0)">B - Open Three</a>
-      <a class="js_deactivate"
-         data-group="b"
-         href="javascript:void(0)">B - Deactivate</a>
-    </div>
-
-    <div class="controls">
-      <a id="deactivate_a_one"
-         href="javascript:void(0)">Deactivate A One</a>
-    </div>
-  </div><!-- site_content -->
-
+   </div><!-- page-monoController -->
+  </div><!-- site-content -->
   <script src="javascripts/monoController.ts"></script>
 </body>
 

@@ -1,4 +1,5 @@
 import {
+  DragEventManager,
   DOMUtil,
 } from '../../rocket'
 
@@ -21,15 +22,17 @@ export class MonoController {
   public config: MonoConfig
 
   public elementManager: ElementManager
-  public eventManager: EventManager
-  public groupManager: MonoGroupManager
-  public actionManager: MonoActionManager
+  public eventManager  : EventManager
+  public groupManager  : MonoGroupManager
+  public actionManager : MonoActionManager
+
+  public dragEventManager: DragEventManager
 
   constructor(config: MonoConfig) {
     this.elementManager = new ElementManager(this)
-    this.groupManager = new MonoGroupManager(this)
-    this.actionManager = new MonoActionManager(this)
-    this.eventManager = new EventManager(this)
+    this.groupManager   = new MonoGroupManager(this)
+    this.actionManager  = new MonoActionManager(this)
+    this.eventManager   = new EventManager(this)
     this.config = Object.assign({}, MONO_DEFAULT_CONFIG)
     this
       .setConfig(config)
@@ -41,7 +44,7 @@ export class MonoController {
     return this
   }
 
-  // ACTION
+  // Action
 
   public activate(groupName: string, id: string): Promise<void> {
     return new Promise(resolve => {
@@ -87,7 +90,7 @@ export class MonoController {
     return false
   }
 
-  // INITIALIZE
+  // Initialize
 
   public initialize(): MonoController {
     this.elementManager.initialize()
@@ -109,26 +112,36 @@ export class MonoController {
 
   private initializeExtraListeners() {
     if (this.config.listenToClickOutside === true) {
-      window.addEventListener('click', this.eventHandlerClickOutside)
+      this.dragEventManager = new DragEventManager({
+        enableLongPress: false,
+        onUp: (event, manager) => {
+          this.handleTapOutside(event)
+        }
+      })
     }
-    if (this.config.listenToTouchOutside === true) {
-      window.addEventListener('touchstart', this.eventHandlerTouchOutside)
-    }
+
     if (this.config.listenToKeydown === true) {
       window.addEventListener('keydown', this.eventHandlerKeydown)
     }
   }
 
-  private eventHandlerClickOutside = (event: MouseEvent) => {
+  private handleTapOutside = (event) => {
     if (
       this.config.listenToClickOutside === true &&
-      this.actionManager.isRunning === false
+      this.actionManager.isRunning     === false
     ) {
+
       Object.keys(this.groupManager.groups).forEach(groupName => {
         const group: MonoGroup = this.groupManager.groups[groupName]
+
+        const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
+        const targetUpElement  : HTMLElement | false = event.getTargetElementFromData(event.upData)
+
         if (
-          group.isActive == true &&
-          DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItem) === false
+          group.isActive    === true &&
+          targetDownElement !== false &&
+          targetUpElement   !== false &&
+          DOMUtil.hasAncestor(targetDownElement, group.activeItem) === false
         ) {
           this.config.onClickOutside(event, group, this)
         }
@@ -136,26 +149,9 @@ export class MonoController {
     }
   }
 
-  private eventHandlerTouchOutside = (event: TouchEvent) => {
-    if (
-      this.config.listenToTouchOutside === true &&
-      this.actionManager.isRunning === false
-    ) {
-      Object.keys(this.groupManager.groups).forEach(groupName => {
-        const group: MonoGroup = this.groupManager.groups[groupName]
-        if (
-          group.isActive == true &&
-          DOMUtil.hasAncestor(<HTMLElement>event.target, group.activeItem) === false
-        ) {
-          this.config.onTouchOutside(event, group, this)
-        }
-      })
-    }
-  }
-
   private eventHandlerKeydown = (event: KeyboardEvent) => {
     if (
-      this.config.listenToKeydown === true &&
+      this.config.listenToKeydown  === true &&
       this.actionManager.isRunning === false
     ) {
       Object.keys(this.groupManager.groups).forEach(groupName => {
@@ -164,5 +160,4 @@ export class MonoController {
       })
     }
   }
-
 }

@@ -24,7 +24,7 @@ export class MonoGroupManager {
     this.controller = controller
   }
 
-  // INITIALIZE
+  // Initialize
 
   public initialize() {
     this
@@ -49,9 +49,9 @@ export class MonoGroupManager {
             groupItems = []
           }
           this.groups[groupName] = {
-            name: groupName,
+            name : groupName,
             items: groupItems,
-            activeItem: undefined,
+            activeItem  : undefined,
             activeItemId: undefined,
             isActive: false,
           }
@@ -65,11 +65,12 @@ export class MonoGroupManager {
     if (this.groupCount > 0) {
       Object.keys(this.groups).forEach(groupName => {
         const group: MonoGroup = this.groups[groupName]
+
         group.items.forEach(item => {
-          if (item.classList.contains(this.controller.config.classNameItemActive)) {
-            group.activeItem = item
+          if (item.classList.contains(this.controller.config.classNameItemActive) === true) {
+            group.activeItem   = item
             group.activeItemId = item.dataset.id
-            group.isActive = true
+            group.isActive     = true
           }
         })
       })
@@ -78,7 +79,7 @@ export class MonoGroupManager {
     return this
   }
 
-  // GROUP
+  // Group
 
   public get groupCount(): number {
     return Object.keys(this.groups).length
@@ -88,7 +89,7 @@ export class MonoGroupManager {
     return this.groups[groupName]
   }
 
-  // ITEM
+  // Item
 
   public activateItem(item: HTMLElement) {
     if (this.checkIfValidItem(item) === true) {
@@ -96,9 +97,9 @@ export class MonoGroupManager {
       item.classList.add(
         this.controller.config.classNameItemActive
       )
-      group.activeItem = item
+      group.activeItem   = item
       group.activeItemId = item.dataset.id
-      group.isActive = true
+      group.isActive     = true
     }
   }
 
@@ -108,9 +109,9 @@ export class MonoGroupManager {
       group.activeItem.classList.remove(
         this.controller.config.classNameItemActive
       )
-      group.activeItem = undefined
+      group.activeItem   = undefined
       group.activeItemId = undefined
-      group.isActive = false
+      group.isActive     = false
     }
   }
 
@@ -124,5 +125,4 @@ export class MonoGroupManager {
     }
     return valid
   }
-
 }

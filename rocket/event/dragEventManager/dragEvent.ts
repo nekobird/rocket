@@ -53,7 +53,7 @@ export class DragEvent {
   }
 
   public getTargetElementFromData(data: SensorData): HTMLElement {
-    return <HTMLElement>document.elementFromPoint(data.screenX, data.screenY)
+    return <HTMLElement>document.elementFromPoint(data.pageX, data.pageY)
   }
 
   public get previousEventData(): SensorData | false {

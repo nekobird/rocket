@@ -1,72 +1,75 @@
 $font-families: (
-  'primary'  : ('Avenir Next', 'Helvetica Neue', Arial, sans-serif),
-  'condensed': ('Avenir Next Condensed', 'Helvetica Neue', Arial, sans-serif),
+  'primary'  : ('Avenir Next', 'Lato', 'Helvetica Neue', Arial, sans-serif),
 );
 
-// font-size: rem
-// line-height: Should be unitless.
+// font-size should be in rem
+// line-height should be unitless
 
 $font-sizes: (
   'x-small': (
-    'font-size'  : calculate-rem(12),
+    'font-size'  : px-to-rem(12),
     'line-height': 2,
   ),
   'small': (
-    'font-size'  : calculate-rem(14),
-    'line-height': 2,
+    'font-size'  : px-to-rem(14),
+    'line-height': 1.8,
   ),
   'base': (
-    'font-size'  : calculate-rem(16),
+    'font-size'  : px-to-rem(16),
     'line-height': 1.5,
   ),
   'medium': (
-    'font-size'  : calculate-rem(18),
+    'font-size'  : px-to-rem(18),
     'line-height': 1.5,
   ),
   'large': (
-    'font-size'  : calculate-rem(22),
-    'line-height': 1.4,
-  ),
-  'x-large': (
-    'font-size'  : calculate-rem(24),
-    'line-height': 1.4,
+    'font-size'  : px-to-rem(20),
+    'line-height': 1.5,
   ),
 );
 
 $font-sizes-heading: (
+  'x-small': (
+    'font-size'  : px-to-rem(24),
+    'line-height': 1.3,
+  ),
+  'small': (
+    'font-size'  : px-to-rem(26),
+    'line-height': 1.3,
+  ),
   'base': (
-    'font-size'  : calculate-rem(36),
+    'font-size'  : px-to-rem(28),
     'line-height': 1.3,
   ),
   'medium': (
-    'font-size'  : calculate-rem(42),
+    'font-size'  : px-to-rem(36),
     'line-height': 1.3,
   ),
   'large': (
-    'font-size'  : calculate-rem(48),
-    'line-height': 1.3,
+    'font-size'  : px-to-rem(42),
+    'line-height': 1.2,
   ),
   'x-large': (
-    'font-size'  : calculate-rem(56),
-    'line-height': 1.3,
+    'font-size'  : px-to-rem(56),
+    'line-height': 1,
   ),
 );
 
 $font-sizes-display: (
   'base': (
-    'font-size'  : calculate-rem(64),
+    'font-size'  : px-to-rem(64),
     'line-height': 1.2,
   ),
   'medium': (
-    'font-size'  : calculate-rem(72),
+    'font-size'  : px-to-rem(72),
     'line-height': 1.2,
   ),
   'large': (
-    'font-size'  : calculate-rem(84),
+    'font-size'  : px-to-rem(84),
     'line-height': 1.2,
   ),
   'x-large': (
-    'font-size'  : calculate-rem(96),
+    'font-size'  : px-to-rem(96),
     'line-height': 1,
   ),
 );
@@ -78,3 +81,95 @@ $font-weights: (
   'bold'      : 700,
   'extra-bold': 900,
 );
+
+// Getter
+
+@function font-family($family: 'primary') {
+  @if map-has-key($font-families, $family) == true {
+    @return map-get($font-families, $family);
+   } @else {
+     @return map-get($font-families, 'primary');
+   }
+}
+
+@function font-size($size: 'base', $set: null) {
+  @if $set == 'heading' {
+    @if map-has-key($font-sizes-heading, $size) == true {
+      @return map-get(map-get($font-sizes-heading, $size), 'font-size');
+    } @else {
+      @return map-get(map-get($font-sizes-heading, 'base'), 'font-size');
+    }
+  } @else if $set == 'display' {
+    @if map-has-key($font-sizes-display, $size) == true {
+      @return map-get(map-get($font-sizes-display, $size), 'font-size');
+    } @else {
+      @return map-get(map-get($font-sizes-display, 'base'), 'font-size');
+    }
+  } @else {
+    @if map-has-key($font-sizes, $size) == true {
+      @return map-get(map-get($font-sizes, $size), 'font-size');
+    } @else {
+      @return map-get(map-get($font-sizes, 'base'), 'font-size');
+    }
+  }
+}
+
+@function line-height($key: 'base', $set: null) {
+  @if $set == 'heading' {
+    @if map-has-key($font-sizes-heading, $key) == true {
+      @return map-get(map-get($font-sizes-heading, $key), 'line-height');
+    } @else {
+      @return map-get(map-get($font-sizes-heading, 'base'), 'line-height');
+    }
+  } @else if $set == 'display' {
+    @if map-has-key($font-sizes-display, $key) == true {
+      @return map-get(map-get($font-sizes-display, $key), 'line-height');
+    } @else {
+      @return map-get(map-get($font-sizes-display, 'base'), 'line-height');
+    }
+  } @else {
+    @if map-has-key($font-sizes, $key) == true {
+      @return map-get(map-get($font-sizes, $key), 'line-height');
+    } @else {
+      @return map-get(map-get($font-sizes, 'base'), 'line-height');
+    }
+  }
+}
+
+@function font-weight($weight: 'normal') {
+  @if map-has-key($font-weights, $weight) == true {
+    @return map-get($font-weights, $weight);
+  } @else {
+    @return 400;
+  }
+}
+
+@function font-size-px($size: 'base') {
+  @return (
+    strip-unit(base('font-size')) *
+    strip-unit(font-size($size))
+  ) + 0px;
+}
+
+@function line-height-px($font-size: 'base') {
+  @return (
+    line-height($font-size) *
+    strip-unit(font-size-px($size))    
+  ) + 0px;
+}
+
+@function line-height-rem($text-size: 'base') {
+  @return (
+    (
+      line-height($text-size) *
+      strip-unit(font-size-px($text-size))
+    ) / strip-unit(base('font-size'))
+  ) + 0rem;
+}
+
+// Apply
+
+@mixin apply-text-size($key: 'base', $set: null) {
+  font-size  :   font-size($key, $set);
+  line-height: line-height($key, $set);
+}

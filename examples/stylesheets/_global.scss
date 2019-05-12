@@ -29,35 +29,35 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .display1 {
-  @include apply-font-size('x-large', 'display');
+  @include apply-text-size('large', 'display');
 }
 .display2 {
-  @include apply-font-size('large', 'display');
+  @include apply-text-size('large', 'display');
 }
 .display3 {
-  @include apply-font-size('medium', 'display');
+  @include apply-text-size('medium', 'display');
 }
 .display4 {
-  @include apply-font-size('base', 'display');
+  @include apply-text-size('base', 'display');
 }
 
 h1 {
-  @include apply-font-size('x-large', 'heading');
+  @include apply-text-size('large', 'heading');
 }
 h2 {
-  @include apply-font-size('large', 'heading');
+  @include apply-text-size('large', 'heading');
 }
 h3 {
-  @include apply-font-size('medium', 'heading');
+  @include apply-text-size('medium', 'heading');
 }
 h4 {
-  @include apply-font-size('base', 'heading');
+  @include apply-text-size('base', 'heading');
 }
 h5 {
-  @include apply-font-size('small', 'heading');
+  @include apply-text-size('small', 'heading');
 }
 h6 {
-  @include apply-font-size('x-small', 'heading');
+  @include apply-text-size('x-small', 'heading');
 }
 
 p {
@@ -85,7 +85,7 @@ u {
 }
 
 small {
-  @include apply-font-size('small');
+  @include apply-text-size('small');
 }
 
 del, s {
@@ -102,7 +102,7 @@ ul, ol {
 
 a:link,
 a:visited {
-  color: color();
+  color: color('primary');
   text-decoration: none;
 
   &:hover {

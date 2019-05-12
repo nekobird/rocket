@@ -116,12 +116,12 @@ export class MonoActionManager implements ActionManager {
       name: actionName,
       groupName: groupName,
       group: group,
-      currentItem: group.activeItem,
+      currentItem  : group.activeItem,
       currentItemId: group.activeItemId,
-      nextItem: undefined,
+      nextItem  : undefined,
       nextItemId: undefined,
-      targetId: undefined,
-      trigger: undefined,
+      targetId  : undefined,
+      trigger   : undefined,
     }
   }
 
@@ -130,7 +130,7 @@ export class MonoActionManager implements ActionManager {
     if (typeof id === 'string') {
       const nextItem: HTMLElement | false = this.getItemFromId(groupName, id)
       if (typeof nextItem === 'object') {
-        action.nextItem = nextItem
+        action.nextItem   = nextItem
         action.nextItemId = id
       }
       action.targetId = id
@@ -200,7 +200,7 @@ export class MonoActionManager implements ActionManager {
       .then(() => {
         if (
           isNestedAction === true &&
-          this.isNested === true
+          this.isNested  === true
         ) {
           this.isNested = false
         }
@@ -224,7 +224,7 @@ export class MonoActionManager implements ActionManager {
     }
     if (
       this.isRunning === false &&
-      this.isNested === true
+      this.isNested  === true
     ) {
       this.isNested = false;
     }
@@ -233,5 +233,4 @@ export class MonoActionManager implements ActionManager {
     }
     return Promise.resolve()
   }
-
 }

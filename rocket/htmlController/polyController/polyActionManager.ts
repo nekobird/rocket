@@ -27,7 +27,7 @@ export const POLY_ACTIONS: string[] = ['activateAll', 'deactivateAll', 'toggleAl
 export class PolyActionManager implements ActionManager {
 
   public isRunning: boolean = false
-  public isNested: boolean = false
+  public isNested : boolean = false
 
   private controller: PolyController
 
@@ -263,7 +263,7 @@ export class PolyActionManager implements ActionManager {
     }
     if (
       this.isRunning === false &&
-      this.isNested === true
+      this.isNested  === true
     ) {
       this.isNested = false;
     }
@@ -272,5 +272,4 @@ export class PolyActionManager implements ActionManager {
     }
     return Promise.resolve()
   }
-
 }
