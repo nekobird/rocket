@@ -7,14 +7,14 @@
 
   to {
     opacity: 1;
-    transform: translateY(0px);
+    transform: translateY(0);
   }
 }
 
 @keyframes item_animation_out {
   from {
     opacity: 1;
-    transform: translateY(0px);
+    transform: translateY(0);
   }
 
   to {
@@ -24,26 +24,31 @@
 }
 
 .page-monoController {
+
   .items {
-    height: 220px;
-    background: hsl(0, 0, 99);
-    margin-bottom: 0px;
+    height: px-to-rem(220);
+    background-color: hsl(0, 0, 99);
+    margin-bottom: 0;
     position: relative;
-    padding: 20px;
+    padding: space('medium');
   }
 
   .item,
   .block {
-    font-size: 24px;
-    background: hsl(220, 20, 5);
-    border-radius: 20px;
+    background-color: hsl(220, 20, 5);
+    border-radius: border-radius('base');
     box-sizing: border-box;
-    color: white;
+    color: color('white');
     display: none;
-    height: 140px;
-    margin: 20px;
-    padding: 20px;
-    width: 140px;
+    font-size: font-size('medium');
+    height: px-to-rem(140);
+    margin: space('medium');
+    padding: space('medium');
+    width: px-to-rem(140);
+
+    h2 {
+      color: color('white');
+    }
 
     &.item--active {
       display: block;
@@ -65,7 +70,7 @@
   }
 
   .controls {
-    padding: 20px;
+    padding: space('medium');
     background-color: hsl(0, 0, 95);
 
     a:link,

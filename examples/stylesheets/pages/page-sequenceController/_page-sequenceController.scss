@@ -8,7 +8,7 @@
   }
 }
 
-@keyframes page-polyController-item-animation-in {
+@keyframes page-sequenceController-item-animation-in {
   from {
     opacity: 0;
   }
@@ -18,7 +18,7 @@
   }
 }
 
-@keyframes page-polyController-item-animation-out {
+@keyframes page-sequenceController-item-animation-out {
   from {
     opacity: 1;
   }
@@ -28,7 +28,7 @@
   }
 }
 
-.page-polyController {
+.page-sequenceController {
   .items {
     min-height: 180px;
     background: hsl(0, 0, 99);
@@ -66,14 +66,14 @@
     &.item--animate-in {
       animation-duration: 0.4s;
       animation-fill-mode: forwards;
-      animation-name: page-polyController-item-animation-in;
+      animation-name: page-sequenceController-item-animation-in;
       animation-timing-function: ease-out;
     }
 
     &.item--animate-out {
       animation-duration: 0.4s;
       animation-fill-mode: forwards;
-      animation-name: page-polyController-item-animation-out;
+      animation-name: page-sequenceController-item-animation-out;
       animation-timing-function: ease-out;
     }
   }

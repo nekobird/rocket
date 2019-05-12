@@ -138,10 +138,11 @@ export class MonoController {
         const targetUpElement  : HTMLElement | false = event.getTargetElementFromData(event.upData)
 
         if (
-          group.isActive    === true &&
+          group.isActive    === true  &&
           targetDownElement !== false &&
           targetUpElement   !== false &&
-          DOMUtil.hasAncestor(targetDownElement, group.activeItem) === false
+          DOMUtil.hasAncestor(targetDownElement, group.activeItem) === false &&
+          DOMUtil.hasAncestor(targetUpElement, group.activeItem)   === false
         ) {
           this.config.onClickOutside(event, group, this)
         }
