@@ -3,58 +3,37 @@ import {
 } from '../../rocket'
 
 import {
-  Action,
-  ActionName,
-  ActionManager,
   PolyConfig,
-  PolyGroup,
+} from './config'
+
+import {
   PolyController,
-} from '../index'
+} from './polyController'
+
+import {
+  ItemManager,
+} from './itemManager'
 
 export type PolyActionName = 'activate' | 'activateAll' | 'deactivate' | 'deactivateAll' | 'toggle' | 'toggleAll'
 
 export interface PolyAction {
   name?: PolyActionName,
-  groupName: string,
-  group?: PolyGroup,
-  targetId?: string,
+
   targetItem?: HTMLElement,
+
+  targetId?: string,  
   trigger?: HTMLElement,
 }
 
-export const POLY_ACTIONS: string[] = ['activateAll', 'deactivateAll', 'toggleAll']
+export class ActionManager {
 
-export class PolyActionManager implements ActionManager {
+  private controller: PolyController
 
   public isRunning: boolean = false
   public isNested : boolean = false
 
-  private controller: PolyController
-
   constructor(controller: PolyController) {
     this.controller = controller
-  }
-
-  public isPolyAction(actionName: PolyActionName): boolean {
-    return POLY_ACTIONS.indexOf(actionName) === -1 ? false : true
-  }
-
-  private itemActivate(action: PolyAction): this {
-    const config: PolyConfig = this.controller.config
-    action.targetItem.classList.add(config.classNameItemActive)
-    action.group.activeItems.push(action.targetItem)
-    action.group.isActive = true
-    return this
-  }
-
-  private itemDeactivate(action: PolyAction): this {
-    action.targetItem.classList.remove(this.controller.config.classNameItemActive)
-    const index: number = action.group.activeItems.indexOf(action.targetItem)
-    action.group.activeItems.slice(index, 1)
-    if (action.group.activeItems.length === 0) {
-      action.group.isActive = false
-    }
-    return this
   }
 
   // 5) HANDLE ACTIONS
@@ -63,8 +42,9 @@ export class PolyActionManager implements ActionManager {
     actionName: 'activate' | 'deactivate', action: PolyAction, callback?: Function
   ): Promise<void> {
 
-    const actionNameString: string = StringUtil.upperCaseFirstLetter(actionName)
     const config: PolyConfig = this.controller.config
+
+    const actionNameString: string = StringUtil.upperCaseFirstLetter(actionName)
 
     // Only proceed if item is not yet activated or deactivated
     let proceed: boolean = true
@@ -112,23 +92,26 @@ export class PolyActionManager implements ActionManager {
   }
 
   private handleActionActivationAll(action: PolyAction, callback?: Function): Promise<void> {
-    const config: PolyConfig = this.controller.config
+    const config     : PolyConfig  = this.controller.config
+    const itemManager: ItemManager = this.controller.itemManager
+
     const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
 
     if (
       config[`condition${actionNameString}`](action, this) === true &&
-      action.group.items.length > 0
+      itemManager.items.length > 0
     ) {
 
       let actionPromises: Promise<void>[] = []
-      for (let i: number = 0; i < action.group.items.length; i++) {
-        let item = action.group.items[i]
+
+      itemManager.items.forEach(item => {
         // Action Creation
         let individualAction: PolyAction = Object.assign({
-          targetId: item.dataset.id,
           targetItem: item,
+          targetId  : item.dataset.id,          
         }, action)
-        // Handle Action
+
+        // Handle action
         if (action.name === 'activateAll') {
           if (item.classList.contains(config.classNameItemActive) === false) {
             actionPromises.push(
@@ -146,52 +129,54 @@ export class PolyActionManager implements ActionManager {
             this.handleActionToggle(individualAction, callback)
           )
         }
-      }
+      })
+
       return Promise
         .all(actionPromises)
-        .then(() => { return Promise.resolve() })
-
-    } else {
-      Promise.resolve()
+        .then(() => {
+          return Promise.resolve()
+        })
     }
+    Promise.resolve()
   }
 
-  // ACTION CREATOR AND COMPOSER
+  // Compose & Create Action
 
-  private createAction(actionName: PolyActionName, groupName: string): PolyAction {
+  private createAction(actionName: PolyActionName): PolyAction {
     return {
       name: actionName,
-      groupName: groupName,
-      group: this.controller.groupManager.groups[groupName],
     }
   }
 
-  public composeAction(actionName: PolyActionName, groupName: string, id?: string): PolyAction {
-    const action: PolyAction = this.createAction(actionName, groupName)
+  public composeAction(actionName: PolyActionName, id?: string): PolyAction {
+    const itemManager: ItemManager = this.controller.itemManager
+
+    const action: PolyAction = this.createAction(actionName)
+
     if (typeof id === 'string') {
-      action.targetId = id
-      action.targetItem = <HTMLElement>document.querySelector(
-        `${this.controller.config.selectorItems}[data-group="${groupName}"][data-id="${id}"]`
-      )
+      const targetItem: HTMLElement | false = itemManager.getItemFromId(id)
+
+      if (targetItem !== false) {
+        action.targetId   = id
+        action.targetItem = targetItem
+      }
     }
     return action
   }
 
-  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action | false {
-    const groupName: string | undefined = trigger.dataset.group
-    if (typeof groupName === 'string') {
-      const whitelist: string[] = ['activate', 'deactivate', 'toggle']
-      if (whitelist.indexOf(actionName) !== -1) {
-        return this.composeAction(<PolyActionName>actionName, groupName, trigger.dataset.target)
-      }
-      return this.composeAction(<PolyActionName>actionName, groupName)
+  public composeActionFromEvent(actionName: PolyActionName, trigger: HTMLElement): PolyAction {
+    const whitelist: string[] = ['activate', 'deactivate', 'toggle']
+
+    if (whitelist.indexOf(actionName) !== -1) {
+      return this.composeAction(actionName, trigger.dataset.target)
     }
-    return false
+
+    return this.composeAction(actionName)
   }
 
-  // 1) ACTION HUB
+  // 1) Action Hub
 
-  public actionHub(action: Action, isNestedAction: boolean = false, callback?: Function): Promise<void> {
+  public actionHub(action: PolyAction, isNestedAction: boolean = false, callback?: Function): Promise<void> {
     if (
       this.isRunning === true &&
       isNestedAction === true
@@ -203,6 +188,7 @@ export class PolyActionManager implements ActionManager {
     const config: PolyConfig = this.controller.config
 
     let preAction: Promise<void>
+
     if (this.isNested === false) {
       preAction = new Promise(resolve => {
         this.isNested = true

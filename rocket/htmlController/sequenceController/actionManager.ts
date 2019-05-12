@@ -3,28 +3,32 @@ import {
 } from '../../rocket'
 
 import {
-  Action,
-  ActionManager,
-  ActionName,
-  SequenceConfig,
+  SequenceConfig,  
+} from './config'
+
+import {
   SequenceController,
-  SequenceGroup,
-} from '../index'
+} from './sequenceController'
+
+import {
+  ItemManager,
+} from './itemManager'
 
 export type SequenceActionName = 'previous' | 'next' | 'jump'
 
 export interface SequenceAction {
   name?: SequenceActionName
-  groupName: string,
-  group?: SequenceGroup,
+
   currentItem?: HTMLElement,
+  
+  nextItem?: HTMLElement,
   nextItemIndex?: number,
   nextItemId?: string,
-  nextItem?: HTMLElement,
+
   trigger?: HTMLElement,
 }
 
-export class SequenceActionManager implements ActionManager {
+export class ActionManager {
 
   private controller: SequenceController
 
@@ -38,11 +42,14 @@ export class SequenceActionManager implements ActionManager {
   // 5) COMPLETE ACTION
 
   private completeAction(action: SequenceAction, callback?: Function): Promise<void> {
-    const config: SequenceConfig = this.controller.config
+    const config: SequenceConfig   = this.controller.config
+    const itemManager: ItemManager = this.controller.itemManager
+
     const actionNameString: string = StringUtil.upperCaseFirstLetter(<string>action.name)
+
     // condition[actionName]
     if (
-      action.group.activeItem !== action.nextItem &&
+      itemManager.activeItem !== action.nextItem &&
       config[`condition${actionNameString}`](action, this) === true
     ) {
       return config
@@ -69,24 +76,29 @@ export class SequenceActionManager implements ActionManager {
   }
 
   private deactivate(action: SequenceAction): this {
-    action.group.items.forEach(item => {
+    const itemManager: ItemManager = this.controller.itemManager
+
+    itemManager.items.forEach(item => {
       item.classList.remove(
         <string>this.controller.config.classNameItemActive
       )
     })
-    action.group.activeItem = undefined
-    action.group.activeIndex = undefined
-    action.group.isActive = false
+
+    itemManager.activeItem  = undefined
+    itemManager.activeIndex = undefined
+    itemManager.isActive    = false
     return this
   }
 
   private activate(action: SequenceAction): this {
+    const itemManager: ItemManager = this.controller.itemManager
+
     action.nextItem.classList.add(
       <string>this.controller.config.classNameItemActive
     )
-    action.group.activeItem = action.nextItem
-    action.group.activeIndex = action.nextItemIndex
-    action.group.isActive = true
+    itemManager.activeItem = action.nextItem
+    itemManager.activeIndex = action.nextItemIndex
+    itemManager.isActive = true
     return this
   }
 
@@ -124,42 +136,41 @@ export class SequenceActionManager implements ActionManager {
     return action
   }
 
-  // CREATE AND COMPOSE ACTIONS
+  // Create & Compose Action
 
-  public createAction(actionName: SequenceActionName, groupName: string): SequenceAction {
-    const group: SequenceGroup = this.controller.groupManager.groups[groupName]
+  public createAction(actionName: SequenceActionName): SequenceAction {
+    const itemManager: ItemManager = this.controller.itemManager
+
     return {
-      name: actionName,
-      groupName: groupName,
-      group: group,
-      currentItem: group.activeItem
+      name       : actionName,
+      currentItem: itemManager.activeItem
     }
   }
 
-  public composeAction(actionName: SequenceActionName, groupName: string, id?: string): SequenceAction {
-    let action: SequenceAction = this.createAction(actionName, groupName)
+  public composeAction(actionName: SequenceActionName, id?: string): SequenceAction {
+    let action: SequenceAction = this.createAction(actionName)
+
     if (typeof id === 'string') {
       action.nextItemId = id
     }
+
     return action
   }
 
-  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action | false {
-    const groupName: string | undefined = trigger.dataset.group
-    if (typeof groupName === 'string') {
-      const action: SequenceAction = this.createAction(<SequenceActionName>actionName, groupName)
-      if (typeof trigger.dataset.target === 'string') {
-        action.nextItemId = trigger.dataset.target
-      }
-      action.trigger = trigger
-      return action
+  public composeActionFromEvent(actionName: SequenceActionName, trigger: HTMLElement): SequenceAction {
+    const action: SequenceAction = this.createAction(actionName)
+
+    if (typeof trigger.dataset.target === 'string') {
+      action.nextItemId = trigger.dataset.target
     }
-    return false
+
+    action.trigger = trigger
+    return action
   }
 
-  // 1) ACTION HUB
+  // 1) Action Hub
 
-  public actionHub(action: Action, isNestedAction: boolean = false, callback?: Function): Promise<void> {
+  public actionHub(action: SequenceAction, isNestedAction: boolean = false, callback?: Function): Promise<void> {
     if (
       this.isRunning === true &&
       isNestedAction === true
@@ -234,5 +245,4 @@ export class SequenceActionManager implements ActionManager {
     }
     return Promise.resolve()
   }
-
 }

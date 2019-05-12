@@ -1,19 +1,24 @@
 import {
-  DOMUtil,
-  DragEventManager,
-} from '../../rocket'
+  ElementManager,
+} from '../index'
 
 import {
-  ElementManager,
   EventManager,
-  POLY_DEFAULT_CONFIG,
-  POLY_EVENT_ENTRY_LIST,
-  PolyAction,
-  PolyActionManager,
+} from './eventManager'
+
+import {
+  DEFAULT_CONFIG,
   PolyConfig,
-  PolyGroup,
-  PolyGroupManager,
-} from '../index'
+} from './config'
+
+import {
+  PolyAction,
+  ActionManager,
+} from './actionManager'
+
+import {
+  ItemManager,
+} from './itemManager'
 
 export class PolyController {
 
@@ -23,136 +28,89 @@ export class PolyController {
 
   public elementManager: ElementManager
   public eventManager  : EventManager
-  public groupManager  : PolyGroupManager
-  public actionManager : PolyActionManager
-
-  public dragEventManager: DragEventManager
+  public itemManager   : ItemManager
+  public actionManager : ActionManager
 
   constructor(config: PolyConfig) {
     this.elementManager = new ElementManager(this)
-    this.groupManager   = new PolyGroupManager(this)
-    this.actionManager  = new PolyActionManager(this)
+    this.itemManager    = new ItemManager(this)
+    this.actionManager  = new ActionManager(this)
     this.eventManager   = new EventManager(this)
 
-    this.config = Object.assign({}, POLY_DEFAULT_CONFIG)
+    this.config = Object.assign({}, DEFAULT_CONFIG)
+    this.setConfig(config)
 
-    this
-      .setConfig(config)
-      .initialize()
+    this.initialize()
   }
 
-  public setConfig(config: PolyConfig): PolyController {
+  public setConfig(config: PolyConfig): this {
     Object.assign(this.config, config)
     return this
   }
 
-  // ACTION
+  // Actions
 
-  public activate(groupName: string, id: string): Promise<void> {
+  public activate(id: string): Promise<void> {
     return new Promise(resolve => {
-      const action: PolyAction = this.actionManager.composeAction('activate', groupName, id)
+      const action: PolyAction = this.actionManager.composeAction('activate', id)
       this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
   }
 
-  public deactivate(groupName: string, id: string): Promise<void> {
+  public deactivate(id: string): Promise<void> {
     return new Promise(resolve => {
-      const action: PolyAction = this.actionManager.composeAction('deactivate', groupName, id)
+      const action: PolyAction = this.actionManager.composeAction('deactivate', id)
       this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
   }
 
-  public toggle(groupName: string, id: string): Promise<void> {
+  public toggle(id: string): Promise<void> {
     return new Promise(resolve => {
-      const action: PolyAction = this.actionManager.composeAction('toggle', groupName, id)
+      const action: PolyAction = this.actionManager.composeAction('toggle', id)
       this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
   }
 
-  public activateAll(groupName: string): Promise<void> {
+  // Group Actions
+
+  public activateAll(): Promise<void> {
     return new Promise(resolve => {
-      const action: PolyAction = this.actionManager.composeAction('activateAll', groupName)
+      const action: PolyAction = this.actionManager.composeAction('activateAll')
       this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
   }
 
-  public deactivateAll(groupName: string): Promise<void> {
+  public deactivateAll(): Promise<void> {
     return new Promise(resolve => {
-      const action: PolyAction = this.actionManager.composeAction('deactivateAll', groupName)
+      const action: PolyAction = this.actionManager.composeAction('deactivateAll')
       this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
   }
 
-  public toggleAll(groupName: string): Promise<void> {
+  public toggleAll(): Promise<void> {
     return new Promise(resolve => {
-      const action: PolyAction = this.actionManager.composeAction('toggleAll', groupName)
+      const action: PolyAction = this.actionManager.composeAction('toggleAll')
       this.actionManager.actionHub(action)
         .then(() => resolve())
         .catch(() => resolve())
     })
   }
 
-  public itemIsActive(groupName: string, id: string): boolean {
-    const item: HTMLElement | null = document.querySelector(
-      `${this.config.selectorItems}[data-group="${groupName}"][data-id="${id}"]`
-    )
-    if (item !== null) {
-      return item.classList.contains(<string>this.config.classNameItemActive)
-    }
-    return false
-  }
+  // Initialize
 
-  public groupIsActive(groupName: string): boolean {
-    const group: PolyGroup = this.groupManager.groups[groupName]
-    if (typeof group === 'object') {
-      return group.isActive
-    }
-    return false
-  }
-
-  // INITIALIZE
-
-  public initialize(): PolyController {
+  public initialize(): this {
     this.elementManager.initialize()
-    this.groupManager.initialize()
-
-    this.initializeEventEntriesFromConfig()
-    this.initializeExtraListeners()
+    this.itemManager.initialize()
     return this
-  }
-
-  private initializeEventEntriesFromConfig(): this {
-    POLY_EVENT_ENTRY_LIST.forEach(eventEntry => {
-      this.eventManager.addEntry(eventEntry)
-    })
-    return this
-  }
-
-  private initializeExtraListeners() {
-    if (this.config.listenToKeydown === true) {
-      window.addEventListener('keydown', this.eventHandlerKeydown)
-    }
-  }
-
-  private eventHandlerKeydown = (event: KeyboardEvent) => {
-    if (
-      this.config.listenToKeydown  === true &&
-      this.actionManager.isRunning === false
-    ) {
-      Object.keys(this.groupManager.groups).forEach(groupName => {
-        const group: PolyGroup = this.groupManager.groups[groupName]
-        this.config.onKeydown(event, group, this)
-      })
-    }
   }
 }

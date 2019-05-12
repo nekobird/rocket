@@ -10,7 +10,7 @@ import {
 
 import {
   MonoAction,
-} from './monoActionManager'
+} from './actionManager'
 
 import {
   MonoController,

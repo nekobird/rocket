@@ -3,13 +3,15 @@ import {
   BeforeActionCallback,
   ConditionHook,
   EventEntry,
-  ListenToHook,
-  PolyAction,
-  PolyController,
-  PolyGroup,
 } from '../index';
 
-// INTERFACE
+import {
+  PolyController,
+} from './polyController'
+
+import {
+  PolyAction,
+} from './actionManager'
 
 export interface PolyConfig {
   cooldown?: number,
@@ -20,34 +22,35 @@ export interface PolyConfig {
 
   classNameItemActive?: string,
 
-  classNameJsActivate?: string,
+  classNameJsActivate?  : string,
   classNameJsDeactivate?: string,
-  classNameJsToggle?: string,
-  classNameJsActivateAll?: string,
+  classNameJsToggle?    : string,
+
+  classNameJsActivateAll?  : string,
   classNameJsDeactivateAll?: string,
-  classNameJsToggleAll?: string,
+  classNameJsToggleAll?    : string,
 
-  conditionActivate?: ConditionHook<PolyAction, PolyController>,
+  conditionActivate?  : ConditionHook<PolyAction, PolyController>,
   conditionDeactivate?: ConditionHook<PolyAction, PolyController>,
-  conditionToggle?: ConditionHook<PolyAction, PolyController>,
+  conditionToggle?    : ConditionHook<PolyAction, PolyController>,
 
-  conditionActivateAll?: ConditionHook<PolyAction, PolyController>,
+  conditionActivateAll?  : ConditionHook<PolyAction, PolyController>,
   conditionDeactivateAll?: ConditionHook<PolyAction, PolyController>,
-  conditionToggleAll?: ConditionHook<PolyAction, PolyController>,
+  conditionToggleAll?    : ConditionHook<PolyAction, PolyController>,
 
   beforeDeactivate?: BeforeActionCallback<PolyAction, PolyController>,
-  afterDeactivate?: AfterActionCallback<PolyAction, PolyController>,
+  afterDeactivate? : AfterActionCallback<PolyAction, PolyController>,
 
   beforeActivate?: BeforeActionCallback<PolyAction, PolyController>,
-  afterActivate?: AfterActionCallback<PolyAction, PolyController>,
+  afterActivate? : AfterActionCallback<PolyAction, PolyController>,
 
   beforeAction?: BeforeActionCallback<PolyAction, PolyController>,
-  afterAction?: AfterActionCallback<PolyAction, PolyController>,
+  afterAction? : AfterActionCallback<PolyAction, PolyController>,
 
-  onKeydown?: ListenToHook<KeyboardEvent, PolyGroup, PolyController>,
+  onKeydown?: (event: KeyboardEvent, context: PolyController) => void,
 }
 
-export const POLY_DEFAULT_CONFIG: PolyConfig = {
+export const DEFAULT_CONFIG: PolyConfig = {
   cooldown: 200,
 
   listenToKeydown: false,
@@ -81,7 +84,7 @@ export const POLY_DEFAULT_CONFIG: PolyConfig = {
   beforeAction: (action, context) => { return Promise.resolve() },
   afterAction : (action, context) => { return Promise.resolve() },
   
-  onKeydown: (event, group, context) => { },
+  onKeydown: (event, context) => { },
 }
 
 export const POLY_EVENT_ENTRY_LIST: EventEntry[] = [

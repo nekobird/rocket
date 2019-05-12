@@ -10,7 +10,7 @@ import {
 import {
   MonoAction,
   ActionManager,
-} from './monoActionManager'
+} from './actionManager'
 
 import {
   ItemManager,
@@ -43,7 +43,7 @@ export class MonoController {
       .initialize()
   }
 
-  public setConfig(config: MonoConfig): MonoController {
+  public setConfig(config: MonoConfig): this {
     Object.assign(this.config, config)
     return this
   }

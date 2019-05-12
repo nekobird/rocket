@@ -5,16 +5,16 @@ import {
 } from '../../rocket'
 
 import {
-  MonoController
-} from './monoController'
+  SequenceController
+} from './SequenceController'
 
 import {
-  MonoActionName,
-  MonoAction,
+  SequenceActionName,
+  SequenceAction,
 } from './actionManager'
 
 import {
-  MONO_EVENT_ENTRY_LIST
+  SEQUENCE_EVENT_ENTRY_LIST
 } from './config'
 
 export interface EventEntries {
@@ -24,20 +24,20 @@ export interface EventEntries {
 export interface EventEntry {
   name  : string,
   target: string,
-  action: MonoActionName,
+  action: SequenceActionName,
 }
 
 export type EventEntryList = EventEntry[]
 
 export class EventManager {
 
-  private controller: MonoController
+  private controller: SequenceController
 
   private dragEventManager: DragEventManager
 
   private eventEntries: EventEntries
 
-  constructor(controller: MonoController) {
+  constructor(controller: SequenceController) {
     this.controller = controller
 
     this.dragEventManager = new DragEventManager({
@@ -47,23 +47,22 @@ export class EventManager {
     this.eventEntries = {}
   }
 
-  public initialize() {
+  public initialize(): this {
     this.initializeEventEntriesFromConfig()
     if (this.controller.config.listenToKeydown === true) {
       window.addEventListener('keydown', this.eventHandlerKeydown)
     }
+    return this
   }
 
   private initializeEventEntriesFromConfig(): this {
-    MONO_EVENT_ENTRY_LIST.forEach(eventEntry => {
+    SEQUENCE_EVENT_ENTRY_LIST.forEach(eventEntry => {
       this.controller.eventManager.addEntry(eventEntry)
     })
     return this
   }
 
   private onUp = (event, manager) => {
-    this.handleOutsideAction(event)
-    
     if (typeof event.downData === 'object') {
       const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
       if (targetDownElement !== false) {
@@ -71,7 +70,9 @@ export class EventManager {
         Object.keys(this.eventEntries).forEach(name => {
           const target   : string = StringUtil.upperCaseFirstLetter(this.eventEntries[name].target)
           const className: string = this.controller.config[`className${target}`]
+
           const trigger = DOMUtil.findAncestorWithClass(targetDownElement, className, false)
+
           if (trigger !== false) {
             this.eventHub(<HTMLElement>trigger, this.eventEntries[name].action)
           }
@@ -96,7 +97,7 @@ export class EventManager {
     return this
   }
 
-  private eventHub(trigger: HTMLElement, actionName: MonoActionName): this {
+  private eventHub(trigger: HTMLElement, actionName: SequenceActionName): this {
     const actionManager = this.controller.actionManager
     if (
       this.controller.isReady === true &&
@@ -107,7 +108,7 @@ export class EventManager {
         typeof trigger !== 'undefined' &&
         trigger instanceof HTMLElement
       ) {
-        const action: MonoAction = actionManager.composeActionFromEvent(actionName, trigger)
+        const action: SequenceAction = actionManager.composeActionFromEvent(actionName, trigger)
         if (typeof action === 'object') {
           actionManager.actionHub(action)
         } else {
@@ -118,47 +119,6 @@ export class EventManager {
       }
     }
     return this
-  }
-
-  private handleOutsideAction = event => {
-    if (
-      this.controller.config.closeOnOutsideAction === true &&
-      this.controller.actionManager.isRunning     === false
-    ) {
-
-      const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
-      const targetUpElement  : HTMLElement | false = event.getTargetElementFromData(event.upData)
-
-      let classNames: string[] = [
-        this.controller.config.classNameJsActivate,
-        this.controller.config.classNameJsDeactivate,
-        this.controller.config.classNameJsToggle
-      ]
-
-      const identifierFn = element => {
-        let containsClassName: boolean = false
-        classNames.forEach(className => {
-          if (element.classList.contains(className) === true) {
-            containsClassName = true
-          }
-        })
-        return containsClassName
-      }
-
-      if (
-        this.controller.itemManager.isActive === true &&
-        targetDownElement !== false &&
-        targetUpElement   !== false &&
-
-        DOMUtil.hasAncestor(targetDownElement, this.controller.itemManager.activeItem) === false &&
-        DOMUtil.hasAncestor(targetUpElement,   this.controller.itemManager.activeItem) === false &&
-
-        DOMUtil.findAncestor(targetDownElement, identifierFn) === false
-      ) {
-        this.controller.deactivate()
-        this.controller.config.onOutsideAction(this.controller)
-      }
-    }
   }
 
   private eventHandlerKeydown = (event: KeyboardEvent) => {

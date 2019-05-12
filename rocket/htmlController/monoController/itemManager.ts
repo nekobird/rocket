@@ -30,6 +30,7 @@ export class ItemManager {
 
   public initializeItems(): this {
     const items: ElementEntry | false = this.controller.elementManager.getEntry('items')
+
     if (typeof items === 'object') {
       this.items = items.elements.map(item => {
         if (this.itemIsValid(item) === true) {

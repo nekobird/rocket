@@ -1,17 +1,19 @@
 import {
-  SequenceAction,
-} from './index'
-
-import {
   AfterActionCallback,
   BeforeActionCallback,
   ConditionHook,
   EventEntry,
   Hook,
   ListenToHook,
-  SequenceController,
-  SequenceGroup,
 } from '../index'
+
+import {
+  SequenceController,
+} from './sequenceController'
+
+import {
+  SequenceAction,
+} from './actionManager'
 
 export interface SequenceConfig {
   cooldown?: number,
@@ -38,10 +40,10 @@ export interface SequenceConfig {
   beforeAction?: BeforeActionCallback<SequenceAction, SequenceController>,
   afterAction? : AfterActionCallback<SequenceAction, SequenceController>,
 
-  onKeydown?: ListenToHook<KeyboardEvent, SequenceGroup, SequenceController>,
+  onKeydown?: (event: KeyboardEvent, context: SequenceController) => void,
 }
 
-export const SEQUENCE_DEFAULT_CONFIG: SequenceConfig = {
+export const DEFAULT_CONFIG: SequenceConfig = {
   cooldown: 100,
 
   listenToKeydown: false,
@@ -65,7 +67,7 @@ export const SEQUENCE_DEFAULT_CONFIG: SequenceConfig = {
   beforeAction: (action, context) => { return Promise.resolve() },
   afterAction : (action, context) => { },
 
-  onKeydown: (event, group, context) => { },
+  onKeydown: (event, context) => { },
 }
 
 export const SEQUENCE_EVENT_ENTRY_LIST: EventEntry[] = [

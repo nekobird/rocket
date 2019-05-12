@@ -1,25 +1,24 @@
 import {
   ElementEntry,
-  SequenceConfig,
-  SequenceController,
 } from '../index'
 
-export interface SequenceGroups {
-  [groupName: string]: SequenceGroup,
-}
+import {
+  SequenceConfig,
+} from './config'
 
-export interface SequenceGroup {
-  name: string,
-  items: HTMLElement[],
-  activeIndex: number | undefined,
-  activeItem: HTMLElement | undefined,
-  isActive: boolean,
-}
+import {
+  SequenceController,
+} from './sequenceController'
 
-export class SequenceGroupManager {
+export class ItemManager {
 
   private controller: SequenceController
-  public groups: SequenceGroups = {}
+
+  public items      : HTMLElement[]
+  public activeItem : HTMLElement
+  public activeIndex: number
+
+  public isActive: boolean
 
   constructor(controller: SequenceController) {
     this.controller = controller
@@ -34,10 +33,12 @@ export class SequenceGroupManager {
 
   private initializeGroups(): this {
     const items: ElementEntry | false = this.controller.elementManager.getEntry('items')
+
     if (
-      typeof items === 'object' &&
+      typeof items          === 'object' &&
       typeof items.elements === 'object'
     ) {
+
       items.elements.forEach(item => {
         const groupName: string | undefined = item.dataset.group
         if (typeof groupName === 'string') {
@@ -95,18 +96,5 @@ export class SequenceGroupManager {
       this.controller.isReady = true
     }
     return this
-  }
-
-  // GROUP
-
-  public get groupCount(): number {
-    return Object.keys(this.groups).length
-  }
-
-  public getGroupProperty(groupName: string): SequenceGroup | false {
-    if (typeof this.groups[groupName] === 'object') {
-      return this.groups[groupName]
-    }
-    return false
   }
 }
