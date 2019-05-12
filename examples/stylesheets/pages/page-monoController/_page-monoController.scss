@@ -24,17 +24,28 @@
 }
 
 .page-monoController {
+  min-height: 100vh;
+  position: relative;
+
+  .corner-item {
+    background: red;
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+  }
 
   .items {
     height: px-to-rem(220);
     background-color: hsl(0, 0, 99);
     margin-bottom: 0;
+    margin-top: 400px;
     position: relative;
     padding: space('medium');
   }
 
-  .item,
-  .block {
+  .item {
     background-color: hsl(220, 20, 5);
     border-radius: border-radius('base');
     box-sizing: border-box;
@@ -51,7 +62,7 @@
     }
 
     &.item--active {
-      display: block;
+      display: inline-block;
     }
 
     &.item--animate-in {

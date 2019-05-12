@@ -53,7 +53,11 @@ export class DragEvent {
   }
 
   public getTargetElementFromData(data: SensorData): HTMLElement {
-    return <HTMLElement>document.elementFromPoint(data.pageX, data.pageY)
+    if (data.type === 'MOUSE') {
+      return <HTMLElement>document.elementFromPoint(data.pageX, data.pageY)
+    } else {
+      return <HTMLElement>document.elementFromPoint(data.clientX, data.clientY)
+    }
   }
 
   public get previousEventData(): SensorData | false {

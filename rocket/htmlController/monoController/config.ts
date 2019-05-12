@@ -5,11 +5,16 @@ import {
   EventEntry,
   Hook,
   ListenToHook,
-  MonoAction,
-  MonoController,
-  MonoGroup,
   OutsideActionHook,
 } from '../index'
+
+import {
+  MonoAction,
+} from './monoActionManager'
+
+import {
+  MonoController,
+} from './monoController'
 
 export interface MonoConfig {
   cooldown?: number,
@@ -37,12 +42,12 @@ export interface MonoConfig {
   beforeAction?: BeforeActionCallback<MonoAction, MonoController>,
   afterAction? : AfterActionCallback<MonoAction, MonoController>,
 
-  onKeydown?: ListenToHook<KeyboardEvent, MonoGroup, MonoController>,
+  onKeydown?: (event: KeyboardEvent, context: MonoController) => void,
 
-  onOutsideAction?: OutsideActionHook<MonoGroup, MonoController>,
+  onOutsideAction?: (context: MonoController) => void
 }
 
-export const MONO_DEFAULT_CONFIG: MonoConfig = {
+export const DEFAULT_CONFIG: MonoConfig = {
   cooldown: 200,
 
   listenToKeydown: false,
@@ -69,9 +74,9 @@ export const MONO_DEFAULT_CONFIG: MonoConfig = {
   beforeAction: (action, context) => { return Promise.resolve() },
   afterAction : (action, context) => { },
 
-  onOutsideAction: (group, context) => { },
+  onOutsideAction: (context) => { },
 
-  onKeydown: (event, group, context) => { },
+  onKeydown: (event, context) => { },
 }
 
 export const MONO_EVENT_ENTRY_LIST: EventEntry[] = [
@@ -79,21 +84,15 @@ export const MONO_EVENT_ENTRY_LIST: EventEntry[] = [
     name    : 'activate',
     action  : 'activate',
     target  : 'jsActivate',
-    event   : ['click', 'touchstart'],
-    listener: undefined,
   },
   {
     name    : 'deactivate',
     action  : 'deactivate',
     target  : 'jsDeactivate',
-    event   : ['click', 'touchstart'],
-    listener: undefined,
   },
   {
     name    : 'toggle',
     action  : 'toggle',
     target  : 'jsToggle',
-    event   : ['click', 'touchstart'],
-    listener: undefined,
   },
 ]

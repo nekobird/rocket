@@ -87,8 +87,6 @@ export class SequenceController {
     this.groupManager.initialize()
 
     this.initializeEventEntriesFromConfig()
-    this.eventManager.listen()
-
     this.initializeExtraListeners()
     return this
   }

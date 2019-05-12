@@ -73,21 +73,15 @@ export const SEQUENCE_EVENT_ENTRY_LIST: EventEntry[] = [
     name    : 'previous',
     action  : 'previous',
     target  : 'jsPrevious',
-    event   : ['click', 'touch'],
-    listener: undefined,
   },
   {
     name    : 'next',
     action  : 'next',
     target  : 'jsNext',
-    event   : ['click', 'touch'],
-    listener: undefined,
   },
   {
     name    : 'jump',
     action  : 'jump',
     target  : 'jsJump',
-    event   : ['click', 'touch'],
-    listener: undefined,
   },
 ]

@@ -1,50 +1,61 @@
 import {
   Action,
   ActionName,
-  ActionManager,
-  MonoConfig,
-  MonoGroup,
-  MonoController,
 } from '../index'
+
+import {
+  MonoConfig,
+} from './config'
+
+import {
+  ItemManager
+} from './itemManager';
+
+import {
+  MonoController,  
+} from './monoController'
 
 export type MonoActionName = 'activate' | 'deactivate' | 'toggle'
 
 export interface MonoAction {
   name?: MonoActionName
-  groupName: string,
-  group?: MonoGroup,
-  currentItem?: HTMLElement,
+
+  currentItem?  : HTMLElement,
   currentItemId?: string,
-  nextItem?: HTMLElement,
+
+  nextItem?  : HTMLElement,
   nextItemId?: string,
+
   targetId?: string,
-  trigger?: HTMLElement,
+  trigger? : HTMLElement,
 }
 
-export class MonoActionManager implements ActionManager {
+export class ActionManager {
 
   private controller: MonoController
 
   public isRunning: boolean = false
-  public isNested: boolean = false
+  public isNested : boolean = false
 
   constructor(controller: MonoController) {
     this.controller = controller
   }
 
-  // 2) COMPLETE ACTION
+  // 2) Complete Action
 
   private activate(action: MonoAction): Promise<void> {
-    const config: MonoConfig = this.controller.config
+    const config: MonoConfig       = this.controller.config
+    const itemManager: ItemManager = this.controller.itemManager
+
     if (
-      action.group.isActive === false &&
-      action.group.activeItem !== action.nextItem &&
+      itemManager.isActive   === false &&
+      itemManager.activeItem !== action.nextItem &&
       config.conditionActivate(action, this.controller) === true
     ) {
       return config
         .beforeActivate(action, this.controller)
         .then(() => {
-          this.controller.groupManager.activateItem(action.nextItem)
+          itemManager.activate(action.nextItem)
           return Promise.resolve()
         })
         .then(() => {
@@ -52,26 +63,31 @@ export class MonoActionManager implements ActionManager {
           return Promise.resolve()
         })
     }
+
     return Promise.reject()
   }
 
   private deactivate(action: MonoAction): Promise<void> {
-    const config: MonoConfig = this.controller.config
-    if (action.group.isActive === false) {
+    const config: MonoConfig       = this.controller.config
+    const itemManager: ItemManager = this.controller.itemManager
+
+    if (itemManager.isActive === false) {
       return Promise.resolve()
     }
+
     if (
-      action.name === 'deactivate' &&
-      typeof action.targetId === 'string' &&
-      action.group.activeItemId !== action.targetId
+      action.name              === 'deactivate' &&
+      typeof action.targetId   === 'string'     &&
+      itemManager.activeItemId !== action.targetId
     ) {
       return Promise.resolve()
     }
+
     if (config.conditionDeactivate(action, this.controller) === true) {
       return config
         .beforeDeactivate(action, this.controller)
         .then(() => {
-          this.controller.groupManager.deactivateItem(action.groupName)
+          itemManager.deactivate()
           return Promise.resolve()
         })
         .then(() => {
@@ -79,13 +95,16 @@ export class MonoActionManager implements ActionManager {
           return Promise.resolve()
         })
     }
+
     return Promise.reject()
   }
 
   private completeAction(action: MonoAction): Promise<void> {
+    const itemManager: ItemManager = this.controller.itemManager
+
     if (
       action.name === 'activate' &&
-      action.group.activeItemId !== action.targetId
+      itemManager.activeItemId !== action.targetId
     ) {
       return this
         .deactivate(action)
@@ -95,9 +114,9 @@ export class MonoActionManager implements ActionManager {
     } else if (action.name === 'deactivate') {
       return this.deactivate(action)
     } else if (action.name === 'toggle') {
-      if (action.group.activeItemId === action.targetId) {
+      if (itemManager.activeItemId === action.targetId) {
         return this.deactivate(action)
-      } else {
+      }else {
         return this
           .deactivate(action)
           .then(() => {
@@ -108,27 +127,33 @@ export class MonoActionManager implements ActionManager {
     return Promise.reject()
   }
 
-  // CREATE & COMPOSE ACTION
+  // Create & Compose Action
 
-  public createAction(actionName: MonoActionName, groupName: string): MonoAction {
-    const group: MonoGroup = this.controller.groupManager.groups[groupName]
+  public createAction(actionName: MonoActionName): MonoAction {
+    const itemManager: ItemManager = this.controller.itemManager
+
     return {
       name: actionName,
-      groupName: groupName,
-      group: group,
-      currentItem  : group.activeItem,
-      currentItemId: group.activeItemId,
+
+      currentItem  : itemManager.activeItem,
+      currentItemId: itemManager.activeItemId,
+
       nextItem  : undefined,
       nextItemId: undefined,
-      targetId  : undefined,
-      trigger   : undefined,
+
+      targetId: undefined,
+      trigger : undefined,
     }
   }
 
-  public composeAction(actionName: MonoActionName, groupName: string, id?: string): MonoAction {
-    const action: MonoAction = this.createAction(actionName, groupName)
+  public composeAction(actionName: MonoActionName, id?: string): MonoAction {
+    const itemManager: ItemManager = this.controller.itemManager
+
+    const action: MonoAction = this.createAction(actionName)
+
     if (typeof id === 'string') {
-      const nextItem: HTMLElement | false = this.getItemFromId(groupName, id)
+      const nextItem: HTMLElement | false = itemManager.getItemFromId(id)
+
       if (typeof nextItem === 'object') {
         action.nextItem   = nextItem
         action.nextItemId = id
@@ -138,28 +163,15 @@ export class MonoActionManager implements ActionManager {
     return action
   }
 
-  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action | false {
-    const groupName: string | undefined = trigger.dataset.group
-    if (typeof groupName === 'string') {
-      const action: MonoAction = this.composeAction(
-        <MonoActionName>actionName, groupName, trigger.dataset.target
-      )
-      action.trigger = trigger
-      return action
-    }
-    return false
-  }
-
-  // HELPER
-
-  private getItemFromId(groupName: string, id: string): HTMLElement | false {
-    const item: HTMLElement | null = document.querySelector(
-      `${this.controller.config.selectorItems}[data-group="${groupName}"][data-id="${id}"]`
+  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action {
+    const action: MonoAction = this.composeAction(
+      <MonoActionName>actionName, trigger.dataset.target
     )
-    return item === null ? false : item
+    action.trigger = trigger
+    return action
   }
 
-  // 1) ACTION HUB
+  // 1) Action Hub
 
   public actionHub(action: Action, isNestedAction: boolean = false, callback?: Function): Promise<void> {
     if (
@@ -222,12 +234,14 @@ export class MonoActionManager implements ActionManager {
         }, this.controller.config.cooldown)
       })
     }
+
     if (
       this.isRunning === false &&
       this.isNested  === true
     ) {
       this.isNested = false;
     }
+
     if (typeof callback === 'function') {
       callback()
     }

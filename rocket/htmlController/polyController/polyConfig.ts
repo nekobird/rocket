@@ -4,7 +4,6 @@ import {
   ConditionHook,
   EventEntry,
   ListenToHook,
-  OutsideActionHook,
   PolyAction,
   PolyController,
   PolyGroup,
@@ -16,8 +15,6 @@ export interface PolyConfig {
   cooldown?: number,
 
   listenToKeydown?: boolean,
-
-  closeOnOutsideAction?: boolean,
 
   selectorItems?: string,
 
@@ -48,16 +45,12 @@ export interface PolyConfig {
   afterAction?: AfterActionCallback<PolyAction, PolyController>,
 
   onKeydown?: ListenToHook<KeyboardEvent, PolyGroup, PolyController>,
-
-  onOutsideAction?: OutsideActionHook<PolyGroup, PolyController>,
 }
 
 export const POLY_DEFAULT_CONFIG: PolyConfig = {
   cooldown: 200,
 
   listenToKeydown: false,
-
-  closeOnOutsideAction: false, 
 
   selectorItems: '.js-poly-item',
 
@@ -89,8 +82,6 @@ export const POLY_DEFAULT_CONFIG: PolyConfig = {
   afterAction : (action, context) => { return Promise.resolve() },
   
   onKeydown: (event, group, context) => { },
-
-  onOutsideAction: (group, context) => { },
 }
 
 export const POLY_EVENT_ENTRY_LIST: EventEntry[] = [
@@ -98,42 +89,30 @@ export const POLY_EVENT_ENTRY_LIST: EventEntry[] = [
     name    : 'activate',
     action  : 'activate',
     target  : 'jsActivate',
-    event   : ['click', 'touchstart'],
-    listener: undefined,
   },
   {
     name    : 'deactivate',
     action  : 'deactivate',
     target  : 'jsDeactivate',
-    event   : ['click', 'touchstart'],
-    listener: undefined,
   },
   {
     name    : 'toggle',
     action  : 'toggle',
     target  : 'jsToggle',
-    event   : ['click', 'touchstart'],
-    listener: undefined,
   },
   {
     name    : 'activateAll',
     action  : 'activateAll',
     target  : 'jsActivateAll',
-    event   : ['click', 'touchstart'],
-    listener: undefined,
   },
   {
     name    : 'deactivateAll',
     action  : 'deactivateAll',
     target  : 'jsDeactivateAll',
-    event   : ['click', 'touchstart'],
-    listener: undefined,
   },
   {
     name    : 'toggleAll',
     action  : 'toggleAll',
     target  : 'jsToggleAll',
-    event   : ['click', 'touchstart'],
-    listener: undefined,
   },
 ]

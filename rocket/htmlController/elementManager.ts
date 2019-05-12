@@ -34,6 +34,7 @@ export class ElementManager {
     return this
   }
 
+  // Grab elements from controller config.
   public initializeElementEntriesFromConfig(): ElementManager {
     const config: Config = this.controller.config
     const addEntry = (name: string, selector: string) => {

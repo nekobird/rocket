@@ -32,9 +32,9 @@ const controller = new MonoController({
       )
     })
   },
-  onKeydown: (event, group, context) => {
+  onKeydown: (event, context) => {
     if (event.keyCode === 27) {
-      context.deactivate(group.name)
+      context.deactivate()
     }
   }
 })

@@ -22,7 +22,7 @@ export class TouchSensor {
   public composeData(name: EventName, event: TouchEvent, touch: Touch): SensorData {
     return {
       identifier: touch.identifier.toString(),
-      type: 'MOUSE',
+      type: 'TOUCH',
       name: name,
       time: Date.now(),
       target: <HTMLElement>touch.target,

@@ -1,13 +1,3 @@
-@import 'reset';
-
-.sequence_item {
-  display: none;
-
-  &.__active {
-    display: block;
-  }
-}
-
 @keyframes page-polyController-item-animation-in {
   from {
     opacity: 0;
@@ -30,8 +20,8 @@
 
 .page-polyController {
   .items {
-    min-height: 180px;
-    background: hsl(0, 0, 99);
+    min-height: px-to-rem(180);
+    background-color: color('extra-light');
     margin-bottom: 0;
     position: relative;
     padding: space('medium');
@@ -40,15 +30,17 @@
   }
 
   .itemContainer {
-    background-color: hsl(0, 0, 20);
+    background-color: color('extra-light');
+    border: border-width('base') solid color('dark');
     padding: space('medium');
     box-sizing: border-box;
+
     transition-duration: 2s;
     transition-timing-function: ease-out;
   }
 
   .item {
-    background-color: hsl(220, 20, 5);
+    background-color: color('dark');
     border-radius: border-radius('base');
     box-sizing: border-box;
     color: color('white');
@@ -56,8 +48,8 @@
     height: px-to-rem(140);
     margin: space('medium');
     padding: space('medium');
-    width: px-to-rem(140);
     vertical-align: middle;
+    width: px-to-rem(140);
 
     &.item--active {
       display: inline-block;
@@ -79,13 +71,12 @@
   }
 
   .controls {
-    padding: 20px;
-    background-color: hsl(0, 0, 95);
+    padding: space('medium');
+    background-color: color('extra-light');
 
     a:link,
     a:visited {
       display: inline-block;
-      padding: 10px;
     }
   }
 }

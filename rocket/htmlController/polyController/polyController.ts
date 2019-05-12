@@ -22,9 +22,9 @@ export class PolyController {
   public config: PolyConfig
 
   public elementManager: ElementManager
-  public eventManager:   EventManager
-  public groupManager:   PolyGroupManager
-  public actionManager:  PolyActionManager
+  public eventManager  : EventManager
+  public groupManager  : PolyGroupManager
+  public actionManager : PolyActionManager
 
   public dragEventManager: DragEventManager
 
@@ -33,7 +33,9 @@ export class PolyController {
     this.groupManager   = new PolyGroupManager(this)
     this.actionManager  = new PolyActionManager(this)
     this.eventManager   = new EventManager(this)
+
     this.config = Object.assign({}, POLY_DEFAULT_CONFIG)
+
     this
       .setConfig(config)
       .initialize()
@@ -125,8 +127,6 @@ export class PolyController {
     this.groupManager.initialize()
 
     this.initializeEventEntriesFromConfig()
-    this.eventManager.listen()
-
     this.initializeExtraListeners()
     return this
   }
@@ -139,50 +139,8 @@ export class PolyController {
   }
 
   private initializeExtraListeners() {
-    if (this.config.closeOnOutsideAction === true) {
-      this.dragEventManager = new DragEventManager({
-        enableLongPress: false,
-        onUp: (event, manager) => {
-          this.handleOutsideAction(event)
-        }
-      })
-    }
-
     if (this.config.listenToKeydown === true) {
       window.addEventListener('keydown', this.eventHandlerKeydown)
-    }
-  }
-
-  private handleOutsideAction = (event) => {
-    if (
-      this.config.closeOnOutsideAction === true &&
-      this.actionManager.isRunning     === false
-    ) {
-
-      Object.keys(this.groupManager.groups).forEach(groupName => {
-        const group: PolyGroup = this.groupManager.groups[groupName]
-
-        const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
-        const targetUpElement  : HTMLElement | false = event.getTargetElementFromData(event.upData)
-
-        let classNames: string[] = [
-          this.config.classNameJsActivate,
-          this.config.classNameJsDeactivate,
-          this.config.classNameJsToggle
-        ]
-
-        if (
-          group.isActive    === true  &&
-          targetDownElement !== false &&
-          targetUpElement   !== false &&
-          DOMUtil.hasAncestor(targetDownElement, group.activeItems) === false &&
-          DOMUtil.hasAncestor(targetUpElement,   group.activeItems) === false &&
-          DOMUtil.findAncestorWithClass(targetDownElement, classNames) === false
-        ) {
-          this.deactivateAll(groupName)
-          this.config.onOutsideAction(group, this)
-        }
-      })
     }
   }
 

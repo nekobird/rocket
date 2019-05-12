@@ -1,4 +1,5 @@
 import {
+  DragEventManager,
   DOMUtil,
   StringUtil,
 } from '../rocket'
@@ -15,94 +16,52 @@ export interface EventEntries {
 
 export interface EventEntry {
   name: string,
-  target: string | HTMLElement | HTMLElement[] | Window | Document,
-  event: string | string[],
+  target: string,
   action: ActionName,
-  listener: EventListener | Function,
-  useCapture?: boolean,
 }
 
 export type EventEntryList = EventEntry[]
 
 export class EventManager {
 
+  private dragEventManager: DragEventManager
+
   private controller: HTMLController
+
   private eventEntries: EventEntries
 
   constructor(controller: HTMLController) {
     this.controller = controller
+
+    this.dragEventManager = new DragEventManager({
+      onUp: this.onUp
+    })
+
     this.eventEntries = {}
   }
 
-  // LISTEN
+  private onUp = (event, manager) => {
+    if (typeof event.downData === 'object') {
+      const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
+      if (targetDownElement !== false) {
 
-  public listen(): this {
-    Object.keys(this.eventEntries).forEach(name => {
-
-      const eventEntry: EventEntry = this.eventEntries[name]
-
-      let targets: HTMLElement[] | HTMLElement | Window | Document | undefined = undefined
-
-      if (typeof eventEntry.target === 'string') {
-        const elements = this.controller.elementManager.getElements(eventEntry.target)
-        if (elements !== false) {
-          targets = elements
-        }
-      } else {
-        targets = eventEntry.target
+        Object.keys(this.eventEntries).forEach(name => {
+          const target   : string = StringUtil.upperCaseFirstLetter(this.eventEntries[name].target)
+          const className: string = this.controller.config[`className${target}`]
+          const trigger = DOMUtil.findAncestorWithClass(targetDownElement, className, false)
+          if (trigger !== false) {
+            this.eventHub(<HTMLElement>trigger, this.eventEntries[name].action)
+          }
+        })
       }
-
-      if (typeof targets !== 'undefined') {
-        const useCapture: boolean =
-          (typeof eventEntry.useCapture === 'undefined') ? false : eventEntry.useCapture
-
-        if (typeof eventEntry.listener === 'undefined') {
-          eventEntry.listener = this.listenerFactory(eventEntry.action)
-        }
-
-        if (Array.isArray(targets)) {
-          targets.forEach(target => {
-            this.addEventListenerToTarget(target, eventEntry, useCapture)
-          })
-        } else {
-          this.addEventListenerToTarget(targets, eventEntry, useCapture)
-        }
-      }
-
-    }) // End eventEntries loop
-    return this
-  }
-
-  private listenerFactory(actionName: ActionName): EventListener {
-    return (event: Event) => {
-      this.eventHub(event, actionName)
     }
-  }
-
-  private addEventListenerToTarget(
-    target: HTMLElement | Window | Document, eventEntry: EventEntry, useCapture: boolean
-  ): this {
-
-    if (Array.isArray(eventEntry.event)) {
-      eventEntry.event.forEach(event => {
-        target.addEventListener(
-          event, <EventListener>eventEntry.listener, useCapture
-        )
-      })
-    } else if (typeof eventEntry.event === 'string') {
-      target.addEventListener(
-        eventEntry.event, <EventListener>eventEntry.listener, useCapture
-      )
-    }
-
-    return this
   }
 
   public addEntry(entry: EventEntry): this {
     if (typeof this.eventEntries[entry.name] === 'object') {
       this.eventEntries[entry.name] = Object.assign(this.eventEntries[name], entry)
     } else {
-      this.eventEntries[entry.name] = { ...entry }
+      this.eventEntries[entry.name] = Object.assign({}, entry)
     }
     return this
   }
@@ -114,22 +73,13 @@ export class EventManager {
     return this
   }
 
-  private eventHub(event: Event, actionName: ActionName): this {
+  private eventHub(trigger: HTMLElement, actionName: ActionName): this {
     const actionManager = this.controller.actionManager
-
     if (
       this.controller.isReady === true &&
       actionManager.isRunning === false
     ) {
       actionManager.isRunning = true
-
-      const eventName: string = StringUtil.upperCaseFirstLetter(actionName)
-      const trigger = DOMUtil.findAncestorWithClass(
-        <HTMLElement>event.target,
-        this.controller.config[`classNameJs${eventName}`],
-        false
-      )
-
       if (
         typeof trigger !== 'undefined' &&
         trigger instanceof HTMLElement

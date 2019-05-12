@@ -251,5 +251,4 @@ export class DOMUtil {
       element.nodeType === 1
     )
   }
-
 }
