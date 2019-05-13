@@ -31,7 +31,7 @@ export class SequenceController {
   public actionManager : ActionManager
   public eventManager  : EventManager
 
-  constructor(config: SequenceConfig) {
+  constructor(config?: SequenceConfig) {
     this.config = Object.assign({}, DEFAULT_CONFIG)
     if (typeof config === 'object') {
       this.setConfig(config)
@@ -48,6 +48,10 @@ export class SequenceController {
   public setConfig(config: SequenceConfig): this {
     Object.assign(this.config, config)
     return this
+  }
+
+  public isItemActive(id: string): boolean {
+    return this.itemManager.activeItem.dataset.id === id
   }
 
   // Actions

@@ -50,6 +50,16 @@ export class PolyController {
     return this
   }
 
+  public isItemActive(id: string): boolean {
+    let isActive: boolean = false
+    this.itemManager.activeItems.forEach(item => {
+      if (item.dataset.id === id) {
+        isActive = true
+      }
+    })
+    return isActive
+  }
+
   // Actions
 
   public activate(id: string): Promise<void> {

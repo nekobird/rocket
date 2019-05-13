@@ -2,8 +2,12 @@ import {
   AfterActionCallback,
   BeforeActionCallback,
   ConditionHook,
-  EventEntry,
 } from '../index';
+
+import {
+  EventEntry,
+} from './eventManager'
+
 
 import {
   PolyController,

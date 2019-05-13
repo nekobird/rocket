@@ -2,9 +2,12 @@ import {
   AfterActionCallback,
   BeforeActionCallback,
   ConditionHook,
-  EventEntry,
   Hook,
 } from '../index'
+
+import {
+  EventEntry,
+} from './eventManager'
 
 import {
   SequenceController,

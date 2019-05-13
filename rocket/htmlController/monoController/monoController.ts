@@ -48,6 +48,10 @@ export class MonoController {
     return this
   }
 
+  public isItemActive(id: string): boolean {
+    return this.itemManager.activeItem.dataset.id === id
+  }
+
   // Action
 
   public activate(id: string): Promise<void> {

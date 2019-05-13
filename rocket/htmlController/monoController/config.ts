@@ -2,11 +2,12 @@ import {
   AfterActionCallback,
   BeforeActionCallback,
   ConditionHook,
-  EventEntry,
   Hook,
-  ListenToHook,
-  OutsideActionHook,
 } from '../index'
+
+import {
+  EventEntry,
+} from './eventManager'
 
 import {
   MonoAction,
