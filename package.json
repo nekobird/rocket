@@ -1,6 +1,6 @@
 {
   "name": "@nekobird/rocket",
-  "version": "0.0.58",
+  "version": "0.0.59",
   "description": "Rocket UI and Animation Library",
   "main": "build/rocket.js",
   "types": "build/rocket.d.ts",

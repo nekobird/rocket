@@ -55,7 +55,10 @@ export class MonoController {
   }
 
   public isItemActive(id: string): boolean {
-    return this.itemManager.activeItem.dataset.id === id
+    if (this.itemManager.isActive === true) {
+      return this.itemManager.activeItem.dataset.id === id
+    }
+    return false
   }
 
   // Action
