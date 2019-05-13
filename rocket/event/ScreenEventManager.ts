@@ -152,5 +152,4 @@ export class ScreenEventManager {
     window.removeEventListener('resize', <EventListener>this.debounce)
     return this
   }
-
 }
