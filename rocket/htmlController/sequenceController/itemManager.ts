@@ -1,8 +1,4 @@
 import {
-  ElementEntry,
-} from '../index'
-
-import {
   SequenceConfig,
 } from './config'
 
@@ -33,34 +29,36 @@ export class ItemManager {
   }
 
   public initializeItems(): this {
-    const items: ElementEntry | false = this.controller.elementManager.getEntry('items')
-
-    if (typeof items === 'object') {
-      this.items = items.elements.map(item => {
+    const items: NodeListOf<HTMLElement> = document.querySelectorAll(this.controller.config.selectorItems)
+    if (items !== null) {
+      this.items = Array.from(items).map(item => {
         if (this.itemIsValid(item) === true) {
           return item
         }
       })
+    } else {
+      throw('Fail to load items')
     }
-
     return this
   }
 
   private initializeActiveItems(): this {
     const config: SequenceConfig = this.controller.config
 
-    this.items.forEach((item: HTMLElement, index: number) => {
-      if (item.classList.contains(config.classNameItemActive) === true) {        
-        if (this.isActive === false) {
-          this.activeIndex = index
-          this.activeItem  = item
-          this.isActive    = true
-        } else {
-          item.classList.remove(config.classNameItemActive)
+    if (this.items.length > 0) {
+      this.items.forEach((item: HTMLElement, index: number) => {
+        if (item.classList.contains(config.classNameItemActive) === true) {        
+          if (this.isActive === false) {
+            this.activeIndex = index
+            this.activeItem  = item
+            this.isActive    = true
+          } else {
+            item.classList.remove(config.classNameItemActive)
+          }
         }
-      }
-    })
-    this.controller.isReady = true
+      })
+      this.controller.isReady = true
+    }
     return this
   }
 

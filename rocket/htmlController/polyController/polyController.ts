@@ -1,8 +1,4 @@
 import {
-  ElementManager,
-} from '../index'
-
-import {
   EventManager,
 } from './eventManager'
 
@@ -26,7 +22,6 @@ export class PolyController {
 
   public config: PolyConfig
 
-  public elementManager: ElementManager
   public eventManager  : EventManager
   public itemManager   : ItemManager
   public actionManager : ActionManager
@@ -37,7 +32,6 @@ export class PolyController {
       this.setConfig(config)
     }
     
-    this.elementManager = new ElementManager(this)
     this.itemManager    = new ItemManager(this)
     this.actionManager  = new ActionManager(this)
     this.eventManager   = new EventManager(this)
@@ -47,6 +41,13 @@ export class PolyController {
 
   public setConfig(config: PolyConfig): this {
     Object.assign(this.config, config)
+    return this
+  }
+
+  // Initialize
+
+  public initialize(): this {
+    this.itemManager.initialize()
     return this
   }
 
@@ -116,13 +117,5 @@ export class PolyController {
         .then(() => resolve())
         .catch(() => resolve())
     })
-  }
-
-  // Initialize
-
-  public initialize(): this {
-    this.elementManager.initialize()
-    this.itemManager.initialize()
-    return this
   }
 }

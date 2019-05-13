@@ -1,8 +1,4 @@
 import {
-  ElementManager,
-} from '../index'
-
-import {
   DEFAULT_CONFIG,
   SequenceConfig,
 } from './config'
@@ -26,7 +22,6 @@ export class SequenceController {
 
   public config: SequenceConfig
 
-  public elementManager: ElementManager
   public itemManager   : ItemManager
   public actionManager : ActionManager
   public eventManager  : EventManager
@@ -37,7 +32,6 @@ export class SequenceController {
       this.setConfig(config)
     }
 
-    this.elementManager = new ElementManager(this)
     this.itemManager    = new ItemManager(this)
     this.actionManager  = new ActionManager(this)
     this.eventManager   = new EventManager(this)
@@ -47,6 +41,13 @@ export class SequenceController {
 
   public setConfig(config: SequenceConfig): this {
     Object.assign(this.config, config)
+    return this
+  }
+
+  // Initialize
+
+  public initialize(): this {
+    this.itemManager.initialize()
     return this
   }
 
@@ -81,13 +82,5 @@ export class SequenceController {
         .then(() => resolve())
         .catch(() => resolve())
     })
-  }
-
-  // Initialize
-
-  public initialize(): this {
-    this.elementManager.initialize()
-    this.itemManager.initialize()
-    return this
   }
 }

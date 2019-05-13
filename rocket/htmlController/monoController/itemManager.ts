@@ -2,10 +2,6 @@ import {
   MonoController,
 } from './monoController'
 
-import {
-  ElementEntry,
-} from '../elementManager'
-
 export class ItemManager {
 
   private controller: MonoController
@@ -29,10 +25,10 @@ export class ItemManager {
   }
 
   public initializeItems(): this {
-    const items: ElementEntry | false = this.controller.elementManager.getEntry('items')
+    const items: NodeListOf<HTMLElement> = document.querySelectorAll(this.controller.config.selectorItems)
 
-    if (typeof items === 'object') {
-      this.items = items.elements.map(item => {
+    if (items !== null) {
+      this.items = Array.from(items).map(item => {
         if (this.itemIsValid(item) === true) {
           return item
         }

@@ -1,8 +1,4 @@
 import {
-  ElementEntry,
-} from '../index'
-
-import {
   PolyConfig,
 } from './config'
 
@@ -34,9 +30,10 @@ export class ItemManager {
   }
 
   public initializeItems(): this {
-    const items: ElementEntry | false = this.controller.elementManager.getEntry('items')
-    if (typeof items === 'object') {
-      this.items = items.elements.map(item => {
+    const items: NodeListOf<HTMLElement> = document.querySelectorAll(this.controller.config.selectorItems)
+
+    if (items !== null) {
+      this.items = Array.from(items).map(item => {
         if (this.itemIsValid(item) === true) {
           return item
         }

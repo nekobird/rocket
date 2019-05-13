@@ -1,8 +1,4 @@
 import {
-  ElementManager,
-} from '../index'
-
-import {
   DEFAULT_CONFIG,
   MonoConfig,
 } from './config'
@@ -26,13 +22,11 @@ export class MonoController {
 
   public config: MonoConfig
 
-  public elementManager: ElementManager
   public itemManager   : ItemManager
   public actionManager : ActionManager
   public eventManager  : EventManager
 
   constructor(config: MonoConfig) {
-    this.elementManager = new ElementManager(this)
     this.itemManager    = new ItemManager(this)
     this.actionManager  = new ActionManager(this)
     this.eventManager   = new EventManager(this)
@@ -45,6 +39,14 @@ export class MonoController {
 
   public setConfig(config: MonoConfig): this {
     Object.assign(this.config, config)
+    return this
+  }
+
+  // Initialize
+
+  public initialize(): this {
+    this.itemManager.initialize()
+    this.eventManager.initialize()
     return this
   }
 
@@ -82,14 +84,5 @@ export class MonoController {
         .then(() => resolve())
         .catch(() => resolve())
     })
-  }
-
-  // Initialize
-
-  public initialize(): this {
-    this.elementManager.initialize()
-    this.itemManager.initialize()
-    this.eventManager.initialize()
-    return this
   }
 }
