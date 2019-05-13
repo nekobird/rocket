@@ -48,7 +48,12 @@ export class PolyController {
 
   public initialize(): this {
     this.itemManager.initialize()
+    this.eventManager.initialize()
     return this
+  }
+
+  public get isActive(): boolean {
+    return this.itemManager.isActive
   }
 
   public isItemActive(id: string): boolean {

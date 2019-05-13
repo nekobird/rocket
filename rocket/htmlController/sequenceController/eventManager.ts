@@ -45,8 +45,6 @@ export class EventManager {
     })
 
     this.eventEntries = {}
-
-    this.initialize()
   }
 
   public initialize(): this {
