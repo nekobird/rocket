@@ -32,9 +32,9 @@ export class SequenceController {
       this.setConfig(config)
     }
 
-    this.itemManager    = new ItemManager(this)
-    this.actionManager  = new ActionManager(this)
-    this.eventManager   = new EventManager(this)
+    this.itemManager   = new ItemManager(this)
+    this.actionManager = new ActionManager(this)
+    this.eventManager  = new EventManager(this)
 
     this.initialize()
   }
