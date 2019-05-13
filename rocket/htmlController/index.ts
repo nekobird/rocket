@@ -1,4 +1,3 @@
-export * from './eventManager'
 export * from './elementManager'
 
 export * from './interfaces'

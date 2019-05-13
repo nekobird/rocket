@@ -1,9 +1,4 @@
 import {
-  Action,
-  ActionName,
-} from '../index'
-
-import {
   MonoConfig,
 } from './config'
 
@@ -163,7 +158,7 @@ export class ActionManager {
     return action
   }
 
-  public composeActionFromEvent(actionName: ActionName, trigger: HTMLElement): Action {
+  public composeActionFromEvent(actionName: MonoActionName, trigger: HTMLElement): MonoAction {
     const action: MonoAction = this.composeAction(
       <MonoActionName>actionName, trigger.dataset.target
     )
@@ -173,7 +168,7 @@ export class ActionManager {
 
   // 1) Action Hub
 
-  public actionHub(action: Action, isNestedAction: boolean = false, callback?: Function): Promise<void> {
+  public actionHub(action: MonoAction, isNestedAction: boolean = false, callback?: Function): Promise<void> {
     if (
       this.isRunning === true &&
       isNestedAction === true

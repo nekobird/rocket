@@ -1,25 +1,3 @@
-import {
-  MonoAction,
-  MonoActionName,
-  MonoConfig,
-  MonoController,
-  PolyAction,
-  PolyActionName,
-  PolyConfig,
-  PolyController,
-  SequenceAction,
-  SequenceActionName,
-  SequenceConfig,
-  SequenceController,
-} from './index'
-
-export type HTMLController = MonoController | PolyController | SequenceController
-
-export type Config = MonoConfig | PolyConfig | SequenceConfig
-
-export type ActionName = MonoActionName | PolyActionName | SequenceActionName
-export type Action = MonoAction | PolyAction | SequenceAction
-
 export interface Hook<A, C> {
   (
     action: A,
@@ -61,9 +39,4 @@ export interface OutsideActionHook<G, C> {
     group: G,
     context: C,
   ): void
-}
-
-export interface ActionManager {
-  composeActionFromEvent: (actionName: ActionName, trigger: HTMLElement) => Action | false,
-  actionHub: (action: Action, isNestedAction: boolean, callback?: Function) => void,
 }

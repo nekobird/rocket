@@ -2,11 +2,6 @@ import {
   StringUtil,
 } from '../rocket'
 
-import {
-  Config,
-  HTMLController,
-} from './index'
-
 export interface ElementEntries {
   [name: string]: ElementEntry
 }
@@ -18,11 +13,11 @@ export interface ElementEntry {
 
 export class ElementManager {
 
-  private controller: HTMLController
+  private controller
 
   public elementEntries: ElementEntries
 
-  constructor(controller: HTMLController) {
+  constructor(controller) {
     this.controller = controller
     this.elementEntries = {}
   }
@@ -36,7 +31,7 @@ export class ElementManager {
 
   // Grab elements from controller config.
   public initializeElementEntriesFromConfig(): ElementManager {
-    const config: Config = this.controller.config
+    const config = this.controller.config
     const addEntry = (name: string, selector: string) => {
       if (typeof this.elementEntries[name] === 'object') {
         this.elementEntries[name].selector = selector

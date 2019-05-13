@@ -1,8 +1,4 @@
 import {
-  StringUtil,
-} from '../../rocket'
-
-import {
   PolyConfig,
 } from './config'
 
