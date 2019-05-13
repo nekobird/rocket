@@ -16,8 +16,8 @@ export interface PolyAction {
   name?: PolyActionName,
 
   targetItem?: HTMLElement,
+  targetId?  : string,  
 
-  targetId?: string,  
   trigger?: HTMLElement,
 }
 

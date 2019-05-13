@@ -21,9 +21,9 @@ export interface SequenceAction {
 
   currentItem?: HTMLElement,
   
-  nextItem?: HTMLElement,
+  nextItem?     : HTMLElement,
   nextItemIndex?: number,
-  nextItemId?: string,
+  nextItemId?   : string,
 
   trigger?: HTMLElement,
 }

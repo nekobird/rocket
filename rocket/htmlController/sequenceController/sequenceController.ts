@@ -22,9 +22,9 @@ export class SequenceController {
 
   public config: SequenceConfig
 
-  public itemManager   : ItemManager
-  public actionManager : ActionManager
-  public eventManager  : EventManager
+  public itemManager  : ItemManager
+  public actionManager: ActionManager
+  public eventManager : EventManager
 
   constructor(config?: SequenceConfig) {
     this.config = Object.assign({}, DEFAULT_CONFIG)

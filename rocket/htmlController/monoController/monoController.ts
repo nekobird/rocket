@@ -22,14 +22,14 @@ export class MonoController {
 
   public config: MonoConfig
 
-  public itemManager   : ItemManager
-  public actionManager : ActionManager
-  public eventManager  : EventManager
+  public itemManager  : ItemManager
+  public actionManager: ActionManager
+  public eventManager : EventManager
 
   constructor(config: MonoConfig) {
-    this.itemManager    = new ItemManager(this)
-    this.actionManager  = new ActionManager(this)
-    this.eventManager   = new EventManager(this)
+    this.itemManager   = new ItemManager(this)
+    this.actionManager = new ActionManager(this)
+    this.eventManager  = new EventManager(this)
 
     this.config = Object.assign({}, DEFAULT_CONFIG)
     this
