@@ -1,5 +1,3 @@
-export * from './elementManager'
-
 export * from './interfaces'
 
 export * from './monoController/monoController'
