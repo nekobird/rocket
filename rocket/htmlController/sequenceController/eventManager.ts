@@ -14,28 +14,21 @@ import {
 } from './actionManager'
 
 import {
-  SEQUENCE_EVENT_ENTRY_LIST
+  SEQUENCE_ACTION_CONFIG_MAP,
 } from './config'
 
-export interface EventEntries {
-  [name: string]: EventEntry
+export interface ActionConfigMapEntry {
+  configProperty: string,
+  action        : SequenceActionName,
 }
 
-export interface EventEntry {
-  name  : string,
-  target: string,
-  action: SequenceActionName,
-}
-
-export type EventEntryList = EventEntry[]
+export type ActionConfigMapEntries = ActionConfigMapEntry[]
 
 export class EventManager {
 
-  private controller: SequenceController
+  public controller: SequenceController
 
-  private dragEventManager: DragEventManager
-
-  private eventEntries: EventEntries
+  public dragEventManager: DragEventManager
 
   constructor(controller: SequenceController) {
     this.controller = controller
@@ -43,23 +36,12 @@ export class EventManager {
     this.dragEventManager = new DragEventManager({
       onUp: this.onUp
     })
-
-    this.eventEntries = {}
   }
 
   public initialize(): this {
-    this.initializeEventEntriesFromConfig()
-
     if (this.controller.config.listenToKeydown === true) {
       window.addEventListener('keydown', this.eventHandlerKeydown)
     }
-    return this
-  }
-
-  private initializeEventEntriesFromConfig(): this {
-    SEQUENCE_EVENT_ENTRY_LIST.forEach(eventEntry => {
-      this.addEntry(eventEntry)
-    })
     return this
   }
 
@@ -67,35 +49,15 @@ export class EventManager {
     if (typeof event.downData === 'object') {
       const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
       if (targetDownElement !== false) {
-
-        Object.keys(this.eventEntries).forEach(name => {
-          const target   : string = StringUtil.upperCaseFirstLetter(this.eventEntries[name].target)
-          const className: string = this.controller.config[`className${target}`]
-
+        SEQUENCE_ACTION_CONFIG_MAP.forEach(entry => {
+          const className: string = this.controller.config[entry.configProperty]
           const trigger = DOMUtil.findAncestorWithClass(targetDownElement, className, false)
-
           if (trigger !== false) {
-            this.eventHub(<HTMLElement>trigger, this.eventEntries[name].action)
+            this.eventHub(<HTMLElement>trigger, entry.action)
           }
         })
       }
     }
-  }
-
-  public addEntry(entry: EventEntry): this {
-    if (typeof this.eventEntries[entry.name] === 'object') {
-      this.eventEntries[entry.name] = Object.assign(this.eventEntries[name], entry)
-    } else {
-      this.eventEntries[entry.name] = Object.assign({}, entry)
-    }
-    return this
-  }
-
-  public removeEntry(name: string): this {
-    if (typeof this.eventEntries[name] === 'object') {
-      delete this.eventEntries[name]
-    }
-    return this
   }
 
   private eventHub(trigger: HTMLElement, actionName: SequenceActionName): this {

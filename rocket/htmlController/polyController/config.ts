@@ -5,9 +5,8 @@ import {
 } from '../index';
 
 import {
-  EventEntry,
+  ActionConfigMapEntries,
 } from './eventManager'
-
 
 import {
   PolyController,
@@ -97,35 +96,29 @@ export const DEFAULT_CONFIG: PolyConfig = {
   onKeydown: (event, context) => { },
 }
 
-export const POLY_EVENT_ENTRY_LIST: EventEntry[] = [
+export const POLY_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
   {
-    name    : 'activate',
-    action  : 'activate',
-    target  : 'jsActivate',
+    configProperty: 'classNameJsActivate',
+    action        : 'activate',
   },
   {
-    name    : 'deactivate',
-    action  : 'deactivate',
-    target  : 'jsDeactivate',
+    configProperty: 'classNameJsDeactivate',
+    action        : 'deactivate',
   },
   {
-    name    : 'toggle',
-    action  : 'toggle',
-    target  : 'jsToggle',
+    configProperty: 'classNameJsToggle',
+    action        : 'toggle',
   },
   {
-    name    : 'activateAll',
-    action  : 'activateAll',
-    target  : 'jsActivateAll',
+    configProperty: 'classNameJsActivateAll',
+    action        : 'activateAll',
   },
   {
-    name    : 'deactivateAll',
-    action  : 'deactivateAll',
-    target  : 'jsDeactivateAll',
+    configProperty: 'classNameJsDeactivateAll',
+    action        : 'deactivateAll',
   },
   {
-    name    : 'toggleAll',
-    action  : 'toggleAll',
-    target  : 'jsToggleAll',
+    configProperty: 'classNameJsToggleAll',
+    action        : 'toggleAll',
   },
 ]

@@ -6,7 +6,7 @@ import {
 } from '../index'
 
 import {
-  EventEntry,
+  ActionConfigMapEntries,
 } from './eventManager'
 
 import {
@@ -72,20 +72,17 @@ export const DEFAULT_CONFIG: SequenceConfig = {
   onKeydown: (event, context) => { },
 }
 
-export const SEQUENCE_EVENT_ENTRY_LIST: EventEntry[] = [
+export const SEQUENCE_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
   {
-    name    : 'previous',
-    action  : 'previous',
-    target  : 'jsPrevious',
+    configProperty: 'classNameJsPrevious',
+    action        : 'previous',
   },
   {
-    name    : 'next',
-    action  : 'next',
-    target  : 'jsNext',
+    configProperty: 'classNameJsNext',
+    action        : 'next',
   },
   {
-    name    : 'jump',
-    action  : 'jump',
-    target  : 'jsJump',
+    configProperty: 'classNameJsJump',
+    action        : 'jump',
   },
 ]

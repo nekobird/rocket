@@ -1,4 +1,8 @@
 import {
+  MonoConfig,
+} from './config'
+
+import {
   MonoController,
 } from './monoController'
 
@@ -18,14 +22,13 @@ export class ItemManager {
 
   // Initialize
 
-  public initialize() {
-    this
-      .initializeItems()
-      .initializeActiveItems()
+  public initialize(): this {
+    this.getItems()
+    this.initializeActiveItems()
     return this
   }
 
-  public initializeItems(): this {
+  public getItems(): this {
     const items: NodeListOf<HTMLElement> = document.querySelectorAll(this.controller.config.selectorItems)
 
     if (items !== null) {
@@ -38,12 +41,14 @@ export class ItemManager {
     return this
   }
 
-  private initializeActiveItems(): this {
+  public initializeActiveItems(): this {
+    const config: MonoConfig = this.controller.config
+
     if (this.items.length > 0) {
       this.items.forEach(item => {
-        if (item.classList.contains(this.controller.config.classNameItemActive) === true) {
+        if (item.classList.contains(config.classNameItemActive) === true) {
           if (this.isActive === true) {
-            item.classList.remove(this.controller.config.classNameItemActive)
+            item.classList.remove(config.classNameItemActive)
           } else {
             this.activeItem   = item
             this.activeItemId = item.dataset.id
@@ -71,7 +76,9 @@ export class ItemManager {
 
   public activate(item: HTMLElement) {
     if (this.itemIsValid(item) === true) {
-      item.classList.add(this.controller.config.classNameItemActive)
+      item.classList.add(
+        this.controller.config.classNameItemActive
+      )
       this.activeItem   = item
       this.activeItemId = item.dataset.id
       this.isActive     = true

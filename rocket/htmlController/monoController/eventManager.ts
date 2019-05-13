@@ -14,28 +14,20 @@ import {
 } from './actionManager'
 
 import {
-  MONO_EVENT_ENTRY_LIST
+  MONO_ACTION_CONFIG_MAP,
 } from './config'
 
-export interface EventEntries {
-  [name: string]: EventEntry
-}
-
-export interface EventEntry {
-  name  : string,
-  target: string,
+export interface ActionConfigMapEntry {
+  configProperty: string,
   action: MonoActionName,
 }
 
-export type EventEntryList = EventEntry[]
+export type ActionConfigMapEntries = ActionConfigMapEntry[]
 
 export class EventManager {
+  public controller: MonoController
 
-  private controller: MonoController
-
-  private dragEventManager: DragEventManager
-
-  private eventEntries: EventEntries
+  public dragEventManager: DragEventManager
 
   constructor(controller: MonoController) {
     this.controller = controller
@@ -43,57 +35,29 @@ export class EventManager {
     this.dragEventManager = new DragEventManager({
       onUp: this.onUp
     })
-
-    this.eventEntries = {}
   }
 
   public initialize() {
-    this.initializeEventEntriesFromConfig()
     if (this.controller.config.listenToKeydown === true) {
       window.addEventListener('keydown', this.eventHandlerKeydown)
     }
   }
 
-  private initializeEventEntriesFromConfig(): this {
-    MONO_EVENT_ENTRY_LIST.forEach(eventEntry => {
-      this.controller.eventManager.addEntry(eventEntry)
-    })
-    return this
-  }
-
   private onUp = (event, manager) => {
     this.handleOutsideAction(event)
-    
+
     if (typeof event.downData === 'object') {
       const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
       if (targetDownElement !== false) {
-
-        Object.keys(this.eventEntries).forEach(name => {
-          const target   : string = StringUtil.upperCaseFirstLetter(this.eventEntries[name].target)
-          const className: string = this.controller.config[`className${target}`]
+        MONO_ACTION_CONFIG_MAP.forEach(entry => {
+          const className: string = this.controller.config[entry.configProperty]
           const trigger = DOMUtil.findAncestorWithClass(targetDownElement, className, false)
           if (trigger !== false) {
-            this.eventHub(<HTMLElement>trigger, this.eventEntries[name].action)
+            this.eventHub(<HTMLElement>trigger, entry.action)
           }
         })
       }
     }
-  }
-
-  public addEntry(entry: EventEntry): this {
-    if (typeof this.eventEntries[entry.name] === 'object') {
-      this.eventEntries[entry.name] = Object.assign(this.eventEntries[name], entry)
-    } else {
-      this.eventEntries[entry.name] = Object.assign({}, entry)
-    }
-    return this
-  }
-
-  public removeEntry(name: string): this {
-    if (typeof this.eventEntries[name] === 'object') {
-      delete this.eventEntries[name]
-    }
-    return this
   }
 
   private eventHub(trigger: HTMLElement, actionName: MonoActionName): this {
@@ -123,7 +87,7 @@ export class EventManager {
   private handleOutsideAction = event => {
     if (
       this.controller.config.deactivateOnOutsideAction === true &&
-      this.controller.actionManager.isRunning          === false
+      this.controller.actionManager.isRunning === false
     ) {
 
       const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)

@@ -6,7 +6,7 @@ import {
 } from '../index'
 
 import {
-  EventEntry,
+  ActionConfigMapEntries,
 } from './eventManager'
 
 import {
@@ -80,20 +80,17 @@ export const DEFAULT_CONFIG: MonoConfig = {
   onKeydown: (event, context) => { },
 }
 
-export const MONO_EVENT_ENTRY_LIST: EventEntry[] = [
+export const MONO_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
   {
-    name    : 'activate',
-    action  : 'activate',
-    target  : 'jsActivate',
+    configProperty: 'classNameJsActivate',
+    action        : 'activate',
   },
   {
-    name    : 'deactivate',
-    action  : 'deactivate',
-    target  : 'jsDeactivate',
+    configProperty: 'classNameJsDeactivate',
+    action        : 'deactivate',
   },
   {
-    name    : 'toggle',
-    action  : 'toggle',
-    target  : 'jsToggle',
+    configProperty: 'classNameJsToggle',
+    action        : 'toggle',
   },
 ]
