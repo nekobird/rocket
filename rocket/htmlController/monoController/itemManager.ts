@@ -9,7 +9,8 @@ export class ItemManager {
   public items       : HTMLElement[]
   public activeItem  : HTMLElement
   public activeItemId: string
-  public isActive    : boolean
+
+  public isActive: boolean = false
 
   constructor(controller: MonoController) {
     this.controller = controller
