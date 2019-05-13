@@ -16,7 +16,7 @@ export interface TouchEventManagerHook {
 
 export class TouchEventManager {
 
-  // CALLBACKS
+  // Callbacks
   public onEvent: TouchEventManagerHook = (event, context) => { }
 
   public onTouchStart: TouchEventManagerHook = (event, context) => { }
@@ -25,7 +25,7 @@ export class TouchEventManager {
 
   public onTouchCancel: TouchEventManagerHook = (event, context) => { }
 
-  // DEBOUNCE
+  // Debounce
   private debounce_moveEnd: Function
   private debounceWait: number = 0.2
 
