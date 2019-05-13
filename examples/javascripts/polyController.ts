@@ -1,15 +1,18 @@
 import {
   DOMHelper,
   PolyController,
-} from '../../rocket/Rocket'
+} from '../../rocket/rocket'
 
 const controller = new PolyController({
   selectorItems: '.item',
+
+  deactivateAllOnOutsideAction: false,
 
   classNameItemActive: 'item--active',
 
   classNameJsActivate  : 'js-item-open',
   classNameJsDeactivate: 'js-item-close',
+  classNameJsToggle    : 'js-item-toggle',
 
   classNameJsActivateAll  : 'js-item-open-all',
   classNameJsDeactivateAll: 'js-item-close-all',

@@ -7,23 +7,8 @@ import {
 } from './config'
 
 import {
-  PolyAction
-} from './actionManager'
-
-import {
   PolyController,
 } from './polyController'
-
-export interface PolyGroups {
-  [groupName: string]: PolyGroup,
-}
-
-export interface PolyGroup {
-  name: string,
-  items: HTMLElement[],
-  activeItems?: HTMLElement[],
-  isActive: boolean,
-}
 
 export class ItemManager {
 
@@ -50,10 +35,12 @@ export class ItemManager {
 
   public initializeItems(): this {
     const items: ElementEntry | false = this.controller.elementManager.getEntry('items')
-
     if (typeof items === 'object') {
-
-      
+      this.items = items.elements.map(item => {
+        if (this.itemIsValid(item) === true) {
+          return item
+        }
+      })
     }
     return this
   }
@@ -87,34 +74,37 @@ export class ItemManager {
     return false
   }
 
-  private activate(item: HTMLElement): boolean {
-    const config: PolyConfig       = this.controller.config
-    const itemManager: ItemManager = this.controller.itemManager
-
-    if (itemManager.activeItems.indexOf(item) === -1) {
+  public activate(item: HTMLElement): boolean {
+    const config: PolyConfig = this.controller.config
+    if (this.activeItems.indexOf(item) === -1) {
       item.classList.add(config.classNameItemActive)
-      itemManager.activeItems.push(item)
-      itemManager.isActive = true
+      this.activeItems.push(item)
+      this.isActive = true
       return true
     }
     return false
   }
 
-  private deactivate(item: HTMLElement): boolean {
-    const config: PolyConfig       = this.controller.config
-    const itemManager: ItemManager = this.controller.itemManager
+  public deactivate(item: HTMLElement): boolean {
+    const config: PolyConfig = this.controller.config
+    const index: number = this.activeItems.indexOf(item)
 
-    if (itemManager.activeItems.indexOf(item) !== -1) {
-      item.classList.remove(this.controller.config.classNameItemActive)
-
-      const index: number = itemManager.activeItems.indexOf(item)
-      itemManager.activeItems.slice(index, 1)
-
-      if (itemManager.activeItems.length === 0) {
-        itemManager.isActive = false
+    if (index !== -1) {
+      item.classList.remove(config.classNameItemActive)
+      this.activeItems.splice(index, 1)
+      if (this.activeItems.length === 0) {
+        this.isActive = false
       }
       return true
     }
     return false
+  }
+
+  public itemIsValid(item: HTMLElement): boolean {
+    let valid: boolean = true
+    if (typeof item.dataset.id !== 'string') {
+      valid = false
+    }
+    return valid
   }
 }

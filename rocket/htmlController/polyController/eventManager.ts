@@ -5,16 +5,16 @@ import {
 } from '../../rocket'
 
 import {
-  MonoController
-} from './monoController'
+  PolyController,
+} from './polyController'
 
 import {
-  MonoActionName,
-  MonoAction,
+  PolyActionName,
+  PolyAction,
 } from './ActionManager'
 
 import {
-  MONO_EVENT_ENTRY_LIST
+  POLY_EVENT_ENTRY_LIST
 } from './config'
 
 export interface EventEntries {
@@ -24,20 +24,20 @@ export interface EventEntries {
 export interface EventEntry {
   name  : string,
   target: string,
-  action: MonoActionName,
+  action: PolyActionName,
 }
 
 export type EventEntryList = EventEntry[]
 
 export class EventManager {
 
-  private controller: MonoController
+  private controller: PolyController
 
   private dragEventManager: DragEventManager
 
   private eventEntries: EventEntries
 
-  constructor(controller: MonoController) {
+  constructor(controller: PolyController) {
     this.controller = controller
 
     this.dragEventManager = new DragEventManager({
@@ -45,18 +45,21 @@ export class EventManager {
     })
 
     this.eventEntries = {}
+
+    this.initialize()
   }
 
   public initialize() {
     this.initializeEventEntriesFromConfig()
+
     if (this.controller.config.listenToKeydown === true) {
       window.addEventListener('keydown', this.eventHandlerKeydown)
     }
   }
 
   private initializeEventEntriesFromConfig(): this {
-    MONO_EVENT_ENTRY_LIST.forEach(eventEntry => {
-      this.controller.eventManager.addEntry(eventEntry)
+    POLY_EVENT_ENTRY_LIST.forEach(eventEntry => {
+      this.addEntry(eventEntry)
     })
     return this
   }
@@ -71,7 +74,9 @@ export class EventManager {
         Object.keys(this.eventEntries).forEach(name => {
           const target   : string = StringUtil.upperCaseFirstLetter(this.eventEntries[name].target)
           const className: string = this.controller.config[`className${target}`]
+
           const trigger = DOMUtil.findAncestorWithClass(targetDownElement, className, false)
+
           if (trigger !== false) {
             this.eventHub(<HTMLElement>trigger, this.eventEntries[name].action)
           }
@@ -96,8 +101,9 @@ export class EventManager {
     return this
   }
 
-  private eventHub(trigger: HTMLElement, actionName: MonoActionName): this {
+  private eventHub(trigger: HTMLElement, actionName: PolyActionName): this {
     const actionManager = this.controller.actionManager
+
     if (
       this.controller.isReady === true &&
       actionManager.isRunning === false
@@ -107,7 +113,7 @@ export class EventManager {
         typeof trigger !== 'undefined' &&
         trigger instanceof HTMLElement
       ) {
-        const action: MonoAction = actionManager.composeActionFromEvent(actionName, trigger)
+        const action: PolyAction = actionManager.composeActionFromEvent(actionName, trigger)
         if (typeof action === 'object') {
           actionManager.actionHub(action)
         } else {
@@ -122,8 +128,8 @@ export class EventManager {
 
   private handleOutsideAction = event => {
     if (
-      this.controller.config.closeOnOutsideAction === true &&
-      this.controller.actionManager.isRunning     === false
+      this.controller.config.deactivateAllOnOutsideAction === true &&
+      this.controller.actionManager.isRunning             === false
     ) {
 
       const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
@@ -132,7 +138,10 @@ export class EventManager {
       let classNames: string[] = [
         this.controller.config.classNameJsActivate,
         this.controller.config.classNameJsDeactivate,
-        this.controller.config.classNameJsToggle
+        this.controller.config.classNameJsToggle,
+        this.controller.config.classNameJsActivateAll,
+        this.controller.config.classNameJsDeactivateAll,
+        this.controller.config.classNameJsToggleAll,
       ]
 
       const identifierFn = element => {
@@ -150,12 +159,12 @@ export class EventManager {
         targetDownElement !== false &&
         targetUpElement   !== false &&
 
-        DOMUtil.hasAncestor(targetDownElement, this.controller.itemManager.activeItem) === false &&
-        DOMUtil.hasAncestor(targetUpElement,   this.controller.itemManager.activeItem) === false &&
+        DOMUtil.hasAncestor(targetDownElement, this.controller.itemManager.activeItems) === false &&
+        DOMUtil.hasAncestor(targetUpElement,   this.controller.itemManager.activeItems) === false &&
 
         DOMUtil.findAncestor(targetDownElement, identifierFn) === false
       ) {
-        this.controller.deactivate()
+        this.controller.deactivateAll()
         this.controller.config.onOutsideAction(this.controller)
       }
     }

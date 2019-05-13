@@ -21,7 +21,7 @@ export interface MonoConfig {
 
   listenToKeydown?: boolean,
 
-  closeOnOutsideAction?: boolean,
+  deactivateOnOutsideAction?: boolean,
   
   selectorItems?: string,
 
@@ -52,7 +52,7 @@ export const DEFAULT_CONFIG: MonoConfig = {
 
   listenToKeydown: false,
 
-  closeOnOutsideAction: true,
+  deactivateOnOutsideAction: true,
 
   selectorItems: '.js-mono-item',
 

@@ -122,8 +122,8 @@ export class EventManager {
 
   private handleOutsideAction = event => {
     if (
-      this.controller.config.closeOnOutsideAction === true &&
-      this.controller.actionManager.isRunning     === false
+      this.controller.config.deactivateOnOutsideAction === true &&
+      this.controller.actionManager.isRunning          === false
     ) {
 
       const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)

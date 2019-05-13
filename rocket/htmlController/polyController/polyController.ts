@@ -12,8 +12,8 @@ import {
 } from './config'
 
 import {
-  PolyAction,
   ActionManager,
+  PolyAction,
 } from './actionManager'
 
 import {
@@ -31,14 +31,16 @@ export class PolyController {
   public itemManager   : ItemManager
   public actionManager : ActionManager
 
-  constructor(config: PolyConfig) {
+  constructor(config?: PolyConfig) {
+    this.config = Object.assign({}, DEFAULT_CONFIG)
+    if (typeof config === 'object') {
+      this.setConfig(config)
+    }
+    
     this.elementManager = new ElementManager(this)
     this.itemManager    = new ItemManager(this)
     this.actionManager  = new ActionManager(this)
     this.eventManager   = new EventManager(this)
-
-    this.config = Object.assign({}, DEFAULT_CONFIG)
-    this.setConfig(config)
 
     this.initialize()
   }

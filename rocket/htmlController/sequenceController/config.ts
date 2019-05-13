@@ -4,7 +4,6 @@ import {
   ConditionHook,
   EventEntry,
   Hook,
-  ListenToHook,
 } from '../index'
 
 import {

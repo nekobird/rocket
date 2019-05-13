@@ -8,68 +8,84 @@
 <body>
 
   <include src="_site-header.html"></include>
+
   <div class="site-content">
     <div class="page-polyController">
 
       <div class="items">
         <div class="itemContainer">
-          <div class="item item--active"
-              data-group="a"
-              data-id="one">A - Item One</div>
+          <div class="item item--active js-item"
+               data-id="1">
+            A - 1
+          </div>
 
-          <div class="item"
-              data-group="a"
-              data-id="two">A - Item Two</div>
+          <div class="item js-item"
+               data-id="2">
+            A - 2
+          </div>
 
-          <div class="item"
-              data-group="a"
-              data-id="three">A - Item Three</div>
-        </div>
-      </div>
+          <div class="item js-item"
+               data-id="3">
+            A - 3
+          </div>
 
-      <div class="items">
-        <div class="itemContainer">
-          <div class="item item--active"
-              data-group="b"
-              data-id="one">Poly One</div>
-          <div class="item"
-              data-group="b"
-              data-id="two">Poly Two</div>
-          <div class="item"
-              data-group="b"
-              data-id="three">Poly Three</div>
-        </div>
-      </div>
+          <div class="item js-item"
+               data-id="4">
+            A - 4
+          </div>
+
+          <div class="item js-item"
+               data-id="5">
+            A - 5
+          </div>
+        </div><!-- itemContainer -->
+      </div><!-- items -->
 
       <div class="controls">
         <a class="button button--primary js-item-open"
-           data-group="a"
-           data-target="one"
-           href="javascript:void(0)">1</a>
+           data-target="1"
+           href="javascript:void(0)">
+          1
+        </a>
 
         <a class="button button--primary js-item-open"
-           data-group="a"
-           data-target="two"
-           href="javascript:void(0)">2</a>
+           data-target="2"
+           href="javascript:void(0)">
+          2
+        </a>
+
+        <a class="button button--primary js-item-open"
+           data-target="3"
+           href="javascript:void(0)">
+          3
+        </a>
 
         <a class="button button--primary js-item-close"
-           data-group="a"
-           data-target="one"
-           href="javascript:void(0)">close-1</a>
-      </div>
+           data-target="1"
+           href="javascript:void(0)">
+          Close 1
+        </a>
 
-      <div class="controls">
+        <a class="button button--primary js-item-toggle"
+          data-target="1"
+          href="javascript:void(0)">
+          Toggle 1
+        </a>
+
         <a class="js-item-open-all"
-           data-group="a"
-           href="javascript:void(0)">A - Activate All</a>
+           href="javascript:void(0)">
+          Activate All
+        </a>
 
         <a class="js-item-close-all"
-           data-group="a"
-           href="javascript:void(0)">A - Deactivate All</a>
+           href="javascript:void(0)">
+          Deactivate All
+        </a>
 
         <a class="js-item-toggle-all"
-           data-group="a"
-           href="javascript:void(0)">A - Toggle All</a>
+           href="javascript:void(0)">
+          Toggle All
+        </a>
       </div>
 
     </div><!-- page-polyController -->

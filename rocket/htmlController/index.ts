@@ -4,6 +4,5 @@ export * from './elementManager'
 export * from './interfaces'
 
 export * from './monoController/monoController'
-
-export * from './polyController/index'
-export * from './sequenceController/index'
+export * from './polyController/polyController'
+export * from './sequenceController/sequenceController'

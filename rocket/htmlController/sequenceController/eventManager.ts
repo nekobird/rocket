@@ -45,10 +45,13 @@ export class EventManager {
     })
 
     this.eventEntries = {}
+
+    this.initialize()
   }
 
   public initialize(): this {
     this.initializeEventEntriesFromConfig()
+
     if (this.controller.config.listenToKeydown === true) {
       window.addEventListener('keydown', this.eventHandlerKeydown)
     }
@@ -57,7 +60,7 @@ export class EventManager {
 
   private initializeEventEntriesFromConfig(): this {
     SEQUENCE_EVENT_ENTRY_LIST.forEach(eventEntry => {
-      this.controller.eventManager.addEntry(eventEntry)
+      this.addEntry(eventEntry)
     })
     return this
   }

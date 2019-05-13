@@ -96,43 +96,51 @@ export class ActionManager {
     action.nextItem.classList.add(
       <string>this.controller.config.classNameItemActive
     )
-    itemManager.activeItem = action.nextItem
+
+    itemManager.activeItem  = action.nextItem
     itemManager.activeIndex = action.nextItemIndex
-    itemManager.isActive = true
+    itemManager.isActive    = true
     return this
   }
 
-  // SET ACTION TO TARGET
+  // Set Action
 
   private setActionTargetPrevious(action: SequenceAction): SequenceAction {
+    const itemManager = this.controller.itemManager
     let index: number
-    if (action.group.activeIndex - 1 >= 0) {
-      index = action.group.activeIndex - 1
+
+    if (itemManager.activeIndex - 1 >= 0) {
+      index = itemManager.activeIndex - 1
     } else {
-      index = action.group.items.length - 1
+      index = itemManager.items.length - 1
     }
-    action.nextItem = action.group.items[index]
+
+    action.nextItem = itemManager.items[index]
     action.nextItemIndex = index
     return action
   }
 
   private setActionTargetNext(action: SequenceAction): SequenceAction {
+    const itemManager = this.controller.itemManager
     let index: number
-    if (action.group.activeIndex + 1 >= action.group.items.length) {
+
+    if (itemManager.activeIndex + 1 >= itemManager.items.length) {
       index = 0
     } else {
-      index = action.group.activeIndex + 1
+      index = itemManager.activeIndex + 1
     }
-    action.nextItem = action.group.items[index]
+    action.nextItem = itemManager.items[index]
     action.nextItemIndex = index
     return action
   }
 
   private setActionTargetJump(action: SequenceAction): SequenceAction {
-    action.nextItem = document.querySelector(
-      `${this.controller.config.selectorItems}[data-group="${action.groupName}"][data-id="${action.nextItemId}"]`
-    )
-    action.nextItemIndex = action.group.items.indexOf(action.nextItem)
+    const itemManager = this.controller.itemManager
+    const item: HTMLElement | false = itemManager.getItemFromId(action.nextItemId)
+    if (item !== false) {
+      action.nextItem      = item
+      action.nextItemIndex = itemManager.items.indexOf(action.nextItem)
+    }
     return action
   }
 
@@ -148,7 +156,7 @@ export class ActionManager {
   }
 
   public composeAction(actionName: SequenceActionName, id?: string): SequenceAction {
-    let action: SequenceAction = this.createAction(actionName)
+    const action: SequenceAction = this.createAction(actionName)
 
     if (typeof id === 'string') {
       action.nextItemId = id
@@ -189,7 +197,7 @@ export class ActionManager {
       preAction = new Promise(resolve => {
         this.isNested = true
         config
-          .beforeAction(<SequenceAction>action, this.controller)
+          .beforeAction(action, this.controller)
           .then(() => {
             this.isNested = false
             resolve()
@@ -204,7 +212,7 @@ export class ActionManager {
 
     return preAction
       .then(() => {
-        return this.completeAction(<SequenceAction>action, callback)
+        return this.completeAction(action, callback)
       })
       .then(() => {
         return this.endAction(callback)
@@ -217,7 +225,7 @@ export class ActionManager {
           this.isNested = false
         }
         if (this.isNested === false) {
-          config.afterAction(<SequenceAction>action, this.controller)
+          config.afterAction(action, this.controller)
         }
       })
       .catch(() => {

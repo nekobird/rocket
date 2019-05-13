@@ -1,6 +1,5 @@
 import {
   ElementManager,
-  EventManager,
 } from '../index'
 
 import {
@@ -17,6 +16,10 @@ import {
   ActionManager,
 } from './actionManager'
 
+import {
+  EventManager,
+} from './eventManager'
+
 export class SequenceController {
 
   public isReady: boolean = false
@@ -29,13 +32,15 @@ export class SequenceController {
   public eventManager  : EventManager
 
   constructor(config: SequenceConfig) {
+    this.config = Object.assign({}, DEFAULT_CONFIG)
+    if (typeof config === 'object') {
+      this.setConfig(config)
+    }
+
     this.elementManager = new ElementManager(this)
     this.itemManager    = new ItemManager(this)
     this.actionManager  = new ActionManager(this)
     this.eventManager   = new EventManager(this)
-
-    this.config = Object.assign({}, DEFAULT_CONFIG)
-    this.setConfig(config)
 
     this.initialize()
   }

@@ -16,6 +16,8 @@ import {
 export interface PolyConfig {
   cooldown?: number,
 
+  deactivateAllOnOutsideAction?: boolean,
+
   listenToKeydown?: boolean,
 
   selectorItems?: string,
@@ -47,12 +49,15 @@ export interface PolyConfig {
   beforeAction?: BeforeActionCallback<PolyAction, PolyController>,
   afterAction? : AfterActionCallback<PolyAction, PolyController>,
 
+  onOutsideAction?: (context: PolyController) => void,
+
   onKeydown?: (event: KeyboardEvent, context: PolyController) => void,
 }
 
 export const DEFAULT_CONFIG: PolyConfig = {
   cooldown: 200,
 
+  deactivateAllOnOutsideAction: false,
   listenToKeydown: false,
 
   selectorItems: '.js-poly-item',
@@ -84,6 +89,7 @@ export const DEFAULT_CONFIG: PolyConfig = {
   beforeAction: (action, context) => { return Promise.resolve() },
   afterAction : (action, context) => { return Promise.resolve() },
   
+  onOutsideAction: (context) => { },
   onKeydown: (event, context) => { },
 }
 
