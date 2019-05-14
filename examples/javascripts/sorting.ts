@@ -89,7 +89,7 @@ let move = (item, data) => {
       item.classList.contains('item') === true &&
       item.classList.contains('item--active') === false
     )
-  })
+  }, false)
   if (el !== false) {
     createDummy()
     insertDummyBefore(el, point)

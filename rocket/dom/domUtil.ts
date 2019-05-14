@@ -300,7 +300,7 @@ export class DOMUtil {
   }
 
   // Order
-  public static getClosestChildFromPoint(parent: HTMLElement, point: Point, identifyFn?: DOMUtilIdentifierFn): HTMLElement | false {
+  public static getClosestChildFromPoint(parent: HTMLElement, point: Point, identifyFn?: DOMUtilIdentifierFn, fromCenter: boolean = false): HTMLElement | false {
     if (typeof identifyFn === 'undefined') {
       identifyFn = element => true
     }
@@ -311,7 +311,7 @@ export class DOMUtil {
     }
 
     const distances: number[] = selectedItems.map(item => {
-      return DOMHelper.getDistanceFromPoint(item, point, true)
+      return DOMHelper.getDistanceFromPoint(item, point, fromCenter)
     })
 
     const closesDistanceIndex: number = distances.indexOf(Math.min(...distances))
