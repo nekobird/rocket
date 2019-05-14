@@ -38,7 +38,6 @@ let popElement = () => {
   activeItem.style.height = `${height}px`
 }
 
-
 let unpopElement = () => {
   activeItem.removeAttribute('style')
 }
@@ -84,7 +83,7 @@ let move = (item, data) => {
   let x = offset.x - initialX
   let y = offset.y - initialY
 
-  item.style.transform = `translateX(${x}px) translateY(${y}px)`
+  item.style.transform = `translateX(22px) translateY(${y}px)`
   const el = DOMUtil.getClosestChildFromPoint(itemContainer, point, item => {
     return (
       item.classList.contains('item') === true &&

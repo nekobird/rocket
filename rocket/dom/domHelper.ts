@@ -60,9 +60,19 @@ export class DOMHelper {
     return (rect.top + offset < y)
   }
 
-  public static getDistanceFromPoint(element: HTMLElement, point: Point): number {
+  public static getDistanceFromPoint(element: HTMLElement, point: Point, fromCenter: boolean = false): number {
     const rect = element.getBoundingClientRect()
-    return PointHelper.getDistanceTo({x: rect.left, y: rect.top}, point)
+    if (fromCenter === true) {
+      return PointHelper.getDistanceTo(
+        {
+          x: rect.left + (rect.width  / 2),
+          y: rect.top  + (rect.height / 2)
+        },
+        point
+      )
+    } else {
+      return PointHelper.getDistanceTo({x: rect.left, y: rect.top}, point)
+    }
   }
 
   // Style

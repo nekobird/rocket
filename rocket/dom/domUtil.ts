@@ -311,7 +311,7 @@ export class DOMUtil {
     }
 
     const distances: number[] = selectedItems.map(item => {
-      return DOMHelper.getDistanceFromPoint(item, point)
+      return DOMHelper.getDistanceFromPoint(item, point, true)
     })
 
     const closesDistanceIndex: number = distances.indexOf(Math.min(...distances))

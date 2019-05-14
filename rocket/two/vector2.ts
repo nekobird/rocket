@@ -519,5 +519,4 @@ export class Vector2 {
     const fv = Vector2.equals(v1)
     return fv.moveRadiallyBy(a1, ml)
   }
-
 }
