@@ -2,7 +2,7 @@
   padding: space('large');
 
   .items {
-    background-color: color('dark');
+    background-color: color('medium');
     padding: space('medium');
     position: relative;
   }
@@ -21,6 +21,8 @@
     }
 
     &.item--dummy {
+      background: transparent;
+      border: 1px solid color('white');
       z-index: 0;
     }
   }

@@ -45,10 +45,9 @@ let unpopElement = () => {
 
 let createDummy = () => {
   dummyElement.classList.add('item', 'item--dummy')
-  dummyElement.style.backgroundColor = `red`
   dummyElement.style.position = `relative`
   dummyElement.style.height = `${activeItem.offsetHeight}px`
-  dummyElement.style.width = `${activeItem.offsetWidth}px`
+  dummyElement.style.width  = `${activeItem.offsetWidth}px`
   dummyElement.style.zIndex = '0'
 }
 
@@ -105,6 +104,7 @@ let updateInitialPosition = data => {
 }
 
 let reset = () => {
+  hasMoved = false
   isDragActive = false
   activeItem = undefined
 }
