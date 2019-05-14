@@ -3,10 +3,6 @@ import {
 } from './config'
 
 import {
-  ItemManager
-} from './itemManager';
-
-import {
   MonoController,  
 } from './monoController'
 

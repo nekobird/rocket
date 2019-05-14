@@ -1,8 +1,4 @@
 import {
-  MonoConfig,
-} from './config'
-
-import {
   MonoController,
 } from './monoController'
 

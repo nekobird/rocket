@@ -7,7 +7,6 @@ import {
 } from './touchSensor'
 
 import {
-  EventName, 
   SensorHub,
 } from './sensorHub'
 
