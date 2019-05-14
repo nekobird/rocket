@@ -541,5 +541,4 @@ export class Color {
     color.a = Num.lerp(color_a.a, color_b.a, t)
     return color
   }
-
 }

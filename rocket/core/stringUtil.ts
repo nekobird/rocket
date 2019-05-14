@@ -19,5 +19,4 @@ export class StringUtil {
   public static removeNewLines(string: string): string {
     return string.replace(/[\r\n]+/g, '');
   }
-
 }

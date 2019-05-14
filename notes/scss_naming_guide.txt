@@ -4,15 +4,20 @@ parent_children
   child
   child
 
-something something__modifier
-something something__state
-something something__variant
-something something__variant_subvariant
+something something--modifier
+something something--state
+something something--variant
+something something--variant-subvariant
 
 element
 
 for javascript related things
-js_
+js-
+
+// Global root prefix
+page-
+site-
+
 block
 elements
 

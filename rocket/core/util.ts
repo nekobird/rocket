@@ -102,5 +102,4 @@ export class Util {
   static toHex(n: string): string {
     return parseInt(n).toString(16).toUpperCase()
   }
-
 }

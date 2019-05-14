@@ -153,5 +153,4 @@ export class Num {
     }
     return (number >= range[0] && number <= range[1])
   }
-
 }

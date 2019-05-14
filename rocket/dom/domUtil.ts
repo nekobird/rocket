@@ -73,7 +73,6 @@ export class DOMUtil {
     const identifierFn: DOMUtilIdentifierFn = _element => {
       return _element.id === ID
     }
-
     return this.findAncestor(element, identifierFn, getAll)
   }
 
@@ -208,7 +207,7 @@ export class DOMUtil {
     return this.findSibling(element, identifierFn, getAll)
   }
 
-  // REMOVE
+  // Remove
 
   public static removeElement(element: HTMLElement): void {
     element.parentNode.removeChild(element)
@@ -242,7 +241,7 @@ export class DOMUtil {
     return deleteCount
   }
 
-  // HELPER
+  // Helper
 
   public static isAnHTMLElement(element: HTMLElement): boolean {
     return (

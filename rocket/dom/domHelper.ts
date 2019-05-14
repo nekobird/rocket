@@ -118,5 +118,4 @@ export class DOMHelper {
       computedStyle.transitionDuration
     ) * 1000
   }
-
 }
