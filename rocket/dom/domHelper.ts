@@ -1,6 +1,7 @@
 import {
   Num,
   Point,
+  PointHelper,
 } from '../rocket'
 
 export class DOMHelper {
@@ -20,27 +21,51 @@ export class DOMHelper {
     const left: number = Num.getNumberLineDistance(targetRect.left, fromRect.left)
     const top : number = Num.getNumberLineDistance(targetRect.top , fromRect.top)
     return {
-      left  : left,
+      left, top,
       right : Num.getNumberLineDistance(targetRect.right, fromRect.right),
-      top   : top,
       bottom: Num.getNumberLineDistance(targetRect.bottom, fromRect.bottom),
       x: left,
       y: top,
     }
   }
 
-  public static getOffset(element: HTMLElement): Point {
+  // Get element offset relative to the document.
+  public static getOffsetFromDocument(element: HTMLElement): Point {
     const rect = element.getBoundingClientRect()
     const scrollLeft: number = window.pageXOffset || document.documentElement.scrollLeft
     const scrollTop : number = window.pageYOffset || document.documentElement.scrollTop
+    const left: number = rect.left + scrollLeft
+    const top : number = rect.top  + scrollTop
     return {
-      x: rect.left + scrollLeft,
-      y: rect.top  + scrollTop,
+      left, top,
+      right : rect.right  + scrollLeft,
+      bottom: rect.bottom + scrollTop,
+      x: left,
+      y: top,
     }
   }
 
-  // ELEMENT
+  // Point is relative to viewport. (clientX, clientY)
+  // Offset is relative to Point.
+  public static getOffsetFromPoint(element: HTMLElement, {x, y}: Point): Point {
+    const rect = element.getBoundingClientRect()
+    return {
+      x: Num.getNumberLineDistance(rect.left, x),
+      y: Num.getNumberLineDistance(rect.top,  y),
+    }
+  }
 
+  public static elementIsBelowPoint(element: HTMLElement, {y}: Point, offset: number = 0) {
+    const rect = element.getBoundingClientRect()
+    return (rect.top + offset < y)
+  }
+
+  public static getDistanceFromPoint(element: HTMLElement, point: Point): number {
+    const rect = element.getBoundingClientRect()
+    return PointHelper.getDistanceTo({x: rect.left, y: rect.top}, point)
+  }
+
+  // Style
   public static getStyleValue(element: HTMLElement, propertyName: string, isNumber: boolean = false): number | string {
     const style: CSSStyleDeclaration = window.getComputedStyle(element)
     const value = style[propertyName]

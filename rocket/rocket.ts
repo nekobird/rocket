@@ -7,14 +7,15 @@ export * from './core/stringUtil'
 export * from './dom/domUtil'
 export * from './dom/domHelper'
 
-// SCREEN
-export * from './screenModel'
+// VIEW
+export * from './viewportModel'
 export * from './size'
 
 // TWO
 export * from './two/angle'
 export * from './two/geo2Util'
 export * from './two/point'
+export * from './two/pointHelper'
 export * from './two/vector2'
 export * from './two/vector2Group'
 

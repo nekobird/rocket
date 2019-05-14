@@ -1,3 +1,9 @@
+import {
+  Point,
+  PointHelper,
+  DOMHelper,
+} from '../rocket'
+
 export interface DOMUtilIdentifierFn {
   (element: HTMLElement): boolean
 }
@@ -51,17 +57,17 @@ export class DOMUtil {
     let identifierFn: DOMUtilIdentifierFn
 
     if (typeof classNames === 'string') {    
-      identifierFn = _element => {
-        return _element.classList.contains(classNames)
-      }
+      identifierFn = _element => _element.classList.contains(classNames)
     } else if (Array.isArray(classNames) === true) {
       identifierFn = _element => {
         let containsClassName: boolean = false
+
         classNames.forEach(className => {
           if (_element.classList.contains(className) === true) {
             containsClassName = true
           }
         })
+
         return containsClassName
       }
     }
@@ -70,9 +76,7 @@ export class DOMUtil {
   }
 
   public static findAncestorWithID(element: HTMLElement, ID: string, getAll: boolean = true): DOMUtilResult {
-    const identifierFn: DOMUtilIdentifierFn = _element => {
-      return _element.id === ID
-    }
+    const identifierFn: DOMUtilIdentifierFn = _element => _element.id === ID
     return this.findAncestor(element, identifierFn, getAll)
   }
 
@@ -215,6 +219,7 @@ export class DOMUtil {
 
   public static removeChildren(parent: HTMLElement): number {
     let deleteCount: number = 0
+
     while (parent.firstChild !== null) {
       parent.removeChild(parent.firstChild)
       deleteCount++
@@ -224,6 +229,7 @@ export class DOMUtil {
 
   public static removeChild(element: HTMLElement, identifierFn: DOMUtilIdentifierFn): number {
     let deleteCount: number = 0
+
     const inspect: Function = (parent: HTMLElement) => {
       const children: HTMLCollection = parent.children
       if (children.length > 0) {
@@ -237,8 +243,17 @@ export class DOMUtil {
         }
       }
     } // inspect
+
     inspect(element)
     return deleteCount
+  }
+
+  public static getChildren(parent: HTMLElement, identifierFn?: DOMUtilIdentifierFn): HTMLElement[] {
+    if (typeof identifierFn === 'undefined') {
+      return <HTMLElement[]>Array.from(parent.children)
+    }
+
+    return <HTMLElement[]>Array.from(parent.children).filter(identifierFn)
   }
 
   // Helper
@@ -249,5 +264,75 @@ export class DOMUtil {
       typeof element.nodeType === 'number' &&
       element.nodeType === 1
     )
+  }
+
+  // Element & Point
+
+  // Point is relative to viewport. (clientX, clientY)
+  public static pointIsInElement({x, y}: Point, element: HTMLElement): boolean {
+    return document.elementsFromPoint(x, y).indexOf(element) !== -1
+  }
+
+  public static findElementFromPoint({x, y}: Point, identifyFn?: DOMUtilIdentifierFn, getAll: boolean = true): HTMLElement | HTMLElement[] | false {
+    const elements = document.elementsFromPoint(x, y)
+    if (elements.length === 0) {
+      return false
+    }
+
+    let results: HTMLElement[] = []
+    elements.forEach(element => {
+      if (identifyFn(<HTMLElement>element) === true) {
+        results.push(<HTMLElement>element)
+      }
+    })
+
+    if (results.length === 0) {
+      return false
+    } else if (results.length === 1) {
+      return results[0]
+    }
+
+    if (getAll === true) {
+      return results
+    } else {
+      return results[0]
+    }
+  }
+
+  // Order
+  public static getClosestChildFromPoint(parent: HTMLElement, point: Point, identifyFn?: DOMUtilIdentifierFn): HTMLElement | false {
+    if (typeof identifyFn === 'undefined') {
+      identifyFn = element => true
+    }
+
+    const selectedItems: HTMLElement[] = <HTMLElement[]>Array.from(parent.children).filter(identifyFn)
+    if (selectedItems.length === 0)  {
+      return false
+    }
+
+    const distances: number[] = selectedItems.map(item => {
+      return DOMHelper.getDistanceFromPoint(item, point)
+    })
+
+    const closesDistanceIndex: number = distances.indexOf(Math.min(...distances))
+
+    return selectedItems[closesDistanceIndex]
+  }
+
+  public static getNthChild(n: number | 'last', parent: HTMLElement, identifierFn?: DOMUtilIdentifierFn): HTMLElement | false {
+    if (typeof identifierFn === 'undefined') {
+      identifierFn = element => true
+    }
+
+    const selectedItems: HTMLElement[] = <HTMLElement[]>Array.from(parent.children).filter(identifierFn)
+
+    let result: HTMLElement
+    if (n === 'last') {
+      result = selectedItems[selectedItems.length - 1]
+    } else {
+      result = selectedItems[n]
+    }
+
+    return (typeof result === 'object') ? result : false
   }
 }

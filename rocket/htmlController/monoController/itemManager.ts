@@ -72,11 +72,7 @@ export class ItemManager {
   }
 
   public setAndFilterItems(items): void {
-    this.itemElements = items.map(item => {
-      if (this.itemIsValid(item) === true) {
-        return item
-      }
-    })
+    this.itemElements = items.filter(item => this.itemIsValid(item))
     this.filterActiveItems()
   }
 

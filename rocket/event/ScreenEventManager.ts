@@ -1,5 +1,5 @@
 import {
-  ScreenModel,
+  ViewportModel,
   Size,
   Util,
 } from '../rocket'
@@ -66,8 +66,8 @@ export class ScreenEventManager {
 
   get size(): Size {
     return {
-      height: ScreenModel.height,
-      width: ScreenModel.width
+      height: ViewportModel.height,
+      width: ViewportModel.width
     }
   }
 

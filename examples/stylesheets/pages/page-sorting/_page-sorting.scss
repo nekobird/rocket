@@ -1,0 +1,27 @@
+.page-sorting {
+  padding: space('large');
+
+  .items {
+    background-color: color('dark');
+    padding: space('medium');
+    position: relative;
+  }
+
+  .item {
+    background-color: color('light');
+    box-sizing: border-box;
+    display: block;
+    margin-bottom: space('medium');
+    padding: space('medium');
+    z-index: 1;
+
+    &.item--active {
+      box-shadow: 0 0.5rem 3rem 0 hsla(220, 10, 5, 0.5);
+      background-color: color('white');
+    }
+
+    &.item--dummy {
+      z-index: 0;
+    }
+  }
+}

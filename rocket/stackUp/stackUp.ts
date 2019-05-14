@@ -1,7 +1,7 @@
 import {
   DOMHelper,
   Point,
-  ScreenModel,
+  ViewportModel,
   Util,
 } from '../rocket'
 
@@ -100,8 +100,8 @@ export class StackUp {
       this.boundaryWidth  = boundary.offsetWidth  - horizontal
       this.boundaryHeight = boundary.offsetHeight - vertical
     } else {
-      this.boundaryWidth  = ScreenModel.width
-      this.boundaryHeight = ScreenModel.height
+      this.boundaryWidth  = ViewportModel.width
+      this.boundaryHeight = ViewportModel.height
     }
     return this
   }

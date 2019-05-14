@@ -20,10 +20,10 @@ const MODEL_ATTRIBUTES = {
 let modelElement: HTMLElement
 let modelIsReady: boolean = false
 
-export class ScreenModel {
+export class ViewportModel {
 
   constructor() {
-    ScreenModel.createModel()
+    ViewportModel.createModel()
   }
 
   // MODEL PROPERTIES
@@ -82,7 +82,7 @@ export class ScreenModel {
     )
   }
 
-  public static createModel(): ScreenModel {
+  public static createModel(): ViewportModel {
     if (modelIsReady === false) {
       modelElement = document.createElement('DIV')
       document.body.appendChild(modelElement)
@@ -92,7 +92,7 @@ export class ScreenModel {
     return this
   }
 
-  public static destroyModel(): ScreenModel {
+  public static destroyModel(): ViewportModel {
     if (modelIsReady === true) {
       document.body.removeChild(modelElement)
       modelElement.remove()
@@ -100,5 +100,4 @@ export class ScreenModel {
     }
     return this
   }
-
 }

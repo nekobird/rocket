@@ -1,6 +1,6 @@
 import {
   CanvasLayer,
-  ScreenModel,
+  ViewportModel,
 } from '../rocket'
 
 export class CanvasLayerManager {
@@ -63,8 +63,8 @@ export class CanvasLayerManager {
     let width : number = 0
 
     if (this.isFullScreen === true) {
-      this.layerStackElement.style.height = `${ScreenModel.height}px`
-      this.layerStackElement.style.width  = `${ScreenModel.width}px`
+      this.layerStackElement.style.height = `${ViewportModel.height}px`
+      this.layerStackElement.style.width  = `${ViewportModel.width}px`
     } else {
       height = this.layerStackElement.offsetHeight
       width  = this.layerStackElement.offsetWidth

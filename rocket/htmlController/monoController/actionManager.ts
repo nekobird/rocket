@@ -170,12 +170,8 @@ export class ActionManager {
     }
 
     return preAction
-      .then(() => {
-        return this.completeAction(action)
-      })
-      .then(() => {
-        return this.endAction(callback)
-      })
+      .then(() => this.completeAction(action))
+      .then(() => this.endAction(callback))
       .then(() => {
         if (
           isNestedAction === true &&
@@ -187,9 +183,7 @@ export class ActionManager {
           config.afterAction(action, this.controller)
         }
       })
-      .catch(() => {
-        return this.endAction(callback)
-      })
+      .catch(() => this.endAction(callback))
   }
 
   public endAction(callback?: Function): Promise<void> {
