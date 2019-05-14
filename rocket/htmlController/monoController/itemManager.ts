@@ -10,7 +10,7 @@ export class ItemManager {
 
   private controller: MonoController
 
-  public items       : HTMLElement[]
+  public itemElements: HTMLElement[]
   public activeItem  : HTMLElement
   public activeItemId: string
 
@@ -23,36 +23,79 @@ export class ItemManager {
   // Initialize
 
   public initialize(): this {
-    this.getItems()
-    this.initializeActiveItems()
+    this.loadItemsFromConfig()
     return this
   }
 
-  public getItems(): this {
-    const items: NodeListOf<HTMLElement> = document.querySelectorAll(this.controller.config.selectorItems)
+  public loadItemsFromConfig(): this {
+    const {config}: MonoController = this.controller
+    let items: HTMLElement[]
 
-    if (items !== null) {
-      this.items = Array.from(items).map(item => {
-        if (this.itemIsValid(item) === true) {
-          return item
-        }
-      })
+    if (
+      typeof config.selectorItems === 'string' &&
+      typeof config.items === 'undefined'
+    ) {
+      const results: NodeListOf<HTMLElement> = document.querySelectorAll(this.controller.config.selectorItems)
+      items = (results === null) ? [] : Array.from(results)
+    } else if (
+      typeof config.items === 'object'
+    ) {
+      if (
+        Array.isArray(config.items) === false &&
+        NodeList.prototype.isPrototypeOf(config.items)
+      ) {
+        items = Array.from(config.items)
+      } else if (Array.isArray(config.items) === true) {
+        items = <HTMLElement[]>config.items
+      } else {
+        items = []
+      }
+    } else {
+      items = []
     }
+
+    this.setAndFilterItems(items)
     return this
   }
 
-  public initializeActiveItems(): this {
-    const config: MonoConfig = this.controller.config
+  public get items(): HTMLElement[] {
+    return this.itemElements
+  }
 
-    if (this.items.length > 0) {
-      this.items.forEach(item => {
+  public setItems(items: HTMLElement[] | NodeListOf<HTMLElement> | string): void {
+    if (typeof items === 'string') {
+      const results: NodeListOf<HTMLElement> = document.querySelectorAll(items)
+      if (results !== null) {
+        this.setAndFilterItems(Array.from(results))
+      }
+    } else if (NodeList.prototype.isPrototypeOf(items)) {
+      this.setAndFilterItems(Array.from(items))
+    } else if (Array.isArray(items) === true) {
+      this.setAndFilterItems(<HTMLElement[]>items)
+    }
+  }
+
+  public setAndFilterItems(items): void {
+    this.itemElements = items.map(item => {
+      if (this.itemIsValid(item) === true) {
+        return item
+      }
+    })
+    this.filterActiveItems()
+  }
+
+  public filterActiveItems(): this {
+    const {config}: MonoController = this.controller
+
+    if (this.itemElements.length > 0) {
+      this.itemElements.forEach(item => {
         if (item.classList.contains(config.classNameItemActive) === true) {
           if (this.isActive === true) {
             item.classList.remove(config.classNameItemActive)
           } else {
-            this.activeItem   = item
+            this.activeItem = item
             this.activeItemId = item.dataset.id
-            this.isActive     = true
+            this.isActive = true
           }
         }
       })
@@ -61,13 +104,23 @@ export class ItemManager {
     return this
   }
 
+  public itemIsValid(item: HTMLElement): boolean {
+    let valid: boolean = true
+    if (typeof item.dataset.id !== 'string') {
+      valid = false
+    }
+    return valid
+  }
+
   public getItemFromId(id: string): HTMLElement | false {
     let matchedItems: HTMLElement[] = []
-    this.items.forEach(item => {
+
+    this.itemElements.forEach(item => {
       if (item.dataset.id === id) {
         matchedItems.push(item)
       }
     })
+
     if (matchedItems.length > 0) {
       return matchedItems[0]
     }
@@ -92,13 +145,5 @@ export class ItemManager {
     this.activeItem   = undefined
     this.activeItemId = undefined
     this.isActive     = false
-  }
-
-  private itemIsValid(item: HTMLElement): boolean {
-    let valid: boolean = true
-    if (typeof item.dataset.id !== 'string') {
-      valid = false
-    }
-    return valid
   }
 }

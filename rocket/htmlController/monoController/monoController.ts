@@ -26,15 +26,17 @@ export class MonoController {
   public actionManager: ActionManager
   public eventManager : EventManager
 
-  constructor(config: MonoConfig) {
+  constructor(config?: MonoConfig) {
+    this.config = Object.assign({}, DEFAULT_CONFIG)
+    if (typeof config === 'object') {
+      this.setConfig(config)
+    }
+
     this.itemManager   = new ItemManager(this)
     this.actionManager = new ActionManager(this)
     this.eventManager  = new EventManager(this)
 
-    this.config = Object.assign({}, DEFAULT_CONFIG)
-    this
-      .setConfig(config)
-      .initialize()
+    this.initialize()
   }
 
   public setConfig(config: MonoConfig): this {

@@ -23,7 +23,8 @@ export interface PolyConfig {
 
   listenToKeydown?: boolean,
 
-  selectorItems?: string,
+  selectorItems?: string | undefined,
+  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
 
   classNameItemActive?: string,
 
@@ -64,6 +65,7 @@ export const DEFAULT_CONFIG: PolyConfig = {
   listenToKeydown: false,
 
   selectorItems: '.js-poly-item',
+  items: undefined,
 
   classNameItemActive: 'js-poly-item--active',
 
@@ -99,26 +101,26 @@ export const DEFAULT_CONFIG: PolyConfig = {
 export const POLY_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
   {
     configProperty: 'classNameJsActivate',
-    action        : 'activate',
+    action: 'activate',
   },
   {
     configProperty: 'classNameJsDeactivate',
-    action        : 'deactivate',
+    action: 'deactivate',
   },
   {
     configProperty: 'classNameJsToggle',
-    action        : 'toggle',
+    action: 'toggle',
   },
   {
     configProperty: 'classNameJsActivateAll',
-    action        : 'activateAll',
+    action: 'activateAll',
   },
   {
     configProperty: 'classNameJsDeactivateAll',
-    action        : 'deactivateAll',
+    action: 'deactivateAll',
   },
   {
     configProperty: 'classNameJsToggleAll',
-    action        : 'toggleAll',
+    action: 'toggleAll',
   },
 ]

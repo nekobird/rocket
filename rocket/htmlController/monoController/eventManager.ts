@@ -1,7 +1,6 @@
 import {
   DOMUtil,
   DragEventManager,
-  StringUtil,
 } from '../../rocket'
 
 import {
@@ -9,8 +8,8 @@ import {
 } from './monoController'
 
 import {
-  MonoActionName,
   MonoAction,
+  MonoActionName,
 } from './actionManager'
 
 import {
@@ -18,8 +17,8 @@ import {
 } from './config'
 
 export interface ActionConfigMapEntry {
-  configProperty: string,
   action: MonoActionName,
+  configProperty: string,
 }
 
 export type ActionConfigMapEntries = ActionConfigMapEntry[]
@@ -61,7 +60,7 @@ export class EventManager {
   }
 
   private eventHub(trigger: HTMLElement, actionName: MonoActionName): this {
-    const actionManager = this.controller.actionManager
+    const {actionManager}: MonoController = this.controller
     if (
       this.controller.isReady === true &&
       actionManager.isRunning === false
@@ -85,18 +84,19 @@ export class EventManager {
   }
 
   private handleOutsideAction = event => {
+    const {config, actionManager, itemManager}: MonoController = this.controller
     if (
-      this.controller.config.deactivateOnOutsideAction === true &&
-      this.controller.actionManager.isRunning === false
+      config.deactivateOnOutsideAction === true &&
+      actionManager.isRunning === false
     ) {
 
       const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
       const targetUpElement  : HTMLElement | false = event.getTargetElementFromData(event.upData)
 
       let classNames: string[] = [
-        this.controller.config.classNameJsActivate,
-        this.controller.config.classNameJsDeactivate,
-        this.controller.config.classNameJsToggle
+        config.classNameJsActivate,
+        config.classNameJsDeactivate,
+        config.classNameJsToggle
       ]
 
       const identifierFn = element => {
@@ -110,27 +110,28 @@ export class EventManager {
       }
 
       if (
-        this.controller.itemManager.isActive === true &&
-        targetDownElement !== false &&
-        targetUpElement   !== false &&
+        itemManager.isActive === true &&
+        targetDownElement    !== false &&
+        targetUpElement      !== false &&
 
-        DOMUtil.hasAncestor(targetDownElement, this.controller.itemManager.activeItem) === false &&
-        DOMUtil.hasAncestor(targetUpElement,   this.controller.itemManager.activeItem) === false &&
+        DOMUtil.hasAncestor(targetDownElement, itemManager.activeItem) === false &&
+        DOMUtil.hasAncestor(targetUpElement,   itemManager.activeItem) === false &&
 
         DOMUtil.findAncestor(targetDownElement, identifierFn) === false
       ) {
         this.controller.deactivate()
-        this.controller.config.onOutsideAction(this.controller)
+        config.onOutsideAction(this.controller)
       }
     }
   }
 
   private eventHandlerKeydown = (event: KeyboardEvent) => {
+    const {config, actionManager}: MonoController = this.controller
     if (
-      this.controller.config.listenToKeydown  === true &&
-      this.controller.actionManager.isRunning === false
+      config.listenToKeydown  === true &&
+      actionManager.isRunning === false
     ) {
-      this.controller.config.onKeydown(event, this.controller)
+      config.onKeydown(event, this.controller)
     }
   }
 }

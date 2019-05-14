@@ -24,7 +24,8 @@ export interface MonoConfig {
 
   deactivateOnOutsideAction?: boolean,
   
-  selectorItems?: string,
+  selectorItems?: string | undefined,
+  items?: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
 
   classNameItemActive?  : string,
   classNameJsActivate?  : string,
@@ -56,6 +57,7 @@ export const DEFAULT_CONFIG: MonoConfig = {
   deactivateOnOutsideAction: true,
 
   selectorItems: '.js-mono-item',
+  items: undefined,
 
   classNameItemActive: 'js-mono-item--active',
 
@@ -83,14 +85,14 @@ export const DEFAULT_CONFIG: MonoConfig = {
 export const MONO_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
   {
     configProperty: 'classNameJsActivate',
-    action        : 'activate',
+    action: 'activate',
   },
   {
     configProperty: 'classNameJsDeactivate',
-    action        : 'deactivate',
+    action: 'deactivate',
   },
   {
     configProperty: 'classNameJsToggle',
-    action        : 'toggle',
+    action: 'toggle',
   },
 ]

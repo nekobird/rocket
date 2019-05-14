@@ -30,6 +30,7 @@ export class ItemManager {
 
   public initializeItems(): this {
     const items: NodeListOf<HTMLElement> = document.querySelectorAll(this.controller.config.selectorItems)
+
     if (items !== null) {
       this.items = Array.from(items).map(item => {
         if (this.itemIsValid(item) === true) {
@@ -43,7 +44,7 @@ export class ItemManager {
   }
 
   private initializeActiveItems(): this {
-    const config: SequenceConfig = this.controller.config
+    const {config}: SequenceController = this.controller
 
     if (this.items.length > 0) {
       this.items.forEach((item: HTMLElement, index: number) => {

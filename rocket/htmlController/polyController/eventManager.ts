@@ -62,7 +62,7 @@ export class EventManager {
   }
 
   private eventHub(trigger: HTMLElement, actionName: PolyActionName): this {
-    const actionManager = this.controller.actionManager
+    const {actionManager}: PolyController = this.controller
 
     if (
       this.controller.isReady === true &&
@@ -87,21 +87,22 @@ export class EventManager {
   }
 
   private handleOutsideAction = event => {
-    if (
-      this.controller.config.deactivateAllOnOutsideAction === true &&
-      this.controller.actionManager.isRunning             === false
-    ) {
+    const {config, actionManager, itemManager}: PolyController = this.controller
 
+    if (
+      config.deactivateAllOnOutsideAction === true &&
+      actionManager.isRunning === false
+    ) {
       const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
       const targetUpElement  : HTMLElement | false = event.getTargetElementFromData(event.upData)
 
       let classNames: string[] = [
-        this.controller.config.classNameJsActivate,
-        this.controller.config.classNameJsDeactivate,
-        this.controller.config.classNameJsToggle,
-        this.controller.config.classNameJsActivateAll,
-        this.controller.config.classNameJsDeactivateAll,
-        this.controller.config.classNameJsToggleAll,
+        config.classNameJsActivate,
+        config.classNameJsDeactivate,
+        config.classNameJsToggle,
+        config.classNameJsActivateAll,
+        config.classNameJsDeactivateAll,
+        config.classNameJsToggleAll,
       ]
 
       const identifierFn = element => {
@@ -115,27 +116,28 @@ export class EventManager {
       }
 
       if (
-        this.controller.itemManager.isActive === true &&
+        itemManager.isActive === true &&
         targetDownElement !== false &&
-        targetUpElement   !== false &&
+        targetUpElement !== false &&
 
-        DOMUtil.hasAncestor(targetDownElement, this.controller.itemManager.activeItems) === false &&
-        DOMUtil.hasAncestor(targetUpElement,   this.controller.itemManager.activeItems) === false &&
+        DOMUtil.hasAncestor(targetDownElement, itemManager.activeItems) === false &&
+        DOMUtil.hasAncestor(targetUpElement,   itemManager.activeItems) === false &&
 
         DOMUtil.findAncestor(targetDownElement, identifierFn) === false
       ) {
         this.controller.deactivateAll()
-        this.controller.config.onOutsideAction(this.controller)
+        config.onOutsideAction(this.controller)
       }
     }
   }
 
   private eventHandlerKeydown = (event: KeyboardEvent) => {
+    const {config, actionManager}: PolyController = this.controller
     if (
-      this.controller.config.listenToKeydown  === true &&
-      this.controller.actionManager.isRunning === false
+      config.listenToKeydown  === true &&
+      actionManager.isRunning === false
     ) {
-      this.controller.config.onKeydown(event, this.controller)
+      config.onKeydown(event, this.controller)
     }
   }
 }

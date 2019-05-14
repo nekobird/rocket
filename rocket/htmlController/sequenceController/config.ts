@@ -22,7 +22,8 @@ export interface SequenceConfig {
 
   listenToKeydown?: boolean,
 
-  selectorItems?: string,
+  selectorItems?: string | undefined,
+  items?: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
 
   classNameItemActive?: string,
   classNameJsPrevious?: string,
@@ -51,6 +52,7 @@ export const DEFAULT_CONFIG: SequenceConfig = {
   listenToKeydown: false,
 
   selectorItems: '.js-sequence-item',
+  items: undefined,
 
   classNameItemActive: 'js-sequence-item--active',
   classNameJsPrevious: 'js-sequence-item-previous',
@@ -75,14 +77,14 @@ export const DEFAULT_CONFIG: SequenceConfig = {
 export const SEQUENCE_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
   {
     configProperty: 'classNameJsPrevious',
-    action        : 'previous',
+    action: 'previous',
   },
   {
     configProperty: 'classNameJsNext',
-    action        : 'next',
+    action: 'next',
   },
   {
     configProperty: 'classNameJsJump',
-    action        : 'jump',
+    action: 'jump',
   },
 ]

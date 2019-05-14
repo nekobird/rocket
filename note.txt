@@ -48,3 +48,6 @@ https://medium.com/@wiekatz/testing-web-applications-running-on-localhost-with-a
 
 // ElementFromPoint
 https://www.quirksmode.org/dom/w3c_cssom.html#t20
+
+// Babel
+https://medium.com/@onlykiosk/complete-babel-7-guide-for-beginners-in-2019-7dd78214c464

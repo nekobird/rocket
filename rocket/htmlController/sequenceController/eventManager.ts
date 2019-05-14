@@ -61,7 +61,7 @@ export class EventManager {
   }
 
   private eventHub(trigger: HTMLElement, actionName: SequenceActionName): this {
-    const actionManager = this.controller.actionManager
+    const {actionManager}: SequenceController = this.controller
     if (
       this.controller.isReady === true &&
       actionManager.isRunning === false
@@ -85,11 +85,12 @@ export class EventManager {
   }
 
   private eventHandlerKeydown = (event: KeyboardEvent) => {
+    const {config, actionManager}: SequenceController = this.controller
     if (
-      this.controller.config.listenToKeydown  === true &&
-      this.controller.actionManager.isRunning === false
+      config.listenToKeydown  === true &&
+      actionManager.isRunning === false
     ) {
-      this.controller.config.onKeydown(event, this.controller)
+      config.onKeydown(event, this.controller)
     }
   }
 }

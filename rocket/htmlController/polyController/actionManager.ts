@@ -34,31 +34,24 @@ export class ActionManager {
 
   // 5) Handle Actions
 
-  private activateItem(action: PolyAction) {
-    this.controller.itemManager.activate(
-      action.targetItem
-    )
+  private activateItem({targetItem}: PolyAction) {
+    this.controller.itemManager.activate(targetItem)
   }
 
-  private deactivateItem(action: PolyAction) {
-    this.controller.itemManager.deactivate(
-      action.targetItem
-    )
+  private deactivateItem({targetItem}: PolyAction) {
+    this.controller.itemManager.deactivate(targetItem)
   }
 
-  private handleActionActivate(action: PolyAction): Promise<void> {
-    const config: PolyConfig = this.controller.config
+  private async handleActionActivate(action: PolyAction): Promise<void> {
+    const {config}: PolyController = this.controller
 
     if (
       action.targetItem.classList.contains(config.classNameItemActive) === false &&
       config.conditionActivate(action, this.controller) === true
     ) {
-      return config
-        .beforeActivate(action, this.controller)
-        .then(() => {
-          this.activateItem(action)
-          return config.afterActivate(action, this.controller)
-        })
+      await config.beforeActivate(action, this.controller)
+      this.activateItem(action)
+      return config.afterActivate(action, this.controller)
     }
     return Promise.reject()
   }
