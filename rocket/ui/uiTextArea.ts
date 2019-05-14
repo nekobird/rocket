@@ -215,5 +215,4 @@ export class UITextArea {
     window.removeEventListener('resize', this.handleInput)
     return this
   }
-
 }

@@ -37,48 +37,50 @@ export class AnimationCore {
   }
 
   // 1)
-  public startWithDelay(delay?: number): Promise<void> {
+  public async startWithDelay(delay?: number): Promise<void> {
+    const {config}: Animation = this.animation
+
     // This is only called when not animating.
     this.isActive = true
 
     if (typeof delay !== 'number') {
-      delay = this.animation.config.delay
+      delay = config.delay
     }
 
     if (delay > 0) {
-      return this.animation.config
-        .beforeStartWithDelay(
-          this.animation,
-          this.animation.config.dataExport
+      try {
+        await config.beforeStartWithDelay(
+          this.animation, config.dataExport
         )
-        .then(() => {
-          this.runCallback('onStart')
-          this.timeoutID = setTimeout(
-            this.start,
-            delay * 1000
-          )    
-        })
-        .catch(() => {
-          this.end()
-        })
+        this.runCallback('onStart')
+        this.timeoutID = setTimeout(
+          this.start,
+          delay * 1000
+        )
+        return Promise.resolve()
+      } catch {
+        this.end()
+        return Promise.reject()
+      }
     } else {
-      return this.animation.config
-        .beforeStart(
-          this.animation,
-          this.animation.config.dataExport
+      try {
+        await config.beforeStart(
+          this.animation, config.dataExport
         )
-        .then(() => {
-          this.runCallback('onStart')
-          this.start()
-        })
-        .catch(() => {
-          this.end()
-        })
+        this.runCallback('onStart')
+        this.start()
+        return Promise.resolve()
+      } catch {
+        this.end()
+        return Promise.reject()
+      }
     }
   }
 
   // 2) Start Animation.
-  public start = () => {
+  public start = async () => {
+    const {config}: Animation = this.animation
+
     this.isActive = true
 
     // Set starting direction.
@@ -98,19 +100,15 @@ export class AnimationCore {
       this.isPaused = false
     } else {
       this.startTime = Date.now()
-      this.endTime   = this.startTime + (this.animation.config.duration * 1000)
+      this.endTime   = this.startTime + (config.duration * 1000)
     }
 
     this.isAnimating = true
-    this.animation.config
-      .beforeIterationStart(
-        this.animation,
-        this.animation.config.dataExport
-      )
-      .then(() => {
-        this.runCallback('onIterationStart')
-        this.loop()    
-      })
+    await config.beforeIterationStart(
+      this.animation, config.dataExport
+    )
+    this.runCallback('onIterationStart')
+    this.loop()
   }
 
   public pause(): this {
@@ -157,7 +155,8 @@ export class AnimationCore {
 
   // 3)
   private loop(): this {
-    const frame = () => {
+    const frame = async () => {
+      const {config}: Animation = this.animation
 
       // Tick, this also moves progress forward!
       this.tick()
@@ -177,29 +176,26 @@ export class AnimationCore {
 
           // End animation if exceeds config.numberOfIterations
           if (
-            typeof this.animation.config.numberOfIterations === 'number' &&
-            this.iterationCount >= this.animation.config.numberOfIterations
+            typeof config.numberOfIterations === 'number' &&
+            this.iterationCount >= config.numberOfIterations
           ) {
             this.end()
             return
           }
 
-          // Continue animation.
-          this.animation.config
-            .beforeSubsequentIteration(
-              this.animation,
-              this.animation.config.dataExport
+          try {
+            // Continue animation.
+            await config.beforeSubsequentIteration(
+              this.animation, config.dataExport
             )
-            .then(resolve => {
-              // Toggle direction if it's alternating.
-              if (this.animation.config.alternate === true) {
-                this.toggleDirection()
-              }
-              this.startWithDelay(this.animation.config.iterationDelay)
-            })
-            .catch(() => {
-              this.end()
-            })
+            // Toggle direction if it's alternating.
+            if (config.alternate === true) {
+              this.toggleDirection()
+            }
+            await this.startWithDelay(config.iterationDelay)
+          } catch {
+            this.end()
+          }
         }
       }
 
@@ -212,9 +208,10 @@ export class AnimationCore {
 
   // 4)
   private tick(): this {
+    const {config}: Animation = this.animation
+
     // Update progress.
     this.progress = this.currentNValue
-    const config: AnimationConfig = this.animation.config
 
     // Modify N based on TimingFunction.
     let n = config.timingFunction(this.progress)
@@ -261,7 +258,8 @@ export class AnimationCore {
   // CALLBACK
 
   public runCallback(callbackName: string): this {
-    const config: AnimationConfig = this.animation.config
+    const {config}: Animation = this.animation
+
     if (typeof config[callbackName] === 'function') {
       config[callbackName](this.animation, config.dataExport)
     } else if (Array.isArray(config[callbackName])) {
@@ -271,5 +269,4 @@ export class AnimationCore {
     }
     return this
   }
-
 }

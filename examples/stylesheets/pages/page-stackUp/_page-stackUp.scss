@@ -1,0 +1,16 @@
+.page-stackUp {
+  .container {
+    background: hsl(0, 0, 90);
+    position: relative;
+  }
+
+  .item {
+    background: hsl(0, 0, 90);
+    position: absolute;
+
+    img {
+      max-width: 320px;
+      width: 100%;
+    }
+  }
+}

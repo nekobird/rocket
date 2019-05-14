@@ -74,13 +74,9 @@ export const STACKUP_DEFAULT_CONFIG = {
     return Promise.resolve()
   },
 
-  beforeTransition: (container: StackUpContainerScaleData, items: StackUpItem[]) => {
-    return Promise.resolve()
-  },
-  beforeMove: (items: StackUpItem[]) => {
-    return Promise.resolve()
-  },
+  beforeTransition: (container: StackUpContainerScaleData, items: StackUpItem[]) => Promise.resolve(),
+  beforeMove: (items: StackUpItem[]) => Promise.resolve(),
 
-  afterMove: (items: StackUpItem[]) => { return Promise.resolve() },
+  afterMove: (items: StackUpItem[]) => Promise.resolve(),
   afterTransition: () => {}
 }

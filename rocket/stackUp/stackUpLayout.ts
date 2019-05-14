@@ -99,5 +99,4 @@ export class StackUpLayout {
       this.columnPointer = 0
     }
   }
-
 }

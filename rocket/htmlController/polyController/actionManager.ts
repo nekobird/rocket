@@ -51,30 +51,29 @@ export class ActionManager {
     ) {
       await config.beforeActivate(action, this.controller)
       this.activateItem(action)
-      return config.afterActivate(action, this.controller)
+      config.afterActivate(action, this.controller)
+      return Promise.resolve()
     }
     return Promise.reject()
   }
 
-  private handleActionDeactivate(action: PolyAction): Promise<void> {
-    const config: PolyConfig = this.controller.config
+  private async handleActionDeactivate(action: PolyAction): Promise<void> {
+    const {config}: PolyController = this.controller
 
     if (
       action.targetItem.classList.contains(config.classNameItemActive) === true &&
       config.conditionDeactivate(action, this.controller) === true
     ) {
-      return config
-        .beforeDeactivate(action, this.controller)
-        .then(() => {
-          this.deactivateItem(action)
-          return config.afterDeactivate(action, this.controller)
-        })
+      await config.beforeDeactivate(action, this.controller)
+      this.deactivateItem(action)
+      config.afterDeactivate(action, this.controller)
+      return Promise.resolve()
     }
     return Promise.reject()
   }
 
   private handleActionToggle(action: PolyAction): Promise<void> {
-    const config: PolyConfig = this.controller.config
+    const {config}: PolyController = this.controller
 
     if (config.conditionToggle(action, this.controller) === true) {
       if (action.targetItem.classList.contains(config.classNameItemActive) === false) {
@@ -87,8 +86,7 @@ export class ActionManager {
   }
 
   private handleActionActivateAll(action: PolyAction): Promise<void> {
-    const config     : PolyConfig  = this.controller.config
-    const itemManager: ItemManager = this.controller.itemManager
+    const {config, itemManager}: PolyController = this.controller
 
     if (
       config.conditionActivateAll(action, this.controller) === true &&
@@ -108,16 +106,13 @@ export class ActionManager {
       })
 
       return Promise.all(actionPromises)
-        .then(() => {
-          return Promise.resolve()
-        })
+        .then(() => Promise.resolve())
     }
     return Promise.reject()
   }
 
   private handleActionDeactivateAll(action: PolyAction): Promise<void> {
-    const config     : PolyConfig  = this.controller.config
-    const itemManager: ItemManager = this.controller.itemManager
+    const {config, itemManager}: PolyController = this.controller
 
     if (
       config.conditionActivateAll(action, this.controller) === true &&
@@ -137,16 +132,13 @@ export class ActionManager {
       })
 
       return Promise.all(actionPromises)
-        .then(() => {
-          return Promise.resolve()
-        })
+        .then(() => Promise.resolve())
     }
     return Promise.reject()
   }
 
   private handleActionToggleAll(action: PolyAction): Promise<void> {
-    const config     : PolyConfig  = this.controller.config
-    const itemManager: ItemManager = this.controller.itemManager
+    const {config, itemManager}: PolyController = this.controller
 
     if (
       config.conditionActivateAll(action, this.controller) === true &&
@@ -164,9 +156,7 @@ export class ActionManager {
       })
 
       return Promise.all(actionPromises)
-        .then(() => {
-          return Promise.resolve()
-        })
+        .then(() => Promise.resolve())
     }
     return Promise.reject()
   }
@@ -236,7 +226,7 @@ export class ActionManager {
 
   // 1) Action Hub
 
-  public actionHub(action: PolyAction, isNestedAction: boolean = false, callback?: Function): Promise<void> {
+  public async actionHub(action: PolyAction, isNestedAction: boolean = false, callback?: Function): Promise<void> {
     if (
       this.isRunning === true &&
       isNestedAction === true
@@ -265,28 +255,23 @@ export class ActionManager {
     } else {
       preAction = Promise.resolve()
     }
-
-    return preAction
-      .then(() => {
-        return this.handleAction(action)
-      })
-      .then(() => {
-        return this.endAction(callback)
-      })
-      .then(() => {
-        if (
-          isNestedAction === true &&
-          this.isNested === true
-        ) {
-          this.isNested = false
-        }
-        if (this.isNested === false) {
-          config.afterAction(action, this.controller)
-        }
-      })
-      .catch(() => {
-        return this.endAction(callback)
-      })
+    try {
+      await preAction
+      await this.handleAction(action)
+      await this.endAction(callback)
+      if (
+        isNestedAction === true &&
+        this.isNested === true
+      ) {
+        this.isNested = false
+      }
+      if (this.isNested === false) {
+        config.afterAction(action, this.controller)
+      }
+    } catch {
+      await this.endAction(callback)
+      return Promise.resolve()
+    }
   }
 
   public endAction(callback?: Function): Promise<void> {

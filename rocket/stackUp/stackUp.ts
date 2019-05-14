@@ -52,7 +52,6 @@ export class StackUp {
 
   constructor(config?: StackUpConfig) {
     this.config = Object.assign({}, STACKUP_DEFAULT_CONFIG)
-
     if (typeof config === 'object') {
       this.setConfig(config)
     }
@@ -214,7 +213,7 @@ export class StackUp {
   }
 
   // Scale container and move items (5) - stack
-  public draw(): Promise<void> {
+  public async draw(): Promise<void> {
     if (this.isTransitioning === false) {
       this.isTransitioning = true
 
@@ -225,31 +224,23 @@ export class StackUp {
 
       const scaleData: StackUpContainerScaleData = this.composeContainerScaleData(finalWidth, finalHeight)
       this.prepareItemsBeforeMove()
-      return this.config
-        .beforeTransition(scaleData, this.items)
-        .then(() => {
-          return this.config.scaleContainerInitial(
-            this.containerElement, scaleData
-          )
-        })
-        .then(() => {
-          return this.config.beforeMove(this.items)
-        })
-        .then(() => {
-          return this.moveItems()
-        })
-        .then(() => {
-          return this.config.afterMove(this.items)
-        })
-        .then(() => {
-          this.updatePreviousContainerSize()
-          return this.config.scaleContainerFinal(
-            this.containerElement,
-            this.composeContainerScaleData(finalWidth, finalHeight)
-          )
-        })
-        .then(()  => { this.endTransition() })
-        .catch(() => { this.endTransition() })
+      try {
+        await this.config.beforeTransition(scaleData, this.items)
+        await this.config.scaleContainerInitial(this.containerElement, scaleData)
+        await this.config.beforeMove(this.items)
+        await this.moveItems()
+        await this.config.afterMove(this.items)
+        this.updatePreviousContainerSize()
+        await this.config.scaleContainerFinal(
+          this.containerElement,
+          this.composeContainerScaleData(finalWidth, finalHeight)
+        )
+        this.endTransition()
+        return Promise.resolve()
+      } catch {
+        this.endTransition()
+        return Promise.reject()
+      }
     }
     return Promise.resolve()
   }
@@ -402,5 +393,4 @@ export class StackUp {
       }
     })
   }
-
 }

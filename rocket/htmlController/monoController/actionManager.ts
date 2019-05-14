@@ -140,7 +140,7 @@ export class ActionManager {
 
   // 1) Action Hub
 
-  public actionHub(action: MonoAction, isNestedAction: boolean = false, callback?: Function): Promise<void> {
+  public async actionHub(action: MonoAction, isNestedAction: boolean = false, callback?: Function): Promise<void> {
     if (
       this.isRunning === true &&
       isNestedAction === true
@@ -169,21 +169,23 @@ export class ActionManager {
       preAction = Promise.resolve()
     }
 
-    return preAction
-      .then(() => this.completeAction(action))
-      .then(() => this.endAction(callback))
-      .then(() => {
-        if (
-          isNestedAction === true &&
-          this.isNested  === true
-        ) {
-          this.isNested = false
-        }
-        if (this.isNested === false) {
-          config.afterAction(action, this.controller)
-        }
-      })
-      .catch(() => this.endAction(callback))
+    try {
+      await preAction
+      await this.completeAction(action)
+      await this.endAction(callback)
+      if (
+        isNestedAction === true &&
+        this.isNested  === true
+      ) {
+        this.isNested = false
+      }
+      if (this.isNested === false) {
+        config.afterAction(action, this.controller)
+      }
+    } catch {
+      await this.endAction(callback)
+      return Promise.resolve()
+    }
   }
 
   public endAction(callback?: Function): Promise<void> {

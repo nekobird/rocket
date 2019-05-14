@@ -18,6 +18,7 @@ const stackup: StackUp = new StackUp({
         duration: 0.2,
         timingFunction: Easings.QuadEaseInEaseOut,
         onTick: (n, ic, a) => {
+          console.log(container)
           container.style.width  = `${Num.modulate(n, 1, [data.currentWidth , data.width ], true)}px`
           container.style.height = `${Num.modulate(n, 1, [data.currentHeight, data.height], true)}px`
         },
@@ -105,6 +106,6 @@ const images = [
   'https://images.unsplash.com/photo-1556624651-70ad2f7e8364?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60',
 ]
 
-// Util.promiseEach(images, appendItem)
+Util.promiseEach(images, appendItem)
 
-appendItems()
+// appendItems()
