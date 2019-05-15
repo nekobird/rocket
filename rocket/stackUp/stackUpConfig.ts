@@ -17,8 +17,11 @@ export interface StackUpContainerScaleData {
 export interface StackUpConfig {
   boundary?: HTMLElement | Window,
 
-  selectorContainer?: string,
-  selectorItems?: string,
+  containerSelector?: string,
+  itemsSelector?: string,
+
+  container?: HTMLElement,
+  items?: HTMLElement[],
 
   columnWidth?: number,
   numberOfColumns?: number,
@@ -44,8 +47,11 @@ export interface StackUpConfig {
 export const STACKUP_DEFAULT_CONFIG = {
   boundary: window,
 
-  selectorContainer: undefined,
-  selectorItems: undefined,
+  containerSelector: undefined,
+  itemsSelector: undefined,
+
+  container: undefined,
+  items: undefined,
 
   columnWidth: 320,
   numberOfColumns: 3,

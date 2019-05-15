@@ -110,6 +110,16 @@ export class PointHelper {
     return PointHelper.magnitude(difference)
   }
 
+  public static getMidPointBetween(a: Point, b: Point): Point {
+    let x: number = a.x - b.x
+    let y: number = a.y - b.y
+    x /= 2
+    y /= 2
+    x += b.x
+    y += b.y
+    return {x, y}
+  }
+
   public static lerp(from: Point, to: Point, time: number, mutate: boolean = false): Point {
     const x: number = Num.modulate(time, 1, [from.x, to.x], false)
     const y: number = Num.modulate(time, 1, [from.y, to.y], false)

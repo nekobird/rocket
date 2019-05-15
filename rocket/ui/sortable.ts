@@ -13,8 +13,8 @@ export interface SortableConfig {
 
   preventDefaults?: boolean,
 
-  itemContainerSelector?: string,
-  itemContainer?: HTMLElement,
+  containerSelector?: string,
+  container?: HTMLElement,
 
   itemsSelector?: string,
   items?: HTMLElement[],
@@ -46,8 +46,8 @@ const SORTABLE_CONFIG: SortableConfig = {
 
   preventDefaults: true,
 
-  itemContainerSelector: '.sortableContainer',
-  itemContainer: undefined,
+  containerSelector: '.sortableContainer',
+  container: undefined,
 
   itemsSelector: '.sortableItem',
   items: undefined,
@@ -59,11 +59,13 @@ const SORTABLE_CONFIG: SortableConfig = {
 
   setDummyElementPropertiesFromItem: (dummy, item) => {
     dummy.classList.add('sortableItem', 'sortableItem--dummy')
-    dummy.style.boxSizing = 'border-box'
-    dummy.style.position  = 'relative'
-    dummy.style.height    = `${item.offsetHeight}px`
-    dummy.style.width     = `${item.offsetWidth}px`
-    dummy.style.zIndex = '0'
+    DOMHelper.applyStyle(dummy, {
+      'width' : `${item.offsetWidth}px`,
+      'height': `${item.offsetHeight}px`,
+      'boxSizing': 'border-box',
+      'position': 'relative',
+      'zIndex': 0,
+    })
   },
  
   activateItem: item => {
@@ -76,14 +78,16 @@ const SORTABLE_CONFIG: SortableConfig = {
   popItem: item => {
     const width : number = item.offsetWidth
     const height: number = item.offsetHeight
-    item.style.position = 'absolute'
-    item.style.left = `0`
-    item.style.top  = `0`
-    item.style.width  = `${width}px`
-    item.style.height = `${height}px`
+    DOMHelper.applyStyle(item, {
+      'position': 'absolute',
+      'left': 0,
+      'top' : 0,
+      'width' : `${width}px`,
+      'height': `${height}px`,
+    })
   },
   unpopItem: item => {
-    item.removeAttribute('style')
+    DOMHelper.clearStyle(item)
   },
 
   moveItem: (item: HTMLElement, to: Point) => {
@@ -123,25 +127,25 @@ export class Sortable {
   }
 
   // @initialization
-  public initializeItemContainer() {
+  public getContainer(): this {
     if (
-      typeof this.config.itemContainer === 'undefined' &&
-      typeof this.config.itemContainerSelector === 'string'
+      typeof this.config.container === 'undefined' &&
+      typeof this.config.containerSelector === 'string'
     ) {
-      const itemContainer: HTMLElement = document.querySelector(this.config.itemContainerSelector)
-      if (itemContainer !== null) {
-        this.config.itemContainer = itemContainer
-      } else {
-        throw new Error('Sortable: Fail to retrieve itemContainer element.')
+      const container: HTMLElement = document.querySelector(this.config.containerSelector)
+      if (container !== null) {
+        this.config.container = container
+        return this
       }
-    } else if (typeof this.config.itemContainer === 'object') {
-      return
-    } else {
-      throw new Error('Sortable: itemContainer is not defined.')
+      throw new Error('Sortable: Fail to get container.')
     }
+    if (typeof this.config.container === 'object') {
+      return this
+    }
+    throw new Error('Sortable: Container defined.')
   }
 
-  public initializeItems() {
+  public getItems(): this {
     if (
       typeof this.config.items === 'undefined' &&
       typeof this.config.itemsSelector === 'string'
@@ -149,14 +153,13 @@ export class Sortable {
       const items: NodeListOf<HTMLElement> = document.querySelectorAll(this.config.itemsSelector)
       if (items !== null) {
         this.config.items = Array.from(items)
-      } else {
-        throw new Error('Sortable: Fail to retrieve item elements.')
       }
-    } else if (Array.isArray(this.config.items) === true) {
-      return
-    } else {
-      throw new Error('Sortable: items are not defined.')
+      throw new Error('Sortable: Fail to get items.')
     }
+    if (Array.isArray(this.config.items) === true) {
+      return this
+    }
+    throw new Error('Sortable: Items not defined.')
   }
 
   public initializeDragEvent() {
@@ -173,8 +176,8 @@ export class Sortable {
   }
 
   public initialize() {
-    this.initializeItemContainer()
-    this.initializeItems()
+    this.getContainer()
+    this.getItems()
     this.initializeDragEvent()
   }
 
@@ -251,7 +254,7 @@ export class Sortable {
 
   // @helper
   public getLastItem(): HTMLElement | false {
-    return DOMUtil.getNthChild('last', this.config.itemContainer, item => {
+    return DOMUtil.getNthChild('last', this.config.container, item => {
       return (
         this.config.items.indexOf(item) !== -1 &&
         this.activeItem   !== item &&
@@ -262,7 +265,7 @@ export class Sortable {
 
   public prepareAndInsertDummyElementAt(point: Point) {
     const closestItem: HTMLElement | false = DOMUtil.getClosestChildFromPoint(
-      this.config.itemContainer,
+      this.config.container,
       point,
       item => {
         return (
@@ -288,9 +291,9 @@ export class Sortable {
       lastItem === item  &&
       DOMHelper.elementIsBelowPoint(lastItem, point, lastItem.offsetHeight / 2) === true
     ) {
-      this.config.itemContainer.appendChild(this.dummyElement)
+      this.config.container.appendChild(this.dummyElement)
     } else {
-      this.config.itemContainer.insertBefore(this.dummyElement, item)
+      this.config.container.insertBefore(this.dummyElement, item)
     }
   }
 
@@ -318,7 +321,7 @@ export class Sortable {
     }
 
     const point: Point = {x: data.clientX, y: data.clientY}
-    const offset = DOMHelper.getOffsetFromPoint(this.config.itemContainer, point)
+    const offset = DOMHelper.getOffsetFromPoint(this.config.container, point)
     const to: Point = PointHelper.subtract(offset, this.initialOffset)
 
     this.config.moveItem(this.activeItem, to, this)
@@ -330,7 +333,7 @@ export class Sortable {
     if (this.isActive === true) {
       this.config.deactivateItem(this.activeItem, this)
       this.config.unpopItem(this.activeItem, this)
-      this.config.itemContainer.replaceChild(this.activeItem, this.dummyElement)
+      this.config.container.replaceChild(this.activeItem, this.dummyElement)
 
       // Reset
       this.isActive = false

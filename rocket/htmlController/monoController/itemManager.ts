@@ -34,9 +34,7 @@ export class ItemManager {
     ) {
       const results: NodeListOf<HTMLElement> = document.querySelectorAll(this.controller.config.selectorItems)
       items = (results === null) ? [] : Array.from(results)
-    } else if (
-      typeof config.items === 'object'
-    ) {
+    } else if (typeof config.items === 'object') {
       if (
         Array.isArray(config.items) === false &&
         NodeList.prototype.isPrototypeOf(config.items)
@@ -59,17 +57,24 @@ export class ItemManager {
     return this.itemElements
   }
 
-  public setItems(items: HTMLElement[] | NodeListOf<HTMLElement> | string): void {
+  public setItems(items: HTMLElement[] | NodeListOf<HTMLElement> | string): this {
     if (typeof items === 'string') {
       const results: NodeListOf<HTMLElement> = document.querySelectorAll(items)
       if (results !== null) {
         this.setAndFilterItems(Array.from(results))
       }
-    } else if (NodeList.prototype.isPrototypeOf(items)) {
-      this.setAndFilterItems(Array.from(items))
-    } else if (Array.isArray(items) === true) {
+      return this
+    }
+
+    if (NodeList.prototype.isPrototypeOf(items)) {
+      this.setAndFilterItems(Array.from(<NodeListOf<HTMLElement>>items))
+      return this
+    }
+
+    if (Array.isArray(items) === true) {
       this.setAndFilterItems(<HTMLElement[]>items)
     }
+    return this
   }
 
   public setAndFilterItems(items): void {

@@ -4,6 +4,10 @@ import {
   PointHelper,
 } from '../rocket'
 
+export interface StyleList {
+  [key: string]: string | number   
+}
+
 export class DOMHelper {
 
   public static onImageLoad(src: string): Promise<void> {
@@ -75,7 +79,17 @@ export class DOMHelper {
     }
   }
 
-  // Style
+  // @style
+  public static applyStyle(element: HTMLElement, styles: StyleList) {
+    Object.keys(styles).forEach(key => {
+      const value: string = (typeof styles[key] === 'number') ? styles[key].toString() : <string>styles[key]      
+      element.style[key] = value
+    })
+  }
+
+  public static clearStyle(element: HTMLElement) {
+    element.removeAttribute('style')
+  }
 
   public static getStyleValue(element: HTMLElement, propertyName: string, isNumber: boolean = false): number | string {
     const style: CSSStyleDeclaration = window.getComputedStyle(element)
@@ -87,9 +101,8 @@ export class DOMHelper {
     return <number>this.getStyleValue(element, 'fontSize', true)
   }
 
-  public setFontSize(element: HTMLElement, fontSize: number): DOMHelper {
+  public static setFontSize(element: HTMLElement, fontSize: number) {
     element.style.fontSize = `${fontSize}px`
-    return this
   }
 
   public static getLineHeight(element: HTMLElement): number {
@@ -141,14 +154,14 @@ export class DOMHelper {
     return height
   }
 
-  static getAnimationDuration(element: HTMLElement): number {
+  public static getAnimationDuration(element: HTMLElement): number {
     const computedStyle: CSSStyleDeclaration = getComputedStyle(element)
     return parseFloat(
       computedStyle.animationDuration
     ) * 1000
   }
 
-  static getTransitionDuration(element: HTMLElement): number {
+  public static getTransitionDuration(element: HTMLElement): number {
     const computedStyle: CSSStyleDeclaration = getComputedStyle(element)
     return parseFloat(
       computedStyle.transitionDuration

@@ -8,8 +8,8 @@ import {
 } from '../../rocket/rocket'
 
 const stackup: StackUp = new StackUp({
-  selectorContainer: '.container',
-  selectorItems    : '.item',
+  containerSelector: '.container',
+  itemsSelector    : '.item',
   layout           : 'optimized',
   moveInSequence   : false,
   scaleContainerInitial: (container, data) => {
@@ -18,7 +18,6 @@ const stackup: StackUp = new StackUp({
         duration: 0.2,
         timingFunction: Easings.QuadEaseInEaseOut,
         onTick: (n, ic, a) => {
-          console.log(container)
           container.style.width  = `${Num.modulate(n, 1, [data.currentWidth , data.width ], true)}px`
           container.style.height = `${Num.modulate(n, 1, [data.currentHeight, data.height], true)}px`
         },

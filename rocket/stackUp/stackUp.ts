@@ -31,14 +31,12 @@ export class StackUp {
   public boundaryHeight = 0
   public boundaryWidth  = 0
 
-  public containerElement = undefined
-  public containerWidth   = 0
-  public containerHeight  = 0
+  public containerWidth  = 0
+  public containerHeight = 0
   
   public previousContainerWidth  = 0
   public previousContainerHeight = 0
 
-  public itemElements = undefined
   public items: StackUpItem[] = []
   public numberOfColumns: number = 0
 
@@ -63,6 +61,48 @@ export class StackUp {
   public setConfig(config: StackUpConfig): this {
     Object.assign(this.config, config)
     return this
+  }
+
+  private getElements(): this {
+    this.getContainer()
+    this.getItems()
+    return this
+  }
+
+  private getContainer(): this {
+    if (
+      typeof this.config.container === 'undefined' &&
+      typeof this.config.containerSelector === 'string'
+    ) {
+      const container: HTMLElement = document.querySelector(this.config.containerSelector)
+      if (container !== null) {
+        this.config.container = container
+        return this
+      }
+      throw new Error('StackUp: Fail to get container.')
+    }
+    if (typeof this.config.container === 'object') {
+      return this
+    }
+    throw new Error('StackUp: Container not defined.')
+  }
+
+  private getItems(): this {
+    if (
+      typeof this.config.items === 'undefined' &&
+      typeof this.config.itemsSelector === 'string'
+    ) {
+      const items: NodeListOf<HTMLElement> = document.querySelectorAll(this.config.itemsSelector)
+      if (items !== null) {
+        this.config.items = Array.from(items)
+        return this
+      }
+      throw new Error('StackUp: Fail to get items.')
+    }
+    if (typeof this.config.items === 'object') {
+      return this
+    }
+    throw new Error('StackUp: items not defined.')
   }
 
   public initialize(): Promise<void> {
@@ -130,31 +170,16 @@ export class StackUp {
   // Update grid selectors. (1) - reset
   // Required stack-up.initialize to be called first.
 
-  private getElements(): this {
-    const containerElement: HTMLElement = document.querySelector(this.config.selectorContainer)
-    const itemElements: NodeListOf<HTMLElement> = document.querySelectorAll(
-      `${this.config.selectorContainer} > ${this.config.selectorItems}`
-    )
-    if (containerElement !== null) {
-      this.containerElement = containerElement
-      this.updatePreviousContainerSize()
-    }
-    if (itemElements !== null) {
-      this.itemElements = Array.from(itemElements)
-    }
-    return this
-  }
-
   public updatePreviousContainerSize(): this {
-    this.previousContainerWidth  = this.containerElement.offsetWidth
-    this.previousContainerHeight = this.containerElement.offsetHeight
+    this.previousContainerWidth  = this.config.container.offsetWidth
+    this.previousContainerHeight = this.config.container.offsetHeight
     return this
   }
 
   // This only updates this.items, it does not update the selectors
 
   private appendItem(item: HTMLElement): this {
-    const offset: Point = DOMHelper.getOffsetFrom(item, this.containerElement)
+    const offset: Point = DOMHelper.getOffsetFrom(item, this.config.container)
     this.items.push(
       {
         item: item,
@@ -174,7 +199,7 @@ export class StackUp {
     // Clear items before populating
     this.items = []
 
-    this.itemElements.forEach(item => {
+    this.config.items.forEach(item => {
       this.appendItem(item)
     })
     return this
@@ -226,13 +251,13 @@ export class StackUp {
       this.prepareItemsBeforeMove()
       try {
         await this.config.beforeTransition(scaleData, this.items)
-        await this.config.scaleContainerInitial(this.containerElement, scaleData)
+        await this.config.scaleContainerInitial(this.config.container, scaleData)
         await this.config.beforeMove(this.items)
         await this.moveItems()
         await this.config.afterMove(this.items)
         this.updatePreviousContainerSize()
         await this.config.scaleContainerFinal(
-          this.containerElement,
+          this.config.container,
           this.composeContainerScaleData(finalWidth, finalHeight)
         )
         this.endTransition()
