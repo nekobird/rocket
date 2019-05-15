@@ -4,7 +4,6 @@ import {
   DragEventManager,
   Point,
 } from '../../rocket/rocket'
-import { ItemManager } from '../htmlController/monoController/itemManager';
 
 export interface SortableConfig {
   activateOnLongPress?: boolean,
