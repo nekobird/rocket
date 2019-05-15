@@ -11,7 +11,7 @@ import {
 import {
   PolyActionName,
   PolyAction,
-} from './ActionManager'
+} from './actionManager'
 
 import {
   POLY_ACTION_CONFIG_MAP,

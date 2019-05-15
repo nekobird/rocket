@@ -1,8 +1,4 @@
 import {
-  PolyConfig,
-} from './config'
-
-import {
   PolyController,
 } from './polyController'
 
