@@ -54,6 +54,7 @@ export * from './event/ScreenEventManager'
 export * from './text/textBoxModel'
 
 // UI
+export * from './ui/sortable'
 export * from './ui/uiTextArea'
 export * from './ui/uiTextField'
 

@@ -1,13 +1,13 @@
 .page-sorting {
   padding: space('large');
 
-  .items {
+  .sortableContainer {
     background-color: color('medium');
     padding: space('medium');
     position: relative;
   }
 
-  .item {
+  .sortableItem {
     background-color: color('light');
     box-sizing: border-box;
     display: block;
@@ -15,12 +15,12 @@
     padding: space('medium');
     z-index: 1;
 
-    &.item--active {
+    &.sortableItem--active {
       box-shadow: 0 0.5rem 3rem 0 hsla(220, 10, 5, 0.5);
       background-color: color('white');
     }
 
-    &.item--dummy {
+    &.sortableItem--dummy {
       background: transparent;
       border: 1px solid color('white');
       z-index: 0;
