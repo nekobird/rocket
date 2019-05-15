@@ -3,7 +3,7 @@ import {
   DOMUtil,
   DragEventManager,
   Point,
-} from '../../rocket/rocket'
+} from '../rocket'
 
 export interface SortableConfig {
   activateOnLongPress?: boolean,

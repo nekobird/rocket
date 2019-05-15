@@ -6,10 +6,6 @@ import {
   PolyController,
 } from './polyController'
 
-import {
-  ItemManager,
-} from './itemManager'
-
 export type PolyActionName = 'activate' | 'activateAll' | 'deactivate' | 'deactivateAll' | 'toggle' | 'toggleAll'
 
 export interface PolyAction {
