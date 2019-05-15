@@ -130,6 +130,8 @@ export class Sortable {
       } else {
         throw new Error('Sortable: Fail to retrieve itemContainer element.')
       }
+    } else if (typeof this.config.itemContainer === 'object') {
+      return
     } else {
       throw new Error('Sortable: itemContainer is not defined.')
     }
@@ -146,6 +148,8 @@ export class Sortable {
       } else {
         throw new Error('Sortable: Fail to retrieve item elements.')
       }
+    } else if (Array.isArray(this.config.items) === true) {
+      return
     } else {
       throw new Error('Sortable: items are not defined.')
     }
