@@ -2,6 +2,10 @@
   "name": "@nekobird/rocket",
   "version": "0.0.62",
   "description": "Rocket UI and Animation Library",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nekobird/rocket.git"
+  },
   "main": "build/rocket.js",
   "types": "build/rocket.d.ts",
   "scripts": {
