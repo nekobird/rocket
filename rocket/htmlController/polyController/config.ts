@@ -24,7 +24,7 @@ export interface PolyConfig {
   listenToKeydown?: boolean,
 
   selectorItems?: string | undefined,
-  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
+  items?: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
 
   classNameItemActive?: string,
 

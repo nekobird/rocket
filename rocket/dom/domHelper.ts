@@ -76,6 +76,7 @@ export class DOMHelper {
   }
 
   // Style
+
   public static getStyleValue(element: HTMLElement, propertyName: string, isNumber: boolean = false): number | string {
     const style: CSSStyleDeclaration = window.getComputedStyle(element)
     const value = style[propertyName]

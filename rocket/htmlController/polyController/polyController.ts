@@ -1,20 +1,20 @@
 import {
-  EventManager,
-} from './eventManager'
-
-import {
   DEFAULT_CONFIG,
   PolyConfig,
 } from './config'
 
 import {
+  ItemManager,
+} from './itemManager'
+
+import {
+  EventManager,
+} from './eventManager'
+
+import {
   ActionManager,
   PolyAction,
 } from './actionManager'
-
-import {
-  ItemManager,
-} from './itemManager'
 
 export class PolyController {
 
@@ -22,8 +22,8 @@ export class PolyController {
 
   public config: PolyConfig
 
-  public eventManager : EventManager
   public itemManager  : ItemManager
+  public eventManager : EventManager
   public actionManager: ActionManager
 
   constructor(config?: PolyConfig) {
@@ -33,8 +33,8 @@ export class PolyController {
     }
     
     this.itemManager   = new ItemManager(this)
-    this.actionManager = new ActionManager(this)
     this.eventManager  = new EventManager(this)
+    this.actionManager = new ActionManager(this)
 
     this.initialize()
   }

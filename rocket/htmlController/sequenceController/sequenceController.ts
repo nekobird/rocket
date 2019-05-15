@@ -8,23 +8,23 @@ import {
 } from './itemManager'
 
 import {
+  EventManager,
+} from './eventManager'
+
+import {
   SequenceAction,
   ActionManager,
 } from './actionManager'
 
-import {
-  EventManager,
-} from './eventManager'
-
 export class SequenceController {
-
-  public isReady: boolean = false
 
   public config: SequenceConfig
 
   public itemManager  : ItemManager
-  public actionManager: ActionManager
   public eventManager : EventManager
+  public actionManager: ActionManager
+
+  public isReady: boolean = false
 
   constructor(config?: SequenceConfig) {
     this.config = Object.assign({}, DEFAULT_CONFIG)
@@ -33,8 +33,8 @@ export class SequenceController {
     }
 
     this.itemManager   = new ItemManager(this)
-    this.actionManager = new ActionManager(this)
     this.eventManager  = new EventManager(this)
+    this.actionManager = new ActionManager(this)
 
     this.initialize()
   }

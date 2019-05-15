@@ -200,7 +200,7 @@ export class Vector2 {
       .magnitude
   }
 
-  // ANGLE
+  // Angle
 
   get angle() {
     let m: number = Math.abs(

@@ -5,8 +5,15 @@ import {
   Point,
 } from '../../rocket/rocket'
 
-export class Sortable {
+export interface SortableConfig {
 
+}
+
+const SORTABLE_CONFIG: SortableConfig = {
+
+}
+
+export class Sortable {
 
   public isActive: boolean = false
   public hasMoved: boolean = false
@@ -17,6 +24,7 @@ export class Sortable {
   constructor() {
 
   }
+
 
 
   private reset() {

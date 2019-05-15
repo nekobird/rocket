@@ -1,8 +1,4 @@
 import {
-  SequenceConfig,
-} from './config'
-
-import {
   SequenceController,
 } from './sequenceController'
 

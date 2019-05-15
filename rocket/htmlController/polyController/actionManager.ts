@@ -199,7 +199,7 @@ export class ActionManager {
   }
 
   public composeAction(actionName: PolyActionName, id?: string): PolyAction {
-    const itemManager: ItemManager = this.controller.itemManager
+    const {itemManager}: PolyController = this.controller
 
     const action: PolyAction = this.createAction(actionName)
 

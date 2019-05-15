@@ -73,6 +73,7 @@ export class ItemManager {
 
   public activate(item: HTMLElement): boolean {
     const {config}: PolyController = this.controller
+
     if (this.activeItems.indexOf(item) === -1) {
       item.classList.add(config.classNameItemActive)
       this.activeItems.push(item)
@@ -84,6 +85,7 @@ export class ItemManager {
 
   public deactivate(item: HTMLElement): boolean {
     const {config}: PolyController = this.controller
+
     const index: number = this.activeItems.indexOf(item)
 
     if (index !== -1) {

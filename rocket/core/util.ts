@@ -1,5 +1,5 @@
 import {
-  Num
+  Num,
 } from '../rocket'
 
 interface UtilPromiseEachFn<A> {

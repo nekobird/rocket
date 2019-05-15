@@ -1,7 +1,6 @@
 import {
   DOMUtil,
   DragEventManager,
-  StringUtil,
 } from '../../rocket'
 
 import {
@@ -9,13 +8,14 @@ import {
 } from './SequenceController'
 
 import {
+  SEQUENCE_ACTION_CONFIG_MAP,
+} from './config'
+
+import {
   SequenceActionName,
   SequenceAction,
 } from './actionManager'
 
-import {
-  SEQUENCE_ACTION_CONFIG_MAP,
-} from './config'
 
 export interface ActionConfigMapEntry {
   configProperty: string,
@@ -62,6 +62,7 @@ export class EventManager {
 
   private eventHub(trigger: HTMLElement, actionName: SequenceActionName): this {
     const {actionManager}: SequenceController = this.controller
+
     if (
       this.controller.isReady === true &&
       actionManager.isRunning === false
@@ -86,6 +87,7 @@ export class EventManager {
 
   private eventHandlerKeydown = (event: KeyboardEvent) => {
     const {config, actionManager}: SequenceController = this.controller
+
     if (
       config.listenToKeydown  === true &&
       actionManager.isRunning === false

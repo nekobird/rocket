@@ -25,6 +25,7 @@ export class ItemManager {
 
   public loadItemsFromConfig(): this {
     const {config}: MonoController = this.controller
+
     let items: HTMLElement[]
 
     if (

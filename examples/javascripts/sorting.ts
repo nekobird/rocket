@@ -32,10 +32,10 @@ let popElement = () => {
   let height = activeItem.offsetHeight
   let width  = activeItem.offsetWidth
   activeItem.style.position = 'absolute'
-  activeItem.style.left = `0`
-  activeItem.style.top  = `0`
-  activeItem.style.width  = `${width}px`
-  activeItem.style.height = `${height}px`
+  activeItem.style.left     = `0`
+  activeItem.style.top      = `0`
+  activeItem.style.width    = `${width}px`
+  activeItem.style.height   = `${height}px`
 }
 
 let unpopElement = () => {
@@ -45,9 +45,9 @@ let unpopElement = () => {
 let createDummy = () => {
   dummyElement.classList.add('item', 'item--dummy')
   dummyElement.style.position = `relative`
-  dummyElement.style.height = `${activeItem.offsetHeight}px`
-  dummyElement.style.width  = `${activeItem.offsetWidth}px`
-  dummyElement.style.zIndex = '0'
+  dummyElement.style.height   = `${activeItem.offsetHeight}px`
+  dummyElement.style.width    = `${activeItem.offsetWidth}px`
+  dummyElement.style.zIndex   = '0'
 }
 
 let getLastChild = () => {
@@ -133,13 +133,15 @@ const manager: DragEventManager = new DragEventManager({
     reset()
   },
   onLongPress: (event, manager) => {
-    const currentData = event.downData
-    const target = DOMUtil.findAncestorWithClass(currentData.target, 'item', false)
-    if (target !== false) {
-      isDragActive = true
-      activeItem = <HTMLElement>target
-      activeItem.classList.add('item--active')
-      updateInitialPosition(currentData)
+    if (isDragActive === false) {
+      const currentData = event.downData
+      const target = DOMUtil.findAncestorWithClass(currentData.target, 'item', false)
+      if (target !== false) {
+        isDragActive = true
+        activeItem = <HTMLElement>target
+        activeItem.classList.add('item--active')
+        updateInitialPosition(currentData)
+      }
     }
   }
 })

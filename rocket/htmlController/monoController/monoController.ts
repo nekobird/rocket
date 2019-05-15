@@ -4,11 +4,6 @@ import {
 } from './config'
 
 import {
-  MonoAction,
-  ActionManager,
-} from './actionManager'
-
-import {
   ItemManager,
 } from './itemManager'
 
@@ -16,15 +11,20 @@ import {
   EventManager,
 } from './eventManager'
 
-export class MonoController {
+import {
+  MonoAction,
+  ActionManager,
+} from './actionManager'
 
-  public isReady: boolean = false
+export class MonoController {
 
   public config: MonoConfig
 
   public itemManager  : ItemManager
-  public actionManager: ActionManager
   public eventManager : EventManager
+  public actionManager: ActionManager
+
+  public isReady: boolean = false
 
   constructor(config?: MonoConfig) {
     this.config = Object.assign({}, DEFAULT_CONFIG)
@@ -33,8 +33,8 @@ export class MonoController {
     }
 
     this.itemManager   = new ItemManager(this)
-    this.actionManager = new ActionManager(this)
     this.eventManager  = new EventManager(this)
+    this.actionManager = new ActionManager(this)
 
     this.initialize()
   }
