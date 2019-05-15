@@ -63,6 +63,31 @@ export class PointHelper {
     return {x, y}
   }
 
+  public static multiply(point: Point, by: Point, mutate: boolean = false): Point {
+    const x: number = point.x * by.x
+    const y: number = point.y * by.y
+    if (mutate === true) {
+      point.x = x
+      point.y = y
+      return point
+    }
+    return {x, y}
+  }
+
+  public divide(point: Point, by: Point, mutate: boolean = false): Point | undefined {
+    if (by.x === 0 || by.y === 0) {
+      return undefined
+    }
+    const x: number = point.x / by.x
+    const y: number = point.y / by.y
+    if (mutate === true) {
+      point.x = x
+      point.y = y
+      return point
+    }
+    return {x, y}
+  }
+
   public static magnitude({x, y}: Point): number {
     return Num.hypotenuse(x, y)
   }

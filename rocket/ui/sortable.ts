@@ -3,6 +3,7 @@ import {
   DOMUtil,
   DragEventManager,
   Point,
+  PointHelper,
 } from '../rocket'
 
 export interface SortableConfig {
@@ -31,9 +32,9 @@ export interface SortableConfig {
 
   onComplete?: (context: Sortable) => void,
 
-  onDown?:   (event, manager: DragEventManager, context: Sortable) => void,
-  onDrag?:   (event, manager: DragEventManager, context: Sortable) => void,
-  onUp?:     (event, manager: DragEventManager, context: Sortable) => void,
+  onDown?:(event, manager: DragEventManager, context: Sortable) => void,
+  onDrag?:(event, manager: DragEventManager, context: Sortable) => void,
+  onUp?:  (event, manager: DragEventManager, context: Sortable) => void,
   onCancel?: (event, manager: DragEventManager, context: Sortable) => void,
   onLongPress?: (event, manager: DragEventManager, context: Sortable) => void,
 }
@@ -52,17 +53,17 @@ const SORTABLE_CONFIG: SortableConfig = {
   items: undefined,
 
   createDummyFromItem: item => {
-    const dummyElement = document.createElement('DIV')
-    return dummyElement
+    const dummy = document.createElement('DIV')
+    return dummy
   },
 
-  setDummyElementPropertiesFromItem: (dummyElement, item) => {
-    dummyElement.classList.add('sortableItem', 'sortableItem--dummy')
-    dummyElement.style.position = 'relative'
-    dummyElement.style.height = `${item.offsetHeight}px`
-    dummyElement.style.width  = `${item.offsetWidth}px`
-    dummyElement.style.boxSizing = 'border-box'
-    dummyElement.style.zIndex = '0'
+  setDummyElementPropertiesFromItem: (dummy, item) => {
+    dummy.classList.add('sortableItem', 'sortableItem--dummy')
+    dummy.style.boxSizing = 'border-box'
+    dummy.style.position  = 'relative'
+    dummy.style.height    = `${item.offsetHeight}px`
+    dummy.style.width     = `${item.offsetWidth}px`
+    dummy.style.zIndex = '0'
   },
  
   activateItem: item => {
@@ -73,7 +74,7 @@ const SORTABLE_CONFIG: SortableConfig = {
   },
 
   popItem: item => {
-    const width: number  = item.offsetWidth
+    const width : number = item.offsetWidth
     const height: number = item.offsetHeight
     item.style.position = 'absolute'
     item.style.left = `0`
@@ -85,7 +86,7 @@ const SORTABLE_CONFIG: SortableConfig = {
     item.removeAttribute('style')
   },
 
-  moveItem: (item, to) => {
+  moveItem: (item: HTMLElement, to: Point) => {
     item.style.transform = `translateX(${to.x}px) translateY(${to.y}px)`
   },
 
@@ -105,6 +106,7 @@ export class Sortable {
 
   public isActive: boolean = false
   public hasMoved: boolean = false
+
   public initialOffset: Point
   public activeItem: HTMLElement
   public dummyElement: HTMLElement
@@ -164,7 +166,7 @@ export class Sortable {
 
       onDown: this.handleOnDown,
       onDrag: this.handleOnDrag,
-      onUp: this.handleOnUp,
+      onUp:   this.handleOnUp,
       onCancel: this.handleOnCancel,
       onLongPress: this.handleOnLongPress,
     })
@@ -312,15 +314,12 @@ export class Sortable {
   private move(data) {
     if (this.hasMoved === false) {
       this.config.popItem(this.activeItem, this)
+      this.hasMoved = true
     }
-    this.hasMoved === true
 
     const point: Point = {x: data.clientX, y: data.clientY}
     const offset = DOMHelper.getOffsetFromPoint(this.config.itemContainer, point)
-    const to: Point = {
-      x: offset.x - this.initialOffset.x,
-      y: offset.y - this.initialOffset.y
-    }
+    const to: Point = PointHelper.subtract(offset, this.initialOffset)
 
     this.config.moveItem(this.activeItem, to, this)
 
@@ -336,6 +335,7 @@ export class Sortable {
       // Reset
       this.isActive = false
       this.hasMoved = false
+
       this.activeItem    = undefined
       this.dummyElement  = undefined
       this.initialOffset = undefined
