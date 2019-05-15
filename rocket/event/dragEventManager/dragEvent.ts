@@ -22,6 +22,7 @@ export class DragEvent {
 
   public isCancelled: boolean = false
   public isActive   : boolean = false
+  public isLongPress: boolean = false
 
   public longPressTimeout
   public longPressIsCleared: boolean = false
@@ -152,6 +153,7 @@ export class DragEvent {
   }
 
   public onLongPress(data: SensorData) {
+    this.isLongPress = true
     this.manager.config.onLongPress(this, this.manager)
   }
 

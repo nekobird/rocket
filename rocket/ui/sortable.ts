@@ -31,9 +31,10 @@ export interface SortableConfig {
 
   onComplete?: (context: Sortable) => void,
 
-  onDown?: (event, manager: DragEventManager, context: Sortable) => void,
-  onDrag?: (event, manager: DragEventManager, context: Sortable) => void,
-  onUp?:   (event, manager: DragEventManager, context: Sortable) => void,
+  onDown?:   (event, manager: DragEventManager, context: Sortable) => void,
+  onDrag?:   (event, manager: DragEventManager, context: Sortable) => void,
+  onUp?:     (event, manager: DragEventManager, context: Sortable) => void,
+  onCancel?: (event, manager: DragEventManager, context: Sortable) => void,
   onLongPress?: (event, manager: DragEventManager, context: Sortable) => void,
 }
 
@@ -92,6 +93,7 @@ const SORTABLE_CONFIG: SortableConfig = {
   onDown: () => {},
   onDrag: () => {},
   onUp: () => {},
+  onCancel: () => {},
   onLongPress:() => {},
 }
 
@@ -162,7 +164,8 @@ export class Sortable {
 
       onDown: this.handleOnDown,
       onDrag: this.handleOnDrag,
-      onUp  : this.handleOnUp,
+      onUp: this.handleOnUp,
+      onCancel: this.handleOnCancel,
       onLongPress: this.handleOnLongPress,
     })
   }
@@ -217,6 +220,12 @@ export class Sortable {
     }
 
     this.config.onUp(event, manager, this)
+
+    this.deactivate()
+  }
+
+  private handleOnCancel = (event, manager) => {
+    this.config.onCancel(event, manager, this)
 
     this.deactivate()
   }
