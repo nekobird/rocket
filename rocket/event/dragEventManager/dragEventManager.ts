@@ -38,6 +38,8 @@ export const DRAG_EVENT_MANAGER_DEFAULT_CONFIG: DragEventManagerConfig = {
 
   onLongPress: (event, manager) => {},
 
+  condition: (event, manager) => true,
+
   onDown:   (event, manager) => {},
   onDrag:   (event, manager) => {},
   onUp:     (event, manager) => {},

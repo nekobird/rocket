@@ -112,6 +112,8 @@ export class Sortable {
   public hasMoved: boolean = false
 
   public initialOffset: Point
+
+  public targetItem: HTMLElement
   public activeItem: HTMLElement
   public dummyElement: HTMLElement
 
@@ -167,6 +169,8 @@ export class Sortable {
       enableLongPress: (this.config.activateOnLongPress || this.config.listenToLongPress),
       longPressWait: this.config.longPressWait,
 
+      condition: this.dragCondition,
+
       onDown: this.handleOnDown,
       onDrag: this.handleOnDrag,
       onUp:   this.handleOnUp,
@@ -197,18 +201,35 @@ export class Sortable {
 
   // @eventHandler
 
+  private dragCondition = (event, manager) => {
+    const item: HTMLElement | false = this.getItemFromDownEvent(event)
+    if (item !== false) {
+      this.targetItem = item
+      return true
+    }
+    return false
+  }
+
   private handleOnDown = (event, manager) => {
     if (this.config.preventDefaults === true) {
       event.downData.event.preventDefault()
     }
 
-    const item: HTMLElement | false = this.getItemFromDownEvent(event)
-    if (item !== false) {
-      this.config.onDown(item, event, manager, this)
+    this.config.onDown(this.targetItem, event, manager, this)
 
-      if (this.config.activateOnLongPress === false) {
-        this.activate(<HTMLElement>item, event.downData)
-      }
+    if (this.config.activateOnLongPress === false) {
+      this.activate(this.targetItem, event.downData)
+    }
+  }
+
+  private handleOnLongPress = (event, manager) => {
+    this.config.onLongPress(this.targetItem, event, manager, this)  
+
+    if (
+      this.config.activateOnLongPress === true &&
+      event.previousEvent !== 'drag'
+    ) {
+      this.activate(this.targetItem, event.downData)
     }
   }
 
@@ -217,11 +238,8 @@ export class Sortable {
       event.downData.event.preventDefault()
     }
 
-    const item: HTMLElement | false = this.getItemFromDownEvent(event)
-    if (item !== false) {
-      this.config.onDrag(item, event, manager, this)
-    }
-
+    this.config.onDrag(this.targetItem, event, manager, this)
+    
     if (
       this.isActive === true &&
       typeof event.dragData === 'object'
@@ -235,10 +253,7 @@ export class Sortable {
       event.downData.event.preventDefault()
     }
 
-    const item: HTMLElement | false = this.getItemFromDownEvent(event)
-    if (item !== false) {
-      this.config.onUp(item, event, manager, this)
-    }
+    this.config.onUp(this.targetItem, event, manager, this)
 
     if (this.isActive === true) {
       this.deactivate()
@@ -246,28 +261,15 @@ export class Sortable {
   }
 
   private handleOnCancel = (event, manager) => {
-    const item: HTMLElement | false = this.getItemFromDownEvent(event)
-    if (item !== false) {
-      this.config.onCancel(item, event, manager, this)
-    }
+    this.config.onCancel(this.targetItem, event, manager, this)
 
     if (this.isActive === true) {
       this.deactivate()
     }
   }
 
-  private handleOnLongPress = (event, manager) => {
-    const item: HTMLElement | false = this.getItemFromDownEvent(event)
-    if (item !== false) {
-      this.config.onLongPress(item, event, manager, this)  
-
-      if (this.config.activateOnLongPress === true) {
-        this.activate(<HTMLElement>item, event.downData)
-      }
-    }
-  }
-
   // @helper
+
   public getLastItem(): HTMLElement | false {
     return DOMUtil.getNthChild('last', this.config.container, item => {
       return (
@@ -322,6 +324,7 @@ export class Sortable {
   // @actions
 
   private activate(item: HTMLElement, data) {
+    console.log('active')
     if (this.isActive === false) {
       this.isActive   = true
       this.activeItem = item
@@ -331,25 +334,29 @@ export class Sortable {
   }
 
   private move(data) {
-    if (this.hasMoved === false) {
-      this.config.popItem(this.activeItem, this)
-      this.hasMoved = true
+    if (this.isActive === true) {
+      if (this.hasMoved === false) {
+        this.config.popItem(this.activeItem, this)
+        this.hasMoved = true
+      }
+
+      const point: Point = {x: data.clientX, y: data.clientY}
+      const offset = DOMHelper.getOffsetFromPoint(this.config.container, point)
+      const to: Point = PointHelper.subtract(offset, this.initialOffset)
+
+      this.config.moveItem(this.activeItem, to, this)
+
+      this.prepareAndInsertDummyElementAt(point)
     }
-
-    const point: Point = {x: data.clientX, y: data.clientY}
-    const offset = DOMHelper.getOffsetFromPoint(this.config.container, point)
-    const to: Point = PointHelper.subtract(offset, this.initialOffset)
-
-    this.config.moveItem(this.activeItem, to, this)
-
-    this.prepareAndInsertDummyElementAt(point)
   }
 
   private deactivate() {
     if (this.isActive === true) {
       this.config.deactivateItem(this.activeItem, this)
       this.config.unpopItem(this.activeItem, this)
-      this.config.container.replaceChild(this.activeItem, this.dummyElement)
+      if (typeof this.dummyElement !== 'undefined') {
+        this.config.container.replaceChild(this.activeItem, this.dummyElement)
+      }
 
       // Reset
       this.isActive = false

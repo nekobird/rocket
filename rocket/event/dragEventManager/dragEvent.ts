@@ -20,9 +20,10 @@ export class DragEvent {
   public upData    : SensorData
   public cancelData: SensorData
 
-  public isCancelled: boolean = false
+  public condition: boolean = false
   public isActive   : boolean = false
   public isLongPress: boolean = false
+  public isCancelled: boolean = false
 
   public longPressTimeout
   public longPressIsCleared: boolean = false
@@ -94,24 +95,32 @@ export class DragEvent {
   }
 
   public onDown(data: SensorData) {
+    const {config}: DragEventManager = this.manager
+    
     this.isActive   = true
     this.identifier = data.identifier
     this.downData   = data
 
     this.currentEvent = data.name
 
-    this.manager.config.onDown(this, this.manager)
+    this.condition = config.condition(this, this.manager)
+    if (this.condition === true) {
+      this.manager.config.onDown(this, this.manager)
+    
 
-    if (this.manager.config.enableLongPress === true) {
-      this.longPressTimeout = setTimeout(
-        () => this.onLongPress(data),
-        this.manager.config.longPressWait * 1000
-      )
+      if (this.manager.config.enableLongPress === true) {
+        this.longPressTimeout = setTimeout(
+          () => this.onLongPress(data),
+          this.manager.config.longPressWait * 1000
+        )
+      }
+    } else {
+      this.isActive = false
     }
   }
 
   public onDrag(data: SensorData) {
-    if (this.isActive === true) {
+    if (this.isActive  === true) {
       this.dragData = data
 
       this.previousEvent = this.currentEvent
