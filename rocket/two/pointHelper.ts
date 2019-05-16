@@ -1,12 +1,17 @@
 import {
-  Point,
   Num,
+  Point,
+  Vector2,
 } from '../rocket'
 
 
 export class PointHelper {
   public static new(x: number, y: number): Point {
     return {x, y}
+  }
+
+  public static toVector2(point: Point): Vector2 {
+    return new Vector2(point.x, point.y)
   }
 
   public static isEqual(point: Point, ...points: Point[]): boolean {
