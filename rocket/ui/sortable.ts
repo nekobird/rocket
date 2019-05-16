@@ -32,11 +32,11 @@ export interface SortableConfig {
 
   onComplete?: (context: Sortable) => void,
 
-  onDown?:(event, manager: DragEventManager, context: Sortable) => void,
-  onDrag?:(event, manager: DragEventManager, context: Sortable) => void,
-  onUp?:  (event, manager: DragEventManager, context: Sortable) => void,
-  onCancel?: (event, manager: DragEventManager, context: Sortable) => void,
-  onLongPress?: (event, manager: DragEventManager, context: Sortable) => void,
+  onDown?: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
+  onDrag?: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
+  onUp?:   (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
+  onCancel?:    (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
+  onLongPress?: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
 }
 
 const SORTABLE_CONFIG: SortableConfig = {
@@ -204,7 +204,7 @@ export class Sortable {
 
     const item: HTMLElement | false = this.getItemFromDownEvent(event)
     if (item !== false) {
-      this.config.onDown(event, manager, this)
+      this.config.onDown(item, event, manager, this)
 
       if (this.config.activateOnLongPress === false) {
         this.activate(<HTMLElement>item, event.downData)
@@ -219,7 +219,7 @@ export class Sortable {
 
     const item: HTMLElement | false = this.getItemFromDownEvent(event)
     if (item !== false) {
-      this.config.onDrag(event, manager, this)
+      this.config.onDrag(item, event, manager, this)
     }
 
     if (
@@ -237,7 +237,7 @@ export class Sortable {
 
     const item: HTMLElement | false = this.getItemFromDownEvent(event)
     if (item !== false) {
-      this.config.onUp(event, manager, this)
+      this.config.onUp(item, event, manager, this)
     }
 
     if (this.isActive === true) {
@@ -248,7 +248,7 @@ export class Sortable {
   private handleOnCancel = (event, manager) => {
     const item: HTMLElement | false = this.getItemFromDownEvent(event)
     if (item !== false) {
-      this.config.onCancel(event, manager, this)
+      this.config.onCancel(item, event, manager, this)
     }
 
     if (this.isActive === true) {
@@ -259,7 +259,7 @@ export class Sortable {
   private handleOnLongPress = (event, manager) => {
     const item: HTMLElement | false = this.getItemFromDownEvent(event)
     if (item !== false) {
-      this.config.onLongPress(event, manager, this)  
+      this.config.onLongPress(item, event, manager, this)  
 
       if (this.config.activateOnLongPress === true) {
         this.activate(<HTMLElement>item, event.downData)

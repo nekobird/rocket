@@ -5,6 +5,9 @@ import {
 
 
 export class PointHelper {
+  public static new(x: number, y: number): Point {
+    return {x, y}
+  }
 
   public static isEqual(point: Point, ...points: Point[]): boolean {
     let isEqual: boolean = true

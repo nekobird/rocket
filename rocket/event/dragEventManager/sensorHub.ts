@@ -62,14 +62,6 @@ export class SensorHub {
 
   }
 
-  private destroyEvent(identifier: Identifier): boolean {
-    if (typeof this.events[identifier] !== undefined) {
-      delete this.events[identifier]
-      return true
-    }
-    return false
-  }
-
   private hasEvent(identifier: Identifier) {
     return (Object.keys(this.events).indexOf(identifier) !== -1)
   }
@@ -80,5 +72,13 @@ export class SensorHub {
         return this.events[identifier]
       }
     })
+  }
+
+  private destroyEvent(identifier: Identifier): boolean {
+    if (typeof this.events[identifier] !== undefined) {
+      delete this.events[identifier]
+      return true
+    }
+    return false
   }
 }
