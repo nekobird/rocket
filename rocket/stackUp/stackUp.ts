@@ -71,8 +71,8 @@ export class StackUp {
 
   private getContainer(): this {
     if (
-      typeof this.config.container === 'undefined' &&
-      typeof this.config.containerSelector === 'string'
+      typeof this.config.container === 'undefined'
+      && typeof this.config.containerSelector === 'string'
     ) {
       const container: HTMLElement = document.querySelector(this.config.containerSelector)
       if (container !== null) {
@@ -89,8 +89,8 @@ export class StackUp {
 
   private getItems(): this {
     if (
-      typeof this.config.items === 'undefined' &&
-      typeof this.config.itemsSelector === 'string'
+      typeof this.config.items === 'undefined'
+      && typeof this.config.itemsSelector === 'string'
     ) {
       const items: NodeListOf<HTMLElement> = document.querySelectorAll(this.config.itemsSelector)
       if (items !== null) {
@@ -121,8 +121,8 @@ export class StackUp {
 
   private boundaryUpdate(): this {
     if (
-      this.config.boundary !== window &&
-      this.config.boundary !== null
+      this.config.boundary !== window
+      && this.config.boundary !== null
     ) {
       const boundary: HTMLElement = <HTMLElement>this.config.boundary
       const style: CSSStyleDeclaration = window.getComputedStyle(boundary)

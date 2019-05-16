@@ -4,103 +4,12 @@ import {
   DragEventManager,
   Point,
   PointHelper,
-} from '../rocket'
+} from '../../rocket'
 
-export interface SortableConfig {
-  activateOnLongPress?: boolean,
-  listenToLongPress?: boolean,
-  longPressWait?: number,
-
-  preventDefaults?: boolean,
-
-  containerSelector?: string,
-  container?: HTMLElement,
-
-  itemsSelector?: string,
-  items?: HTMLElement[],
-
-  createDummyFromItem?: (item: HTMLElement, context: Sortable) => HTMLElement,
-  setDummyElementPropertiesFromItem?: (dummyElement: HTMLElement, item: HTMLElement, context: Sortable) => void,
-
-  activateItem?:   (item: HTMLElement, context: Sortable) => void,
-  deactivateItem?: (item: HTMLElement, context: Sortable) => void,
-
-  popItem?:   (item: HTMLElement, context: Sortable) => void,
-  unpopItem?: (item: HTMLElement, context: Sortable) => void,
-
-  moveItem?: (item: HTMLElement, to: Point, context: Sortable) => void,
-
-  onComplete?: (context: Sortable) => void,
-
-  onDown?: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
-  onDrag?: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
-  onUp?:   (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
-  onCancel?:    (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
-  onLongPress?: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
-}
-
-const SORTABLE_CONFIG: SortableConfig = {
-  activateOnLongPress: false,
-  listenToLongPress: true,
-  longPressWait: 0.5,
-
-  preventDefaults: true,
-
-  containerSelector: '.sortableContainer',
-  container: undefined,
-
-  itemsSelector: '.sortableItem',
-  items: undefined,
-
-  createDummyFromItem: item => {
-    const dummy = document.createElement('DIV')
-    return dummy
-  },
-
-  setDummyElementPropertiesFromItem: (dummy, item) => {
-    dummy.classList.add('sortableItem', 'sortableItem--dummy')
-    DOMHelper.applyStyle(dummy, {
-      'width' : `${item.offsetWidth}px`,
-      'height': `${item.offsetHeight}px`,
-      'boxSizing': 'border-box',
-      'position': 'relative',
-      'zIndex': 0,
-    })
-  },
- 
-  activateItem: item => {
-    item.classList.add('sortableItem--active')
-  },
-  deactivateItem: item => {
-    item.classList.remove('sortableItem--active')
-  },
-
-  popItem: item => {
-    const width : number = item.offsetWidth
-    const height: number = item.offsetHeight
-    DOMHelper.applyStyle(item, {
-      'position': 'absolute',
-      'left': 0,
-      'top' : 0,
-      'width' : `${width}px`,
-      'height': `${height}px`,
-    })
-  },
-  unpopItem: item => {
-    DOMHelper.clearStyle(item)
-  },
-
-  moveItem: (item: HTMLElement, to: Point) => {
-    item.style.transform = `translateX(${to.x}px) translateY(${to.y}px)`
-  },
-
-  onComplete: () => {},
-  onDown: () => {},
-  onDrag: () => {},
-  onUp: () => {},
-  onCancel: () => {},
-  onLongPress:() => {},
-}
+import {
+  SORTABLE_CONFIG,
+  SortableConfig,
+} from './config'
 
 export class Sortable {
 
@@ -131,8 +40,8 @@ export class Sortable {
   // @initialization
   public getContainer(): this {
     if (
-      typeof this.config.container === 'undefined' &&
-      typeof this.config.containerSelector === 'string'
+      typeof this.config.container === 'undefined'
+      && typeof this.config.containerSelector === 'string'
     ) {
       const container: HTMLElement = document.querySelector(this.config.containerSelector)
       if (container !== null) {
@@ -149,8 +58,8 @@ export class Sortable {
 
   public getItems(): this {
     if (
-      typeof this.config.items === 'undefined' &&
-      typeof this.config.itemsSelector === 'string'
+      typeof this.config.items === 'undefined'
+      && typeof this.config.itemsSelector === 'string'
     ) {
       const items: NodeListOf<HTMLElement> = document.querySelectorAll(this.config.itemsSelector)
       if (items !== null) {
@@ -226,8 +135,8 @@ export class Sortable {
     this.config.onLongPress(this.targetItem, event, manager, this)  
 
     if (
-      this.config.activateOnLongPress === true &&
-      event.previousEvent !== 'drag'
+      this.config.activateOnLongPress === true
+      && event.previousEvent !== 'drag'
     ) {
       this.activate(this.targetItem, event.downData)
     }
@@ -241,8 +150,8 @@ export class Sortable {
     this.config.onDrag(this.targetItem, event, manager, this)
     
     if (
-      this.isActive === true &&
-      typeof event.dragData === 'object'
+      this.isActive === true
+      && typeof event.dragData === 'object'
     ) {
       this.move(event.dragData)
     }
@@ -273,9 +182,9 @@ export class Sortable {
   public getLastItem(): HTMLElement | false {
     return DOMUtil.getNthChild('last', this.config.container, item => {
       return (
-        this.config.items.indexOf(item) !== -1 &&
-        this.activeItem   !== item &&
-        this.dummyElement !== item
+        this.config.items.indexOf(item) !== -1
+        && this.activeItem   !== item
+        && this.dummyElement !== item
       )
     })
   }
@@ -286,8 +195,8 @@ export class Sortable {
       point,
       item => {
         return (
-          this.config.items.indexOf(item) !== -1 &&
-          this.activeItem !== item
+          this.config.items.indexOf(item) !== -1
+          && this.activeItem !== item
         )
       },
       false
@@ -304,9 +213,9 @@ export class Sortable {
   public insertDummyElement(item: HTMLElement, point: Point) {
     const lastItem: HTMLElement | false = this.getLastItem()
     if (
-      lastItem !== false &&
-      lastItem === item  &&
-      DOMHelper.elementIsBelowPoint(lastItem, point, lastItem.offsetHeight / 2) === true
+      lastItem !== false
+      && lastItem === item
+      && DOMHelper.elementIsBelowPoint(lastItem, point, lastItem.offsetHeight / 2) === true
     ) {
       this.config.container.appendChild(this.dummyElement)
     } else {
