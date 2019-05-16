@@ -22,6 +22,8 @@ export interface DragEventManagerConfig {
 
   onLongPress?: (event: DragEvent, manager: DragEventManager) => void,
 
+  condition?: (event: DragEvent, manager: DragEventManager) => boolean,
+
   onDown?:   (event: DragEvent, manager: DragEventManager) => void,
   onDrag?:   (event: DragEvent, manager: DragEventManager) => void,
   onUp?:     (event: DragEvent, manager: DragEventManager) => void,
