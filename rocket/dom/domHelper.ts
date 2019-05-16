@@ -10,6 +10,14 @@ export interface StyleList {
 
 export class DOMHelper {
 
+  public static disableSelection(element: HTMLElement) {
+    if (typeof element.onselectstart !== 'undefined') {
+      element.onselectstart = () => false
+    }
+    element.setAttribute('unselectable', 'on')
+    element.style.userSelect = 'none'
+  }
+
   public static onImageLoad(src: string): Promise<void> {
     return new Promise((resolve, reject) => {
       const img   = new Image()
