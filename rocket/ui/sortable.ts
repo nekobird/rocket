@@ -305,6 +305,7 @@ export class Sortable {
   }
   
   // @actions
+
   private activate(item: HTMLElement, data) {
     if (this.isActive === false) {
       this.isActive   = true
