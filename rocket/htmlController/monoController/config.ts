@@ -24,7 +24,7 @@ export interface MonoConfig {
 
   deactivateOnOutsideAction?: boolean,
   
-  selectorItems?: string | undefined,
+  itemsSelector?: string | undefined,
   items?: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
 
   classNameItemActive?  : string,
@@ -56,7 +56,7 @@ export const DEFAULT_CONFIG: MonoConfig = {
 
   deactivateOnOutsideAction: true,
 
-  selectorItems: '.js-mono-item',
+  itemsSelector: '.js-mono-item',
   items: undefined,
 
   classNameItemActive: 'js-mono-item--active',

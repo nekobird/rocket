@@ -4,7 +4,7 @@ import {
 } from '../../rocket/rocket'
 
 const controller = new SequenceController({
-  selectorItems: '.item',
+  itemsSelector: '.item',
 
   classNameItemActive: 'item--active',
 

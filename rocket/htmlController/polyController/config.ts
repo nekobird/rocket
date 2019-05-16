@@ -23,7 +23,7 @@ export interface PolyConfig {
 
   listenToKeydown?: boolean,
 
-  selectorItems?: string | undefined,
+  itemsSelector?: string | undefined,
   items?: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
 
   classNameItemActive?: string,
@@ -64,7 +64,7 @@ export const DEFAULT_CONFIG: PolyConfig = {
   deactivateAllOnOutsideAction: false,
   listenToKeydown: false,
 
-  selectorItems: '.js-poly-item',
+  itemsSelector: '.js-poly-item',
   items: undefined,
 
   classNameItemActive: 'js-poly-item--active',

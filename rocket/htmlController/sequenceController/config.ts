@@ -22,7 +22,7 @@ export interface SequenceConfig {
 
   listenToKeydown?: boolean,
 
-  selectorItems?: string | undefined,
+  itemsSelector?: string | undefined,
   items?: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
 
   classNameItemActive?: string,
@@ -51,7 +51,7 @@ export const DEFAULT_CONFIG: SequenceConfig = {
 
   listenToKeydown: false,
 
-  selectorItems: '.js-sequence-item',
+  itemsSelector: '.js-sequence-item',
   items: undefined,
 
   classNameItemActive: 'js-sequence-item--active',

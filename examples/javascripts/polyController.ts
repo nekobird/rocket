@@ -4,7 +4,7 @@ import {
 } from '../../rocket/rocket'
 
 const controller = new PolyController({
-  selectorItems: '.item',
+  itemsSelector: '.item',
 
   deactivateAllOnOutsideAction: false,
 

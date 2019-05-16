@@ -6,7 +6,8 @@ export class ItemManager {
 
   private controller: MonoController
 
-  public itemElements: HTMLElement[]
+  public items: HTMLElement[]
+
   public activeItem  : HTMLElement
   public activeItemId: string
 
@@ -20,80 +21,78 @@ export class ItemManager {
 
   public initialize(): this {
     this.loadItemsFromConfig()
+    this.filterItems()
+    this.filterActiveItems()
     return this
   }
 
   public loadItemsFromConfig(): this {
     const {config}: MonoController = this.controller
 
-    let items: HTMLElement[]
-
     if (
-      typeof config.selectorItems === 'string' &&
+      typeof config.itemsSelector === 'string' &&
       typeof config.items === 'undefined'
     ) {
-      const results: NodeListOf<HTMLElement> = document.querySelectorAll(this.controller.config.selectorItems)
-      items = (results === null) ? [] : Array.from(results)
-    } else if (typeof config.items === 'object') {
-      if (
-        Array.isArray(config.items) === false &&
-        NodeList.prototype.isPrototypeOf(config.items)
-      ) {
-        items = Array.from(config.items)
-      } else if (Array.isArray(config.items) === true) {
-        items = <HTMLElement[]>config.items
-      } else {
-        items = []
+      const items: NodeListOf<HTMLElement> = document.querySelectorAll(config.itemsSelector)
+      if (items !== null) {
+        this.items = Array.from(items)
+        return this
       }
-    } else {
-      items = []
+    }
+      
+    if (
+      Array.isArray(config.items) === false &&
+      NodeList.prototype.isPrototypeOf(config.items)
+    ) {
+      this.items = Array.from(config.items)
+      return this
+    }
+    
+    if (Array.isArray(config.items) === true) {
+      this.items = <HTMLElement[]>config.items
+      return this
     }
 
-    this.setAndFilterItems(items)
-    return this
-  }
-
-  public get items(): HTMLElement[] {
-    return this.itemElements
+    throw new Error('MonoController: Items not defined.')
   }
 
   public setItems(items: HTMLElement[] | NodeListOf<HTMLElement> | string): this {
     if (typeof items === 'string') {
       const results: NodeListOf<HTMLElement> = document.querySelectorAll(items)
       if (results !== null) {
-        this.setAndFilterItems(Array.from(results))
+        this.items = Array.from(results)
       }
       return this
     }
 
     if (NodeList.prototype.isPrototypeOf(items)) {
-      this.setAndFilterItems(Array.from(<NodeListOf<HTMLElement>>items))
+      this.items = Array.from(<NodeListOf<HTMLElement>>items)
       return this
     }
 
     if (Array.isArray(items) === true) {
-      this.setAndFilterItems(<HTMLElement[]>items)
+      this.items = <HTMLElement[]>items
     }
     return this
   }
 
-  public setAndFilterItems(items): void {
-    this.itemElements = items.filter(item => this.itemIsValid(item))
-    this.filterActiveItems()
+  public filterItems(): this {
+    this.items = this.items.filter(item => this.itemIsValid(item))
+    return this
   }
 
   public filterActiveItems(): this {
     const {config}: MonoController = this.controller
 
-    if (this.itemElements.length > 0) {
-      this.itemElements.forEach(item => {
+    if (this.items.length > 0) {
+      this.items.forEach(item => {
         if (item.classList.contains(config.classNameItemActive) === true) {
           if (this.isActive === true) {
             item.classList.remove(config.classNameItemActive)
           } else {
-            this.activeItem = item
+            this.activeItem   = item
             this.activeItemId = item.dataset.id
-            this.isActive = true
+            this.isActive     = true
           }
         }
       })
@@ -111,9 +110,9 @@ export class ItemManager {
   }
 
   public getItemFromId(id: string): HTMLElement | false {
-    let matchedItems: HTMLElement[] = []
+    const matchedItems: HTMLElement[] = []
 
-    this.itemElements.forEach(item => {
+    this.items.forEach(item => {
       if (item.dataset.id === id) {
         matchedItems.push(item)
       }
@@ -124,6 +123,8 @@ export class ItemManager {
     }
     return false
   }
+
+  // @action
 
   public activate(item: HTMLElement) {
     if (this.itemIsValid(item) === true) {

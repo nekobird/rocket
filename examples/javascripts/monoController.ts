@@ -4,7 +4,7 @@ import {
 } from '../../rocket/rocket'
 
 const controller = new MonoController({
-  selectorItems: '.js-item',
+  itemsSelector: '.js-item',
 
   classNameItemActive: 'item--active',
 
