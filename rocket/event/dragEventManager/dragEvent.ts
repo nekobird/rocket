@@ -36,12 +36,12 @@ export class DragEvent {
   public get duration(): number | undefined {
     if (typeof this.downData === 'object') {
       if (this.isActive === true) {
-        return this.dragData.time - this.downData.time
+        return (this.dragData.time - this.downData.time) / 1000
       }
       if (this.isCancelled === true) {
-        return this.cancelData.time - this.downData.time
+        return (this.cancelData.time - this.downData.time) / 1000
       }
-      return this.upData.time - this.downData.time
+      return (this.upData.time - this.downData.time) / 1000
     }
     return undefined
   }

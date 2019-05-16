@@ -181,24 +181,32 @@ export class Sortable {
     this.initializeDragEvent()
   }
 
-  // @eventHandler
-  private handleOnDown = (event, manager) => {
-    if (this.config.preventDefaults === true) {
-      event.downData.event.preventDefault()
-    }
-
-    this.config.onDown(event, manager, this)
-
-    if (
-      this.config.activateOnLongPress === false &&
-      typeof event.downData === 'object'
-    ) {
+  private getItemFromDownEvent(event): HTMLElement | false {
+    if (typeof event.downData === 'object') {
       const item: HTMLElement | HTMLElement[] | false = DOMUtil.findAncestor(
         event.downData.target,
         item => (this.config.items.indexOf(item) !== -1),
         false
       )
       if (item !== false) {
+        return <HTMLElement>item
+      }
+    }
+    return false
+  }
+
+  // @eventHandler
+
+  private handleOnDown = (event, manager) => {
+    if (this.config.preventDefaults === true) {
+      event.downData.event.preventDefault()
+    }
+
+    const item: HTMLElement | false = this.getItemFromDownEvent(event)
+    if (item !== false) {
+      this.config.onDown(event, manager, this)
+
+      if (this.config.activateOnLongPress === false) {
         this.activate(<HTMLElement>item, event.downData)
       }
     }
@@ -209,11 +217,14 @@ export class Sortable {
       event.downData.event.preventDefault()
     }
 
-    this.config.onDrag(event, manager, this)
+    const item: HTMLElement | false = this.getItemFromDownEvent(event)
+    if (item !== false) {
+      this.config.onDrag(event, manager, this)
+    }
 
     if (
-      typeof event.dragData === 'object' &&
-      this.isActive === true
+      this.isActive === true &&
+      typeof event.dragData === 'object'
     ) {
       this.move(event.dragData)
     }
@@ -224,32 +235,36 @@ export class Sortable {
       event.downData.event.preventDefault()
     }
 
-    this.config.onUp(event, manager, this)
+    const item: HTMLElement | false = this.getItemFromDownEvent(event)
+    if (item !== false) {
+      this.config.onUp(event, manager, this)
+    }
 
-    this.deactivate()
+    if (this.isActive === true) {
+      this.deactivate()
+    }
   }
 
   private handleOnCancel = (event, manager) => {
-    this.config.onCancel(event, manager, this)
+    const item: HTMLElement | false = this.getItemFromDownEvent(event)
+    if (item !== false) {
+      this.config.onCancel(event, manager, this)
+    }
 
-    this.deactivate()
+    if (this.isActive === true) {
+      this.deactivate()
+    }
   }
 
   private handleOnLongPress = (event, manager) => {
-    if (
-      this.config.activateOnLongPress === true &&
-      typeof event.downData === 'object'
-    ) {
-      const item: HTMLElement | HTMLElement[] | false = DOMUtil.findAncestor(
-        event.downData.target,
-        item => (this.config.items.indexOf(item) !== -1),
-        false
-      )
-      if (item !== false) {
+    const item: HTMLElement | false = this.getItemFromDownEvent(event)
+    if (item !== false) {
+      this.config.onLongPress(event, manager, this)  
+
+      if (this.config.activateOnLongPress === true) {
         this.activate(<HTMLElement>item, event.downData)
       }
     }
-    this.config.onLongPress(event, manager, this)
   }
 
   // @helper
