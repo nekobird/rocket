@@ -110,6 +110,10 @@ export class Sortable {
 
   // @eventHandler
 
+  public preventDefault = event => {
+    event.preventDefault()
+  }
+
   private dragCondition = (event, manager) => {
     const item: HTMLElement | false = this.getItemFromDownEvent(event)
     if (item !== false) {
@@ -234,6 +238,11 @@ export class Sortable {
 
   private activate(item: HTMLElement, data) {
     if (this.isActive === false) {
+      if (this.config.disableTouchEventsWhileActive === true) {
+        window.addEventListener('touchstart', this.preventDefault, {passive: false})
+        window.addEventListener('touchmove',  this.preventDefault, {passive: false})
+      }
+
       this.isActive   = true
       this.activeItem = item
       this.config.activateItem(this.activeItem, this)
@@ -275,6 +284,11 @@ export class Sortable {
       this.initialOffset = undefined
 
       this.config.onComplete(this)
+
+      if (this.config.disableTouchEventsWhileActive === true) {
+        window.removeEventListener('touchstart', this.preventDefault)
+        window.removeEventListener('touchmove',  this.preventDefault)
+      }
     }
   }
 }

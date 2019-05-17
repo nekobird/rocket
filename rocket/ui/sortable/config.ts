@@ -14,6 +14,7 @@ export interface SortableConfig {
   longPressWait?: number,
 
   preventDefaults?: boolean,
+  disableTouchEventsWhileActive?: boolean,
 
   containerSelector?: string,
   container?: HTMLElement,
@@ -47,6 +48,7 @@ export const SORTABLE_CONFIG: SortableConfig = {
   longPressWait: 0.5,
 
   preventDefaults: true,
+  disableTouchEventsWhileActive: true,
 
   containerSelector: '.sortableContainer',
   container: undefined,
