@@ -10,19 +10,11 @@ export interface StyleList {
 
 export class DOMHelper {
 
-  public static disableSelection(element: HTMLElement) {
-    if (typeof element.onselectstart !== 'undefined') {
-      element.onselectstart = () => false
-    }
-    element.setAttribute('unselectable', 'on')
-    element.style.userSelect = 'none'
-  }
-
   public static onImageLoad(src: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      const img   = new Image()
+      const img = new Image()
       img.onerror = () => reject()
-      img.onload  = () => resolve()
+      img.onload = () => resolve()
       img.src = src
     })
   }
@@ -99,7 +91,7 @@ export class DOMHelper {
     element.removeAttribute('style')
   }
 
-  public static getStyleValue(element: HTMLElement, propertyName: string, isNumber: boolean = false): number | string {
+  public static getStyleValue(element: HTMLElement, propertyName: string, isNumber: boolean = false): string | number {
     const style: CSSStyleDeclaration = window.getComputedStyle(element)
     const value = style[propertyName]
     return isNumber === true ? parseFloat(value) : value
@@ -115,7 +107,10 @@ export class DOMHelper {
 
   public static getLineHeight(element: HTMLElement): number {
     const style: CSSStyleDeclaration = window.getComputedStyle(element)
-    return parseFloat(style['lineHeight'])
+    if (style.lineHeight !== null) {
+      return parseFloat(style.lineHeight)
+    }
+    return 0
   }
 
   public static getText(element: HTMLElement): string {
@@ -127,52 +122,51 @@ export class DOMHelper {
     ) {
       return (<HTMLTextAreaElement | HTMLInputElement>element).value
     }
-    return element.textContent
+    if (element.textContent !== null) {
+      return element.textContent
+    }
+    return ''
   }
 
-  public static getHorizontalBorderWidth(element: HTMLElement) {
+  public static getHorizontalBorderWidths(element: HTMLElement) {
     const style: CSSStyleDeclaration = window.getComputedStyle(element)
-    const width: number =
-      parseFloat(style.borderLeftWidth) +
-      parseFloat(style.borderRightWidth)
-    return width
+    let { borderLeftWidth, borderRightWidth } = style
+    const left  = borderLeftWidth  === null? 0 : parseFloat(borderLeftWidth)
+    const right = borderRightWidth === null? 0 : parseFloat(borderRightWidth)
+    return left + right
   }
 
-  public static getHorizontalPaddingWidth(element: HTMLElement): number {
+  public static getHorizontalPaddings(element: HTMLElement): number {
     const style: CSSStyleDeclaration = window.getComputedStyle(element)
-    const width: number =
-      parseFloat(style.paddingLeft) +
-      parseFloat(style.paddingRight)
-    return width
+    let { paddingLeft, paddingRight } = style
+    const left  = paddingLeft  === null? 0 : parseFloat(paddingLeft)
+    const right = paddingRight === null? 0 : parseFloat(paddingRight)
+    return left + right
   }
 
-  public static getVerticalBorderHeight(element: HTMLElement): number {
+  public static getVerticalBorderWidths(element: HTMLElement): number {
     const style: CSSStyleDeclaration = window.getComputedStyle(element)
-    const height: number =
-      parseFloat(style.borderBottomWidth) +
-      parseFloat(style.borderTopWidth)
-    return height
+    const { borderTopWidth, borderBottomWidth } = style
+    const top    = borderTopWidth    === null? 0 : parseFloat(borderTopWidth)
+    const bottom = borderBottomWidth === null? 0 : parseFloat(borderBottomWidth)
+    return top + bottom
   }
 
-  public static getVerticalPaddingHeight(element: HTMLElement): number {
+  public static getVerticalPaddings(element: HTMLElement): number {
     const style: CSSStyleDeclaration = window.getComputedStyle(element)
-    const height: number =
-      parseFloat(style.paddingBottom) +
-      parseFloat(style.paddingTop)
-    return height
+    const { paddingTop, paddingBottom } = style
+    const top    = paddingTop    === null? 0 : parseFloat(paddingTop)
+    const bottom = paddingBottom === null? 0 : parseFloat(paddingBottom)
+    return top + bottom
   }
 
   public static getAnimationDuration(element: HTMLElement): number {
     const computedStyle: CSSStyleDeclaration = getComputedStyle(element)
-    return parseFloat(
-      computedStyle.animationDuration
-    ) * 1000
+    return parseFloat(computedStyle.animationDuration) * 1000
   }
 
   public static getTransitionDuration(element: HTMLElement): number {
     const computedStyle: CSSStyleDeclaration = getComputedStyle(element)
-    return parseFloat(
-      computedStyle.transitionDuration
-    ) * 1000
+    return parseFloat(computedStyle.transitionDuration) * 1000
   }
 }

@@ -9,13 +9,12 @@
     "preserveConstEnums": true,
     "removeComments": true,
     "sourceMap": false,
-    // "strict": true,
-    "target": "es2018",
+    "strict": true,
+    "target": "ES2015",
   },
   "include": [
     "rocket/*"
   ],
-  "prepare": "npm run buildRocket",
   "exclude": [
     "node_modules",
     "src/**"

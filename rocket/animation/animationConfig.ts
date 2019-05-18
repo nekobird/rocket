@@ -19,31 +19,31 @@ export interface AnimationCallback {
 }
 
 export interface AnimationConfig {
-  alternate?: boolean,
-  delay?: number,
-  duration?: number,
+  alternate: boolean,
+  delay: number,
+  duration: number,
 
-  iterationDelay?: number,
-  numberOfIterations?: number | 'infinite',
+  iterationDelay: number,
+  numberOfIterations: number | 'infinite',
 
-  dataExport?: object,
+  dataExport: object,
 
-  timingFunction?: AnimationTimingFunction,
+  timingFunction: AnimationTimingFunction,
 
-  beforeStart?: AnimationBeforeHook,
-  beforeStartWithDelay?: AnimationBeforeHook,
-  beforeIterationStart?: AnimationBeforeHook,
-  beforeSubsequentIteration?: AnimationBeforeHook,
+  beforeStart: AnimationBeforeHook,
+  beforeStartWithDelay: AnimationBeforeHook,
+  beforeIterationStart: AnimationBeforeHook,
+  beforeSubsequentIteration: AnimationBeforeHook,
 
-  onStart?: AnimationCallback | AnimationCallback[],
-  onComplete?: AnimationCallback | AnimationCallback[],
+  onStart: AnimationCallback | AnimationCallback[],
+  onComplete: AnimationCallback | AnimationCallback[],
 
-  onIterationStart?: AnimationCallback | AnimationCallback[],
-  onIterationComplete?: AnimationCallback | AnimationCallback[],
+  onIterationStart: AnimationCallback | AnimationCallback[],
+  onIterationComplete: AnimationCallback | AnimationCallback[],
 
-  callback?: Function,
+  callback: Function,
 
-  onTick?: AnimationTickFunction | AnimationTickFunction[],
+  onTick: AnimationTickFunction | AnimationTickFunction[],
 }
 
 export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = {
@@ -54,7 +54,7 @@ export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = {
   iterationDelay: 0,
   numberOfIterations: 1,
 
-  dataExport: undefined,
+  dataExport: {},
 
   timingFunction: (t) => { return t },
 

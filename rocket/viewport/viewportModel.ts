@@ -1,17 +1,17 @@
 import {
   Num,
   Vector2,
-} from './rocket'
+} from '../rocket'
 
 const MODEL_ATTRIBUTES = {
   border: 'none',
   boxSizing: 'border-box',
   display: 'block',
   height: '100vh',
-  left: '0px',
-  padding: '0px',
+  left: '0',
+  padding: '0',
   position: 'fixed',
-  top: '0px',
+  top: '0',
   visibility: 'hidden',
   width: '100vw',
   zIndex: '-9999',

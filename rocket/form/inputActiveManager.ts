@@ -3,25 +3,25 @@ import {
 } from '../rocket'
 
 export interface InputActiveManagerConfig {
-  activeClassName?: string,
-  containerClassName?: string,
+  activeClassName: string,
+  containerClassName: string,
 
-  activateOnFocus?: boolean,
+  activateOnFocus: boolean,
 
-  beforeActivate?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => Promise<void>,
-  afterActivate?:  (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => void,
+  beforeActivate: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => Promise<void>,
+  afterActivate:  (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => void,
 
-  conditionActivate?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => boolean,
+  conditionActivate: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => boolean,
 
-  beforeDeactivate?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => Promise<void>,
-  afterDeactivate?:  (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => void,
+  beforeDeactivate: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => Promise<void>,
+  afterDeactivate:  (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement) => void,
 
-  activate?:   (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, activeClassName: string) => Promise<void>,
-  deactivate?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, activeClassName: string) => Promise<void>,
+  activate:   (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, activeClassName: string) => Promise<void>,
+  deactivate: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, activeClassName: string) => Promise<void>,
 
-  onFocus?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, context: InputActiveManager) => void,
-  onBlur?:  (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, context: InputActiveManager) => void,
-  onInput?: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, context: InputActiveManager) => void,
+  onFocus: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, context: InputActiveManager) => void,
+  onBlur:  (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, context: InputActiveManager) => void,
+  onInput: (container: HTMLElement, input: HTMLInputElement | HTMLTextAreaElement, context: InputActiveManager) => void,
 }
 
 export const INPUT_FOCUS_MANAGER_CONFIG: InputActiveManagerConfig = {
@@ -59,23 +59,24 @@ export const INPUT_FOCUS_MANAGER_CONFIG: InputActiveManagerConfig = {
 export class InputActiveManager {
 
   public inputElements: (HTMLInputElement | HTMLTextAreaElement)[]
-  public containerElements: HTMLElement[]
+  public containerElements?: HTMLElement[]
 
   public config: InputActiveManagerConfig
 
-  constructor(config?: InputActiveManagerConfig) {
+  constructor(config?: Partial<InputActiveManagerConfig>) {
     this.config = Object.assign({}, INPUT_FOCUS_MANAGER_CONFIG)
-
     if (typeof config === 'object') {
       this.setConfig(config)
     }
+
+    this.inputElements = []
 
     this.getElements()
     this.listen()
     this.initialize()
   }
 
-  private setConfig(config: InputActiveManagerConfig) {
+  private setConfig(config: Partial<InputActiveManagerConfig>) {
     Object.assign(this.config, config)
   }
 

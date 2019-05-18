@@ -104,52 +104,59 @@ export class Color {
 
   // STRINGS
   set rgbString(input: string) {
-    const rgb: number[] = input.match(/(\d+)/g).map(v => {
-      return Num.cycle(parseFloat(v) / 255, 1)
-    })
-    this.r = rgb[0]
-    this.g = rgb[1]
-    this.b = rgb[2]
+    const numbers = input.match(/(\d+)/g)
+    if (numbers !== null) {
+      const rgb: number[] = numbers.map(v => {
+        return Num.cycle(parseFloat(v) / 255, 1)
+      })
+      this.r = rgb[0]
+      this.g = rgb[1]
+      this.b = rgb[2]
+    }
   }
 
   set rgbaString(input: string) {
-    const rgba: number[] = input.match(/([\d]+(\.[\d]+)?)/g).map((v, index) => {
-      if (index === 3) {
-        return Num.cycle(parseFloat(v), 1)
-      } else {
+    const numbers = input.match(/([\d]+(\.[\d]+)?)/g)
+    if (numbers !== null) {
+      const rgba: number[] = numbers.map((v, index) => {
+        if (index === 3) {
+          return Num.cycle(parseFloat(v), 1)
+        }
         return Num.cycle(parseFloat(v) / 255, 1)
-      }
-    })
-    this.r = rgba[0]
-    this.g = rgba[1]
-    this.b = rgba[2]
-    this.a = rgba[3]
+      })
+      this.r = rgba[0]
+      this.g = rgba[1]
+      this.b = rgba[2]
+      this.a = rgba[3]
+    }
   }
 
   set hslString(input: string) {
-    const hsl: number[] = input.match(/(\d+)/g).map(v => {
-      return parseFloat(v)
-    })
-    hsl[1] = hsl[1] / 100, 1
-    hsl[2] = hsl[2] / 100, 1
-    const rgb: ColorArray3 = ConvertColor.HSLToRGB(<ColorArray3>hsl)
-    this.r = rgb[0]
-    this.g = rgb[1]
-    this.b = rgb[2]
+    const numbers = input.match(/(\d+)/g)
+    if (numbers !== null) {
+      const hsl: number[] = numbers.map(v => parseFloat(v))
+      hsl[1] = hsl[1] / 100, 1
+      hsl[2] = hsl[2] / 100, 1
+      const rgb: ColorArray3 = ConvertColor.HSLToRGB(<ColorArray3>hsl)
+      this.r = rgb[0]
+      this.g = rgb[1]
+      this.b = rgb[2]
+    }
   }
 
   set hslaString(input: string) {
-    const hsla: number[] = input.match(/([\d]+(\.[\d]+)?)/g).map(v => {
-      return parseFloat(v)
-    })
-    const hsl: number[] = hsla.slice(0, 3)
-    hsl[1] = hsl[1] / 100
-    hsl[2] = hsl[2] / 100
-    const rgb: ColorArray3 = ConvertColor.HSLToRGB(<ColorArray3>hsl)
-    this.r = rgb[0]
-    this.g = rgb[1]
-    this.b = rgb[2]
-    this.a = Num.cycle(hsla[3], 1)
+    const numbers = input.match(/([\d]+(\.[\d]+)?)/g)
+    if (numbers !== null) {
+      const hsla: number[] = numbers.map(v => parseFloat(v))
+      const hsl:  number[] = hsla.slice(0, 3)
+      hsl[1] = hsl[1] / 100
+      hsl[2] = hsl[2] / 100
+      const rgb: ColorArray3 = ConvertColor.HSLToRGB(<ColorArray3>hsl)
+      this.r = rgb[0]
+      this.g = rgb[1]
+      this.b = rgb[2]
+      this.a = Num.cycle(hsla[3], 1)
+    }
   }
 
   // These will always return HTML color format.

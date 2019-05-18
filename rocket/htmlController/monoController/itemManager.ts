@@ -8,13 +8,15 @@ export class ItemManager {
 
   public items: HTMLElement[]
 
-  public activeItem  : HTMLElement
-  public activeItemId: string
+  public activeItem?: HTMLElement
+  public activeItemId?: string
 
   public isActive: boolean = false
 
   constructor(controller: MonoController) {
     this.controller = controller
+
+    this.items = []
   }
 
   // Initialize
@@ -42,9 +44,9 @@ export class ItemManager {
       
     if (
       Array.isArray(config.items) === false &&
-      NodeList.prototype.isPrototypeOf(config.items)
+      NodeList.prototype.isPrototypeOf(<NodeListOf<HTMLElement>>config.items)
     ) {
-      this.items = Array.from(config.items)
+      this.items = Array.from(<NodeListOf<HTMLElement>>config.items)
       return this
     }
     
@@ -138,11 +140,13 @@ export class ItemManager {
   }
 
   public deactivate() {
-    this.activeItem.classList.remove(
-      this.controller.config.classNameItemActive
-    )
-    this.activeItem   = undefined
-    this.activeItemId = undefined
-    this.isActive     = false
+    if (typeof this.activeItem !== 'undefined') {
+      this.activeItem.classList.remove(
+        this.controller.config.classNameItemActive
+      )
+      this.activeItem   = undefined
+      this.activeItemId = undefined
+      this.isActive     = false
+    }
   }
 }

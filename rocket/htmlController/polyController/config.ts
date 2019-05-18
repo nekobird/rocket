@@ -17,45 +17,45 @@ import {
 } from './actionManager'
 
 export interface PolyConfig {
-  cooldown?: number,
+  cooldown: number,
 
-  deactivateAllOnOutsideAction?: boolean,
+  deactivateAllOnOutsideAction: boolean,
 
-  listenToKeydown?: boolean,
+  listenToKeydown: boolean,
 
-  itemsSelector?: string | undefined,
-  items?: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
+  itemsSelector: string | undefined,
+  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
 
-  classNameItemActive?: string,
+  classNameItemActive: string,
 
-  classNameJsActivate?  : string,
-  classNameJsDeactivate?: string,
-  classNameJsToggle?    : string,
+  classNameJsActivate  : string,
+  classNameJsDeactivate: string,
+  classNameJsToggle    : string,
 
-  classNameJsActivateAll?  : string,
-  classNameJsDeactivateAll?: string,
-  classNameJsToggleAll?    : string,
+  classNameJsActivateAll  : string,
+  classNameJsDeactivateAll: string,
+  classNameJsToggleAll    : string,
 
-  conditionActivate?  : ConditionHook<PolyAction, PolyController>,
-  conditionDeactivate?: ConditionHook<PolyAction, PolyController>,
-  conditionToggle?    : ConditionHook<PolyAction, PolyController>,
+  conditionActivate  : ConditionHook<PolyAction, PolyController>,
+  conditionDeactivate: ConditionHook<PolyAction, PolyController>,
+  conditionToggle    : ConditionHook<PolyAction, PolyController>,
 
-  conditionActivateAll?  : ConditionHook<PolyAction, PolyController>,
-  conditionDeactivateAll?: ConditionHook<PolyAction, PolyController>,
-  conditionToggleAll?    : ConditionHook<PolyAction, PolyController>,
+  conditionActivateAll  : ConditionHook<PolyAction, PolyController>,
+  conditionDeactivateAll: ConditionHook<PolyAction, PolyController>,
+  conditionToggleAll    : ConditionHook<PolyAction, PolyController>,
 
-  beforeDeactivate?: BeforeActionCallback<PolyAction, PolyController>,
-  afterDeactivate? : AfterActionCallback<PolyAction, PolyController>,
+  beforeDeactivate: BeforeActionCallback<PolyAction, PolyController>,
+  afterDeactivate : AfterActionCallback<PolyAction, PolyController>,
 
-  beforeActivate?: BeforeActionCallback<PolyAction, PolyController>,
-  afterActivate? : AfterActionCallback<PolyAction, PolyController>,
+  beforeActivate: BeforeActionCallback<PolyAction, PolyController>,
+  afterActivate : AfterActionCallback<PolyAction, PolyController>,
 
-  beforeAction?: BeforeActionCallback<PolyAction, PolyController>,
-  afterAction? : AfterActionCallback<PolyAction, PolyController>,
+  beforeAction: BeforeActionCallback<PolyAction, PolyController>,
+  afterAction : AfterActionCallback<PolyAction, PolyController>,
 
-  onOutsideAction?: (context: PolyController) => void,
+  onOutsideAction: (context: PolyController) => void,
 
-  onKeydown?: (event: KeyboardEvent, context: PolyController) => void,
+  onKeydown: (event: KeyboardEvent, context: PolyController) => void,
 }
 
 export const DEFAULT_CONFIG: PolyConfig = {
@@ -77,22 +77,22 @@ export const DEFAULT_CONFIG: PolyConfig = {
   classNameJsDeactivateAll: 'js-poly-item-deactivate-all',
   classNameJsToggleAll    : 'js-poly-item-toggle-all',
 
-  conditionActivate  : (action, context) => { return true },
-  conditionDeactivate: (action, context) => { return true },
-  conditionToggle    : (action, context) => { return true },
+  conditionActivate  : (action, context) => true,
+  conditionDeactivate: (action, context) => true,
+  conditionToggle    : (action, context) => true,
 
-  conditionActivateAll  : (action, context) => { return true },
-  conditionDeactivateAll: (action, context) => { return true },
-  conditionToggleAll    : (action, context) => { return true },
+  conditionActivateAll  : (action, context) => true,
+  conditionDeactivateAll: (action, context) => true,
+  conditionToggleAll    : (action, context) => true,
 
-  beforeDeactivate: (action, context) => { return Promise.resolve() },
-  afterDeactivate : (action, context) => { return Promise.resolve() },
+  beforeDeactivate: (action, context) => Promise.resolve(),
+  afterDeactivate : (action, context) => Promise.resolve(),
 
-  beforeActivate: (action, context) => { return Promise.resolve() },
-  afterActivate : (action, context) => { return Promise.resolve() },
+  beforeActivate: (action, context) => Promise.resolve(),
+  afterActivate : (action, context) => Promise.resolve(),
 
-  beforeAction: (action, context) => { return Promise.resolve() },
-  afterAction : (action, context) => { return Promise.resolve() },
+  beforeAction: (action, context) => Promise.resolve(),
+  afterAction : (action, context) => Promise.resolve(),
   
   onOutsideAction: (context) => { },
   onKeydown: (event, context) => { },

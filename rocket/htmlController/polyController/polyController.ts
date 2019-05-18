@@ -22,24 +22,24 @@ export class PolyController {
 
   public config: PolyConfig
 
-  public itemManager  : ItemManager
-  public eventManager : EventManager
+  public itemManager: ItemManager
+  public eventManager: EventManager
   public actionManager: ActionManager
 
-  constructor(config?: PolyConfig) {
+  constructor(config?: Partial<PolyConfig>) {
     this.config = Object.assign({}, DEFAULT_CONFIG)
     if (typeof config === 'object') {
       this.setConfig(config)
     }
     
-    this.itemManager   = new ItemManager(this)
-    this.eventManager  = new EventManager(this)
+    this.itemManager = new ItemManager(this)
+    this.eventManager = new EventManager(this)
     this.actionManager = new ActionManager(this)
 
     this.initialize()
   }
 
-  public setConfig(config: PolyConfig): this {
+  public setConfig(config: Partial<PolyConfig>): this {
     Object.assign(this.config, config)
     return this
   }

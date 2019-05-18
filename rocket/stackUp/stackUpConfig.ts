@@ -15,40 +15,40 @@ export interface StackUpContainerScaleData {
 }
 
 export interface StackUpConfig {
-  boundary?: HTMLElement | Window,
+  boundary: HTMLElement | Window,
 
-  containerSelector?: string,
-  itemsSelector?: string,
+  containerSelector: string,
+  itemsSelector: string,
 
   container?: HTMLElement,
   items?: HTMLElement[],
 
-  columnWidth?: number,
-  numberOfColumns?: number,
-  gutter?: number,
+  columnWidth: number,
+  numberOfColumns: number,
+  gutter: number,
   
-  layout?: StackUpLayoutOption,
-  isFluid?: boolean,
+  layout: StackUpLayoutOption,
+  isFluid: boolean,
   
-  debounceResizeWait?: number,
-  moveInSequence?: boolean,
+  debounceResizeWait: number,
+  moveInSequence: boolean,
 
-  scaleContainerInitial?: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>,
-  scaleContainerFinal?: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>,
-  moveItem?: (item: StackUpItem) => Promise<void>,
+  scaleContainerInitial: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>,
+  scaleContainerFinal: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>,
+  moveItem: (item: StackUpItem) => Promise<void>,
 
-  beforeTransition?: (container: StackUpContainerScaleData, items: StackUpItem[]) => Promise<void>,
-  beforeMove?: (items: StackUpItem[]) => Promise<void>,
+  beforeTransition: (container: StackUpContainerScaleData, items: StackUpItem[]) => Promise<void>,
+  beforeMove: (items: StackUpItem[]) => Promise<void>,
 
-  afterMove?: (items: StackUpItem[]) => Promise<void>,
-  afterTransition?: () => void,
+  afterMove: (items: StackUpItem[]) => Promise<void>,
+  afterTransition: () => void,
 }
 
-export const STACKUP_DEFAULT_CONFIG = {
+export const STACKUP_DEFAULT_CONFIG: StackUpConfig = {
   boundary: window,
 
-  containerSelector: undefined,
-  itemsSelector: undefined,
+  containerSelector: '.stackUp__container',
+  itemsSelector: '.stackUp__item',
 
   container: undefined,
   items: undefined,
@@ -57,32 +57,32 @@ export const STACKUP_DEFAULT_CONFIG = {
   numberOfColumns: 3,
   gutter: 20,
 
-  layout: <StackUpLayoutOption>'ordinal',
+  layout: 'ordinal',
   isFluid: true,
 
   debounceResizeWait: 350,
   moveInSequence: false,
 
-  scaleContainerInitial: (container, data) => {
-    container.style.width  = `${data.width }px`
-    container.style.height = `${data.height}px`
+  scaleContainerInitial: (container, { width, height }) => {
+    container.style.width = `${width}px`
+    container.style.height = `${height}px`
     return Promise.resolve()
   },
-  scaleContainerFinal: (container, data) => {
-    container.style.width  = `${data.width }px`
-    container.style.height = `${data.height}px`
-    return Promise.resolve()
-  },
-
-  moveItem: (data) => {
-    data.item.style.left = `${data.left}px`
-    data.item.style.top  = `${data.top }px`
+  scaleContainerFinal: (container, { width, height }) => {
+    container.style.width = `${width}px`
+    container.style.height = `${height}px`
     return Promise.resolve()
   },
 
-  beforeTransition: (container: StackUpContainerScaleData, items: StackUpItem[]) => Promise.resolve(),
-  beforeMove: (items: StackUpItem[]) => Promise.resolve(),
+  moveItem: ({ item, left, top }) => {
+    item.style.left = `${left}px`
+    item.style.top = `${top}px`
+    return Promise.resolve()
+  },
 
-  afterMove: (items: StackUpItem[]) => Promise.resolve(),
+  beforeTransition: (container, items) => Promise.resolve(),
+  beforeMove: (items) => Promise.resolve(),
+
+  afterMove: (items) => Promise.resolve(),
   afterTransition: () => {}
 }

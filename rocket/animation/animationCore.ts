@@ -6,10 +6,6 @@ import {
   Animation,
 } from './animation'
 
-import {
-  AnimationConfig,
-} from './animationConfig'
-
 export class AnimationCore {
   public isActive   : boolean = false
   public isAnimating: boolean = false
@@ -20,31 +16,34 @@ export class AnimationCore {
 
   private direction: boolean = true
 
-  private progress: number
+  private progress: number = 0
 
-  private startTime: number
-  private endTime  : number
-  private pauseTime: number
+  private startTime: number = 0
+  private endTime  : number = 0
+  private pauseTime: number = 0
 
-  private RAFID    : number
-  private timeoutID: number
+  private RAFID: number | undefined
+  private timeoutID: number | undefined
 
   public animation: Animation
-  public callback: Function
+  public callback: Function | undefined
 
-  constructor(animation?: Animation) {
+  constructor(animation: Animation) {
     this.animation = animation
   }
 
   // 1)
   public async startWithDelay(delay?: number): Promise<void> {
-    const {config}: Animation = this.animation
+    const { config } = this.animation
 
     // This is only called when not animating.
     this.isActive = true
 
-    if (typeof delay !== 'number') {
-      delay = config.delay
+    if (
+      typeof delay !== 'number'
+      || typeof delay === 'undefined'
+    ) {
+      delay = <number>config.delay
     }
 
     if (delay > 0) {
@@ -79,7 +78,7 @@ export class AnimationCore {
 
   // 2) Start Animation.
   public start = async () => {
-    const {config}: Animation = this.animation
+    const { config } = this.animation
 
     this.isActive = true
 
@@ -90,7 +89,7 @@ export class AnimationCore {
 
     if (this.isPaused === true) {
       const startTimeDelta = this.pauseTime - this.startTime
-      const endTimeDelta   = this.endTime   - this.pauseTime
+      const endTimeDelta = this.endTime   - this.pauseTime
 
       const now = Date.now()
 
@@ -156,7 +155,7 @@ export class AnimationCore {
   // 3)
   private loop(): this {
     const frame = async () => {
-      const {config}: Animation = this.animation
+      const { config } = this.animation
 
       // Tick, this also moves progress forward!
       this.tick()
@@ -208,7 +207,7 @@ export class AnimationCore {
 
   // 4)
   private tick(): this {
-    const {config}: Animation = this.animation
+    const { config } = this.animation
 
     // Update progress.
     this.progress = this.currentNValue
@@ -251,14 +250,16 @@ export class AnimationCore {
 
   private clearSessions(): this {
     clearTimeout(this.timeoutID)
-    window.cancelAnimationFrame(this.RAFID)
+    if (typeof this.RAFID === 'number') {
+      window.cancelAnimationFrame(this.RAFID)
+    }
     return this
   }
 
   // CALLBACK
 
   public runCallback(callbackName: string): this {
-    const {config}: Animation = this.animation
+    const { config } = this.animation
 
     if (typeof config[callbackName] === 'function') {
       config[callbackName](this.animation, config.dataExport)

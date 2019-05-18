@@ -10,18 +10,18 @@ export const _UITextArea_event_keydown: unique symbol = Symbol()
 export const _textBoxModel: unique symbol = Symbol()
 
 export interface UITextAreaConfig {
-  disableLineBreaks?: boolean,
-  disableTabs?: boolean,
+  disableLineBreaks: boolean,
+  disableTabs: boolean,
 
-  limitNumberOfCharacters?: boolean,
-  removeLeadingWhitespaces?: boolean,
-  removeMultipleWhitespaces?: boolean,
+  limitNumberOfCharacters: boolean,
+  removeLeadingWhitespaces: boolean,
+  removeMultipleWhitespaces: boolean,
 
-  onBlur?:  (context: UITextArea) => void,
-  onFocus?: (context: UITextArea) => void,
-  onInput?: (context: UITextArea) => void,
-  onPaste?: (context: UITextArea) => void,
-  onGrow?:  (height: number, context: UITextArea) => void,
+  onBlur: (context: UITextArea) => void,
+  onFocus: (context: UITextArea) => void,
+  onInput: (context: UITextArea) => void,
+  onPaste: (context: UITextArea) => void,
+  onGrow: (height: number, context: UITextArea) => void,
 }
 
 const UITEXTAREA_CONFIG: UITextAreaConfig = {
@@ -42,12 +42,12 @@ const UITEXTAREA_CONFIG: UITextAreaConfig = {
 export class UITextArea {
 
   public isInFocus: boolean = false
-  public lastKeyCode: number = undefined
+  public lastKeyCode?: number
 
   public element: HTMLTextAreaElement
   public config: UITextAreaConfig
 
-  constructor(element: HTMLTextAreaElement, config?: UITextAreaConfig) {
+  constructor(element: HTMLTextAreaElement, config?: Partial<UITextAreaConfig>) {
     this[_textBoxModel] = new TextBoxModel
 
     // EVENT NAMES
@@ -66,14 +66,14 @@ export class UITextArea {
 
     this.config = Object.assign({}, UITEXTAREA_CONFIG)
     if (typeof config === 'object') {
-      this.config = config
+      this.setConfig(config)
     }
 
     this.initialize()
     return this
   }
 
-  public setConfig(config: UITextAreaConfig) {
+  public setConfig(config: Partial<UITextAreaConfig>) {
     Object.assign(this.config, config)
   }
 

@@ -20,7 +20,7 @@ export interface SensorData {
   pageY: number,
   clientX: number,
   clientY: number,
-  target: HTMLElement,
+  target: HTMLElement | null,
   type: 'MOUSE' | 'TOUCH',
   event: MouseEvent | TouchEvent,
   touch: Touch | undefined
@@ -38,7 +38,6 @@ export class SensorHub {
 
   constructor(manager: DragEventManager) {
     this.manager = manager
-
     this.events = {}
   }
 
@@ -67,11 +66,17 @@ export class SensorHub {
   }
 
   public get activeEvents(): DragEvent[] {
-    return Object.keys(this.events).map(identifier => {
+    const identifiers = Object.keys(this.events)
+    if (identifiers.length === 0) {
+      return []
+    }
+    const activeEvents: DragEvent[] = []
+    identifiers.forEach(identifier => {
       if (this.events[identifier].isActive === true) {
-        return this.events[identifier]
+        activeEvents.push(this.events[identifier])
       }
     })
+    return activeEvents
   }
 
   private destroyEvent(identifier: Identifier): boolean {

@@ -65,6 +65,7 @@ export class Num {
     } else if (min < 0 && max <= 0) {
       return Math.abs(min) - Math.abs(max)
     }
+    return 0
   }
 
   // A more efficient way to calculate hypotenuse.

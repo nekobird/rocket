@@ -193,10 +193,10 @@ export class ConvertColor {
     hsv[1] = Num.cycle(hsv[1], 1)
     hsv[2] = Num.cycle(hsv[2], 1)
 
-    let c: number = hsv[2] * hsv[1]
-    let x: number = c * (1 - Math.abs((hsv[0] / 60) % 2 - 1))
-    let rgb: ColorArray3
+    const c: number = hsv[2] * hsv[1]
+    const x: number = c * (1 - Math.abs((hsv[0] / 60) % 2 - 1))
 
+    let rgb: ColorArray3 = [0, 0, 0]
     if (
       hsv[0] >= 0 &&
       hsv[0] <= 60
@@ -229,9 +229,7 @@ export class ConvertColor {
       rgb = [c, 0, x]
     }
 
-    let m: number = hsv[2] - c
-    return <ColorArray3>rgb.map(v => {
-      return v + m
-    })
+    const m: number = hsv[2] - c
+    return <ColorArray3>rgb.map(v => v + m)
   }
 }

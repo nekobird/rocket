@@ -18,32 +18,32 @@ import {
 } from './actionManager'
 
 export interface SequenceConfig {
-  cooldown?: number,
+  cooldown: number,
 
-  listenToKeydown?: boolean,
+  listenToKeydown: boolean,
 
-  itemsSelector?: string | undefined,
-  items?: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
+  itemsSelector: string | undefined,
+  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
 
-  classNameItemActive?: string,
-  classNameJsPrevious?: string,
-  classNameJsNext?: string,
-  classNameJsJump?: string,
+  classNameItemActive: string,
+  classNameJsPrevious: string,
+  classNameJsNext: string,
+  classNameJsJump: string,
 
-  beforeActivate?  : Hook<SequenceAction, SequenceController>,
-  beforeDeactivate?: Hook<SequenceAction, SequenceController>,
+  beforeActivate  : Hook<SequenceAction, SequenceController>,
+  beforeDeactivate: Hook<SequenceAction, SequenceController>,
 
-  afterActivate?  : Hook<SequenceAction, SequenceController>,
-  afterDeactivate?: Hook<SequenceAction, SequenceController>,
+  afterActivate  : Hook<SequenceAction, SequenceController>,
+  afterDeactivate: Hook<SequenceAction, SequenceController>,
 
-  conditionPrevious?: ConditionHook<SequenceAction, SequenceController>,
-  conditionNext?    : ConditionHook<SequenceAction, SequenceController>,
-  conditionJump?    : ConditionHook<SequenceAction, SequenceController>,
+  conditionPrevious: ConditionHook<SequenceAction, SequenceController>,
+  conditionNext    : ConditionHook<SequenceAction, SequenceController>,
+  conditionJump    : ConditionHook<SequenceAction, SequenceController>,
 
-  beforeAction?: BeforeActionCallback<SequenceAction, SequenceController>,
-  afterAction? : AfterActionCallback<SequenceAction, SequenceController>,
+  beforeAction: BeforeActionCallback<SequenceAction, SequenceController>,
+  afterAction : AfterActionCallback<SequenceAction, SequenceController>,
 
-  onKeydown?: (event: KeyboardEvent, context: SequenceController) => void,
+  onKeydown: (event: KeyboardEvent, context: SequenceController) => void,
 }
 
 export const DEFAULT_CONFIG: SequenceConfig = {
@@ -59,16 +59,16 @@ export const DEFAULT_CONFIG: SequenceConfig = {
   classNameJsNext    : 'js-sequence-item-next',
   classNameJsJump    : 'js-sequence-item-jump',
 
-  beforeDeactivate: (action, context) => { return Promise.resolve() },
-  beforeActivate  : (action, context) => { return Promise.resolve() },
-  afterDeactivate : (action, context) => { return Promise.resolve() },
-  afterActivate   : (action, context) => { return Promise.resolve() },
+  beforeDeactivate: (action, context) => Promise.resolve(),
+  beforeActivate  : (action, context) => Promise.resolve(),
+  afterDeactivate : (action, context) => Promise.resolve(),
+  afterActivate   : (action, context) => Promise.resolve(),
 
-  conditionPrevious: (action, context) => { return true },
-  conditionNext    : (action, context) => { return true },
-  conditionJump    : (action, context) => { return true },
+  conditionPrevious: (action, context) => true,
+  conditionNext    : (action, context) => true,
+  conditionJump    : (action, context) => true,
 
-  beforeAction: (action, context) => { return Promise.resolve() },
+  beforeAction: (action, context) => Promise.resolve(),
   afterAction : (action, context) => { },
 
   onKeydown: (event, context) => { },

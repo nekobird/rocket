@@ -9,16 +9,16 @@ import {
 export type MonoActionName = 'activate' | 'deactivate' | 'toggle'
 
 export interface MonoAction {
-  name?: MonoActionName
+  name: MonoActionName
 
-  currentItem?  : HTMLElement,
+  currentItem?: HTMLElement,
   currentItemId?: string,
 
-  nextItem?  : HTMLElement,
+  nextItem?: HTMLElement,
   nextItemId?: string,
 
   targetId?: string,
-  trigger? : HTMLElement,
+  trigger?: HTMLElement,
 }
 
 export class ActionManager {
@@ -26,7 +26,7 @@ export class ActionManager {
   private controller: MonoController
 
   public isRunning: boolean = false
-  public isNested : boolean = false
+  public isNested: boolean = false
 
   constructor(controller: MonoController) {
     this.controller = controller
@@ -35,14 +35,14 @@ export class ActionManager {
   // 2) Complete Action
 
   private async activate(action: MonoAction): Promise<void> {
-    const {config, itemManager}: MonoController = this.controller
+    const { config, itemManager } = this.controller
     if (
       itemManager.isActive   === false &&
       itemManager.activeItem !== action.nextItem &&
       config.conditionActivate(action, this.controller) === true
     ) {
       await config.beforeActivate(action, this.controller)
-      itemManager.activate(action.nextItem)
+      itemManager.activate(<HTMLElement>action.nextItem)
       config.afterActivate(action, this.controller)
       return Promise.resolve()
     }
@@ -51,15 +51,15 @@ export class ActionManager {
   }
 
   private async deactivate(action: MonoAction): Promise<void> {
-    const {config, itemManager}: MonoController = this.controller
+    const { config, itemManager } = this.controller
 
     if (itemManager.isActive === false) {
       return Promise.resolve()
     }
 
     if (
-      action.name              === 'deactivate' &&
-      typeof action.targetId   === 'string'     &&
+      action.name === 'deactivate' &&
+      typeof action.targetId === 'string' &&
       itemManager.activeItemId !== action.targetId
     ) {
       return Promise.resolve()
@@ -76,7 +76,7 @@ export class ActionManager {
   }
 
   private async completeAction(action: MonoAction): Promise<void> {
-    const {itemManager}: MonoController = this.controller
+    const { itemManager } = this.controller
 
     if (
       action.name === 'activate' &&
@@ -100,31 +100,31 @@ export class ActionManager {
   // Create & Compose Action
 
   public createAction(actionName: MonoActionName): MonoAction {
-    const {itemManager}: MonoController = this.controller
+    const { itemManager } = this.controller
 
     return {
       name: actionName,
 
-      currentItem  : itemManager.activeItem,
+      currentItem: itemManager.activeItem,
       currentItemId: itemManager.activeItemId,
 
-      nextItem  : undefined,
+      nextItem: undefined,
       nextItemId: undefined,
 
       targetId: undefined,
-      trigger : undefined,
+      trigger: undefined,
     }
   }
 
   public composeAction(actionName: MonoActionName, id?: string): MonoAction {
-    const {itemManager}: MonoController = this.controller
+    const { itemManager } = this.controller
 
     const action: MonoAction = this.createAction(actionName)
 
     if (typeof id === 'string') {
       const nextItem: HTMLElement | false = itemManager.getItemFromId(id)
       if (typeof nextItem === 'object') {
-        action.nextItem   = nextItem
+        action.nextItem = nextItem
         action.nextItemId = id
       }
       action.targetId = id

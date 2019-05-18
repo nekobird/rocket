@@ -1,7 +1,6 @@
 import {
   DOMUtil,
   DragEventManager,
-  StringUtil,
 } from '../../rocket'
 
 import {
@@ -62,7 +61,7 @@ export class EventManager {
   }
 
   private eventHub(trigger: HTMLElement, actionName: PolyActionName): this {
-    const {actionManager}: PolyController = this.controller
+    const { actionManager } = this.controller
 
     if (
       this.controller.isReady === true &&
@@ -87,7 +86,7 @@ export class EventManager {
   }
 
   private handleOutsideAction = event => {
-    const {config, actionManager, itemManager}: PolyController = this.controller
+    const { config, actionManager, itemManager } = this.controller
 
     if (
       config.deactivateAllOnOutsideAction === true &&
@@ -132,7 +131,7 @@ export class EventManager {
   }
 
   private eventHandlerKeydown = (event: KeyboardEvent) => {
-    const {config, actionManager}: PolyController = this.controller
+    const { config, actionManager } = this.controller
     if (
       config.listenToKeydown  === true &&
       actionManager.isRunning === false

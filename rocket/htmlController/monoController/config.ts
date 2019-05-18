@@ -18,35 +18,35 @@ import {
 } from './monoController'
 
 export interface MonoConfig {
-  cooldown?: number,
+  cooldown: number,
 
-  listenToKeydown?: boolean,
+  listenToKeydown: boolean,
 
-  deactivateOnOutsideAction?: boolean,
+  deactivateOnOutsideAction: boolean,
   
-  itemsSelector?: string | undefined,
-  items?: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
+  itemsSelector: string,
+  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
 
-  classNameItemActive?  : string,
-  classNameJsActivate?  : string,
-  classNameJsDeactivate?: string,
-  classNameJsToggle?    : string,
+  classNameItemActive  : string,
+  classNameJsActivate  : string,
+  classNameJsDeactivate: string,
+  classNameJsToggle    : string,
 
-  beforeActivate?  : Hook<MonoAction, MonoController>,
-  beforeDeactivate?: Hook<MonoAction, MonoController>,
+  beforeActivate: Hook<MonoAction, MonoController>,
+  beforeDeactivate: Hook<MonoAction, MonoController>,
 
-  afterActivate?  : Hook<MonoAction, MonoController>,
-  afterDeactivate?: Hook<MonoAction, MonoController>,
+  afterActivate: Hook<MonoAction, MonoController>,
+  afterDeactivate: Hook<MonoAction, MonoController>,
 
-  conditionActivate?  : ConditionHook<MonoAction, MonoController>,
-  conditionDeactivate?: ConditionHook<MonoAction, MonoController>,
+  conditionActivate: ConditionHook<MonoAction, MonoController>,
+  conditionDeactivate: ConditionHook<MonoAction, MonoController>,
 
-  beforeAction?: BeforeActionCallback<MonoAction, MonoController>,
-  afterAction? : AfterActionCallback<MonoAction, MonoController>,
+  beforeAction: BeforeActionCallback<MonoAction, MonoController>,
+  afterAction: AfterActionCallback<MonoAction, MonoController>,
 
-  onKeydown?: (event: KeyboardEvent, context: MonoController) => void,
+  onKeydown: (event: KeyboardEvent, context: MonoController) => void,
 
-  onOutsideAction?: (context: MonoController) => void
+  onOutsideAction: (context: MonoController) => void
 }
 
 export const DEFAULT_CONFIG: MonoConfig = {

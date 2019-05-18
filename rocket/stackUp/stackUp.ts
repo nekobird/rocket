@@ -43,12 +43,13 @@ export class StackUp {
   public config: StackUpConfig
   public layout: StackUpLayout
 
-  public resizeDebounceTimeout: number
+  public resizeDebounceTimeout?: number
 
   public isTransitioning: boolean = false
-  private doneTransitioning: Function
 
-  constructor(config?: StackUpConfig) {
+  private doneTransitioning?: Function
+
+  constructor(config?: Partial<StackUpConfig>) {
     this.config = Object.assign({}, STACKUP_DEFAULT_CONFIG)
     if (typeof config === 'object') {
       this.setConfig(config)
@@ -58,7 +59,7 @@ export class StackUp {
     return this
   }
 
-  public setConfig(config: StackUpConfig): this {
+  public setConfig(config: Partial<StackUpConfig>): this {
     Object.assign(this.config, config)
     return this
   }
@@ -74,9 +75,9 @@ export class StackUp {
       typeof this.config.container === 'undefined'
       && typeof this.config.containerSelector === 'string'
     ) {
-      const container: HTMLElement = document.querySelector(this.config.containerSelector)
+      const container = document.querySelector(this.config.containerSelector)
       if (container !== null) {
-        this.config.container = container
+        this.config.container = <HTMLElement>container
         return this
       }
       throw new Error('StackUp: Fail to get container.')
@@ -122,21 +123,21 @@ export class StackUp {
   private boundaryUpdate(): this {
     if (
       this.config.boundary !== window
+      && typeof this.config.boundary === 'object'
       && this.config.boundary !== null
     ) {
-      const boundary: HTMLElement = <HTMLElement>this.config.boundary
-      const style: CSSStyleDeclaration = window.getComputedStyle(boundary)
-      let horizontal: number = 0
-      let vertical  : number = 0
-      if (style.boxSizing === 'border-box') {
-        const horizontalBorderWidths = parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth)
-        const horizontalPaddings     = parseFloat(style.paddingLeft)     + parseFloat(style.paddingRight)
-        const verticalBorderWidths   = parseFloat(style.borderTopWidth)  + parseFloat(style.borderBottomWidth)
-        const verticalPaddings       = parseFloat(style.paddingTop)      + parseFloat(style.paddingBottom)
+      const boundary = <HTMLElement>this.config.boundary
+      let horizontal = 0
+      let vertical   = 0
+      if (DOMHelper.getStyleValue(boundary, 'boxSizing') === 'border-box') {
+        const horizontalBorderWidths = DOMHelper.getHorizontalBorderWidths(boundary)
+        const horizontalPaddings     = DOMHelper.getHorizontalPaddings(boundary)
+        const verticalBorderWidths = DOMHelper.getVerticalBorderWidths(boundary)
+        const verticalPaddings     = DOMHelper.getVerticalPaddings(boundary)
         horizontal = horizontalBorderWidths + horizontalPaddings
         vertical   = verticalBorderWidths   + verticalPaddings
       }
-      this.boundaryWidth  = boundary.offsetWidth  - horizontal
+      this.boundaryWidth  = boundary.offsetWidth - horizontal
       this.boundaryHeight = boundary.offsetHeight - vertical
     } else {
       this.boundaryWidth  = ViewportModel.width
@@ -171,26 +172,29 @@ export class StackUp {
   // Required stack-up.initialize to be called first.
 
   public updatePreviousContainerSize(): this {
-    this.previousContainerWidth  = this.config.container.offsetWidth
-    this.previousContainerHeight = this.config.container.offsetHeight
+    if (typeof this.config.container === 'object') {
+      this.previousContainerWidth  = this.config.container.offsetWidth
+      this.previousContainerHeight = this.config.container.offsetHeight
+    }
     return this
   }
 
   // This only updates this.items, it does not update the selectors
 
   private appendItem(item: HTMLElement): this {
-    const offset: Point = DOMHelper.getOffsetFrom(item, this.config.container)
-    this.items.push(
-      {
-        item: item,
-        height: item.offsetHeight,
-        left: offset.x,
-        top : offset.y,
-        currentLeft: offset.x,
-        currentTop : offset.y,
-        requireMove: false,
-      }
-    )
+    if (typeof this.config.container === 'object') {
+      const { x: left, y: top } = DOMHelper.getOffsetFrom(item, this.config.container)
+      this.items.push(
+        {
+          item,
+          height: item.offsetHeight,
+          left, top,
+          currentLeft: left,
+          currentTop : top,
+          requireMove: false,
+        }
+      )
+    }
     return this
   }
 
@@ -199,9 +203,11 @@ export class StackUp {
     // Clear items before populating
     this.items = []
 
-    this.config.items.forEach(item => {
-      this.appendItem(item)
-    })
+    if (typeof this.config.items !== 'undefined') {
+      this.config.items.forEach(item => {
+        this.appendItem(item)
+      })
+    }
     return this
   }
 
@@ -239,7 +245,10 @@ export class StackUp {
 
   // Scale container and move items (5) - stack
   public async draw(): Promise<void> {
-    if (this.isTransitioning === false) {
+    if (
+      this.isTransitioning === false
+      && typeof this.config.container === 'object'
+    ) {
       this.isTransitioning = true
 
       this.containerWidth = (this.config.columnWidth + this.config.gutter) * this.numberOfColumns
@@ -299,20 +308,18 @@ export class StackUp {
   }
 
   private composeContainerScaleData(width: number, height: number): StackUpContainerScaleData  {
-    const maxWidth : number = Math.max(this.previousContainerWidth ,  width)
-    const maxHeight: number = Math.max(this.previousContainerHeight, height)
-    const requireScale: boolean = (
+    const maxWidth  = Math.max(this.previousContainerWidth,  width)
+    const maxHeight = Math.max(this.previousContainerHeight, height)
+    const requireScale = (
       this.previousContainerWidth  !== width ||
       this.previousContainerHeight !== height
     )
     return {
-      width : width,
-      height: height,
+      width, height,
       currentWidth : this.previousContainerWidth,
       currentHeight: this.previousContainerHeight,
-      maxWidth : maxWidth,
-      maxHeight: maxHeight,
-      requireScale: requireScale,
+      maxWidth, maxHeight,
+      requireScale,
     }
   }
 

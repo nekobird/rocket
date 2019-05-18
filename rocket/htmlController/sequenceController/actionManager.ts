@@ -10,20 +10,16 @@ import {
   SequenceController,
 } from './sequenceController'
 
-import {
-  ItemManager,
-} from './itemManager'
-
 export type SequenceActionName = 'previous' | 'next' | 'jump'
 
 export interface SequenceAction {
-  name?: SequenceActionName
+  name: SequenceActionName
 
   currentItem?: HTMLElement,
   
-  nextItem?     : HTMLElement,
+  nextItem?: HTMLElement,
   nextItemIndex?: number,
-  nextItemId?   : string,
+  nextItemId?: string,
 
   trigger?: HTMLElement,
 }
@@ -42,9 +38,9 @@ export class ActionManager {
   // 5) COMPLETE ACTION
 
   private async completeAction(action: SequenceAction): Promise<void> {
-    const {config, itemManager}: SequenceController = this.controller
+    const { config, itemManager } = this.controller
 
-    const actionNameString: string = StringUtil.upperCaseFirstLetter(<string>action.name)
+    const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name)
 
     // condition[actionName]
     if (
@@ -62,7 +58,7 @@ export class ActionManager {
   }
 
   private deactivate(): this {
-    const {config, itemManager}: SequenceController = this.controller
+    const { config, itemManager } = this.controller
 
     itemManager.items.forEach(item => {
       item.classList.remove(config.classNameItemActive)
@@ -75,56 +71,65 @@ export class ActionManager {
   }
 
   private activate({nextItem, nextItemIndex}: SequenceAction): this {
-    const {config, itemManager}: SequenceController = this.controller
+    const { config, itemManager } = this.controller
 
-    nextItem.classList.add(config.classNameItemActive)
+    if (typeof nextItem === 'object') {
+      nextItem.classList.add(config.classNameItemActive)
 
-    itemManager.activeItem  = nextItem
-    itemManager.activeIndex = nextItemIndex
-    itemManager.isActive    = true
+      itemManager.activeItem  = nextItem
+      itemManager.activeIndex = nextItemIndex
+      itemManager.isActive    = true
+    }
     return this
   }
 
   // Set Action
 
   private setActionTargetPrevious(action: SequenceAction): SequenceAction {
-    const {itemManager}: SequenceController = this.controller
+    const { itemManager } = this.controller
 
-    let index: number
+    if (typeof itemManager.activeIndex === 'number') {
+      let index: number
 
-    if (itemManager.activeIndex - 1 >= 0) {
-      index = itemManager.activeIndex - 1
-    } else {
-      index = itemManager.items.length - 1
+      if (itemManager.activeIndex - 1 >= 0) {
+        index = itemManager.activeIndex - 1
+      } else {
+        index = itemManager.items.length - 1
+      }
+
+      action.nextItem = itemManager.items[index]
+      action.nextItemIndex = index
     }
-
-    action.nextItem = itemManager.items[index]
-    action.nextItemIndex = index
     return action
   }
 
   private setActionTargetNext(action: SequenceAction): SequenceAction {
-    const {itemManager}: SequenceController = this.controller
+    const { itemManager } = this.controller
 
-    let index: number
+    if (typeof itemManager.activeIndex === 'number') {
+      let index: number
 
-    if (itemManager.activeIndex + 1 >= itemManager.items.length) {
-      index = 0
-    } else {
-      index = itemManager.activeIndex + 1
+      if (itemManager.activeIndex + 1 >= itemManager.items.length) {
+        index = 0
+      } else {
+        index = itemManager.activeIndex + 1
+      }
+      action.nextItem = itemManager.items[index]
+      action.nextItemIndex = index
     }
-    action.nextItem = itemManager.items[index]
-    action.nextItemIndex = index
     return action
   }
 
   private setActionTargetJump(action: SequenceAction): SequenceAction {
-    const {itemManager}: SequenceController = this.controller
+    const { itemManager } = this.controller
 
-    const item: HTMLElement | false = itemManager.getItemFromId(action.nextItemId)
-    if (item !== false) {
-      action.nextItem      = item
-      action.nextItemIndex = itemManager.items.indexOf(action.nextItem)
+    if (typeof action.nextItemId === 'string') {
+      const item: HTMLElement | false = itemManager.getItemFromId(action.nextItemId)
+
+      if (item !== false) {
+        action.nextItem = item
+        action.nextItemIndex = itemManager.items.indexOf(action.nextItem)
+      }
     }
     return action
   }
@@ -132,7 +137,7 @@ export class ActionManager {
   // Create & Compose Action
 
   public createAction(actionName: SequenceActionName): SequenceAction {
-    const {itemManager}: SequenceController = this.controller
+    const { itemManager } = this.controller
 
     return {
       name: actionName,

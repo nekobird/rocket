@@ -20,44 +20,53 @@ export class TouchSensor {
   }
 
   public composeData(name: EventName, event: TouchEvent, touch: Touch): SensorData {
+    const { target, screenX, screenY, pageX, pageY, clientX, clientY } = touch
     return {
       identifier: touch.identifier.toString(),
       type: 'TOUCH',
-      name: name,
+      name,
       time: Date.now(),
-      target: <HTMLElement>touch.target,
-      screenX: touch.screenX,
-      screenY: touch.screenY,
-      pageX: touch.pageX,
-      pageY: touch.pageY,
-      clientX: touch.clientX,
-      clientY: touch.clientY,
-      event: event,
-      touch: touch,
+      target: <HTMLElement>target,
+      screenX, screenY,
+      pageX, pageY,
+      clientX, clientY,
+      event, touch,
     }
   }
 
-  public eventHandlerTouchStart = (event: TouchEvent) => {
-    Array.from(event.changedTouches).forEach(touch => {
-      this.dispatch(this.composeData('down', event, touch))
+  public eventHandlerTouchStart = (event: Event): void => {
+    const touchEvent = <TouchEvent>event
+    Array.from(touchEvent.changedTouches).forEach(touch => {
+      this.dispatch(
+        this.composeData('down', touchEvent, touch)
+      )
     })
   }
 
-  public eventHandlerTouchMove = (event: TouchEvent) => {
-    Array.from(event.changedTouches).forEach(touch => {
-      this.dispatch(this.composeData('drag', event, touch))
+  public eventHandlerTouchMove = (event: Event): void => {
+    const touchEvent = <TouchEvent>event
+    Array.from(touchEvent.changedTouches).forEach(touch => {
+      this.dispatch(
+        this.composeData('drag', touchEvent, touch)
+      )
     })
   }
 
-  public eventHandlerTouchEnd = (event: TouchEvent) => {
-    Array.from(event.changedTouches).forEach(touch => {
-      this.dispatch(this.composeData('up', event, touch))
+  public eventHandlerTouchEnd = (event: Event): void => {
+    const touchEvent = <TouchEvent>event
+    Array.from(touchEvent.changedTouches).forEach(touch => {
+      this.dispatch(
+        this.composeData('up', touchEvent, touch)
+      )
     })
   }
 
-  public eventHandlerTouchCancel = (event: TouchEvent) => {
-    Array.from(event.changedTouches).forEach(touch => {
-      this.dispatch(this.composeData('cancel', event, touch))
+  public eventHandlerTouchCancel = (event: Event): void => {
+    const touchEvent = <TouchEvent>event
+    Array.from(touchEvent.changedTouches).forEach(touch => {
+      this.dispatch(
+        this.composeData('cancel', touchEvent, touch)
+      )
     })
   }
 

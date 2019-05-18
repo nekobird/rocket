@@ -10,18 +10,18 @@ import {
 
 export class DragEvent {
 
-  public identifier: Identifier
+  public identifier: Identifier = ''
 
-  public previousEvent: EventName
-  public currentEvent: EventName
+  public previousEvent?: EventName
+  public currentEvent?: EventName
 
-  public downData  : SensorData
-  public dragData  : SensorData
-  public upData    : SensorData
-  public cancelData: SensorData
+  public downData?: SensorData
+  public dragData?: SensorData
+  public upData?: SensorData
+  public cancelData?: SensorData
 
   public condition: boolean = false
-  public isActive   : boolean = false
+  public isActive: boolean = false
   public isLongPress: boolean = false
   public isCancelled: boolean = false
 
@@ -36,13 +36,23 @@ export class DragEvent {
   
   public get duration(): number | undefined {
     if (typeof this.downData === 'object') {
-      if (this.isActive === true) {
+      if (
+        this.isActive === true
+        && typeof this.dragData === 'object'
+      ) {
         return (this.dragData.time - this.downData.time) / 1000
       }
-      if (this.isCancelled === true) {
+
+      if (
+        this.isCancelled === true
+        && typeof this.cancelData === 'object'
+      ) {
         return (this.cancelData.time - this.downData.time) / 1000
       }
-      return (this.upData.time - this.downData.time) / 1000
+
+      if (typeof this.upData === 'object') {
+        return (this.upData.time - this.downData.time) / 1000
+      }
     }
     return undefined
   }
@@ -95,11 +105,11 @@ export class DragEvent {
   }
 
   public onDown(data: SensorData) {
-    const {config}: DragEventManager = this.manager
+    const { config } = this.manager
     
-    this.isActive   = true
+    this.isActive = true
     this.identifier = data.identifier
-    this.downData   = data
+    this.downData = data
 
     this.currentEvent = data.name
 

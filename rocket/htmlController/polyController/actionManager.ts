@@ -9,10 +9,10 @@ import {
 export type PolyActionName = 'activate' | 'activateAll' | 'deactivate' | 'deactivateAll' | 'toggle' | 'toggleAll'
 
 export interface PolyAction {
-  name?: PolyActionName,
+  name: PolyActionName,
 
   targetItem?: HTMLElement,
-  targetId?  : string,  
+  targetId?: string,  
 
   trigger?: HTMLElement,
 }
@@ -30,20 +30,25 @@ export class ActionManager {
 
   // 5) Handle Actions
 
-  private activateItem({targetItem}: PolyAction) {
-    this.controller.itemManager.activate(targetItem)
+  private activateItem({ targetItem }: PolyAction) {
+    if (typeof targetItem === 'object') {
+      this.controller.itemManager.activate(targetItem)
+    }
   }
 
-  private deactivateItem({targetItem}: PolyAction) {
-    this.controller.itemManager.deactivate(targetItem)
+  private deactivateItem({ targetItem }: PolyAction) {
+    if (typeof targetItem === 'object') {
+      this.controller.itemManager.deactivate(targetItem)
+    }
   }
 
   private async handleActionActivate(action: PolyAction): Promise<void> {
-    const {config}: PolyController = this.controller
+    const { config } = this.controller
 
     if (
-      action.targetItem.classList.contains(config.classNameItemActive) === false &&
-      config.conditionActivate(action, this.controller) === true
+      typeof action.targetItem === 'object'
+      && action.targetItem.classList.contains(config.classNameItemActive) === false
+      && config.conditionActivate(action, this.controller) === true
     ) {
       await config.beforeActivate(action, this.controller)
       this.activateItem(action)
@@ -54,11 +59,12 @@ export class ActionManager {
   }
 
   private async handleActionDeactivate(action: PolyAction): Promise<void> {
-    const {config}: PolyController = this.controller
+    const { config } = this.controller
 
     if (
-      action.targetItem.classList.contains(config.classNameItemActive) === true &&
-      config.conditionDeactivate(action, this.controller) === true
+      typeof action.targetItem === 'object'
+      && action.targetItem.classList.contains(config.classNameItemActive) === true
+      && config.conditionDeactivate(action, this.controller) === true
     ) {
       await config.beforeDeactivate(action, this.controller)
       this.deactivateItem(action)
@@ -69,10 +75,13 @@ export class ActionManager {
   }
 
   private handleActionToggle(action: PolyAction): Promise<void> {
-    const {config}: PolyController = this.controller
+    const { config } = this.controller
 
     if (config.conditionToggle(action, this.controller) === true) {
-      if (action.targetItem.classList.contains(config.classNameItemActive) === false) {
+      if (
+        typeof action.targetItem === 'object'
+        && action.targetItem.classList.contains(config.classNameItemActive) === false
+      ) {
         return this.handleActionActivate(action)
       } else {
         return this.handleActionDeactivate(action)
@@ -82,7 +91,7 @@ export class ActionManager {
   }
 
   private handleActionActivateAll(action: PolyAction): Promise<void> {
-    const {config, itemManager}: PolyController = this.controller
+    const { config, itemManager } = this.controller
 
     if (
       config.conditionActivateAll(action, this.controller) === true &&
@@ -108,7 +117,7 @@ export class ActionManager {
   }
 
   private handleActionDeactivateAll(action: PolyAction): Promise<void> {
-    const {config, itemManager}: PolyController = this.controller
+    const { config, itemManager } = this.controller
 
     if (
       config.conditionActivateAll(action, this.controller) === true &&
@@ -134,7 +143,7 @@ export class ActionManager {
   }
 
   private handleActionToggleAll(action: PolyAction): Promise<void> {
-    const {config, itemManager}: PolyController = this.controller
+    const { config, itemManager } = this.controller
 
     if (
       config.conditionActivateAll(action, this.controller) === true &&

@@ -20,26 +20,26 @@ export class SequenceController {
 
   public config: SequenceConfig
 
-  public itemManager  : ItemManager
-  public eventManager : EventManager
+  public itemManager: ItemManager
+  public eventManager: EventManager
   public actionManager: ActionManager
 
   public isReady: boolean = false
 
-  constructor(config?: SequenceConfig) {
+  constructor(config?: Partial<SequenceConfig>) {
     this.config = Object.assign({}, DEFAULT_CONFIG)
     if (typeof config === 'object') {
       this.setConfig(config)
     }
 
-    this.itemManager   = new ItemManager(this)
-    this.eventManager  = new EventManager(this)
+    this.itemManager = new ItemManager(this)
+    this.eventManager = new EventManager(this)
     this.actionManager = new ActionManager(this)
 
     this.initialize()
   }
 
-  public setConfig(config: SequenceConfig): this {
+  public setConfig(config: Partial<SequenceConfig>): this {
     Object.assign(this.config, config)
     return this
   }
@@ -57,35 +57,41 @@ export class SequenceController {
   }
 
   public isItemActive(id: string): boolean {
-    return this.itemManager.activeItem.dataset.id === id
+    if (typeof this.itemManager.activeItem == 'object') {
+      return this.itemManager.activeItem.dataset.id === id
+    }
+    return false
   }
 
   // Actions
 
-  public previous(): Promise<void> {
-    return new Promise(resolve => {
+  public async previous(): Promise<void> {
+    try {
       const action: SequenceAction = this.actionManager.composeAction('previous')
-      this.actionManager.actionHub(action)
-        .then(() => resolve())
-        .catch(() => resolve())
-    })
+      await this.actionManager.actionHub(action)
+      return Promise.resolve()
+    } catch {
+      return Promise.reject()
+    }
   }
 
-  public next(): Promise<void> {
-    return new Promise(resolve => {
+  public async next(): Promise<void> {
+    try {
       const action: SequenceAction = this.actionManager.composeAction('next')
-      this.actionManager.actionHub(action)
-        .then(() => resolve())
-        .catch(() => resolve())
-    })
+      await this.actionManager.actionHub(action)
+      return Promise.resolve()
+    } catch {
+      return Promise.reject()
+    }
   }
 
-  public jump(id: string): Promise<void> {
-    return new Promise(resolve => {
+  public async jump(id: string): Promise<void> {
+    try {
       const action: SequenceAction = this.actionManager.composeAction('jump', id)
-      this.actionManager.actionHub(action)
-        .then(() => resolve())
-        .catch(() => resolve())
-    })
+      await this.actionManager.actionHub(action)
+      return Promise.resolve()
+    } catch {
+      return Promise.reject()
+    }
   }
 }

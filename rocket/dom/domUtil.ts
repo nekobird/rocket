@@ -57,45 +57,43 @@ export class DOMUtil {
     return false
   }
 
-  public static findAncestorWithClass(element: HTMLElement, classNames: string | string[], getAll: boolean = true): DOMUtilResult {
-    let identifierFn: IdentifierFn
+  public static findAncestorWithClass(parent: HTMLElement, classNames: string | string[], getAll: boolean = true): DOMUtilResult {
+    let identifierFn: IdentifierFn = element => false
 
     if (typeof classNames === 'string') {    
-      identifierFn = _element => _element.classList.contains(classNames)
+      identifierFn = element => element.classList.contains(classNames)
     } else if (Array.isArray(classNames) === true) {
-      identifierFn = _element => {
+      identifierFn = element => {
         let containsClassName: boolean = false
-
         classNames.forEach(className => {
-          if (_element.classList.contains(className) === true) {
+          if (element.classList.contains(className) === true) {
             containsClassName = true
           }
         })
-
         return containsClassName
       }
     }
 
-    return this.findAncestor(element, identifierFn, getAll)
+    return this.findAncestor(parent, identifierFn, getAll)
   }
 
-  public static findAncestorWithID(element: HTMLElement, ID: string, getAll: boolean = true): DOMUtilResult {
-    const identifierFn: IdentifierFn = _element => _element.id === ID
-    return this.findAncestor(element, identifierFn, getAll)
+  public static findAncestorWithID(parent: HTMLElement, ID: string, getAll: boolean = true): DOMUtilResult {
+    const identifierFn: IdentifierFn = element => element.id === ID
+    return this.findAncestor(parent, identifierFn, getAll)
   }
 
-  public static hasAncestor(element: HTMLElement, options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>): DOMUtilResult {
-    const identifierFn: IdentifierFn = _element => {
+  public static hasAncestor(parent: HTMLElement, options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>): DOMUtilResult {
+    const identifierFn: IdentifierFn = element => {
       if (Array.isArray(options) === true) {
-        return (<HTMLElement[]>options).indexOf(_element) !== -1
+        return (<HTMLElement[]>options).indexOf(element) !== -1
       } else if (typeof options[Symbol.iterator] === 'function') {
-        return Array.from(<NodeListOf<HTMLElement>>options).indexOf(_element) !== -1
+        return Array.from(<NodeListOf<HTMLElement>>options).indexOf(element) !== -1
       } else {
-        return _element === options
+        return element === options
       }
     }
 
-    return this.findAncestor(element, identifierFn, false)
+    return this.findAncestor(parent, identifierFn, false)
   }
 
   // DESCENDANT
@@ -133,26 +131,21 @@ export class DOMUtil {
     return false
   }
 
-  public static findDescendantWithID(element: HTMLElement, ID: string, getAll: boolean = true): DOMUtilResult {
-    const identifierFn: IdentifierFn = _element => {
-      return _element.id === ID
-    }
-
-    return this.findDescendant(element, identifierFn, getAll)
+  public static findDescendantWithID(parent: HTMLElement, ID: string, getAll: boolean = true): DOMUtilResult {
+    const identifierFn: IdentifierFn = element => element.id === ID
+    return this.findDescendant(parent, identifierFn, getAll)
   }
 
-  public static findDescendantWithClass(element: HTMLElement, classNames: string | string[], getAll: boolean = true): DOMUtilResult {
-    let identifierFn: IdentifierFn
+  public static findDescendantWithClass(parent: HTMLElement, classNames: string | string[], getAll: boolean = true): DOMUtilResult {
+    let identifierFn: IdentifierFn = element => false
 
     if (typeof classNames === 'string') {    
-      identifierFn = _element => {
-        return _element.classList.contains(classNames)
-      }
+      identifierFn = element => element.classList.contains(classNames)
     } else if (Array.isArray(classNames) === true) {
-      identifierFn = _element => {
+      identifierFn = element => {
         let containsClassName: boolean = false
         classNames.forEach(className => {
-          if (_element.classList.contains(className) === true) {
+          if (element.classList.contains(className) === true) {
             containsClassName = true
           }
         })
@@ -160,7 +153,7 @@ export class DOMUtil {
       }
     }
 
-    return this.findDescendant(element, identifierFn, getAll)
+    return this.findDescendant(parent, identifierFn, getAll)
   }
 
   public static hasDescendant(element: HTMLElement, options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>): DOMUtilResult {
@@ -218,7 +211,9 @@ export class DOMUtil {
   // Remove
 
   public static removeElement(element: HTMLElement): void {
-    element.parentNode.removeChild(element)
+    if (element.parentNode !== null) {
+      element.parentNode.removeChild(element)
+    }
   }
 
   public static removeChildren(parent: HTMLElement): number {
@@ -253,16 +248,18 @@ export class DOMUtil {
   }
 
   public static getChildren(parent: HTMLElement, identifierFn?: IdentifierFn): HTMLElement[] {
+    const children = <HTMLElement[]>Array.from(parent.children)
+
     if (typeof identifierFn === 'undefined') {
-      return <HTMLElement[]>Array.from(parent.children)
+      return children
     }
 
-    return <HTMLElement[]>Array.from(parent.children).filter(identifierFn)
+    return children.filter(element => identifierFn(<HTMLElement>element))
   }
 
-  // Helper
+  // @helper
 
-  public static isAnHTMLElement(element: HTMLElement): boolean {
+  public static isAnHTMLElement(element: HTMLElement | Element): boolean {
     return (
       typeof element          === 'object' &&
       typeof element.nodeType === 'number' &&
@@ -277,7 +274,7 @@ export class DOMUtil {
     return document.elementsFromPoint(x, y).indexOf(element) !== -1
   }
 
-  public static findElementFromPoint({x, y}: Point, identifierFn?: IdentifierFn, getAll: boolean = true): HTMLElement | HTMLElement[] | false {
+  public static findElementFromPoint({x, y}: Point, identifierFn: IdentifierFn, getAll: boolean = true): HTMLElement | HTMLElement[] | false {
     const elements = document.elementsFromPoint(x, y)
     if (elements.length === 0) {
       return false
@@ -355,13 +352,13 @@ export class DOMUtil {
     }   
 
     if (selectedChildren.length === 1) {
-      const datum: T = dataExtractFn(selectedChildren[0])
+      const datum: T = <T>dataExtractFn(selectedChildren[0])
       return (typeof datum !== 'undefined') ? [datum] : []      
     }
 
     const results: T[] = []
     selectedChildren.forEach(child => {
-      const datum: T = dataExtractFn(child)
+      const datum: T = <T>dataExtractFn(child)
       if (typeof datum !== 'undefined') {
         results.push(datum)
       }

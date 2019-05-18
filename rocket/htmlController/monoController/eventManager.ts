@@ -42,11 +42,12 @@ export class EventManager {
     }
   }
 
-  private onUp = (event, manager) => {
+  private onUp = event => {
     this.handleOutsideAction(event)
 
     if (typeof event.downData === 'object') {
-      const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
+      const targetDownElement = event.getTargetElementFromData(event.downData)
+
       if (targetDownElement !== false) {
         MONO_ACTION_CONFIG_MAP.forEach(entry => {
           const className: string = this.controller.config[entry.configProperty]
@@ -60,10 +61,10 @@ export class EventManager {
   }
 
   private eventHub(trigger: HTMLElement, actionName: MonoActionName): this {
-    const {actionManager}: MonoController = this.controller
+    const { actionManager, isReady } = this.controller
     if (
-      this.controller.isReady === true &&
-      actionManager.isRunning === false
+      isReady === true
+      && actionManager.isRunning === false
     ) {
       actionManager.isRunning = true
       if (
@@ -84,10 +85,10 @@ export class EventManager {
   }
 
   private handleOutsideAction = event => {
-    const {config, actionManager, itemManager}: MonoController = this.controller
+    const { config, actionManager, itemManager } = this.controller
     if (
-      config.deactivateOnOutsideAction === true &&
-      actionManager.isRunning === false
+      config.deactivateOnOutsideAction === true
+      && actionManager.isRunning === false
     ) {
 
       const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
@@ -110,14 +111,15 @@ export class EventManager {
       }
 
       if (
-        itemManager.isActive === true &&
-        targetDownElement    !== false &&
-        targetUpElement      !== false &&
+        itemManager.isActive === true
+        && typeof itemManager.activeItem !== 'undefined'
+        && targetDownElement !== false
+        && targetUpElement !== false
 
-        DOMUtil.hasAncestor(targetDownElement, itemManager.activeItem) === false &&
-        DOMUtil.hasAncestor(targetUpElement,   itemManager.activeItem) === false &&
+        && DOMUtil.hasAncestor(targetDownElement, itemManager.activeItem) === false
+        && DOMUtil.hasAncestor(targetUpElement, itemManager.activeItem) === false
 
-        DOMUtil.findAncestor(targetDownElement, identifierFn) === false
+        && DOMUtil.findAncestor(targetDownElement, identifierFn) === false
       ) {
         this.controller.deactivate()
         config.onOutsideAction(this.controller)
@@ -126,10 +128,11 @@ export class EventManager {
   }
 
   private eventHandlerKeydown = (event: KeyboardEvent) => {
-    const {config, actionManager}: MonoController = this.controller
+    const { config, actionManager } = this.controller
+
     if (
-      config.listenToKeydown  === true &&
-      actionManager.isRunning === false
+      config.listenToKeydown  === true
+      && actionManager.isRunning === false
     ) {
       config.onKeydown(event, this.controller)
     }

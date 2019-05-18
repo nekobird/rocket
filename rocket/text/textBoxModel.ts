@@ -1,3 +1,7 @@
+import {
+  DOMHelper,
+} from '../rocket'
+
 const MODEL_ATTRIBUTES = {
   border: 'none',
   height: '0',
@@ -61,7 +65,7 @@ const FONT_STYLE_PROPERTIES = [
 
 export class TextBoxModel {
 
-  private modelElement: HTMLElement
+  private modelElement?: HTMLElement
 
   constructor() {}
 
@@ -82,24 +86,20 @@ export class TextBoxModel {
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
-      text = TextBoxModel.getTextFromElement(element)
+      text = DOMHelper.getText(element)
     }
     this.modelText = text
 
     // Set offset for when boxSizing is set to border-box.
     let offset: number = 0
-    let style: CSSStyleDeclaration = window.getComputedStyle(element)
-    if (style.boxSizing === 'border-box') {
-      offset = TextBoxModel.getElementVerticalBorderHeight(element)
+    if (DOMHelper.getStyleValue(element, 'boxSizing') === 'border-box') {
+      offset = DOMHelper.getVerticalBorderWidths(element)
     } else {
       // Minus vertical padding.
-      let padding: number =
-        parseInt(style.paddingTop) +
-        parseInt(style.paddingBottom)
-      offset -= padding
+      offset -= DOMHelper.getVerticalPaddings(element)
     }
     // Return calculated height value.
-    return this.modelElement.scrollHeight + offset
+    return (<HTMLElement>this.modelElement).scrollHeight + offset
   }
 
   public getTextBoxWidthFromElement(element: HTMLElement, text?: string): number {
@@ -126,65 +126,78 @@ export class TextBoxModel {
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
-      text = TextBoxModel.getTextFromElement(element)
+      text = DOMHelper.getText(element)
     }
     this.modelText = text
 
     // Set offset for when boxSizing is set to border-box.
     let offset = 0
-    const style = window.getComputedStyle(element, null)
-    if (style.boxSizing === 'border-box') {
-      offset  = TextBoxModel.getElementHorizontalBorderWidth(element)
-      offset += TextBoxModel.getElementHorizontalPaddingWidth(element)
+    if (DOMHelper.getStyleValue(element, 'boxSizing') === 'border-box') {
+      offset = DOMHelper.getHorizontalBorderWidths(element)
+      offset += DOMHelper.getHorizontalPaddings(element)
     }
 
     // Return calculated width value.
-    return this.modelElement.scrollWidth + offset
+    return (<HTMLElement>this.modelElement).scrollWidth + offset
   }
 
   // MODEL
 
   set modelFontSize(fontSize: number) {
-    this.modelElement.style.fontSize = `${fontSize}px`
+    if (typeof this.modelElement === 'object') {
+      this.modelElement.style.fontSize = `${fontSize}px`
+    }
   }
 
   set modelText(text: string) {
-    if (
-      this.modelElement instanceof HTMLTextAreaElement ||
-      this.modelElement instanceof HTMLInputElement ||
-      this.modelElement.nodeName === 'TEXTAREA' ||
-      this.modelElement.nodeName === 'INPUT'
-    ) {
-      (<HTMLTextAreaElement | HTMLInputElement>this.modelElement).value = text
-    } else {
-      text = text.replace(/[\n\r]/g, '<br>')
-      text = text.replace(/[\t]/g, '&#9')
-      text = text.replace(/[\s]/g, '&nbsp')
-      this.modelElement.innerHTML = text
+    if (typeof this.modelElement === 'object') {
+      if (
+        this.modelElement instanceof HTMLTextAreaElement
+        || this.modelElement instanceof HTMLInputElement
+        || this.modelElement.nodeName === 'TEXTAREA'
+        || this.modelElement.nodeName === 'INPUT'
+      ) {
+        (<HTMLTextAreaElement | HTMLInputElement>this.modelElement).value = text
+      } else {
+        text = text.replace(/[\n\r]/g, '<br>')
+        text = text.replace(/[\t]/g, '&#9')
+        text = text.replace(/[\s]/g, '&nbsp')
+        this.modelElement.innerHTML = text
+      }
     }
   }
 
   set style(style: object) {
-    Object.assign(this.modelElement.style, style)
+    if (typeof this.modelElement === 'object') {
+      Object.assign(this.modelElement.style, style)
+    }
   }
 
   public applyModelAttributes(): this {
-    Object.assign(this.modelElement.style, MODEL_ATTRIBUTES)
+    if (typeof this.modelElement === 'object') {
+      Object.assign(this.modelElement.style, MODEL_ATTRIBUTES)
+    }
     return this
   }
 
   public applyBoxModelPropertiesFromElement(element: HTMLElement): this {
-    const style: CSSStyleDeclaration = window.getComputedStyle(element)
+    const style = window.getComputedStyle(element)
+
     STYLE_PROPERTIES.forEach(name => {
-      this.modelElement.style[name] = style[name]
+      if (typeof this.modelElement === 'object') {
+        this.modelElement.style[name] = style[name]
+      }
     })
     return this
   }
 
   public applyFontPropertiesFromElement(element: HTMLElement): this {
-    const style: CSSStyleDeclaration = window.getComputedStyle(element)
+    const style = window.getComputedStyle(element)
+
     FONT_STYLE_PROPERTIES.forEach(name => {
-      this.modelElement.style[name] = style[name]
+      if (typeof this.modelElement === 'object') {
+        this.modelElement.style[name] = style[name]
+      }
     })
     return this
   }
@@ -206,66 +219,4 @@ export class TextBoxModel {
     }
     return this
   }
-
-  // ELEMENT
-
-  public static getElementFontSize(element: HTMLElement): number {
-    const style: CSSStyleDeclaration = window.getComputedStyle(element)
-    return parseFloat(style.fontSize)
-  }
-
-  public static getTextFromElement(element: HTMLElement): string {
-    if (
-      element instanceof HTMLTextAreaElement ||
-      element instanceof HTMLInputElement ||
-      element.nodeName === 'INPUT' ||
-      element.nodeName === 'TEXTAREA'
-    ) {
-      return (<HTMLTextAreaElement | HTMLInputElement>element).value
-    }
-    return typeof element.textContent === 'string' ? element.textContent : ''
-  }
-
-  public static getElementHorizontalBorderWidth(element: HTMLElement) {
-    const style: CSSStyleDeclaration = window.getComputedStyle(element)
-    const width: number =
-      parseInt(style.borderLeftWidth) +
-      parseInt(style.borderRightWidth)
-    return width
-  }
-
-  public static getElementHorizontalPaddingWidth(element: HTMLElement): number {
-    const style: CSSStyleDeclaration = window.getComputedStyle(element)
-    const width: number =
-      parseInt(style.paddingLeft) +
-      parseInt(style.paddingRight)
-    return width
-  }
-
-  public static getElementLineHeight(element: HTMLElement): number {
-    const style: CSSStyleDeclaration = window.getComputedStyle(element)
-    return parseInt(style.lineHeight)
-  }
-
-  public static getElementVerticalBorderHeight(element: HTMLElement): number {
-    const style: CSSStyleDeclaration = window.getComputedStyle(element)
-    const height: number =
-      parseInt(style.borderBottomWidth) +
-      parseInt(style.borderTopWidth)
-    return height
-  }
-
-  public static getElementVerticalPaddingHeight(element: HTMLElement): number {
-    const style: CSSStyleDeclaration = window.getComputedStyle(element)
-    const height: number =
-      parseInt(style.paddingBottom) +
-      parseInt(style.paddingTop)
-    return height
-  }
-
-  public setElementFontSize(element: HTMLElement, fontSize: number): this {
-    element.style.fontSize = `${fontSize}px`
-    return this
-  }
-
 }

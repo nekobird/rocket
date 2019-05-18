@@ -13,7 +13,31 @@
     display: block;
     margin-bottom: space('medium');
     padding: space('medium');
+    user-select: none !important;
     z-index: 1;
+
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -webkit-app-region: no-drag;
+    -webkit-touch-callout: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: none;
+
+    img {
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -o-user-select: none;
+      -webkit-app-region: no-drag;  
+      -webkit-touch-callout: none;
+      -webkit-user-drag: none;
+      -webkit-user-select: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
 
     &:last-child {
       margin-bottom: 0;

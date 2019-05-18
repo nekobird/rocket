@@ -8,7 +8,7 @@ export * from './dom/domUtil'
 export * from './dom/domHelper'
 
 // VIEW
-export * from './viewportModel'
+export * from './viewport/viewportModel'
 export * from './size'
 
 // TWO
@@ -34,21 +34,6 @@ export * from './color/color'
 
 // EVENT
 export * from './event/dragEventManager/dragEventManager'
-
-export * from './event/scroll/ScrollEventHandler'
-export * from './event/scroll/ScrollEventManager'
-
-export * from './event/KeyboardEventHandler'
-export * from './event/KeyboardEventManager'
-
-// export * from './event/MouseEventHandler'
-// export * from './event/MouseEventManager'
-
-// export * from './event/TouchEventHandler'
-// export * from './event/TouchEventManager'
-// export * from './event/TouchPoint'
-
-export * from './event/ScreenEventManager'
 
 // TEXT
 export * from './text/textBoxModel'

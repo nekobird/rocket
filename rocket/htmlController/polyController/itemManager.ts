@@ -41,9 +41,9 @@ export class ItemManager {
       
     if (
       Array.isArray(config.items) === false &&
-      NodeList.prototype.isPrototypeOf(config.items)
+      NodeList.prototype.isPrototypeOf(<NodeListOf<HTMLElement>>config.items)
     ) {
-      this.items = Array.from(config.items)
+      this.items = Array.from(<NodeListOf<HTMLElement>>config.items)
       return this
     }
     

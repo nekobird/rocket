@@ -6,9 +6,10 @@ export class ItemManager {
 
   private controller: SequenceController
 
-  public items      : HTMLElement[]
-  public activeItem : HTMLElement
-  public activeIndex: number
+  public items: HTMLElement[]
+
+  public activeItem?: HTMLElement
+  public activeIndex?: number
 
   public isActive: boolean = false
 
@@ -46,7 +47,7 @@ export class ItemManager {
   }
 
   public loadItemsFromConfig(): this {
-    const {config}: SequenceController = this.controller
+    const { config } = this.controller
 
     if (
       typeof config.itemsSelector === 'string' &&
@@ -61,9 +62,9 @@ export class ItemManager {
       
     if (
       Array.isArray(config.items) === false &&
-      NodeList.prototype.isPrototypeOf(config.items)
+      NodeList.prototype.isPrototypeOf(<NodeListOf<HTMLElement>>config.items)
     ) {
-      this.items = Array.from(config.items)
+      this.items = Array.from(<NodeListOf<HTMLElement>>config.items)
       return this
     }
     
@@ -81,15 +82,15 @@ export class ItemManager {
   }
 
   private filterActiveItems(): this {
-    const {config}: SequenceController = this.controller
+    const { config } = this.controller
 
     if (this.items.length > 0) {
       this.items.forEach((item: HTMLElement, index: number) => {
         if (item.classList.contains(config.classNameItemActive) === true) {        
           if (this.isActive === false) {
             this.activeIndex = index
-            this.activeItem  = item
-            this.isActive    = true
+            this.activeItem = item
+            this.isActive = true
           } else {
             item.classList.remove(config.classNameItemActive)
           }
