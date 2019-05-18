@@ -1,7 +1,6 @@
 import {
   DOMHelper,
   DOMUtil,
-  DragEventManager,
   Point,
   PointHelper,
 } from '../../rocket'
@@ -11,11 +10,15 @@ import {
   SortableConfig,
 } from './config'
 
+import {
+  EventManager,
+} from './eventManager';
+
 export class Sortable {
 
   public config: SortableConfig
 
-  public dragEventManager?: DragEventManager
+  public eventManager: EventManager
 
   public isActive: boolean = false
   public hasMoved: boolean = false
@@ -33,10 +36,12 @@ export class Sortable {
     if (typeof config === 'object') {
       this.setConfig(config)
     }
+
+    this.eventManager = new EventManager(this)
   }  
 
   public setConfig(config: Partial<SortableConfig>) {
-    Object.assign(this.config, config)    
+    Object.assign(this.config, config)
   }
 
   // @initialization
@@ -46,7 +51,10 @@ export class Sortable {
       typeof this.config.container === 'undefined'
       && typeof this.config.containerSelector === 'string'
     ) {
-      const container: HTMLElement | null = document.querySelector(this.config.containerSelector)
+      const container: HTMLElement | null = document.querySelector(
+        this.config.containerSelector
+      )
+
       if (container !== null) {
         this.config.container = container
         return this
@@ -64,7 +72,10 @@ export class Sortable {
       typeof this.config.items === 'undefined'
       && typeof this.config.itemsSelector === 'string'
     ) {
-      const items: NodeListOf<HTMLElement> = document.querySelectorAll(this.config.itemsSelector)
+      const items: NodeListOf<HTMLElement> = document.querySelectorAll(
+        this.config.itemsSelector
+      )
+
       if (items !== null) {
         this.config.items = Array.from(items)
       }
@@ -76,28 +87,13 @@ export class Sortable {
     throw new Error('Sortable: Items not defined.')
   }
 
-  public initializeDragEvent() {
-    this.dragEventManager = new DragEventManager({
-      enableLongPress: (this.config.activateOnLongPress || this.config.listenToLongPress),
-      longPressWait: this.config.longPressWait,
-
-      condition: this.dragCondition,
-
-      onDown: this.handleOnDown,
-      onDrag: this.handleOnDrag,
-      onUp: this.handleOnUp,
-      onCancel: this.handleOnCancel,
-      onLongPress: this.handleOnLongPress,
-    })
-  }
-
   public initialize() {
     this.getContainer()
     this.getItems()
-    this.initializeDragEvent()
+    this.eventManager.initialize()
   }
 
-  private getItemFromDownEvent(event): HTMLElement | false {
+  public getItemFromDownEvent(event): HTMLElement | false {
     if (typeof event.downData === 'object') {
       const item: HTMLElement | HTMLElement[] | false = DOMUtil.findAncestor(
         event.downData.target,
@@ -117,66 +113,13 @@ export class Sortable {
     event.preventDefault()
   }
 
-  private dragCondition = (event, manager) => {
+  public dragCondition = (event, manager) => {
     const item: HTMLElement | false = this.getItemFromDownEvent(event)
     if (item !== false) {
       this.targetItem = item
       return true
     }
     return false
-  }
-
-  private handleOnDown = (event, manager) => {
-    this.config.onDown(<HTMLElement>this.targetItem, event, manager, this)
-
-    if (this.config.activateOnLongPress === false) {
-      this.activate(<HTMLElement>this.targetItem, event)
-    }
-  }
-
-  private handleOnLongPress = (event, manager) => {
-    this.config.onLongPress(<HTMLElement>this.targetItem, event, manager, this)  
-
-    if (
-      this.config.activateOnLongPress === true
-      && event.previousEvent !== 'drag'
-    ) {
-      this.activate(<HTMLElement>this.targetItem, event)
-    }
-  }
-
-  private handleOnDrag = (event, manager) => {
-    this.config.onDrag(<HTMLElement>this.targetItem, event, manager, this)
-    
-    if (
-      this.isActive === true
-      && this.activeIdentifier === event.identifier.toString()
-      && typeof event.dragData === 'object'
-    ) {
-      this.move(event.dragData)
-    }
-  }
-
-  private handleOnUp = (event, manager) => {
-    this.config.onUp(<HTMLElement>this.targetItem, event, manager, this)
-
-    if (
-      this.isActive === true
-      && this.activeIdentifier === event.identifier.toString()
-    ) {
-      this.deactivate()
-    }
-  }
-
-  private handleOnCancel = (event, manager) => {
-    this.config.onCancel(<HTMLElement>this.targetItem, event, manager, this)
-
-    if (
-      this.isActive === true
-      && this.activeIdentifier === event.identifier.toString()
-    ) {
-      this.deactivate()
-    }
   }
 
   // @helper
@@ -228,7 +171,7 @@ export class Sortable {
     }
   }
 
-  private updateInitialOffset({ clientX: x, clientY: y}) {
+  public updateInitialOffset({ clientX: x, clientY: y}) {
     if (typeof this.activeItem === 'object') {
       this.initialOffset = DOMHelper.getOffsetFromPoint(
         this.activeItem,
@@ -239,7 +182,7 @@ export class Sortable {
 
   // @events
 
-  private disableEventsOnActivate() {
+  public disableEventsOnActivate() {
     if (this.config.disableTouchEventsWhileActive === true) {
       window.addEventListener('touchstart', this.preventDefault, { passive: false })
       window.addEventListener('touchmove',  this.preventDefault, { passive: false })
@@ -247,7 +190,7 @@ export class Sortable {
     }
   }
 
-  private enableEventsOnDeactivate() {
+  public enableEventsOnDeactivate() {
     if (this.config.disableTouchEventsWhileActive === true) {
       window.removeEventListener('touchstart', this.preventDefault)
       window.removeEventListener('touchmove',  this.preventDefault)
@@ -255,7 +198,7 @@ export class Sortable {
     }
   }
 
-  private disableActiveItemEventsOnActivate() {
+  public disableActiveItemEventsOnActivate() {
     if (
       this.config.disableEventsOnItemWhileActive === true
       && typeof this.activeItem === 'object'
@@ -266,7 +209,7 @@ export class Sortable {
     }
   }
 
-  private enableActiveItemEventsOnDeactivate() {
+  public enableActiveItemEventsOnDeactivate() {
     if (
       this.config.disableEventsOnItemWhileActive === true
       && typeof this.activeItem === 'object'
@@ -279,7 +222,7 @@ export class Sortable {
 
   // @actions
 
-  private activate(item: HTMLElement, { identifier, downData }) {
+  public activate(item: HTMLElement, { identifier, downData }) {
     if (this.isActive === false) {
       this.disableEventsOnActivate()
 
@@ -294,7 +237,7 @@ export class Sortable {
     }
   }
 
-  private move({ clientX: x, clientY: y }) {
+  public move({ clientX: x, clientY: y }) {
     if (
       this.isActive === true
       && typeof this.activeItem === 'object'
@@ -305,7 +248,9 @@ export class Sortable {
       }
 
       const point: Point = { x, y }
-      const offset = DOMHelper.getOffsetFromPoint(<HTMLElement>this.config.container, point)
+      const offset = DOMHelper.getOffsetFromPoint(
+        <HTMLElement>this.config.container, point
+      )
       const to: Point = PointHelper.subtract(offset, <Point>this.initialOffset)
 
       this.config.moveItem(this.activeItem, to, this)
@@ -314,7 +259,7 @@ export class Sortable {
     }
   }
 
-  private deactivate() {
+  public deactivate() {
     if (
       this.isActive === true
       && typeof this.activeItem === 'object'
@@ -322,7 +267,9 @@ export class Sortable {
       this.config.deactivateItem(this.activeItem, this)
       this.config.unpopItem(this.activeItem, this)
       if (typeof this.dummyElement !== 'undefined') {
-        (<HTMLElement>this.config.container).replaceChild(this.activeItem, this.dummyElement)
+        (<HTMLElement>this.config.container).replaceChild(
+          this.activeItem, this.dummyElement
+        )
       }
       this.enableActiveItemEventsOnDeactivate()
 
