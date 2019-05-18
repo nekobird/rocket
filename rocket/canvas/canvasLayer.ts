@@ -35,5 +35,4 @@ export class CanvasLayer {
     this.element.style.display = `none`
     return this
   }
-
 }

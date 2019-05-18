@@ -7,6 +7,8 @@ import {
 } from './animation'
 
 export class AnimationCore {
+  public animation: Animation
+
   public isActive   : boolean = false
   public isAnimating: boolean = false
   public isPaused   : boolean = false
@@ -22,11 +24,10 @@ export class AnimationCore {
   private endTime  : number = 0
   private pauseTime: number = 0
 
-  private RAFID: number | undefined
-  private timeoutID: number | undefined
+  private RAFID?: number
+  private timeoutID?: number
 
-  public animation: Animation
-  public callback: Function | undefined
+  public callback?: Function
 
   constructor(animation: Animation) {
     this.animation = animation

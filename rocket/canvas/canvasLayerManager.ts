@@ -88,5 +88,4 @@ export class CanvasLayerManager {
     window.removeEventListener('resize', this.resize)
     return this
   }
-
 }

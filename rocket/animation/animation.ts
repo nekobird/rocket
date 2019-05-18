@@ -81,5 +81,4 @@ export class Animation {
     this.goToEnd()
     return this
   }
-
 }

@@ -294,5 +294,4 @@ export class CanvasDraw {
     this.context.restore()
     return this
   }
-
 }

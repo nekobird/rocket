@@ -1,7 +1,6 @@
 import {
-  Point,
-  PointHelper,
   DOMHelper,
+  Point,
 } from '../rocket'
 
 export interface IdentifierFn {
@@ -270,11 +269,11 @@ export class DOMUtil {
   // Element & Point
 
   // Point is relative to viewport. (clientX, clientY)
-  public static pointIsInElement({x, y}: Point, element: HTMLElement): boolean {
+  public static pointIsInElement({ x, y }: Point, element: HTMLElement): boolean {
     return document.elementsFromPoint(x, y).indexOf(element) !== -1
   }
 
-  public static findElementFromPoint({x, y}: Point, identifierFn: IdentifierFn, getAll: boolean = true): HTMLElement | HTMLElement[] | false {
+  public static findElementFromPoint({ x, y }: Point, identifierFn: IdentifierFn, getAll: boolean = true): HTMLElement | HTMLElement[] | false {
     const elements = document.elementsFromPoint(x, y)
     if (elements.length === 0) {
       return false
