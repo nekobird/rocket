@@ -1,6 +1,6 @@
 import {
   Num,
-  Vector2,
+  Point,
 } from '../rocket'
 
 const MODEL_ATTRIBUTES = {
@@ -26,15 +26,31 @@ export class ViewportModel {
     ViewportModel.createModel()
   }
 
-  // MODEL PROPERTIES
+  // @edge
+
+  public static isOutsideEdge({ x, y }: Point) {
+    const outsideEdges: string[] = []
+    if (x <= 0) {
+      outsideEdges.push('left')
+    } else if (x >= this.width) {
+
+    }
+    if (y <= 0) {
+
+    } else if (y >= this.height) {
+
+    }
+  }
+
+  // @model_properties
 
   public static get hasVerticalScrollbar(): boolean {
     return window.innerWidth > document.documentElement.scrollWidth
   }
 
-  public static get centerPoint(): Vector2 {
+  public static get centerPoint(): Point {
     this.createModel()
-    return new Vector2(this.centerX, this.centerY)
+    return {x: this.centerX, y: this.centerY}
   }
 
   public static get centerX(): number {
@@ -64,7 +80,7 @@ export class ViewportModel {
     return Num.hypotenuse(w, h)
   }
 
-  // MODEL
+  // @model
 
   public static get modelElement(): HTMLElement {
     this.createModel()

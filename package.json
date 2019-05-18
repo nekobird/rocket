@@ -2,12 +2,18 @@
   "name": "@nekobird/rocket",
   "version": "0.0.79",
   "description": "Rocket UI and Animation Library",
+  "author": "Andrew Prasetya",
+  "keywords": [],
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "git://github.com/nekobird/rocket.git"
   },
   "main": "build/rocket.js",
   "types": "build/rocket.d.ts",
+  "files": [
+    "build/**/*"
+  ],
   "scripts": {
     "build": "tsc -t es6",
     "buildDocumentation": "parcel build ./documentation/index.html --public-url ./",
@@ -16,9 +22,6 @@
     "documentation": "parcel ./documentation/index.html",
     "examples": "parcel ./examples/index.html"
   },
-  "keywords": [],
-  "author": "Andrew Prasetya",
-  "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.4.4",
     "@babel/plugin-transform-runtime": "^7.4.4",
@@ -30,10 +33,8 @@
     "sass": "^1.20.1",
     "typescript": "^3.4.5"
   },
-  "files": [
-    "build/**/*"
-  ],
   "dependencies": {
     "@babel/runtime": "^7.4.4"
   }
 }
+

@@ -33,7 +33,7 @@ export class Sortable {
     if (typeof config === 'object') {
       this.setConfig(config)
     }
-  }
+  }  
 
   public setConfig(config: Partial<SortableConfig>) {
     Object.assign(this.config, config)    
@@ -127,10 +127,6 @@ export class Sortable {
   }
 
   private handleOnDown = (event, manager) => {
-    if (this.config.preventDefaults === true) {
-      event.downData.event.preventDefault()
-    }
-
     this.config.onDown(<HTMLElement>this.targetItem, event, manager, this)
 
     if (this.config.activateOnLongPress === false) {
@@ -150,10 +146,6 @@ export class Sortable {
   }
 
   private handleOnDrag = (event, manager) => {
-    if (this.config.preventDefaults === true) {
-      event.downData.event.preventDefault()
-    }
-
     this.config.onDrag(<HTMLElement>this.targetItem, event, manager, this)
     
     if (
@@ -166,10 +158,6 @@ export class Sortable {
   }
 
   private handleOnUp = (event, manager) => {
-    if (this.config.preventDefaults === true) {
-      event.downData.event.preventDefault()
-    }
-
     this.config.onUp(<HTMLElement>this.targetItem, event, manager, this)
 
     if (
@@ -342,8 +330,8 @@ export class Sortable {
       this.isActive = false
       this.hasMoved = false
 
-      this.activeItem    = undefined
-      this.dummyElement  = undefined
+      this.activeItem = undefined
+      this.dummyElement = undefined
       this.initialOffset = undefined
       this.activeIdentifier = undefined
 

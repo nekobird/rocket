@@ -21,12 +21,12 @@ export class DOMHelper {
 
   public static getOffsetFrom(target: HTMLElement, from: HTMLElement): Point {
     const targetRect: DOMRect | ClientRect = target.getBoundingClientRect()
-    const fromRect  : DOMRect | ClientRect = from.getBoundingClientRect()
+    const fromRect: DOMRect | ClientRect = from.getBoundingClientRect()
     const left: number = Num.getNumberLineDistance(targetRect.left, fromRect.left)
-    const top : number = Num.getNumberLineDistance(targetRect.top , fromRect.top)
+    const top: number = Num.getNumberLineDistance(targetRect.top , fromRect.top)
     return {
       left, top,
-      right : Num.getNumberLineDistance(targetRect.right, fromRect.right),
+      right: Num.getNumberLineDistance(targetRect.right, fromRect.right),
       bottom: Num.getNumberLineDistance(targetRect.bottom, fromRect.bottom),
       x: left,
       y: top,
@@ -37,12 +37,12 @@ export class DOMHelper {
   public static getOffsetFromDocument(element: HTMLElement): Point {
     const rect = element.getBoundingClientRect()
     const scrollLeft: number = window.pageXOffset || document.documentElement.scrollLeft
-    const scrollTop : number = window.pageYOffset || document.documentElement.scrollTop
+    const scrollTop: number = window.pageYOffset || document.documentElement.scrollTop
     const left: number = rect.left + scrollLeft
-    const top : number = rect.top  + scrollTop
+    const top: number = rect.top + scrollTop
     return {
       left, top,
-      right : rect.right  + scrollLeft,
+      right : rect.right + scrollLeft,
       bottom: rect.bottom + scrollTop,
       x: left,
       y: top,
@@ -51,17 +51,17 @@ export class DOMHelper {
 
   // Point is relative to viewport. (clientX, clientY)
   // Offset is relative to Point.
-  public static getOffsetFromPoint(element: HTMLElement, {x, y}: Point): Point {
+  public static getOffsetFromPoint(element: HTMLElement, { x, y }: Point): Point {
     const rect = element.getBoundingClientRect()
     return {
       x: Num.getNumberLineDistance(rect.left, x),
-      y: Num.getNumberLineDistance(rect.top,  y),
+      y: Num.getNumberLineDistance(rect.top, y),
     }
   }
 
-  public static elementIsBelowPoint(element: HTMLElement, {y}: Point, offset: number = 0) {
+  public static elementIsBelowPoint(element: HTMLElement, { y }: Point, offset: number = 0) {
     const rect = element.getBoundingClientRect()
-    return (rect.top + offset < y)
+    return rect.top + offset < y
   }
 
   public static getDistanceFromPoint(element: HTMLElement, point: Point, fromCenter: boolean = false): number {
@@ -74,12 +74,12 @@ export class DOMHelper {
         },
         point
       )
-    } else {
-      return PointHelper.getDistanceTo({x: rect.left, y: rect.top}, point)
     }
+    return PointHelper.getDistanceTo({ x: rect.left, y: rect.top }, point)
   }
 
   // @style
+
   public static applyStyle(element: HTMLElement, styles: StyleList) {
     Object.keys(styles).forEach(key => {
       const value: string = (typeof styles[key] === 'number') ? styles[key].toString() : <string>styles[key]      

@@ -160,12 +160,12 @@ export class DragEvent {
       this.clearLongPress()
 
       this.isCancelled = true
-      this.isActive    = false
+      this.isActive = false
 
       this.cancelData = data
 
       this.previousEvent = this.currentEvent
-      this.currentEvent  = data.name
+      this.currentEvent = data.name
 
       this.manager.config.onCancel(this, this.manager)
     }

@@ -10,8 +10,8 @@ export class PointHelper {
     return {x, y}
   }
 
-  public static toVector2(point: Point): Vector2 {
-    return new Vector2(point.x, point.y)
+  public static toVector2({ x, y }: Point): Vector2 {
+    return new Vector2(x, y)
   }
 
   public static isEqual(point: Point, ...points: Point[]): boolean {
@@ -139,7 +139,7 @@ export class PointHelper {
     return {x, y}
   }
 
-  // Zero
+  // @zero
 
   public static zero(point: Point, mutate: boolean = false): Point {
     if (mutate === true) {

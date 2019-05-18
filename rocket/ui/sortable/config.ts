@@ -13,7 +13,6 @@ export interface SortableConfig {
   listenToLongPress: boolean,
   longPressWait: number,
 
-  preventDefaults: boolean,
   disableTouchEventsWhileActive: boolean,
   disableEventsOnItemWhileActive: boolean,
 
@@ -26,10 +25,10 @@ export interface SortableConfig {
   createDummyFromItem: (item: HTMLElement, context: Sortable) => HTMLElement,
   setDummyElementPropertiesFromItem: (dummyElement: HTMLElement, item: HTMLElement, context: Sortable) => void,
 
-  activateItem:   (item: HTMLElement, context: Sortable) => void,
+  activateItem: (item: HTMLElement, context: Sortable) => void,
   deactivateItem: (item: HTMLElement, context: Sortable) => void,
 
-  popItem:   (item: HTMLElement, context: Sortable) => void,
+  popItem: (item: HTMLElement, context: Sortable) => void,
   unpopItem: (item: HTMLElement, context: Sortable) => void,
 
   moveItem: (item: HTMLElement, to: Point, context: Sortable) => void,
@@ -38,8 +37,8 @@ export interface SortableConfig {
 
   onDown: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
   onDrag: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
-  onUp:   (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
-  onCancel:    (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
+  onUp: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
+  onCancel: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
   onLongPress: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void,
 }
 
@@ -48,7 +47,6 @@ export const SORTABLE_CONFIG: SortableConfig = {
   listenToLongPress: true,
   longPressWait: 0.5,
 
-  preventDefaults: true,
   disableTouchEventsWhileActive: true,
   disableEventsOnItemWhileActive: true,
 
@@ -79,12 +77,12 @@ export const SORTABLE_CONFIG: SortableConfig = {
   },
 
   popItem: item => {
-    const width : number = item.offsetWidth
+    const width: number = item.offsetWidth
     const height: number = item.offsetHeight
     DOMHelper.applyStyle(item, {
       position: 'absolute',
       left: 0,
-      top : 0,
+      top: 0,
       width : `${width}px`,
       height: `${height}px`,
     })
@@ -100,5 +98,5 @@ export const SORTABLE_CONFIG: SortableConfig = {
   onDrag: () => {},
   onUp: () => {},
   onCancel: () => {},
-  onLongPress:() => {},
+  onLongPress: () => {},
 }

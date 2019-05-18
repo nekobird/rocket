@@ -100,5 +100,4 @@ export class Geo2Util {
 
     return new Vector2(ix, iy)
   }
-
 }
