@@ -6,7 +6,7 @@ import {
 
 
 export class PointHelper {
-  public static new(x: number, y: number): Point {
+  public static newPoint(x: number, y: number): Point {
     return {x, y}
   }
 

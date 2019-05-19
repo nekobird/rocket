@@ -34,9 +34,7 @@ export class EventManager {
   }
 
   private dragCondition = event => {
-    const { getItemFromDownEvent } = this.sortable
-
-    const item: HTMLElement | false = this.sortable.getItemFromDownEvent(event)
+    const item = this.sortable.getItemFromDownEvent(event)
 
     if (item !== false) {
       this.sortable.targetItem = item

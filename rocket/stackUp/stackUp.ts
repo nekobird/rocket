@@ -1,8 +1,9 @@
 import {
   DOMHelper,
-  Point,
   ViewportModel,
   Util,
+  DOMStyle,
+  DOMPoint,
 } from '../rocket'
 
 import {
@@ -129,11 +130,11 @@ export class StackUp {
       const boundary = <HTMLElement>this.config.boundary
       let horizontal = 0
       let vertical   = 0
-      if (DOMHelper.getStyleValue(boundary, 'boxSizing') === 'border-box') {
-        const horizontalBorderWidths = DOMHelper.getHorizontalBorderWidths(boundary)
-        const horizontalPaddings     = DOMHelper.getHorizontalPaddings(boundary)
-        const verticalBorderWidths = DOMHelper.getVerticalBorderWidths(boundary)
-        const verticalPaddings     = DOMHelper.getVerticalPaddings(boundary)
+      if (DOMStyle.getStyleValue(boundary, 'boxSizing') === 'border-box') {
+        const horizontalBorderWidths = DOMStyle.getHorizontalBorderWidths(boundary)
+        const horizontalPaddings = DOMStyle.getHorizontalPaddings(boundary)
+        const verticalBorderWidths = DOMStyle.getVerticalBorderWidths(boundary)
+        const verticalPaddings = DOMStyle.getVerticalPaddings(boundary)
         horizontal = horizontalBorderWidths + horizontalPaddings
         vertical   = verticalBorderWidths   + verticalPaddings
       }
@@ -183,7 +184,7 @@ export class StackUp {
 
   private appendItem(item: HTMLElement): this {
     if (typeof this.config.container === 'object') {
-      const { x: left, y: top } = DOMHelper.getOffsetFrom(item, this.config.container)
+      const { x: left, y: top } = DOMPoint.getOffsetFrom(item, this.config.container)
       this.items.push(
         {
           item,

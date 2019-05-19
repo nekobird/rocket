@@ -1,5 +1,6 @@
 import {
   DOMHelper,
+  DOMStyle,
 } from '../rocket'
 
 const MODEL_ATTRIBUTES = {
@@ -86,17 +87,17 @@ export class TextBoxModel {
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
-      text = DOMHelper.getText(element)
+      text = DOMHelper.getTextFromElement(element)
     }
     this.modelText = text
 
     // Set offset for when boxSizing is set to border-box.
     let offset: number = 0
-    if (DOMHelper.getStyleValue(element, 'boxSizing') === 'border-box') {
-      offset = DOMHelper.getVerticalBorderWidths(element)
+    if (DOMStyle.getStyleValue(element, 'boxSizing') === 'border-box') {
+      offset = DOMStyle.getVerticalBorderWidths(element)
     } else {
       // Minus vertical padding.
-      offset -= DOMHelper.getVerticalPaddings(element)
+      offset -= DOMStyle.getVerticalPaddings(element)
     }
     // Return calculated height value.
     return (<HTMLElement>this.modelElement).scrollHeight + offset
@@ -126,15 +127,15 @@ export class TextBoxModel {
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
-      text = DOMHelper.getText(element)
+      text = DOMHelper.getTextFromElement(element)
     }
     this.modelText = text
 
     // Set offset for when boxSizing is set to border-box.
     let offset = 0
-    if (DOMHelper.getStyleValue(element, 'boxSizing') === 'border-box') {
-      offset = DOMHelper.getHorizontalBorderWidths(element)
-      offset += DOMHelper.getHorizontalPaddings(element)
+    if (DOMStyle.getStyleValue(element, 'boxSizing') === 'border-box') {
+      offset = DOMStyle.getHorizontalBorderWidths(element)
+      offset += DOMStyle.getHorizontalPaddings(element)
     }
 
     // Return calculated width value.

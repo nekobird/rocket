@@ -1,5 +1,5 @@
 import {
-  DOMUtil,
+  DOMTransverse,
   DragEventManager,
 } from '../../rocket'
 
@@ -51,7 +51,7 @@ export class EventManager {
       if (targetDownElement !== false) {
         SEQUENCE_ACTION_CONFIG_MAP.forEach(entry => {
           const className: string = this.controller.config[entry.configProperty]
-          const trigger = DOMUtil.findAncestorWithClass(targetDownElement, className, false)
+          const trigger = DOMTransverse.findAncestorWithClass(targetDownElement, className, false)
           if (trigger !== false) {
             this.eventHub(<HTMLElement>trigger, entry.action)
           }

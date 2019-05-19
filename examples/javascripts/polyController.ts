@@ -1,5 +1,5 @@
 import {
-  DOMHelper,
+  DOMStyle,
   PolyController,
 } from '../../rocket/rocket'
 
@@ -24,7 +24,7 @@ const controller = new PolyController({
       action.targetItem.classList.add('item--animate-out')
       setTimeout(
         () => resolve(),
-        DOMHelper.getAnimationDuration(action.targetItem)
+        DOMStyle.getAnimationDuration(action.targetItem)
       )
     })
   },
@@ -34,7 +34,7 @@ const controller = new PolyController({
       action.targetItem.classList.add('item--animate-in')
       setTimeout(
         () => resolve(),
-        DOMHelper.getAnimationDuration(action.targetItem)
+        DOMStyle.getAnimationDuration(action.targetItem)
       )
     })
   }

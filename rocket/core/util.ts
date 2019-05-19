@@ -12,6 +12,7 @@ export class Util {
     if (array.length === 0) {
       return Promise.resolve()
     }
+
     return array.reduce(
       (previous: Promise<void>, current: A) => { 
         return previous.then(() => fn(current))
@@ -22,6 +23,7 @@ export class Util {
 
   static cycle<A>(array: A[]): Function {
     let index: number = -1
+
     return () => {
       index++
       if (index > array.length - 1) {
@@ -35,11 +37,14 @@ export class Util {
   // will only be invoked after the given delay timeout (in seconds).
   static debounce(delay: number, fn: Function): Function {
     let timeout: number
+
     return function() {
       clearTimeout(timeout)
-      timeout = setTimeout(() => {
-        fn.apply(this, arguments)
-      }, 1000 * delay)
+
+      timeout = setTimeout(
+        () => fn.apply(this, arguments),
+        1000 * delay
+      )
     }
   }
 

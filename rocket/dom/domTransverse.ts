@@ -11,9 +11,9 @@ export interface DataExtractFunction<T> {
   (child: HTMLElement): T | undefined
 }
 
-export type DOMUtilResult = HTMLElement | HTMLElement[] | false
+export type DOMTransverseResult = HTMLElement | HTMLElement[] | false
 
-export class DOMUtil {
+export class DOMTransverse {
 
   // ANCESTOR
 
@@ -28,7 +28,7 @@ export class DOMUtil {
   //
   // Returns false if no matching ancestor is found.
 
-  public static findAncestor(element: HTMLElement, identifierFn: IdentifierFn, getAll: boolean = true): DOMUtilResult {
+  public static findAncestor(element: HTMLElement, identifierFn: IdentifierFn, getAll: boolean = true): DOMTransverseResult {
     const results: HTMLElement[] = []
 
     if (element === null) {
@@ -56,7 +56,7 @@ export class DOMUtil {
     return false
   }
 
-  public static findAncestorWithClass(parent: HTMLElement, classNames: string | string[], getAll: boolean = true): DOMUtilResult {
+  public static findAncestorWithClass(parent: HTMLElement, classNames: string | string[], getAll: boolean = true): DOMTransverseResult {
     let identifierFn: IdentifierFn = element => false
 
     if (typeof classNames === 'string') {    
@@ -76,12 +76,12 @@ export class DOMUtil {
     return this.findAncestor(parent, identifierFn, getAll)
   }
 
-  public static findAncestorWithID(parent: HTMLElement, ID: string, getAll: boolean = true): DOMUtilResult {
+  public static findAncestorWithID(parent: HTMLElement, ID: string, getAll: boolean = true): DOMTransverseResult {
     const identifierFn: IdentifierFn = element => element.id === ID
     return this.findAncestor(parent, identifierFn, getAll)
   }
 
-  public static hasAncestor(parent: HTMLElement, options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>): DOMUtilResult {
+  public static hasAncestor(parent: HTMLElement, options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>): DOMTransverseResult {
     const identifierFn: IdentifierFn = element => {
       if (Array.isArray(options) === true) {
         return (<HTMLElement[]>options).indexOf(element) !== -1
@@ -97,7 +97,7 @@ export class DOMUtil {
 
   // DESCENDANT
 
-  public static findDescendant(element: HTMLElement, identifierFn: IdentifierFn, getAll: boolean = true): DOMUtilResult {
+  public static findDescendant(element: HTMLElement, identifierFn: IdentifierFn, getAll: boolean = true): DOMTransverseResult {
     const results: HTMLElement[] = []
 
     if (identifierFn(element) === true) {
@@ -130,12 +130,12 @@ export class DOMUtil {
     return false
   }
 
-  public static findDescendantWithID(parent: HTMLElement, ID: string, getAll: boolean = true): DOMUtilResult {
+  public static findDescendantWithID(parent: HTMLElement, ID: string, getAll: boolean = true): DOMTransverseResult {
     const identifierFn: IdentifierFn = element => element.id === ID
     return this.findDescendant(parent, identifierFn, getAll)
   }
 
-  public static findDescendantWithClass(parent: HTMLElement, classNames: string | string[], getAll: boolean = true): DOMUtilResult {
+  public static findDescendantWithClass(parent: HTMLElement, classNames: string | string[], getAll: boolean = true): DOMTransverseResult {
     let identifierFn: IdentifierFn = element => false
 
     if (typeof classNames === 'string') {    
@@ -155,7 +155,7 @@ export class DOMUtil {
     return this.findDescendant(parent, identifierFn, getAll)
   }
 
-  public static hasDescendant(element: HTMLElement, options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>): DOMUtilResult {
+  public static hasDescendant(element: HTMLElement, options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>): DOMTransverseResult {
     const identifierFn: IdentifierFn = _element => {
       if (Array.isArray(options) === true) {
         return (<HTMLElement[]>options).indexOf(_element) !== -1
@@ -181,7 +181,7 @@ export class DOMUtil {
     return false
   }
 
-  public static findSibling(element: HTMLElement, identifierFn: Function, getAll = true): DOMUtilResult {
+  public static findSibling(element: HTMLElement, identifierFn: Function, getAll = true): DOMTransverseResult {
     const siblings: HTMLElement[] | false = this.getSiblings(element)
     if (siblings === false) {
       return false
@@ -200,7 +200,7 @@ export class DOMUtil {
     return false
   }
 
-  public static findSiblingWithClass(element: HTMLElement, className: string, getAll: boolean = true): DOMUtilResult {
+  public static findSiblingWithClass(element: HTMLElement, className: string, getAll: boolean = true): DOMTransverseResult {
     const identifierFn: IdentifierFn = _element => {
       return _element.classList.contains(className)
     }
@@ -264,60 +264,6 @@ export class DOMUtil {
       typeof element.nodeType === 'number' &&
       element.nodeType        === 1
     )
-  }
-
-  // Element & Point
-
-  // Point is relative to viewport. (clientX, clientY)
-  public static pointIsInElement({ x, y }: Point, element: HTMLElement): boolean {
-    return document.elementsFromPoint(x, y).indexOf(element) !== -1
-  }
-
-  public static findElementFromPoint({ x, y }: Point, identifierFn: IdentifierFn, getAll: boolean = true): HTMLElement | HTMLElement[] | false {
-    const elements = document.elementsFromPoint(x, y)
-    if (elements.length === 0) {
-      return false
-    }
-
-    let results: HTMLElement[] = []
-    elements.forEach(element => {
-      if (identifierFn(<HTMLElement>element) === true) {
-        results.push(<HTMLElement>element)
-      }
-    })
-
-    if (results.length === 0) {
-      return false
-    } else if (results.length === 1) {
-      return results[0]
-    }
-
-    if (getAll === true) {
-      return results
-    } else {
-      return results[0]
-    }
-  }
-
-  public static getClosestChildFromPoint(parent: HTMLElement, point: Point, identifierFn?: IdentifierFn, fromCenter: boolean = false): HTMLElement | false {
-    if (typeof identifierFn === 'undefined') {
-      identifierFn = element => true
-    }
-
-    const children: HTMLElement[] = <HTMLElement[]>Array.from(parent.children)
-    const selectedChildren: HTMLElement[] = children.filter(identifierFn)
-
-    if (selectedChildren.length === 0)  {
-      return false
-    }
-
-    const distances: number[] = selectedChildren.map(item => {
-      return DOMHelper.getDistanceFromPoint(item, point, fromCenter)
-    })
-
-    const closesDistanceIndex: number = distances.indexOf(Math.min(...distances))
-
-    return selectedChildren[closesDistanceIndex]
   }
 
   public static getNthChild(n: number | 'last', parent: HTMLElement, identifierFn?: IdentifierFn): HTMLElement | false {

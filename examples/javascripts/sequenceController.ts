@@ -1,5 +1,5 @@
 import {
-  DOMHelper,
+  DOMStyle,
   SequenceController,
 } from '../../rocket/rocket'
 
@@ -18,7 +18,7 @@ const controller = new SequenceController({
       action.currentItem.classList.add('item--animate-out')
       setTimeout(
         () => resolve(),
-        DOMHelper.getAnimationDuration(action.currentItem)
+        DOMStyle.getAnimationDuration(action.currentItem)
       )
     })
   },
@@ -28,7 +28,7 @@ const controller = new SequenceController({
       action.nextItem.classList.add('item--animate-in')
       setTimeout(
         () => resolve(),
-        DOMHelper.getAnimationDuration(action.currentItem)
+        DOMStyle.getAnimationDuration(action.currentItem)
       )
     })
   }

@@ -1,5 +1,5 @@
 import {
-  DOMUtil,
+  DOMTransverse,
 } from '../rocket'
 
 export interface InputActiveManagerConfig {
@@ -89,7 +89,7 @@ export class InputActiveManager {
 
       this.inputElements = []
       this.containerElements.forEach(container => {
-        const input = DOMUtil.findDescendant(
+        const input = DOMTransverse.findDescendant(
           container,
           element => {
             return (
@@ -108,7 +108,7 @@ export class InputActiveManager {
 
   public initialize() {
     this.inputElements.forEach(input => {
-      const containerElement = DOMUtil.findAncestorWithClass(
+      const containerElement = DOMTransverse.findAncestorWithClass(
         input, this.config.containerClassName, false
       )
       if (containerElement !== false) {
@@ -148,7 +148,7 @@ export class InputActiveManager {
   }
 
   private getInputActiveManagerElement(input: HTMLInputElement | HTMLTextAreaElement): HTMLElement | false {
-    const result = DOMUtil.findAncestorWithClass(
+    const result = DOMTransverse.findAncestorWithClass(
       input, this.config.containerClassName, false
     )
     if (result !== false) {

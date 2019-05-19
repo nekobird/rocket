@@ -1,6 +1,6 @@
 import {
-  DOMHelper,
-  DOMUtil,
+  DOMPoint,
+  DOMTransverse,
   Point,
   PointHelper,
 } from '../../rocket'
@@ -95,11 +95,12 @@ export class Sortable {
 
   public getItemFromDownEvent(event): HTMLElement | false {
     if (typeof event.downData === 'object') {
-      const item: HTMLElement | HTMLElement[] | false = DOMUtil.findAncestor(
+      const item: HTMLElement | HTMLElement[] | false = DOMTransverse.findAncestor(
         event.downData.target,
         item => ((<HTMLElement[]>this.config.items).indexOf(item) !== -1),
         false
       )
+
       if (item !== false) {
         return <HTMLElement>item
       }
@@ -114,7 +115,8 @@ export class Sortable {
   }
 
   public dragCondition = (event, manager) => {
-    const item: HTMLElement | false = this.getItemFromDownEvent(event)
+    const item = this.getItemFromDownEvent(event)
+
     if (item !== false) {
       this.targetItem = item
       return true
@@ -125,7 +127,7 @@ export class Sortable {
   // @helper
 
   public getLastItem(): HTMLElement | false {
-    return DOMUtil.getNthChild('last', <HTMLElement>this.config.container, item => {
+    return DOMTransverse.getNthChild('last', <HTMLElement>this.config.container, item => {
       return (
         (<HTMLElement[]>this.config.items).indexOf(item) !== -1
         && this.activeItem !== item
@@ -135,34 +137,40 @@ export class Sortable {
   }
 
   public prepareAndInsertDummyElementAt(point: Point) {
-    const closestItem: HTMLElement | false = DOMUtil.getClosestChildFromPoint(
+    const closestItem = DOMPoint.getClosestChildFromPoints(
       <HTMLElement>this.config.container,
-      point,
+      DOMPoint.getElementCornerPoints(<HTMLElement>this.activeItem),
       item => {
         return (
           (<HTMLElement[]>this.config.items).indexOf(item) !== -1
           && this.activeItem !== item
         )
-      },
-      false
+      }
     )
+
     if (closestItem !== false) {
       if (typeof this.dummyElement === 'undefined') {
-        this.dummyElement = this.config.createDummyFromItem(<HTMLElement>this.activeItem, this)
+        this.dummyElement = this.config.createDummyFromItem(
+          <HTMLElement>this.activeItem, this
+        )
       }
-      this.config.setDummyElementPropertiesFromItem(this.dummyElement, <HTMLElement>this.activeItem, this)
+
+      this.config.setDummyElementPropertiesFromItem(
+        this.dummyElement, <HTMLElement>this.activeItem, this
+      )
+
       this.insertDummyElement(closestItem, point)
     } 
   }
 
   public insertDummyElement(item: HTMLElement, point: Point) {
     if (typeof this.dummyElement === 'object') {
-      const lastItem: HTMLElement | false = this.getLastItem()
+      const lastItem = this.getLastItem()
 
       if (
         lastItem !== false
         && lastItem === item
-        && DOMHelper.elementIsBelowPoint(lastItem, point, lastItem.offsetHeight / 2) === true
+        && DOMPoint.elementIsBelowPoint(lastItem, point, lastItem.offsetHeight / 2) === true
       ) {
         (<HTMLElement>this.config.container).appendChild(this.dummyElement)
       } else {
@@ -173,7 +181,7 @@ export class Sortable {
 
   public updateInitialOffset({ clientX: x, clientY: y}) {
     if (typeof this.activeItem === 'object') {
-      this.initialOffset = DOMHelper.getOffsetFromPoint(
+      this.initialOffset = DOMPoint.getOffsetFromPoint(
         this.activeItem,
         { x, y }
       )
@@ -248,7 +256,7 @@ export class Sortable {
       }
 
       const point: Point = { x, y }
-      const offset = DOMHelper.getOffsetFromPoint(
+      const offset = DOMPoint.getOffsetFromPoint(
         <HTMLElement>this.config.container, point
       )
       const to: Point = PointHelper.subtract(offset, <Point>this.initialOffset)
@@ -266,6 +274,7 @@ export class Sortable {
     ) {
       this.config.deactivateItem(this.activeItem, this)
       this.config.unpopItem(this.activeItem, this)
+
       if (typeof this.dummyElement !== 'undefined') {
         (<HTMLElement>this.config.container).replaceChild(
           this.activeItem, this.dummyElement

@@ -4,8 +4,10 @@ export * from './core/util'
 export * from './core/stringUtil'
 
 // DOM
-export * from './dom/domUtil'
+export * from './dom/domTransverse'
 export * from './dom/domHelper'
+export * from './dom/domPoint'
+export * from './dom/domStyle'
 
 // VIEW
 export * from './viewport/viewportModel'

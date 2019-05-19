@@ -61,7 +61,7 @@ export const SORTABLE_CONFIG: SortableConfig = {
   setDummyElementPropertiesFromItem: (dummy, item) => {
     dummy.classList.add('sortableItem', 'sortableItem--dummy')
     DOMHelper.applyStyle(dummy, {
-      width : `${item.offsetWidth}px`,
+      width: `${item.offsetWidth}px`,
       height: `${item.offsetHeight}px`,
       boxSizing: 'border-box',
       position: 'relative',
