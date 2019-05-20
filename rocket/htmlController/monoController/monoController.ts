@@ -1,101 +1,101 @@
 import {
   DEFAULT_CONFIG,
   MonoConfig,
-} from './config'
+} from './config';
 
 import {
   ItemManager,
-} from './itemManager'
+} from './itemManager';
 
 import {
   EventManager,
-} from './eventManager'
+} from './eventManager';
 
 import {
-  MonoAction,
   ActionManager,
-} from './actionManager'
+  MonoAction,
+} from './actionManager';
 
 export class MonoController {
 
-  public config: MonoConfig
+  public config: MonoConfig;
 
-  public itemManager: ItemManager
-  public eventManager: EventManager
-  public actionManager: ActionManager
+  public itemManager: ItemManager;
+  public eventManager: EventManager;
+  public actionManager: ActionManager;
 
-  public isReady: boolean = false
+  public isReady: boolean = false;
 
   constructor(config?: Partial<MonoConfig>) {
-    this.config = Object.assign({}, DEFAULT_CONFIG)
+    this.config = Object.assign({}, DEFAULT_CONFIG);
     if (typeof config === 'object') {
-      this.setConfig(config)
+      this.setConfig(config);
     }
 
-    this.itemManager = new ItemManager(this)
-    this.eventManager = new EventManager(this)
-    this.actionManager = new ActionManager(this)
+    this.itemManager = new ItemManager(this);
+    this.eventManager = new EventManager(this);
+    this.actionManager = new ActionManager(this);
 
-    this.initialize()
+    this.initialize();
   }
 
   public setConfig(config: Partial<MonoConfig>): this {
-    Object.assign(this.config, config)
-    return this
+    Object.assign(this.config, config);
+    return this;
   }
 
   // Initialize
 
   public initialize(): this {
-    this.itemManager.initialize()
-    this.eventManager.initialize()
-    return this
+    this.itemManager.initialize();
+    this.eventManager.initialize();
+    return this;
   }
 
   public get isActive(): boolean {
-    return this.itemManager.isActive
+    return this.itemManager.isActive;
   }
 
   public isItemActive(id: string): boolean {
-    const { isActive, activeItem } = this.itemManager
+    const { isActive, activeItem } = this.itemManager;
     if (
       isActive === true
       && typeof activeItem !== 'undefined'
     ) {
-      return activeItem.dataset.id === id
+      return activeItem.dataset.id === id;
     }
-    return false
+    return false;
   }
 
   // Action
 
   public async activate(id: string): Promise<void> {
     try {
-      const action: MonoAction = this.actionManager.composeAction('activate', id)
-      await this.actionManager.actionHub(action)
-      return Promise.resolve()
+      const action: MonoAction = this.actionManager.composeAction('activate', id);
+      await this.actionManager.actionHub(action);
+      return Promise.resolve();
     } catch {
-      return Promise.reject()
+      return Promise.reject();
     }
   }
 
   public async deactivate(id?: string): Promise<void> {
     try {
-      const action: MonoAction = this.actionManager.composeAction('deactivate', id)
-      await this.actionManager.actionHub(action)
-      return Promise.resolve()
+      const action: MonoAction = this.actionManager.composeAction('deactivate', id);
+      await this.actionManager.actionHub(action);
+      return Promise.resolve();
     } catch {
-      return Promise.reject()
+      return Promise.reject();
     }
   }
 
   public async toggle(id?: string): Promise<void> {
     try {
-      const action: MonoAction = this.actionManager.composeAction('toggle', id)
-      await this.actionManager.actionHub(action)
-      return Promise.resolve()
+      const action: MonoAction = this.actionManager.composeAction('toggle', id);
+      await this.actionManager.actionHub(action);
+      return Promise.resolve();
     } catch {
-      return Promise.reject()
+      return Promise.reject();
     }
   }
 }

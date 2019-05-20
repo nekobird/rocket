@@ -15,31 +15,25 @@ import {
 } from './dragEvent';
 
 export interface DragEventManagerConfig {
-  enableLongPress: boolean,
-  longPressWait: number, // In seconds.
+  enableLongPress: boolean;
+  longPressWait: number; // In seconds.
+  parent: HTMLElement | Window;
 
-  parent: HTMLElement | Window,
-
-  onLongPress: (event: DragEvent, manager: DragEventManager) => void,
-
-  condition: (event: DragEvent, manager: DragEventManager) => boolean,
-
-  onDown: (event: DragEvent, manager: DragEventManager) => void,
-  onDrag: (event: DragEvent, manager: DragEventManager) => void,
-  onUp: (event: DragEvent, manager: DragEventManager) => void,
-  onCancel: (event: DragEvent, manager: DragEventManager) => void,
+  onLongPress: (event: DragEvent, manager: DragEventManager) => void;
+  condition: (event: DragEvent, manager: DragEventManager) => boolean;
+  onDown: (event: DragEvent, manager: DragEventManager) => void;
+  onDrag: (event: DragEvent, manager: DragEventManager) => void;
+  onUp: (event: DragEvent, manager: DragEventManager) => void;
+  onCancel: (event: DragEvent, manager: DragEventManager) => void;
 }
 
 export const DRAG_EVENT_MANAGER_DEFAULT_CONFIG: DragEventManagerConfig = {
   enableLongPress: false,
   longPressWait: 2,
-
   parent: window,
 
   onLongPress: (event, manager) => {},
-
   condition: (event, manager) => true,
-
   onDown: (event, manager) => {},
   onDrag: (event, manager) => {},
   onUp: (event, manager) => {},

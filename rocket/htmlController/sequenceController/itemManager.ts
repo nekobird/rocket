@@ -1,6 +1,6 @@
 import {
   SequenceController,
-} from './sequenceController'
+} from './sequenceController';
 
 export class ItemManager {
 

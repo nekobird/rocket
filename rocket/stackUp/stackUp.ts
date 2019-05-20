@@ -17,14 +17,14 @@ import {
 
 // [index][item, itemHeight, left, top]
 export interface StackUpItem {
-  item  : HTMLElement,
-  height: number,
-  left: number,
-  top : number,
-  currentLeft: number,
-  currentTop : number,
-  requireMove: boolean,
-};
+  item  : HTMLElement;
+  height: number;
+  left: number;
+  top : number;
+  currentLeft: number;
+  currentTop : number;
+  requireMove: boolean;
+}
 
 export class StackUp {
 

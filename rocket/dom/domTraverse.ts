@@ -263,9 +263,9 @@ export class DOMTraverse {
 
   public static isAnHTMLElement(element: HTMLElement | Element): boolean {
     return (
-      typeof element          === 'object' &&
-      typeof element.nodeType === 'number' &&
-      element.nodeType        === 1
+      typeof element === 'object'
+      && typeof element.nodeType === 'number'
+      && element.nodeType === 1
     );
   }
 

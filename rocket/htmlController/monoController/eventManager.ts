@@ -1,140 +1,137 @@
 import {
   DOMTraverse,
   DragEventManager,
-} from '../../rocket'
+} from '../../rocket';
 
 import {
-  MonoController
-} from './monoController'
+  MonoController,
+} from './monoController';
 
 import {
   MonoAction,
   MonoActionName,
-} from './actionManager'
+} from './actionManager';
 
 import {
   MONO_ACTION_CONFIG_MAP,
-} from './config'
+} from './config';
 
 export interface ActionConfigMapEntry {
-  action: MonoActionName,
-  configProperty: string,
+  action: MonoActionName;
+  configProperty: string;
 }
 
-export type ActionConfigMapEntries = ActionConfigMapEntry[]
+export type ActionConfigMapEntries = ActionConfigMapEntry[];
 
 export class EventManager {
-  public controller: MonoController
+  public controller: MonoController;
 
-  public dragEventManager: DragEventManager
+  public dragEventManager: DragEventManager;
 
   constructor(controller: MonoController) {
-    this.controller = controller
+    this.controller = controller;
 
     this.dragEventManager = new DragEventManager({
-      onUp: this.onUp
-    })
+      onUp: this.onUp,
+    });
   }
 
   public initialize() {
     if (this.controller.config.listenToKeydown === true) {
-      window.addEventListener('keydown', this.eventHandlerKeydown)
+      window.addEventListener('keydown', this.eventHandlerKeydown);
     }
   }
 
   private onUp = event => {
-    this.handleOutsideAction(event)
+    this.handleOutsideAction(event);
 
     if (typeof event.downData === 'object') {
-      const targetDownElement = event.getTargetElementFromData(event.downData)
+      const targetDownElement = event.getTargetElementFromData(event.downData);
 
       if (targetDownElement !== false) {
         MONO_ACTION_CONFIG_MAP.forEach(entry => {
-          const className: string = this.controller.config[entry.configProperty]
-          const trigger = DOMTraverse.findAncestorWithClass(targetDownElement, className, false)
+          const className: string = this.controller.config[entry.configProperty];
+          const trigger = DOMTraverse.findAncestorWithClass(targetDownElement, className, false);
           if (trigger !== false) {
-            this.eventHub(<HTMLElement>trigger, entry.action)
+            this.eventHub(<HTMLElement>trigger, entry.action);
           }
-        })
+        });
       }
     }
-  }
+  };
 
   private eventHub(trigger: HTMLElement, actionName: MonoActionName): this {
-    const { actionManager, isReady } = this.controller
+    const { actionManager, isReady } = this.controller;
     if (
       isReady === true
       && actionManager.isRunning === false
     ) {
-      actionManager.isRunning = true
+      actionManager.isRunning = true;
       if (
-        typeof trigger !== 'undefined' &&
-        trigger instanceof HTMLElement
+        typeof trigger !== 'undefined'
+        && trigger instanceof HTMLElement
       ) {
-        const action: MonoAction = actionManager.composeActionFromEvent(actionName, trigger)
+        const action: MonoAction = actionManager.composeActionFromEvent(actionName, trigger);
         if (typeof action === 'object') {
-          actionManager.actionHub(action)
+          actionManager.actionHub(action);
         } else {
-          actionManager.endAction()
+          actionManager.endAction();
         }
       } else {
-        actionManager.endAction()
+        actionManager.endAction();
       }
     }
-    return this
+    return this;
   }
 
   private handleOutsideAction = event => {
-    const { config, actionManager, itemManager } = this.controller
+    const { config, actionManager, itemManager } = this.controller;
     if (
       config.deactivateOnOutsideAction === true
       && actionManager.isRunning === false
     ) {
-
-      const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData)
-      const targetUpElement  : HTMLElement | false = event.getTargetElementFromData(event.upData)
+      const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData);
+      const targetUpElement  : HTMLElement | false = event.getTargetElementFromData(event.upData);
 
       let classNames: string[] = [
         config.classNameJsActivate,
         config.classNameJsDeactivate,
         config.classNameJsToggle
-      ]
+      ];
 
       const identifierFn = element => {
-        let containsClassName: boolean = false
+        let containsClassName: boolean = false;
         classNames.forEach(className => {
           if (element.classList.contains(className) === true) {
-            containsClassName = true
+            containsClassName = true;
           }
-        })
-        return containsClassName
-      }
+        });
+        return containsClassName;
+      };
 
       if (
         itemManager.isActive === true
         && typeof itemManager.activeItem !== 'undefined'
         && targetDownElement !== false
         && targetUpElement !== false
-
         && DOMTraverse.hasAncestor(targetDownElement, itemManager.activeItem) === false
         && DOMTraverse.hasAncestor(targetUpElement, itemManager.activeItem) === false
-
         && DOMTraverse.findAncestor(targetDownElement, identifierFn) === false
       ) {
-        this.controller.deactivate()
-        config.onOutsideAction(this.controller)
+        this.controller.deactivate();
+        config.onOutsideAction(this.controller);
       }
     }
   }
 
   private eventHandlerKeydown = (event: KeyboardEvent) => {
-    const { config, actionManager } = this.controller
+    const { config, actionManager } = this.controller;
 
     if (
       config.listenToKeydown  === true
       && actionManager.isRunning === false
     ) {
-      config.onKeydown(event, this.controller)
+      config.onKeydown(event, this.controller);
     }
   }
 }

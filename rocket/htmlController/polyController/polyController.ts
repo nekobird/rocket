@@ -1,126 +1,132 @@
 import {
   DEFAULT_CONFIG,
   PolyConfig,
-} from './config'
+} from './config';
 
 import {
   ItemManager,
-} from './itemManager'
+} from './itemManager';
 
 import {
   EventManager,
-} from './eventManager'
+} from './eventManager';
 
 import {
   ActionManager,
   PolyAction,
-} from './actionManager'
+} from './actionManager';
 
 export class PolyController {
 
-  public isReady: boolean = false
+  public isReady: boolean = false;
 
-  public config: PolyConfig
+  public config: PolyConfig;
 
-  public itemManager: ItemManager
-  public eventManager: EventManager
-  public actionManager: ActionManager
+  public itemManager: ItemManager;
+  public eventManager: EventManager;
+  public actionManager: ActionManager;
 
   constructor(config?: Partial<PolyConfig>) {
-    this.config = Object.assign({}, DEFAULT_CONFIG)
+    this.config = Object.assign({}, DEFAULT_CONFIG);
     if (typeof config === 'object') {
-      this.setConfig(config)
+      this.setConfig(config);
     }
     
-    this.itemManager = new ItemManager(this)
-    this.eventManager = new EventManager(this)
-    this.actionManager = new ActionManager(this)
+    this.itemManager = new ItemManager(this);
+    this.eventManager = new EventManager(this);
+    this.actionManager = new ActionManager(this);
 
-    this.initialize()
+    this.initialize();
   }
 
   public setConfig(config: Partial<PolyConfig>): this {
-    Object.assign(this.config, config)
-    return this
+    Object.assign(this.config, config);
+    return this;
   }
 
   // Initialize
 
   public initialize(): this {
-    this.itemManager.initialize()
-    this.eventManager.initialize()
-    return this
+    this.itemManager.initialize();
+    this.eventManager.initialize();
+    return this;
   }
 
   public get isActive(): boolean {
-    return this.itemManager.isActive
+    return this.itemManager.isActive;
   }
 
   public isItemActive(id: string): boolean {
-    let isActive: boolean = false
+    let isActive: boolean = false;
     this.itemManager.activeItems.forEach(item => {
       if (item.dataset.id === id) {
-        isActive = true
+        isActive = true;
       }
-    })
-    return isActive
+    });
+    return isActive;
   }
 
   // Actions
 
-  public activate(id: string): Promise<void> {
-    return new Promise(resolve => {
-      const action: PolyAction = this.actionManager.composeAction('activate', id)
-      this.actionManager.actionHub(action)
-        .then(() => resolve())
-        .catch(() => resolve())
-    })
+  public async activate(id: string): Promise<void> {
+    try {
+      const action: PolyAction = this.actionManager.composeAction('activate', id);
+      await this.actionManager.actionHub(action);
+      return Promise.resolve();
+    } catch {
+      return Promise.reject();
+    }
   }
 
-  public deactivate(id: string): Promise<void> {
-    return new Promise(resolve => {
-      const action: PolyAction = this.actionManager.composeAction('deactivate', id)
-      this.actionManager.actionHub(action)
-        .then(() => resolve())
-        .catch(() => resolve())
-    })
+  public async deactivate(id: string): Promise<void> {
+    try {
+      const action: PolyAction = this.actionManager.composeAction('deactivate', id);
+      await this.actionManager.actionHub(action);
+      return Promise.resolve();
+    } catch {
+      return Promise.reject();
+    }
   }
 
-  public toggle(id: string): Promise<void> {
-    return new Promise(resolve => {
-      const action: PolyAction = this.actionManager.composeAction('toggle', id)
-      this.actionManager.actionHub(action)
-        .then(() => resolve())
-        .catch(() => resolve())
-    })
+  public async toggle(id: string): Promise<void> {
+    try {
+      const action: PolyAction = this.actionManager.composeAction('toggle', id);
+      await this.actionManager.actionHub(action);
+      return Promise.resolve();
+    } catch {
+      return Promise.reject();
+    }
   }
 
   // Group Actions
 
-  public activateAll(): Promise<void> {
-    return new Promise(resolve => {
-      const action: PolyAction = this.actionManager.composeAction('activateAll')
-      this.actionManager.actionHub(action)
-        .then(() => resolve())
-        .catch(() => resolve())
-    })
+  public async activateAll(): Promise<void> {
+    try {
+      const action: PolyAction = this.actionManager.composeAction('activateAll');
+      await this.actionManager.actionHub(action);
+      return Promise.resolve();
+    } catch {
+      return Promise.reject();
+    }
   }
 
-  public deactivateAll(): Promise<void> {
-    return new Promise(resolve => {
-      const action: PolyAction = this.actionManager.composeAction('deactivateAll')
-      this.actionManager.actionHub(action)
-        .then(() => resolve())
-        .catch(() => resolve())
-    })
+  public async deactivateAll(): Promise<void> {
+    try {
+      const action: PolyAction = this.actionManager.composeAction('deactivateAll');
+      await this.actionManager.actionHub(action);
+      return Promise.resolve();
+    } catch {
+      return Promise.reject();
+    }
   }
 
-  public toggleAll(): Promise<void> {
-    return new Promise(resolve => {
-      const action: PolyAction = this.actionManager.composeAction('toggleAll')
-      this.actionManager.actionHub(action)
-        .then(() => resolve())
-        .catch(() => resolve())
-    })
+  public async toggleAll(): Promise<void> {
+    try {
+      const action: PolyAction = this.actionManager.composeAction('toggleAll');
+      await this.actionManager.actionHub(action);
+      return Promise.resolve();
+    } catch {
+      return Promise.reject();
+    }
   }
 }

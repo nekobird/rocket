@@ -145,7 +145,6 @@ export class DragEvent {
       this.clearLongPress();
 
       this.isActive = false;
-
       this.upData = data;
 
       this.previousEvent = this.currentEvent;

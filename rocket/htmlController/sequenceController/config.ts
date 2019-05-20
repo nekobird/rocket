@@ -30,18 +30,18 @@ export interface SequenceConfig {
   classNameJsNext: string;
   classNameJsJump: string;
 
-  beforeActivate  : Hook<SequenceAction, SequenceController>;
+  beforeActivate: Hook<SequenceAction, SequenceController>;
   beforeDeactivate: Hook<SequenceAction, SequenceController>;
 
   afterActivate: Hook<SequenceAction, SequenceController>;
   afterDeactivate: Hook<SequenceAction, SequenceController>;
 
   conditionPrevious: ConditionHook<SequenceAction, SequenceController>;
-  conditionNext    : ConditionHook<SequenceAction, SequenceController>;
-  conditionJump    : ConditionHook<SequenceAction, SequenceController>;
+  conditionNext: ConditionHook<SequenceAction, SequenceController>;
+  conditionJump: ConditionHook<SequenceAction, SequenceController>;
 
   beforeAction: BeforeActionCallback<SequenceAction, SequenceController>;
-  afterAction : AfterActionCallback<SequenceAction, SequenceController>;
+  afterAction: AfterActionCallback<SequenceAction, SequenceController>;
 
   onKeydown: (event: KeyboardEvent, context: SequenceController) => void;
 }
@@ -56,22 +56,22 @@ export const DEFAULT_CONFIG: SequenceConfig = {
 
   classNameItemActive: 'js-sequence-item--active',
   classNameJsPrevious: 'js-sequence-item-previous',
-  classNameJsNext    : 'js-sequence-item-next',
-  classNameJsJump    : 'js-sequence-item-jump',
+  classNameJsNext: 'js-sequence-item-next',
+  classNameJsJump: 'js-sequence-item-jump',
 
   beforeDeactivate: (action, context) => Promise.resolve(),
-  beforeActivate  : (action, context) => Promise.resolve(),
-  afterDeactivate : (action, context) => Promise.resolve(),
-  afterActivate   : (action, context) => Promise.resolve(),
+  beforeActivate: (action, context) => Promise.resolve(),
+  afterDeactivate: (action, context) => Promise.resolve(),
+  afterActivate: (action, context) => Promise.resolve(),
 
   conditionPrevious: (action, context) => true,
-  conditionNext    : (action, context) => true,
-  conditionJump    : (action, context) => true,
+  conditionNext: (action, context) => true,
+  conditionJump: (action, context) => true,
 
   beforeAction: (action, context) => Promise.resolve(),
-  afterAction : (action, context) => { },
+  afterAction: (action, context) => {},
 
-  onKeydown: (event, context) => { },
+  onKeydown: (event, context) => {},
 };
 
 export const SEQUENCE_ACTION_CONFIG_MAP: ActionConfigMapEntries = [

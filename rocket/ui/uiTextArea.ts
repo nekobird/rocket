@@ -10,209 +10,205 @@ export const _UITextArea_event_keydown: unique symbol = Symbol();
 export const _textBoxModel: unique symbol = Symbol();
 
 export interface UITextAreaConfig {
-  disableLineBreaks: boolean,
-  disableTabs: boolean,
-
-  limitNumberOfCharacters: boolean,
-  removeLeadingWhitespaces: boolean,
-  removeMultipleWhitespaces: boolean,
-
-  onBlur: (context: UITextArea) => void,
-  onFocus: (context: UITextArea) => void,
-  onInput: (context: UITextArea) => void,
-  onPaste: (context: UITextArea) => void,
-  onGrow: (height: number, context: UITextArea) => void,
+  disableLineBreaks: boolean;
+  disableTabs: boolean;
+  limitNumberOfCharacters: boolean;
+  removeLeadingWhitespaces: boolean;
+  removeMultipleWhitespaces: boolean;
+  onBlur: (context: UITextArea) => void;
+  onFocus: (context: UITextArea) => void;
+  onInput: (context: UITextArea) => void;
+  onPaste: (context: UITextArea) => void;
+  onGrow: (height: number, context: UITextArea) => void;
 }
 
 const UITEXTAREA_CONFIG: UITextAreaConfig = {
   disableLineBreaks: false,
   disableTabs: false,
-
-  limitNumberOfCharacters  : false,
-  removeLeadingWhitespaces : false,
+  limitNumberOfCharacters: false,
+  removeLeadingWhitespaces: false,
   removeMultipleWhitespaces: false,
-
-  onBlur : () => {},
+  onBlur: () => {},
   onFocus: () => {},
   onInput: () => {},
   onPaste: () => {},
-  onGrow : () => {},
-}
+  onGrow: () => {},
+};
 
 export class UITextArea {
 
-  public isInFocus: boolean = false
-  public lastKeyCode?: number
+  public isInFocus: boolean = false;
+  public lastKeyCode?: number;
 
-  public element: HTMLTextAreaElement
-  public config: UITextAreaConfig
+  public element: HTMLTextAreaElement;
+  public config: UITextAreaConfig;
 
   constructor(element: HTMLTextAreaElement, config?: Partial<UITextAreaConfig>) {
-    this[_textBoxModel] = new TextBoxModel
+    this[_textBoxModel] = new TextBoxModel;
 
     // EVENT NAMES
-    this[_UITextArea_eventName_input] = 'UITextArea_onInput'
-    this[_UITextArea_eventName_keydown] = 'UITextArea_onKeydown'
+    this[_UITextArea_eventName_input] = 'UITextArea_onInput';
+    this[_UITextArea_eventName_keydown] = 'UITextArea_onKeydown';
 
     // EVENTS
     this[_UITextArea_event_input] = new CustomEvent(
       this[_UITextArea_eventName_input]
-    )
+    );
     this[_UITextArea_event_keydown] = new CustomEvent(
       this[_UITextArea_eventName_keydown]
-    )
+    );
 
-    this.element = element
+    this.element = element;
 
-    this.config = Object.assign({}, UITEXTAREA_CONFIG)
+    this.config = Object.assign({}, UITEXTAREA_CONFIG);
     if (typeof config === 'object') {
-      this.setConfig(config)
+      this.setConfig(config);
     }
 
-    this.initialize()
-    return this
+    this.initialize();
+    return this;
   }
 
   public setConfig(config: Partial<UITextAreaConfig>) {
-    Object.assign(this.config, config)
+    Object.assign(this.config, config);
   }
 
   public initialize(): UITextArea {
     this
       .filterInput()
       .grow()
-      .startListening()
-    return this
+      .startListening();
+    return this;
   }
 
   get value(): string {
-    return this.element.value
+    return this.element.value;
   }
 
   get selectedText(): string {
-    const start: number = this.element.selectionStart
-    const end: number = this.element.selectionEnd
-    return this.value.substring(start, end)
+    const start: number = this.element.selectionStart;
+    const end: number = this.element.selectionEnd;
+    return this.value.substring(start, end);
   }
 
   set value(value: string) {
-    this.element.value = value
-    this.processText()
+    this.element.value = value;
+    this.processText();
   }
 
   public grow(): UITextArea {
     const height: number =
-      this[_textBoxModel].getTextBoxHeightFromElement(this.element)
-    this.element.style.height = `${height}px`
+      this[_textBoxModel].getTextBoxHeightFromElement(this.element);
+    this.element.style.height = `${height}px`;
     this.config.onGrow(height, this);
-    return this
+    return this;
   }
 
   public destroy(): UITextArea {
-    this.stopListening()
-    return this
+    this.stopListening();
+    return this;
   }
 
   public filterInput(): UITextArea {
     // Remove new lines.
     if (this.config.disableLineBreaks === true) {
-      this.element.value = this.element.value.replace(/[\r\n]+/g, '')
+      this.element.value = this.element.value.replace(/[\r\n]+/g, '');
     }
     // Remove tabs.
     if (this.config.disableTabs === true) {
-      this.element.value = this.element.value.replace(/[\t]+/g, '')
+      this.element.value = this.element.value.replace(/[\t]+/g, '');
     }
     // Remove multiple whitespaces to one.
     if (this.config.removeMultipleWhitespaces === true) {
-      this.element.value = this.element.value.replace(/[\s]+/g, ' ')
+      this.element.value = this.element.value.replace(/[\s]+/g, ' ');
     }
     // Remove leading whitespaces.
     if (this.config.removeLeadingWhitespaces === true) {
-      this.element.value = this.element.value.replace(/^[\s]+/g, '')
+      this.element.value = this.element.value.replace(/^[\s]+/g, '');
     }
     // Trim element value if limit number of characters is a number.
     if (typeof this.config.limitNumberOfCharacters === 'number') {
       this.element.value = this.element.value.substring(
         0, this.config.limitNumberOfCharacters
-      )
+      );
     }
     // Replace tabs with spaces.
     // TODO: Fix this because it's not working as intended.
     // this.element.value = this.element.value.replace(/[\t]+/g, '    ')
-    return this
+    return this;
   }
 
   public insertString(string: string): UITextArea {
-    const start: number = this.element.selectionStart
-    const end  : number = this.element.selectionEnd
-    const text: string = this.element.value
-    this.element.value = text.substring(0, start) + string + text.substring(end)
-    this.element.selectionEnd = start + string.length
-    return this
+    const start: number = this.element.selectionStart;
+    const end: number = this.element.selectionEnd;
+    const text: string = this.element.value;
+    this.element.value = text.substring(0, start) + string + text.substring(end);
+    this.element.selectionEnd = start + string.length;
+    return this;
   }
 
   public processText(): UITextArea {
-    this.filterInput()
-    this.grow()
-    return this
+    this.filterInput();
+    this.grow();
+    return this;
   }
 
   // HANDLER
 
   private handleBlur = () => {
-    this.isInFocus = false
+    this.isInFocus = false;
   }
 
   private handleFocus = () => {
-    this.isInFocus = true
+    this.isInFocus = true;
   }
 
   private handleInput = event => {
-    this.config.onInput(this)
-    this.processText()
-    window.dispatchEvent(this[_UITextArea_event_input])
+    this.config.onInput(this);
+    this.processText();
+    window.dispatchEvent(this[_UITextArea_event_input]);
   }
 
   private handleKeydown = event => {
-    const keyCode: number = event.keyCode
+    const keyCode: number = event.keyCode;
     if (keyCode === 9) {
-      this.insertString('\t')
-      event.preventDefault()
+      this.insertString('\t');
+      event.preventDefault();
     }
     if (
-      keyCode === 13 &&
-      this.config.disableLineBreaks === true
+      keyCode === 13
+      && this.config.disableLineBreaks === true
     ) {
-      event.preventDefault()
+      event.preventDefault();
     }
-    this.lastKeyCode = keyCode
-    window.dispatchEvent(this[_UITextArea_event_keydown])
+    this.lastKeyCode = keyCode;
+    window.dispatchEvent(this[_UITextArea_event_keydown]);
   }
 
   private handlePaste = event => {
-    this.config.onPaste(this)
-    this.processText()
+    this.config.onPaste(this);
+    this.processText();
   }
 
   // LISTEN
 
   private startListening() {
-    this.element.addEventListener('blur', this.handleBlur)
-    this.element.addEventListener('focus', this.handleFocus)
-    this.element.addEventListener('input', this.handleInput)
-    this.element.addEventListener('keydown', this.handleKeydown)
-    this.element.addEventListener('paste', this.handlePaste)
-    window.addEventListener('resize', this.handleInput)
-    return this
+    this.element.addEventListener('blur', this.handleBlur);
+    this.element.addEventListener('focus', this.handleFocus);
+    this.element.addEventListener('input', this.handleInput);
+    this.element.addEventListener('keydown', this.handleKeydown);
+    this.element.addEventListener('paste', this.handlePaste);
+    window.addEventListener('resize', this.handleInput);
+    return this;
   }
 
   private stopListening() {
-    this.element.removeEventListener('blur', this.handleBlur)
-    this.element.removeEventListener('focus', this.handleFocus)
-    this.element.removeEventListener('input', this.handleInput)
-    this.element.removeEventListener('keydown', this.handleKeydown)
-    this.element.removeEventListener('paste', this.handlePaste)
-    window.removeEventListener('resize', this.handleInput)
-    return this
+    this.element.removeEventListener('blur', this.handleBlur);
+    this.element.removeEventListener('focus', this.handleFocus);
+    this.element.removeEventListener('input', this.handleInput);
+    this.element.removeEventListener('keydown', this.handleKeydown);
+    this.element.removeEventListener('paste', this.handlePaste);
+    window.removeEventListener('resize', this.handleInput);
+    return this;
   }
 }
