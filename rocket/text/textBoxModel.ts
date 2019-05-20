@@ -82,7 +82,7 @@ export class TextBoxModel {
     this.style = {
       height: '0',
       maxHeight: '0',
-      whiteSpace: 'pre-wrap'
+      whiteSpace: 'pre-wrap',
     };
 
     // If text is undefined, get text from target element instead.
@@ -116,16 +116,16 @@ export class TextBoxModel {
       .applyFontPropertiesFromElement(element);
 
     this.style = {
-      borderLeftWidth : '0',
+      borderLeftWidth: '0',
       borderRightWidth: '0',
-      boxSizing   : 'content-box',
-      minWidth    : '0',
-      paddingLeft : '0',
+      boxSizing: 'content-box',
+      minWidth: '0',
+      paddingLeft: '0',
       paddingRight: '0',
-      whiteSpace  : 'nowrap',
-      width       : '0',
-      wordBreak   : 'normal',
-      wordWrap    : 'normal'
+      whiteSpace: 'nowrap',
+      width: '0',
+      wordBreak: 'normal',
+      wordWrap: 'normal'
     };
 
     // If text is undefined, get text from target element instead.

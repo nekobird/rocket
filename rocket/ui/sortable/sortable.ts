@@ -19,7 +19,6 @@ import {
 } from './itemManager';
 
 export class Sortable {
-
   public config: SortableConfig;
 
   public eventManager: EventManager;
@@ -38,7 +37,6 @@ export class Sortable {
 
   constructor(config?: Partial<SortableConfig>) {
     this.config = Object.assign({}, SORTABLE_CONFIG);
-
     if (typeof config === 'object') {
       this.setConfig(config);
     }
@@ -100,15 +98,18 @@ export class Sortable {
   }
 
   public insertDummyElement(closestItem: HTMLElement, point: Point) {
-    if (typeof this.dummyElement === 'object') {
-      const activeItemTopPoints    = DOMPoint.getElementTopPoints(   <HTMLElement>this.activeItem);
-      const activeItemBottomPoints = DOMPoint.getElementBottomPoints(<HTMLElement>this.activeItem);
+    if (
+      typeof this.dummyElement === 'object'
+      && typeof this.activeItem === 'object'
+    ) {
+      const activeItemTopPoints = DOMPoint.getElementTopPoints(this.activeItem);
+      const activeItemBottomPoints = DOMPoint.getElementBottomPoints(this.activeItem);
 
       if (DOMPoint.elementCenterIsAbovePoints(closestItem, activeItemTopPoints) === true) {
-        (<HTMLElement>this.config.container).insertBefore(this.dummyElement, closestItem.nextElementSibling);
+        (<HTMLElement>this.itemManager.container).insertBefore(this.dummyElement, closestItem.nextElementSibling);
       }
       else if (DOMPoint.elementCenterIsBelowPoints(closestItem, activeItemBottomPoints) === true) {
-        (<HTMLElement>this.config.container).insertBefore(this.dummyElement, closestItem);
+        (<HTMLElement>this.itemManager.container).insertBefore(this.dummyElement, closestItem);
       }
     }
   }

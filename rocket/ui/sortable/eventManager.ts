@@ -62,65 +62,65 @@ export class EventManager {
   }
 
   private handleOnDown = (event, manager) => {
-    const { config, targetItem } = this.sortable
+    const { config, targetItem } = this.sortable;
 
-    config.onDown(<HTMLElement>targetItem, event, manager, this.sortable)
+    config.onDown(<HTMLElement>targetItem, event, manager, this.sortable);
 
     if (config.activateOnLongPress === false) {
-      this.sortable.activate(<HTMLElement>targetItem, event)
+      this.sortable.activate(<HTMLElement>targetItem, event);
     }
   }
 
   private handleOnLongPress = (event, manager) => {
-    const { config, targetItem } = this.sortable
+    const { config, targetItem } = this.sortable;
 
-    config.onLongPress(<HTMLElement>targetItem, event, manager, this.sortable)  
+    config.onLongPress(<HTMLElement>targetItem, event, manager, this.sortable);
 
     if (
       config.activateOnLongPress === true
       && event.previousEvent !== 'drag'
     ) {
-      this.sortable.activate(<HTMLElement>targetItem, event)
+      this.sortable.activate(<HTMLElement>targetItem, event);
     }
   }
 
   private handleOnDrag = (event, manager) => {
-    const { config, targetItem, isActive, activeIdentifier } = this.sortable
+    const { config, targetItem, isActive, activeIdentifier } = this.sortable;
 
-    config.onDrag(<HTMLElement>targetItem, event, manager, this.sortable)
+    config.onDrag(<HTMLElement>targetItem, event, manager, this.sortable);
     
     if (
       isActive === true
       && activeIdentifier === event.identifier.toString()
       && typeof event.dragData === 'object'
     ) {
-      this.sortable.move(event.dragData)
+      this.sortable.move(event.dragData);
     }
   }
 
   private handleOnUp = (event, manager) => {
-    const { config, targetItem, isActive, activeIdentifier } = this.sortable
+    const { config, targetItem, isActive, activeIdentifier } = this.sortable;
 
-    config.onUp(<HTMLElement>targetItem, event, manager, this.sortable)
+    config.onUp(<HTMLElement>targetItem, event, manager, this.sortable);
 
     if (
       isActive === true
       && activeIdentifier === event.identifier.toString()
     ) {
-      this.sortable.deactivate()
+      this.sortable.deactivate();
     }
   }
 
   private handleOnCancel = (event, manager) => {
-    const { config, targetItem, isActive, activeIdentifier } = this.sortable
+    const { config, targetItem, isActive, activeIdentifier } = this.sortable;
 
-    config.onCancel(<HTMLElement>targetItem, event, manager, this.sortable)
+    config.onCancel(<HTMLElement>targetItem, event, manager, this.sortable);
 
     if (
       isActive === true
       && activeIdentifier === event.identifier.toString()
     ) {
-      this.sortable.deactivate()
+      this.sortable.deactivate();
     }
   }
 }

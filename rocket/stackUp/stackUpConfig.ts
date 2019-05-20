@@ -36,10 +36,8 @@ export interface StackUpConfig {
   scaleContainerInitial: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>;
   scaleContainerFinal: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>;
   moveItem: (item: StackUpItem) => Promise<void>;
-
   beforeTransition: (container: StackUpContainerScaleData, items: StackUpItem[]) => Promise<void>;
   beforeMove: (items: StackUpItem[]) => Promise<void>;
-
   afterMove: (items: StackUpItem[]) => Promise<void>;
   afterTransition: () => void;
 }
@@ -64,20 +62,20 @@ export const STACKUP_DEFAULT_CONFIG: StackUpConfig = {
   moveInSequence: false,
 
   scaleContainerInitial: (container, { width, height }) => {
-    container.style.width = `${width}px`
-    container.style.height = `${height}px`
-    return Promise.resolve()
+    container.style.width = `${width}px`;
+    container.style.height = `${height}px`;
+    return Promise.resolve();
   },
   scaleContainerFinal: (container, { width, height }) => {
-    container.style.width = `${width}px`
-    container.style.height = `${height}px`
-    return Promise.resolve()
+    container.style.width = `${width}px`;
+    container.style.height = `${height}px`;
+    return Promise.resolve();
   },
 
   moveItem: ({ item, left, top }) => {
-    item.style.left = `${left}px`
-    item.style.top = `${top}px`
-    return Promise.resolve()
+    item.style.left = `${left}px`;
+    item.style.top = `${top}px`;
+    return Promise.resolve();
   },
 
   beforeTransition: (container, items) => Promise.resolve(),

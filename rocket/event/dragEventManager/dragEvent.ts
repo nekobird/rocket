@@ -3,8 +3,8 @@ import {
 } from './dragEventManager';
 
 import {
-  Identifier,
   EventName,
+  Identifier,
   SensorData,
 } from './sensorHub';
 

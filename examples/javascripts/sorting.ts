@@ -1,10 +1,10 @@
 import {
   DOMStyle,
   Sortable,
-} from '../../rocket/rocket'
+} from '../../rocket/rocket';
 
-const sortableContainer: HTMLElement = document.querySelector('.sortableContainer')
-const sortableItems: NodeListOf<HTMLElement> = document.querySelectorAll('.sortableItem')
+const sortableContainer: HTMLElement = document.querySelector('.sortableContainer');
+const sortableItems: NodeListOf<HTMLElement> = document.querySelectorAll('.sortableItem');
 const sortable = new Sortable({
   activateOnLongPress: true,
 
@@ -12,7 +12,7 @@ const sortable = new Sortable({
   items: Array.from(sortableItems),
 
   moveItem: (item, to, context) => {
-    const paddingLeft: number = <number>DOMStyle.getStyleValue(context.config.container, 'paddingLeft', true)
-    item.style.transform = `translateX(${paddingLeft}px) translateY(${to.y}px)`
-  }
-}).initialize()
+    const paddingLeft: number = <number>DOMStyle.getStyleValue(context.config.container, 'paddingLeft', true);
+    item.style.transform = `translateX(${paddingLeft}px) translateY(${to.y}px)`;
+  },
+}).initialize();

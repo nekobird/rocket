@@ -17,7 +17,7 @@ import {
 
 // [index][item, itemHeight, left, top]
 export interface StackUpItem {
-  item  : HTMLElement;
+  item: HTMLElement;
   height: number;
   left: number;
   top : number;
@@ -51,7 +51,6 @@ export class StackUp {
 
   constructor(config?: Partial<StackUpConfig>) {
     this.config = Object.assign({}, STACKUP_DEFAULT_CONFIG);
-
     if (typeof config === 'object') {
       this.setConfig(config);
     }
@@ -94,17 +93,17 @@ export class StackUp {
       typeof this.config.items === 'undefined'
       && typeof this.config.itemsSelector === 'string'
     ) {
-      const items: NodeListOf<HTMLElement> = document.querySelectorAll(this.config.itemsSelector)
+      const items: NodeListOf<HTMLElement> = document.querySelectorAll(this.config.itemsSelector);
       if (items !== null) {
-        this.config.items = Array.from(items)
-        return this
+        this.config.items = Array.from(items);
+        return this;
       }
-      throw new Error('StackUp: Fail to get items.')
+      throw new Error('StackUp: Fail to get items.');
     }
     if (typeof this.config.items === 'object') {
-      return this
+      return this;
     }
-    throw new Error('StackUp: items not defined.')
+    throw new Error('StackUp: items not defined.');
   }
 
   public initialize(): Promise<void> {
@@ -217,7 +216,7 @@ export class StackUp {
 
     if (this.config.isFluid === true) {
       numberOfColumns = Math.floor(
-        (this.boundaryWidth      - this.config.gutter) /
+        (this.boundaryWidth - this.config.gutter) /
         (this.config.columnWidth + this.config.gutter)
       );
     } else {
@@ -229,8 +228,8 @@ export class StackUp {
     }
 
     if (
-      this.items.length === 0 ||
-      numberOfColumns <= 0
+      this.items.length === 0
+      || numberOfColumns <= 0
     ) {
       numberOfColumns = 1;
     }
@@ -250,114 +249,114 @@ export class StackUp {
       this.isTransitioning === false
       && typeof this.config.container === 'object'
     ) {
-      this.isTransitioning = true
+      this.isTransitioning = true;
 
-      this.containerWidth = (this.config.columnWidth + this.config.gutter) * this.numberOfColumns
+      this.containerWidth = (this.config.columnWidth + this.config.gutter) * this.numberOfColumns;
 
-      const finalHeight = this.containerHeight + this.config.gutter
-      const finalWidth  = this.containerWidth  + this.config.gutter
+      const finalHeight = this.containerHeight + this.config.gutter;
+      const finalWidth = this.containerWidth + this.config.gutter;
 
-      const scaleData: StackUpContainerScaleData = this.composeContainerScaleData(finalWidth, finalHeight)
-      this.prepareItemsBeforeMove()
+      const scaleData: StackUpContainerScaleData = this.composeContainerScaleData(finalWidth, finalHeight);
+      this.prepareItemsBeforeMove();
       try {
-        await this.config.beforeTransition(scaleData, this.items)
-        await this.config.scaleContainerInitial(this.config.container, scaleData)
-        await this.config.beforeMove(this.items)
-        await this.moveItems()
-        await this.config.afterMove(this.items)
-        this.updatePreviousContainerSize()
+        await this.config.beforeTransition(scaleData, this.items);
+        await this.config.scaleContainerInitial(this.config.container, scaleData);
+        await this.config.beforeMove(this.items);
+        await this.moveItems();
+        await this.config.afterMove(this.items);
+        this.updatePreviousContainerSize();
         await this.config.scaleContainerFinal(
           this.config.container,
           this.composeContainerScaleData(finalWidth, finalHeight)
-        )
-        this.endTransition()
-        return Promise.resolve()
+        );
+        this.endTransition();
+        return Promise.resolve();
       } catch {
-        this.endTransition()
-        return Promise.reject()
+        this.endTransition();
+        return Promise.reject();
       }
     }
-    return Promise.resolve()
+    return Promise.resolve();
   }
 
   private moveItems(): Promise<void> {
     const moveItem: (item: StackUpItem) => Promise<void> = item => {
-      return this.config.moveItem(item)
+      return this.config.moveItem(item);
     }
     if (this.config.moveInSequence === true) {
-      return Util.promiseEach<StackUpItem>(this.items, moveItem)
+      return Util.promiseEach<StackUpItem>(this.items, moveItem);
     } else {
-      const moveItems: Promise<void>[] = []
+      const moveItems: Promise<void>[] = [];
       this.items.forEach(item => {
-        moveItems.push(moveItem(item))
-      })
+        moveItems.push(moveItem(item));
+      });
       return Promise
         .all(moveItems)
-        .then(() => Promise.resolve())
+        .then(() => Promise.resolve());
     }
   }
 
   private endTransition(): this {
-    this.updateItemsCurrentOffset()
-    this.isTransitioning = false
-    this.config.afterTransition()
+    this.updateItemsCurrentOffset();
+    this.isTransitioning = false;
+    this.config.afterTransition();
     if (typeof this.doneTransitioning === 'function') {
-      this.doneTransitioning()
-      this.doneTransitioning = undefined
+      this.doneTransitioning();
+      this.doneTransitioning = undefined;
     }
-    return this
+    return this;
   }
 
   private composeContainerScaleData(width: number, height: number): StackUpContainerScaleData  {
-    const maxWidth  = Math.max(this.previousContainerWidth,  width)
-    const maxHeight = Math.max(this.previousContainerHeight, height)
+    const maxWidth = Math.max(this.previousContainerWidth,  width);
+    const maxHeight = Math.max(this.previousContainerHeight, height);
     const requireScale = (
-      this.previousContainerWidth  !== width ||
-      this.previousContainerHeight !== height
-    )
+      this.previousContainerWidth !== width
+      || this.previousContainerHeight !== height
+    );
     return {
       width, height,
       currentWidth : this.previousContainerWidth,
       currentHeight: this.previousContainerHeight,
       maxWidth, maxHeight,
       requireScale,
-    }
+    };
   }
 
   private prepareItemsBeforeMove(): this {
     this.items.forEach(item => {
       const requireMove: boolean = (
-        item.currentLeft !== item.left ||
-        item.currentTop  !== item.top
-      )
-      item.requireMove = requireMove
-    })
-    return this
+        item.currentLeft !== item.left
+        || item.currentTop  !== item.top
+      );
+      item.requireMove = requireMove;
+    });
+    return this;
   }
 
   private updateItemsCurrentOffset(): this {
     this.items.forEach(item => {
-      item.currentLeft = item.left
-      item.currentTop  = item.top
-    })
-    return this
+      item.currentLeft = item.left;
+      item.currentTop = item.top;
+    });
+    return this;
   }
 
   //stack (4)
   //layout updates the containerHeight and updates items
 
   private applyLayout(): this {
-    this.layout.setup()
+    this.layout.setup();
     if (this.items.length) {
-      this.layout.loop()
+      this.layout.loop();
     }
-    return this
+    return this;
   }
 
   private resetLayout(): this {
-    this.containerHeight = 0
-    this.layout.columnPointer = 0
-    return this
+    this.containerHeight = 0;
+    this.layout.columnPointer = 0;
+    return this;
   }
 
   // This should be called after if any the item(s)
@@ -365,22 +364,22 @@ export class StackUp {
   public reset(): Promise<void> {
     return new Promise(resolve => {
       const reset = () => {
-        this.containerWidth  = 0
-        this.containerHeight = 0
-        this.items = []
+        this.containerWidth = 0;
+        this.containerHeight = 0;
+        this.items = [];
         this
           .getElements()
           .populateItems()
           .resetLayout()
           .restack()
-        resolve()
-      }
+        resolve();
+      };
       if (this.isTransitioning === true) {
-        this.doneTransitioning = reset
+        this.doneTransitioning = reset;
       } else {
-        reset()
-      }  
-    })
+        reset();
+      }
+    });
   }
 
   public append(items: HTMLElement | HTMLElement[]): Promise<void> {
@@ -388,25 +387,25 @@ export class StackUp {
       const append = () => {
         if (Array.isArray(items)) {
           items.forEach(item => {
-            const itemIndex: number = this.items.length
-            this.appendItem(item)
-            this.layout.plot(itemIndex)  
-          })
+            const itemIndex: number = this.items.length;
+            this.appendItem(item);
+            this.layout.plot(itemIndex);
+          });
         } else {
-          const itemIndex: number = this.items.length
-          this.appendItem(items)
-          this.layout.plot(itemIndex)  
+          const itemIndex: number = this.items.length;
+          this.appendItem(items);
+          this.layout.plot(itemIndex);
         }
         this
           .draw()
-          .then(() => resolve())
-      }
+          .then(() => resolve());
+      };
       if (this.isTransitioning === true) {
-        this.doneTransitioning = append
+        this.doneTransitioning = append;
       } else {
-        append()
-      }  
-    })
+        append();
+      }
+    });
   }
 
   public restack(): Promise<void> {
@@ -416,14 +415,14 @@ export class StackUp {
           .updateNumberOfColumns()
           .resetLayout()
           .applyLayout()
-          .draw()
-        resolve()
-      }
+          .draw();
+        resolve();
+      };
       if (this.isTransitioning === true) {
-        this.doneTransitioning = restack
+        this.doneTransitioning = restack;
       } else {
-        restack()
+        restack();
       }
-    })
+    });
   }
 }
