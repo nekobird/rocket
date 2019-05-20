@@ -2,10 +2,10 @@ import {
   ConvertColor,
   Num,
   Util,
-} from '../rocket'
+} from '../rocket';
 
-type ColorArray4 = [number, number, number, number]
-type ColorArray3 = [number, number, number]
+type ColorArray4 = [number, number, number, number];
+type ColorArray3 = [number, number, number];
 
 // Range
 // A   : 1
@@ -34,7 +34,7 @@ const NAMED_COLOR_SET = {
   violet: [0.5, 0, 1, 1],
   white: [1, 1, 1, 1],
   yellow: [1, 1, 0, 1],
-}
+};
 
 const COLOR_INPUT_REGEX = {
   hex: /^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/g,
@@ -42,61 +42,61 @@ const COLOR_INPUT_REGEX = {
   hsla: /^(hsla|HSLA)\((360|3[0-5][0-9]|2[0-9][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(100|[1-9]?[0-9])\%?,\s?(100|[1-9]?[0-9])\%?,\s?(1|0|0\.([0-9]?)+[1-9])\)$/g,
   rgb: /^(rgb|RGB)\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\)$/g,
   rgba: /^(rgba|RGBA)\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9]),\s?(1|0|0\.([0-9]?){1,5}[1-9])\)$/g,
-}
+};
 
 export class Color {
 
-  public r: number = 0
-  public g: number = 0
-  public b: number = 0
-  public a: number = 1
+  public r: number = 0;
+  public g: number = 0;
+  public b: number = 0;
+  public a: number = 1;
 
   constructor(input?) {
     if (typeof input !== 'undefined') {
-      this.set(input)
+      this.set(input);
     }
-    return this
+    return this;
   }
 
-  equals(color: Color): this {
-    this.r = color.r
-    this.g = color.g
-    this.b = color.b
-    this.a = color.a
-    return this
+  public equals(color: Color): this {
+    this.r = color.r;
+    this.g = color.g;
+    this.b = color.b;
+    this.a = color.a;
+    return this;
   }
 
   get clone(): Color {
     return Color.equals(this)
   }
 
-  set(input) {
+  public set(input) {
     if (Color.isColor(input)) {
-      this.equals(input)
+      this.equals(input);
     } else if (typeof input === 'string') {
-      this.colorString = input
+      this.colorString = input;
     } else {
-      this.r = 0
-      this.g = 0
-      this.b = 0
-      this.a = 1
+      this.r = 0;
+      this.g = 0;
+      this.b = 0;
+      this.a = 1;
     }
-    return this
+    return this;
   }
 
   set colorString(input: string) {
     if (typeof NAMED_COLOR_SET[input] !== 'undefined') {
-      this.rgba = NAMED_COLOR_SET[input]
+      this.rgba = NAMED_COLOR_SET[input];
     } else if (typeof Util.match(input, COLOR_INPUT_REGEX.hex) === 'string') {
-      this.hex = input
+      this.hex = input;
     } else if (typeof Util.match(input, COLOR_INPUT_REGEX.rgb) === 'string') {
-      this.rgbString = input
+      this.rgbString = input;
     } else if (typeof Util.match(input, COLOR_INPUT_REGEX.rgba) === 'string') {
-      this.rgbaString = input
+      this.rgbaString = input;
     } else if (typeof Util.match(input, COLOR_INPUT_REGEX.hsl) === 'string') {
-      this.hslString = input
+      this.hslString = input;
     } else if (typeof Util.match(input, COLOR_INPUT_REGEX.hsla) === 'string') {
-      this.hslaString = input
+      this.hslaString = input;
     }
   }
 
@@ -104,70 +104,70 @@ export class Color {
 
   // STRINGS
   set rgbString(input: string) {
-    const numbers = input.match(/(\d+)/g)
+    const numbers = input.match(/(\d+)/g);
     if (numbers !== null) {
       const rgb: number[] = numbers.map(v => {
-        return Num.cycle(parseFloat(v) / 255, 1)
-      })
-      this.r = rgb[0]
-      this.g = rgb[1]
-      this.b = rgb[2]
+        return Num.cycle(parseFloat(v) / 255, 1);
+      });
+      this.r = rgb[0];
+      this.g = rgb[1];
+      this.b = rgb[2];
     }
   }
 
   set rgbaString(input: string) {
-    const numbers = input.match(/([\d]+(\.[\d]+)?)/g)
+    const numbers = input.match(/([\d]+(\.[\d]+)?)/g);
     if (numbers !== null) {
       const rgba: number[] = numbers.map((v, index) => {
         if (index === 3) {
-          return Num.cycle(parseFloat(v), 1)
+          return Num.cycle(parseFloat(v), 1);
         }
-        return Num.cycle(parseFloat(v) / 255, 1)
-      })
-      this.r = rgba[0]
-      this.g = rgba[1]
-      this.b = rgba[2]
-      this.a = rgba[3]
+        return Num.cycle(parseFloat(v) / 255, 1);
+      });
+      this.r = rgba[0];
+      this.g = rgba[1];
+      this.b = rgba[2];
+      this.a = rgba[3];
     }
   }
 
   set hslString(input: string) {
-    const numbers = input.match(/(\d+)/g)
+    const numbers = input.match(/(\d+)/g);
     if (numbers !== null) {
-      const hsl: number[] = numbers.map(v => parseFloat(v))
-      hsl[1] = hsl[1] / 100, 1
-      hsl[2] = hsl[2] / 100, 1
-      const rgb: ColorArray3 = ConvertColor.HSLToRGB(<ColorArray3>hsl)
-      this.r = rgb[0]
-      this.g = rgb[1]
-      this.b = rgb[2]
+      const hsl: number[] = numbers.map(v => parseFloat(v));
+      hsl[1] = hsl[1] / 100, 1;
+      hsl[2] = hsl[2] / 100, 1;
+      const rgb: ColorArray3 = ConvertColor.HSLToRGB(<ColorArray3>hsl);
+      this.r = rgb[0];
+      this.g = rgb[1];
+      this.b = rgb[2];
     }
   }
 
   set hslaString(input: string) {
-    const numbers = input.match(/([\d]+(\.[\d]+)?)/g)
+    const numbers = input.match(/([\d]+(\.[\d]+)?)/g);
     if (numbers !== null) {
-      const hsla: number[] = numbers.map(v => parseFloat(v))
-      const hsl:  number[] = hsla.slice(0, 3)
-      hsl[1] = hsl[1] / 100
-      hsl[2] = hsl[2] / 100
-      const rgb: ColorArray3 = ConvertColor.HSLToRGB(<ColorArray3>hsl)
-      this.r = rgb[0]
-      this.g = rgb[1]
-      this.b = rgb[2]
-      this.a = Num.cycle(hsla[3], 1)
+      const hsla: number[] = numbers.map(v => parseFloat(v));
+      const hsl:  number[] = hsla.slice(0, 3);
+      hsl[1] = hsl[1] / 100;
+      hsl[2] = hsl[2] / 100;
+      const rgb: ColorArray3 = ConvertColor.HSLToRGB(<ColorArray3>hsl);
+      this.r = rgb[0];
+      this.g = rgb[1];
+      this.b = rgb[2];
+      this.a = Num.cycle(hsla[3], 1);
     }
   }
 
   // These will always return HTML color format.
   get rgbString(): string {
-    const rgb: ColorArray3 = this.rgb255
-    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+    const rgb: ColorArray3 = this.rgb255;
+    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
   }
 
   get rgbaString(): string {
-    const rgba: ColorArray3 = this.rgb255
-    return `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, ${this.a})`
+    const rgba: ColorArray3 = this.rgb255;
+    return `rgba(${rgba[0]}, ${rgba[1]}, ${rgba[2]}, ${this.a})`;
   }
 
   get hslString(): string {

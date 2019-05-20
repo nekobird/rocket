@@ -1,37 +1,37 @@
 import {
   DragEventManager,
-} from './dragEventManager'
+} from './dragEventManager';
 
 import {
   Identifier,
   EventName,
   SensorData,
-} from './sensorHub'
+} from './sensorHub';
 
 export class DragEvent {
 
-  public identifier: Identifier = ''
+  public identifier: Identifier = '';
 
-  public previousEvent?: EventName
-  public currentEvent?: EventName
+  public previousEvent?: EventName;
+  public currentEvent?: EventName;
 
-  public downData?: SensorData
-  public dragData?: SensorData
-  public upData?: SensorData
-  public cancelData?: SensorData
+  public downData?: SensorData;
+  public dragData?: SensorData;
+  public upData?: SensorData;
+  public cancelData?: SensorData;
 
-  public condition: boolean = false
-  public isActive: boolean = false
-  public isLongPress: boolean = false
-  public isCancelled: boolean = false
+  public condition: boolean = false;
+  public isActive: boolean = false;
+  public isLongPress: boolean = false;
+  public isCancelled: boolean = false;
 
-  public longPressTimeout
-  public longPressIsCleared: boolean = false
+  public longPressTimeout;
+  public longPressIsCleared: boolean = false;
 
-  public manager: DragEventManager
+  public manager: DragEventManager;
 
   constructor(manager: DragEventManager) {
-    this.manager = manager
+    this.manager = manager;
   }
   
   public get duration(): number | undefined {
@@ -40,144 +40,144 @@ export class DragEvent {
         this.isActive === true
         && typeof this.dragData === 'object'
       ) {
-        return (this.dragData.time - this.downData.time) / 1000
+        return (this.dragData.time - this.downData.time) / 1000;
       }
 
       if (
         this.isCancelled === true
         && typeof this.cancelData === 'object'
       ) {
-        return (this.cancelData.time - this.downData.time) / 1000
+        return (this.cancelData.time - this.downData.time) / 1000;
       }
 
       if (typeof this.upData === 'object') {
-        return (this.upData.time - this.downData.time) / 1000
+        return (this.upData.time - this.downData.time) / 1000;
       }
     }
-    return undefined
+    return undefined;
   }
 
   public get currentTargetElement(): HTMLElement | false {
     if (typeof this.currentEvent === 'string') {
-      return this.getTargetElementFromData(this[`${this.currentEvent}Data`])
+      return this.getTargetElementFromData(this[`${this.currentEvent}Data`]);
     }
-    return false
+    return false;
   }
 
   public getTargetElementFromData(data: SensorData): HTMLElement {
-    return <HTMLElement>document.elementFromPoint(data.clientX, data.clientY)
+    return <HTMLElement>document.elementFromPoint(data.clientX, data.clientY);
   }
 
   public get previousEventData(): SensorData | false {
     if (typeof this.previousEvent === 'string') {
-      return this[`${this.previousEvent}Data`]
+      return this[`${this.previousEvent}Data`];
     }
-    return false
+    return false;
   }
 
   public get currentEventData(): SensorData | false {
     if (typeof this.currentEvent === 'string') {
-      return this[`${this.currentEvent}Data`]
+      return this[`${this.currentEvent}Data`];
     }
-    return false
+    return false;
   }
 
   public update(data: SensorData): this {
     switch (data.name) {
       case 'down': {
-        this.onDown(data)
-        break
+        this.onDown(data);
+        break;
       }
       case 'drag': {
-        this.onDrag(data)
-        break
+        this.onDrag(data);
+        break;
       }
       case 'up': {
-        this.onUp(data)
-        break
+        this.onUp(data);
+        break;
       }
       case 'cancel': {
-        this.onCancel(data)
-        break
+        this.onCancel(data);
+        break;
       }
     }
-    return this
+    return this;
   }
 
   public onDown(data: SensorData) {
-    const { config } = this.manager
-    
-    this.isActive = true
-    this.identifier = data.identifier
-    this.downData = data
+    const { config } = this.manager;
 
-    this.currentEvent = data.name
+    this.isActive = true;
+    this.identifier = data.identifier;
+    this.downData = data;
+
+    this.currentEvent = data.name;
 
     this.condition = config.condition(this, this.manager)
     if (this.condition === true) {
-      this.manager.config.onDown(this, this.manager)
+      this.manager.config.onDown(this, this.manager);
     
 
       if (this.manager.config.enableLongPress === true) {
         this.longPressTimeout = setTimeout(
           () => this.onLongPress(data),
           this.manager.config.longPressWait * 1000
-        )
+        );
       }
     } else {
-      this.isActive = false
+      this.isActive = false;
     }
   }
 
   public onDrag(data: SensorData) {
     if (this.isActive  === true) {
-      this.dragData = data
+      this.dragData = data;
 
-      this.previousEvent = this.currentEvent
-      this.currentEvent  = data.name
+      this.previousEvent = this.currentEvent;
+      this.currentEvent = data.name;
 
-      this.manager.config.onDrag(this, this.manager)
+      this.manager.config.onDrag(this, this.manager);
     }
   }
 
   public onUp(data: SensorData) {
     if (this.isActive === true) {
-      this.clearLongPress()
+      this.clearLongPress();
 
-      this.isActive = false
+      this.isActive = false;
 
-      this.upData = data
+      this.upData = data;
 
-      this.previousEvent = this.currentEvent
-      this.currentEvent  = data.name
+      this.previousEvent = this.currentEvent;
+      this.currentEvent = data.name;
 
-      this.manager.config.onUp(this, this.manager)
+      this.manager.config.onUp(this, this.manager);
     }
   }
 
   public onCancel(data: SensorData) {
     if (this.isActive === true) {
-      this.clearLongPress()
+      this.clearLongPress();
 
-      this.isCancelled = true
-      this.isActive = false
+      this.isCancelled = true;
+      this.isActive = false;
 
-      this.cancelData = data
+      this.cancelData = data;
 
-      this.previousEvent = this.currentEvent
-      this.currentEvent = data.name
+      this.previousEvent = this.currentEvent;
+      this.currentEvent = data.name;
 
-      this.manager.config.onCancel(this, this.manager)
+      this.manager.config.onCancel(this, this.manager);
     }
   }
 
   public onLongPress(data: SensorData) {
-    this.isLongPress = true
-    this.manager.config.onLongPress(this, this.manager)
+    this.isLongPress = true;
+    this.manager.config.onLongPress(this, this.manager);
   }
 
   public clearLongPress() {
-    clearTimeout(this.longPressTimeout)
-    this.longPressIsCleared = true
+    clearTimeout(this.longPressTimeout);
+    this.longPressIsCleared = true;
   }
 }

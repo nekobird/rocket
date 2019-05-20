@@ -1,23 +1,24 @@
 import {
   DragEventManager,
-} from '../../rocket'
+  DOMTraverse,
+} from '../../rocket';
 
 import {
   Sortable,
-} from './sortable'
+} from './sortable';
 
 export class EventManager {
 
-  public sortable: Sortable
+  public sortable: Sortable;
 
-  public dragEventManager?: DragEventManager
+  public dragEventManager?: DragEventManager;
 
   constructor(sortable: Sortable) {
-    this.sortable = sortable
+    this.sortable = sortable;
   }  
 
   public initialize() {
-    const { config } = this.sortable
+    const { config } = this.sortable;
 
     this.dragEventManager = new DragEventManager({
       enableLongPress: (config.activateOnLongPress || config.listenToLongPress),
@@ -30,11 +31,27 @@ export class EventManager {
       onUp: this.handleOnUp,
       onCancel: this.handleOnCancel,
       onLongPress: this.handleOnLongPress,
-    })
+    });
+  }
+
+
+  public getItemFromDownEvent(event): HTMLElement | false {
+    if (typeof event.downData === 'object') {
+      const item: HTMLElement | HTMLElement[] | false = DOMTraverse.findAncestor(
+        event.downData.target,
+        item => ((<HTMLElement[]>this.sortable.config.items).indexOf(item) !== -1),
+        false
+      );
+
+      if (item !== false) {
+        return <HTMLElement>item;
+      }
+    }
+    return false;
   }
 
   private dragCondition = event => {
-    const item = this.sortable.getItemFromDownEvent(event)
+    const item = this.getItemFromDownEvent(event)
 
     if (item !== false) {
       this.sortable.targetItem = item

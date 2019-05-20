@@ -1,27 +1,27 @@
 import {
   Sortable,
-} from './sortable'
+} from './sortable';
 
 export class ItemManager {
 
-  public sortable: Sortable
+  public sortable: Sortable;
 
-  public container?: HTMLElement
-  public items?: HTMLElement[]
+  public container?: HTMLElement;
+  public items?: HTMLElement[];
 
-  public isLoaded: boolean = false
+  public isLoaded: boolean = false;
 
   constructor(sortable: Sortable) {
-    this.sortable = sortable
+    this.sortable = sortable;
   }
 
   public initialize() {
-    this.getContainer()
-    this.getItems()
+    this.getContainer();
+    this.getItems();
   }
 
   public getContainer(): this {
-    const { config } = this.sortable
+    const { config } = this.sortable;
 
     if (
       typeof config.container === 'undefined'
@@ -29,25 +29,25 @@ export class ItemManager {
     ) {
       const container: HTMLElement | null = document.querySelector(
         config.containerSelector
-      )
+      );
 
       if (container !== null) {
-        config.container = container
-        return this
+        config.container = container;
+        return this;
       }
 
-      throw new Error('Sortable: Fail to get container.')
+      throw new Error('Sortable: Fail to get container.');
     }
 
     if (typeof config.container === 'object') {
-      return this
+      return this;
     }
 
-    throw new Error('Sortable: Container defined.')
+    throw new Error('Sortable: Container defined.');
   }
 
   public getItems(): this {
-    const { config } = this.sortable
+    const { config } = this.sortable;
   
     if (
       typeof config.items === 'undefined'
@@ -55,19 +55,19 @@ export class ItemManager {
     ) {
       const items: NodeListOf<HTMLElement> = document.querySelectorAll(
         config.itemsSelector
-      )
+      );
 
       if (items !== null) {
-        config.items = Array.from(items)
+        config.items = Array.from(items);
       }
 
-      throw new Error('Sortable: Fail to get items.')
+      throw new Error('Sortable: Fail to get items.');
     }
 
     if (Array.isArray(config.items) === true) {
-      return this
+      return this;
     }
 
-    throw new Error('Sortable: Items not defined.')
+    throw new Error('Sortable: Items not defined.');
   }
 }

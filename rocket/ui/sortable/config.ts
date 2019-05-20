@@ -1,5 +1,5 @@
 import {
-  DOMHelper,
+  DOMStyle,
   DragEventManager,
   Point,
 } from '../../rocket'
@@ -21,6 +21,8 @@ export interface SortableConfig {
 
   itemsSelector: string,
   items?: HTMLElement[]
+
+  prepareItems: (item: HTMLElement) => void,
 
   createDummyFromItem: (item: HTMLElement, context: Sortable) => HTMLElement,
   setDummyElementPropertiesFromItem: (dummyElement: HTMLElement, item: HTMLElement, context: Sortable) => void,
@@ -56,11 +58,16 @@ export const SORTABLE_CONFIG: SortableConfig = {
   itemsSelector: '.sortableItem',
   items: undefined,
 
+  prepareItems: item => {
+    item.style.touchAction = 'none'
+    item.style.userSelect = 'none'
+  },
+
   createDummyFromItem: item => document.createElement('DIV'),
 
   setDummyElementPropertiesFromItem: (dummy, item) => {
     dummy.classList.add('sortableItem', 'sortableItem--dummy')
-    DOMHelper.applyStyle(dummy, {
+    DOMStyle.applyStyle(dummy, {
       width: `${item.offsetWidth}px`,
       height: `${item.offsetHeight}px`,
       boxSizing: 'border-box',
@@ -79,7 +86,7 @@ export const SORTABLE_CONFIG: SortableConfig = {
   popItem: item => {
     const width: number = item.offsetWidth
     const height: number = item.offsetHeight
-    DOMHelper.applyStyle(item, {
+    DOMStyle.applyStyle(item, {
       position: 'absolute',
       left: 0,
       top: 0,
@@ -87,7 +94,7 @@ export const SORTABLE_CONFIG: SortableConfig = {
       height: `${height}px`,
     })
   },
-  unpopItem: item => DOMHelper.clearStyle(item),
+  unpopItem: item => DOMStyle.clearStyle(item),
 
   moveItem: (item, { x, y }) => {
     item.style.transform = `translateX(${x}px) translateY(${y}px)`

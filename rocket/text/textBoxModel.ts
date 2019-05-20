@@ -1,7 +1,7 @@
 import {
   DOMHelper,
   DOMStyle,
-} from '../rocket'
+} from '../rocket';
 
 const MODEL_ATTRIBUTES = {
   border: 'none',
@@ -18,7 +18,7 @@ const MODEL_ATTRIBUTES = {
   whiteSpace: 'nowrap',
   width: '0',
   zIndex: '-9999',
-}
+};
 
 const STYLE_PROPERTIES = [
   'borderBottomStyle',
@@ -40,7 +40,7 @@ const STYLE_PROPERTIES = [
   'paddingRight',
   'paddingTop',
   'width',
-]
+];
 
 const FONT_STYLE_PROPERTIES = [
   'direction',
@@ -62,11 +62,11 @@ const FONT_STYLE_PROPERTIES = [
   'wordBreak',
   'wordSpacing',
   'wordWrap',
-]
+];
 
 export class TextBoxModel {
 
-  private modelElement?: HTMLElement
+  private modelElement?: HTMLElement;
 
   constructor() {}
 
@@ -77,30 +77,33 @@ export class TextBoxModel {
       .create('TEXTAREA')
       .applyModelAttributes()
       .applyBoxModelPropertiesFromElement(element)
-      .applyFontPropertiesFromElement(element)
+      .applyFontPropertiesFromElement(element);
 
     this.style = {
-      height    : '0',
-      maxHeight : '0',
+      height: '0',
+      maxHeight: '0',
       whiteSpace: 'pre-wrap'
-    }
+    };
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
-      text = DOMHelper.getTextFromElement(element)
+      text = DOMHelper.getTextFromElement(element);
     }
-    this.modelText = text
+
+    this.modelText = text;
 
     // Set offset for when boxSizing is set to border-box.
-    let offset: number = 0
+    let offset: number = 0;
+
     if (DOMStyle.getStyleValue(element, 'boxSizing') === 'border-box') {
-      offset = DOMStyle.getVerticalBorderWidths(element)
+      offset = DOMStyle.getVerticalBorderWidths(element);
     } else {
       // Minus vertical padding.
-      offset -= DOMStyle.getVerticalPaddings(element)
+      offset -= DOMStyle.getVerticalPaddings(element);
     }
+
     // Return calculated height value.
-    return (<HTMLElement>this.modelElement).scrollHeight + offset
+    return (<HTMLElement>this.modelElement).scrollHeight + offset;
   }
 
   public getTextBoxWidthFromElement(element: HTMLElement, text?: string): number {
@@ -110,7 +113,7 @@ export class TextBoxModel {
       .create('DIV')
       .applyModelAttributes()
       .applyBoxModelPropertiesFromElement(element)
-      .applyFontPropertiesFromElement(element)
+      .applyFontPropertiesFromElement(element);
 
     this.style = {
       borderLeftWidth : '0',
@@ -123,30 +126,32 @@ export class TextBoxModel {
       width       : '0',
       wordBreak   : 'normal',
       wordWrap    : 'normal'
-    }
+    };
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
-      text = DOMHelper.getTextFromElement(element)
+      text = DOMHelper.getTextFromElement(element);
     }
-    this.modelText = text
+
+    this.modelText = text;
 
     // Set offset for when boxSizing is set to border-box.
-    let offset = 0
+    let offset = 0;
+
     if (DOMStyle.getStyleValue(element, 'boxSizing') === 'border-box') {
-      offset = DOMStyle.getHorizontalBorderWidths(element)
-      offset += DOMStyle.getHorizontalPaddings(element)
+      offset = DOMStyle.getHorizontalBorderWidths(element);
+      offset += DOMStyle.getHorizontalPaddings(element);
     }
 
     // Return calculated width value.
-    return (<HTMLElement>this.modelElement).scrollWidth + offset
+    return (<HTMLElement>this.modelElement).scrollWidth + offset;
   }
 
-  // MODEL
+  // @model
 
   set modelFontSize(fontSize: number) {
     if (typeof this.modelElement === 'object') {
-      this.modelElement.style.fontSize = `${fontSize}px`
+      this.modelElement.style.fontSize = `${fontSize}px`;
     }
   }
 
@@ -158,56 +163,59 @@ export class TextBoxModel {
         || this.modelElement.nodeName === 'TEXTAREA'
         || this.modelElement.nodeName === 'INPUT'
       ) {
-        (<HTMLTextAreaElement | HTMLInputElement>this.modelElement).value = text
+        (<HTMLTextAreaElement | HTMLInputElement>this.modelElement).value = text;
       } else {
-        text = text.replace(/[\n\r]/g, '<br>')
-        text = text.replace(/[\t]/g, '&#9')
-        text = text.replace(/[\s]/g, '&nbsp')
-        this.modelElement.innerHTML = text
+        text = text.replace(/[\n\r]/g, '<br>');
+        text = text.replace(/[\t]/g, '&#9');
+        text = text.replace(/[\s]/g, '&nbsp');
+        this.modelElement.innerHTML = text;
       }
     }
   }
 
   set style(style: object) {
     if (typeof this.modelElement === 'object') {
-      Object.assign(this.modelElement.style, style)
+      Object.assign(this.modelElement.style, style);
     }
   }
 
   public applyModelAttributes(): this {
     if (typeof this.modelElement === 'object') {
-      Object.assign(this.modelElement.style, MODEL_ATTRIBUTES)
+      Object.assign(this.modelElement.style, MODEL_ATTRIBUTES);
     }
-    return this
+
+    return this;
   }
 
   public applyBoxModelPropertiesFromElement(element: HTMLElement): this {
-    const style = window.getComputedStyle(element)
+    const style = window.getComputedStyle(element);
 
     STYLE_PROPERTIES.forEach(name => {
       if (typeof this.modelElement === 'object') {
-        this.modelElement.style[name] = style[name]
+        this.modelElement.style[name] = style[name];
       }
-    })
-    return this
+    });
+
+    return this;
   }
 
   public applyFontPropertiesFromElement(element: HTMLElement): this {
-    const style = window.getComputedStyle(element)
+    const style = window.getComputedStyle(element);
 
     FONT_STYLE_PROPERTIES.forEach(name => {
       if (typeof this.modelElement === 'object') {
-        this.modelElement.style[name] = style[name]
+        this.modelElement.style[name] = style[name];
       }
-    })
-    return this
+    });
+
+    return this;
   }
 
   public create(type?: string): this {
-    type = typeof type === 'string' ? type : 'TEXTAREA'
-    this.modelElement = document.createElement(type)
-    document.body.appendChild(this.modelElement)
-    return this
+    type = typeof type === 'string' ? type : 'TEXTAREA';
+    this.modelElement = document.createElement(type);
+    document.body.appendChild(this.modelElement);
+    return this;
   }
 
   public destroy(): this {
@@ -215,9 +223,10 @@ export class TextBoxModel {
       typeof this.modelElement !== 'undefined' &&
       this.modelElement.nodeType === 1
     ) {
-      document.body.removeChild(this.modelElement)
-      this.modelElement.remove()
+      document.body.removeChild(this.modelElement);
+      this.modelElement.remove();
     }
-    return this
+
+    return this;
   }
 }

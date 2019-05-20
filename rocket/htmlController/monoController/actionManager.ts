@@ -1,106 +1,107 @@
 import {
   MonoConfig,
-} from './config'
+} from './config';
 
 import {
   MonoController,  
-} from './monoController'
+} from './monoController';
 
-export type MonoActionName = 'activate' | 'deactivate' | 'toggle'
+export type MonoActionName = 'activate' | 'deactivate' | 'toggle';
 
 export interface MonoAction {
-  name: MonoActionName
+  name: MonoActionName;
 
-  currentItem?: HTMLElement,
-  currentItemId?: string,
+  currentItem?: HTMLElement;
+  currentItemId?: string;
 
-  nextItem?: HTMLElement,
-  nextItemId?: string,
+  nextItem?: HTMLElement;
+  nextItemId?: string;
 
-  targetId?: string,
-  trigger?: HTMLElement,
+  targetId?: string;
+  trigger?: HTMLElement;
 }
 
 export class ActionManager {
 
-  private controller: MonoController
+  private controller: MonoController;
 
-  public isRunning: boolean = false
-  public isNested: boolean = false
+  public isRunning: boolean = false;
+  public isNested: boolean = false;
 
   constructor(controller: MonoController) {
-    this.controller = controller
+    this.controller = controller;
   }
 
   // 2) Complete Action
 
   private async activate(action: MonoAction): Promise<void> {
-    const { config, itemManager } = this.controller
+    const { config, itemManager } = this.controller;
+
     if (
-      itemManager.isActive   === false &&
-      itemManager.activeItem !== action.nextItem &&
-      config.conditionActivate(action, this.controller) === true
+      itemManager.isActive === false
+      && itemManager.activeItem !== action.nextItem
+      && config.conditionActivate(action, this.controller) === true
     ) {
-      await config.beforeActivate(action, this.controller)
-      itemManager.activate(<HTMLElement>action.nextItem)
-      config.afterActivate(action, this.controller)
-      return Promise.resolve()
+      await config.beforeActivate(action, this.controller);
+      itemManager.activate(<HTMLElement>action.nextItem);
+      config.afterActivate(action, this.controller);
+      return Promise.resolve();
     }
 
-    return Promise.reject()
+    return Promise.reject();
   }
 
   private async deactivate(action: MonoAction): Promise<void> {
-    const { config, itemManager } = this.controller
+    const { config, itemManager } = this.controller;
 
     if (itemManager.isActive === false) {
-      return Promise.resolve()
+      return Promise.resolve();
     }
 
     if (
-      action.name === 'deactivate' &&
-      typeof action.targetId === 'string' &&
-      itemManager.activeItemId !== action.targetId
+      action.name === 'deactivate'
+      && typeof action.targetId === 'string'
+      && itemManager.activeItemId !== action.targetId
     ) {
-      return Promise.resolve()
+      return Promise.resolve();
     }
 
     if (config.conditionDeactivate(action, this.controller) === true) {
-      await config.beforeDeactivate(action, this.controller)
-      itemManager.deactivate()
-      config.afterDeactivate(action, this.controller)
-      return Promise.resolve()
+      await config.beforeDeactivate(action, this.controller);
+      itemManager.deactivate();
+      config.afterDeactivate(action, this.controller);
+      return Promise.resolve();
     }
 
-    return Promise.reject()
+    return Promise.reject();
   }
 
   private async completeAction(action: MonoAction): Promise<void> {
-    const { itemManager } = this.controller
+    const { itemManager } = this.controller;
 
     if (
-      action.name === 'activate' &&
-      itemManager.activeItemId !== action.targetId
+      action.name === 'activate'
+      && itemManager.activeItemId !== action.targetId
     ) {
-      await this.deactivate(action)
-      return this.activate(action)
+      await this.deactivate(action);
+      return this.activate(action);
     } else if (action.name === 'deactivate') {
-      return this.deactivate(action)
+      return this.deactivate(action);
     } else if (action.name === 'toggle') {
       if (itemManager.activeItemId === action.targetId) {
-        return this.deactivate(action)
-      }else {
-        await this.deactivate(action)
-        return this.activate(action)
+        return this.deactivate(action);
+      } else {
+        await this.deactivate(action);
+        return this.activate(action);
       }
     }
-    return Promise.reject()
+    return Promise.reject();
   }
 
   // Create & Compose Action
 
   public createAction(actionName: MonoActionName): MonoAction {
-    const { itemManager } = this.controller
+    const { itemManager } = this.controller;
 
     return {
       name: actionName,
@@ -113,78 +114,78 @@ export class ActionManager {
 
       targetId: undefined,
       trigger: undefined,
-    }
+    };
   }
 
   public composeAction(actionName: MonoActionName, id?: string): MonoAction {
-    const { itemManager } = this.controller
+    const { itemManager } = this.controller;
 
-    const action: MonoAction = this.createAction(actionName)
+    const action: MonoAction = this.createAction(actionName);
 
     if (typeof id === 'string') {
-      const nextItem: HTMLElement | false = itemManager.getItemFromId(id)
+      const nextItem: HTMLElement | false = itemManager.getItemFromId(id);
       if (typeof nextItem === 'object') {
-        action.nextItem = nextItem
-        action.nextItemId = id
+        action.nextItem = nextItem;
+        action.nextItemId = id;
       }
-      action.targetId = id
+      action.targetId = id;
     }
-    return action
+    return action;
   }
 
   public composeActionFromEvent(actionName: MonoActionName, trigger: HTMLElement): MonoAction {
-    const action: MonoAction = this.composeAction(actionName, trigger.dataset.target)
-    action.trigger = trigger
-    return action
+    const action: MonoAction = this.composeAction(actionName, trigger.dataset.target);
+    action.trigger = trigger;
+    return action;
   }
 
   // 1) Action Hub
 
   public async actionHub(action: MonoAction, isNestedAction: boolean = false, callback?: Function): Promise<void> {
     if (
-      this.isRunning === true &&
-      isNestedAction === true
+      this.isRunning === true
+      && isNestedAction === true
     ) {
-      this.isNested = true
+      this.isNested = true;
     }
-    this.isRunning = true
+    this.isRunning = true;
 
-    const config: MonoConfig = this.controller.config
+    const config: MonoConfig = this.controller.config;
 
-    let preAction: Promise<void>
+    let preAction: Promise<void>;
     if (this.isNested === false) {
       preAction = new Promise(resolve => {
-        this.isNested = true
+        this.isNested = true;
         config
           .beforeAction(action, this.controller)
           .then(() => {
-            this.isNested = false
-            resolve()
+            this.isNested = false;
+            resolve();
           })
           .catch(() => {
-            this.isNested = false
-          })
+            this.isNested = false;
+          });
       })
     } else {
-      preAction = Promise.resolve()
+      preAction = Promise.resolve();
     }
 
     try {
-      await preAction
-      await this.completeAction(action)
-      await this.endAction(callback)
+      await preAction;
+      await this.completeAction(action);
+      await this.endAction(callback);
       if (
-        isNestedAction === true &&
-        this.isNested  === true
+        isNestedAction === true
+        && this.isNested === true
       ) {
-        this.isNested = false
+        this.isNested = false;
       }
       if (this.isNested === false) {
-        config.afterAction(action, this.controller)
+        config.afterAction(action, this.controller);
       }
     } catch {
-      await this.endAction(callback)
-      return Promise.resolve()
+      await this.endAction(callback);
+      return Promise.resolve();
     }
   }
 
@@ -192,22 +193,22 @@ export class ActionManager {
     if (this.isNested === false) {
       return new Promise(resolve => {
         setTimeout(() => {
-          this.isRunning = false
-          resolve()
-        }, this.controller.config.cooldown)
-      })
+          this.isRunning = false;
+          resolve();
+        }, this.controller.config.cooldown);
+      });
     }
 
     if (
-      this.isRunning === false &&
-      this.isNested  === true
+      this.isRunning === false
+      && this.isNested === true
     ) {
-      this.isNested = false
+      this.isNested = false;
     }
 
     if (typeof callback === 'function') {
-      callback()
+      callback();
     }
-    return Promise.resolve()
+    return Promise.resolve();
   }
 }

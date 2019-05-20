@@ -1,49 +1,49 @@
 import {
-  Animation
-} from '../rocket'
+  Animation,
+} from '../rocket';
 
 export interface AnimationTimingFunction {
-  (t: number): number
+  (t: number): number;
 }
 
 export interface AnimationTickFunction {
-  (n: number, iterationCount:number, context: Animation, data: any): void
+  (n: number, iterationCount:number, context: Animation, data: any): void;
 }
 
 export interface AnimationBeforeHook<T=void> {
-  (context: Animation, data: any): Promise<T>
+  (context: Animation, data: any): Promise<T>;
 }
 
 export interface AnimationCallback {
-  (context: Animation, data: any): void
+  (context: Animation, data: any): void;
 }
 
 export interface AnimationConfig {
-  alternate: boolean,
-  delay: number,
-  duration: number,
+  alternate: boolean;
+  delay: number;
+  duration: number;
 
-  iterationDelay: number,
-  numberOfIterations: number | 'infinite',
+  iterationDelay: number;
+  numberOfIterations: number | 'infinite';
 
-  dataExport: object,
+  dataExport: object;
 
-  timingFunction: AnimationTimingFunction,
+  timingFunction: AnimationTimingFunction;
 
-  beforeStart: AnimationBeforeHook,
-  beforeStartWithDelay: AnimationBeforeHook,
-  beforeIterationStart: AnimationBeforeHook,
-  beforeSubsequentIteration: AnimationBeforeHook,
+  beforeStart: AnimationBeforeHook;
+  beforeStartWithDelay: AnimationBeforeHook;
+  beforeIterationStart: AnimationBeforeHook;
+  beforeSubsequentIteration: AnimationBeforeHook;
 
-  onStart: AnimationCallback | AnimationCallback[],
-  onComplete: AnimationCallback | AnimationCallback[],
+  onStart: AnimationCallback | AnimationCallback[];
+  onComplete: AnimationCallback | AnimationCallback[];
 
-  onIterationStart: AnimationCallback | AnimationCallback[],
-  onIterationComplete: AnimationCallback | AnimationCallback[],
+  onIterationStart: AnimationCallback | AnimationCallback[];
+  onIterationComplete: AnimationCallback | AnimationCallback[];
 
-  callback: Function,
+  callback: Function;
 
-  onTick: AnimationTickFunction | AnimationTickFunction[],
+  onTick: AnimationTickFunction | AnimationTickFunction[];
 }
 
 export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = {
@@ -56,12 +56,12 @@ export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = {
 
   dataExport: {},
 
-  timingFunction: (t) => { return t },
+  timingFunction: (t) => t,
 
-  beforeStart: () => { return Promise.resolve() },
-  beforeStartWithDelay: () => { return Promise.resolve() },
-  beforeIterationStart: () => { return Promise.resolve() },
-  beforeSubsequentIteration: () => { return Promise.resolve() },
+  beforeStart: () => Promise.resolve(),
+  beforeStartWithDelay: () => Promise.resolve(),
+  beforeIterationStart: () => Promise.resolve(),
+  beforeSubsequentIteration: () => Promise.resolve(),
 
   onStart   : () => { },
   onComplete: () => { },
@@ -72,4 +72,4 @@ export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = {
   callback: () => { },
 
   onTick  : (n, fn, data) => { }
-}
+};

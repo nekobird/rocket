@@ -1,5 +1,5 @@
 import {
-  DOMTransverse,
+  DOMTraverse,
   DragEventManager,
 } from '../../rocket'
 
@@ -51,7 +51,7 @@ export class EventManager {
       if (targetDownElement !== false) {
         MONO_ACTION_CONFIG_MAP.forEach(entry => {
           const className: string = this.controller.config[entry.configProperty]
-          const trigger = DOMTransverse.findAncestorWithClass(targetDownElement, className, false)
+          const trigger = DOMTraverse.findAncestorWithClass(targetDownElement, className, false)
           if (trigger !== false) {
             this.eventHub(<HTMLElement>trigger, entry.action)
           }
@@ -116,10 +116,10 @@ export class EventManager {
         && targetDownElement !== false
         && targetUpElement !== false
 
-        && DOMTransverse.hasAncestor(targetDownElement, itemManager.activeItem) === false
-        && DOMTransverse.hasAncestor(targetUpElement, itemManager.activeItem) === false
+        && DOMTraverse.hasAncestor(targetDownElement, itemManager.activeItem) === false
+        && DOMTraverse.hasAncestor(targetUpElement, itemManager.activeItem) === false
 
-        && DOMTransverse.findAncestor(targetDownElement, identifierFn) === false
+        && DOMTraverse.findAncestor(targetDownElement, identifierFn) === false
       ) {
         this.controller.deactivate()
         config.onOutsideAction(this.controller)

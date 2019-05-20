@@ -1,28 +1,28 @@
 import {
   DragEventManager,
-} from './dragEventManager'
+} from './dragEventManager';
 
 import {
   EventName,
   SensorData,
-} from './sensorHub'
+} from './sensorHub';
 
 export class MouseSensor {
 
-  public manager: DragEventManager
+  public manager: DragEventManager;
 
-  public isDown: boolean = false
+  public isDown: boolean = false;
 
   constructor(manager: DragEventManager) {
-    this.manager = manager
+    this.manager = manager;
   }
 
   public dispatch(data: SensorData) {
-    this.manager.sensorHub.receive(data)
+    this.manager.sensorHub.receive(data);
   }
 
   public composeData(name: EventName, event: MouseEvent): SensorData {
-    const { target, screenX, screenY, pageX, pageY, clientX, clientY } = event
+    const { target, screenX, screenY, pageX, pageY, clientX, clientY } = event;
     return {
       identifier: 'mouse-event',
       type: 'MOUSE',
@@ -34,42 +34,42 @@ export class MouseSensor {
       clientX, clientY,
       event,
       touch: undefined,
-    }
+    };
   }
 
   public eventHandlerMouseDown = (event: Event): void => {
-    this.isDown = true
+    this.isDown = true;
     this.dispatch(
       this.composeData('down', <MouseEvent>event)
-    )
+    );
   }
 
   public eventHandlerMouseMove = (event: Event): void => {
     if (this.isDown === true) {
       this.dispatch(
         this.composeData('drag', <MouseEvent>event)
-      )
+      );
     }
   }
 
   public eventHandlerMouseUp = (event: Event): void => {
-    this.isDown = false
+    this.isDown = false;
     this.dispatch(
       this.composeData('up', <MouseEvent>event)
-    )
+    );
   }
 
   public listen() {
-    const { parent } = this.manager.config
-    parent.addEventListener('mousedown', this.eventHandlerMouseDown)
-    parent.addEventListener('mousemove', this.eventHandlerMouseMove)
-    parent.addEventListener('mouseup',   this.eventHandlerMouseUp)
+    const { parent } = this.manager.config;
+    parent.addEventListener('mousedown', this.eventHandlerMouseDown);
+    parent.addEventListener('mousemove', this.eventHandlerMouseMove);
+    parent.addEventListener('mouseup', this.eventHandlerMouseUp);
   }
 
   public stop() {
-    const { parent } = this.manager.config
-    parent.removeEventListener('mousedown', this.eventHandlerMouseDown)
-    parent.removeEventListener('mousemove', this.eventHandlerMouseMove)
-    parent.removeEventListener('mouseup',   this.eventHandlerMouseUp)
+    const { parent } = this.manager.config;
+    parent.removeEventListener('mousedown', this.eventHandlerMouseDown);
+    parent.removeEventListener('mousemove', this.eventHandlerMouseMove);
+    parent.removeEventListener('mouseup', this.eventHandlerMouseUp);
   }
 }

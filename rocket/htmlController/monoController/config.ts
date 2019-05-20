@@ -3,50 +3,50 @@ import {
   BeforeActionCallback,
   ConditionHook,
   Hook,
-} from '../index'
+} from '../index';
 
 import {
   ActionConfigMapEntries,
-} from './eventManager'
+} from './eventManager';
 
 import {
   MonoAction,
-} from './actionManager'
+} from './actionManager';
 
 import {
   MonoController,
-} from './monoController'
+} from './monoController';
 
 export interface MonoConfig {
-  cooldown: number,
+  cooldown: number;
 
-  listenToKeydown: boolean,
+  listenToKeydown: boolean;
 
-  deactivateOnOutsideAction: boolean,
+  deactivateOnOutsideAction: boolean;
   
-  itemsSelector: string,
-  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
+  itemsSelector: string;
+  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined;
 
-  classNameItemActive  : string,
-  classNameJsActivate  : string,
-  classNameJsDeactivate: string,
-  classNameJsToggle    : string,
+  classNameItemActive: string;
+  classNameJsActivate: string;
+  classNameJsDeactivate: string;
+  classNameJsToggle: string;
 
-  beforeActivate: Hook<MonoAction, MonoController>,
-  beforeDeactivate: Hook<MonoAction, MonoController>,
+  beforeActivate: Hook<MonoAction, MonoController>;
+  beforeDeactivate: Hook<MonoAction, MonoController>;
 
-  afterActivate: Hook<MonoAction, MonoController>,
-  afterDeactivate: Hook<MonoAction, MonoController>,
+  afterActivate: Hook<MonoAction, MonoController>;
+  afterDeactivate: Hook<MonoAction, MonoController>;
 
-  conditionActivate: ConditionHook<MonoAction, MonoController>,
-  conditionDeactivate: ConditionHook<MonoAction, MonoController>,
+  conditionActivate: ConditionHook<MonoAction, MonoController>;
+  conditionDeactivate: ConditionHook<MonoAction, MonoController>;
 
-  beforeAction: BeforeActionCallback<MonoAction, MonoController>,
-  afterAction: AfterActionCallback<MonoAction, MonoController>,
+  beforeAction: BeforeActionCallback<MonoAction, MonoController>;
+  afterAction: AfterActionCallback<MonoAction, MonoController>;
 
-  onKeydown: (event: KeyboardEvent, context: MonoController) => void,
+  onKeydown: (event: KeyboardEvent, context: MonoController) => void;
 
-  onOutsideAction: (context: MonoController) => void
+  onOutsideAction: (context: MonoController) => void;
 }
 
 export const DEFAULT_CONFIG: MonoConfig = {
@@ -61,26 +61,26 @@ export const DEFAULT_CONFIG: MonoConfig = {
 
   classNameItemActive: 'js-mono-item--active',
 
-  classNameJsActivate  : 'js-mono-item-activate',
+  classNameJsActivate: 'js-mono-item-activate',
   classNameJsDeactivate: 'js-mono-item-deactivate',
-  classNameJsToggle    : 'js-mono-item-toggle',
+  classNameJsToggle: 'js-mono-item-toggle',
 
-  beforeActivate  : (action, context) => { return Promise.resolve() },
-  beforeDeactivate: (action, context) => { return Promise.resolve() },
+  beforeActivate: (action, context) => Promise.resolve(),
+  beforeDeactivate: (action, context) => Promise.resolve(),
 
-  afterActivate  : (action, context) => { return Promise.resolve() },
-  afterDeactivate: (action, context) => { return Promise.resolve() },
+  afterActivate: (action, context) => Promise.resolve(),
+  afterDeactivate: (action, context) => Promise.resolve(),
 
-  conditionActivate  : (action, context) => { return true },
-  conditionDeactivate: (action, context) => { return true },
+  conditionActivate: (action, context) => true,
+  conditionDeactivate: (action, context) => true,
 
-  beforeAction: (action, context) => { return Promise.resolve() },
-  afterAction : (action, context) => { },
+  beforeAction: (action, context) => Promise.resolve(),
+  afterAction: (action, context) => {},
 
-  onOutsideAction: (context) => { },
+  onOutsideAction: (context) => {},
 
-  onKeydown: (event, context) => { },
-}
+  onKeydown: (event, context) => {},
+};
 
 export const MONO_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
   {
@@ -95,4 +95,4 @@ export const MONO_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
     configProperty: 'classNameJsToggle',
     action: 'toggle',
   },
-]
+];

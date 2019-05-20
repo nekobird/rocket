@@ -1,13 +1,13 @@
 import {
   TextBoxModel,
-} from '../rocket'
+} from '../rocket';
 
-export const _UITextArea_eventName_input: unique symbol = Symbol()
-export const _UITextArea_eventName_keydown: unique symbol = Symbol()
-export const _UITextArea_event_input: unique symbol = Symbol()
-export const _UITextArea_event_keydown: unique symbol = Symbol()
+export const _UITextArea_eventName_input: unique symbol = Symbol();
+export const _UITextArea_eventName_keydown: unique symbol = Symbol();
+export const _UITextArea_event_input: unique symbol = Symbol();
+export const _UITextArea_event_keydown: unique symbol = Symbol();
 
-export const _textBoxModel: unique symbol = Symbol()
+export const _textBoxModel: unique symbol = Symbol();
 
 export interface UITextAreaConfig {
   disableLineBreaks: boolean,

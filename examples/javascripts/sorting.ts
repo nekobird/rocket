@@ -1,5 +1,5 @@
 import {
-  DOMHelper,
+  DOMStyle,
   Sortable,
 } from '../../rocket/rocket'
 
@@ -12,7 +12,7 @@ const sortable = new Sortable({
   items: Array.from(sortableItems),
 
   moveItem: (item, to, context) => {
-    const paddingLeft: number = <number>DOMHelper.getStyleValue(context.config.container, 'paddingLeft', true)
+    const paddingLeft: number = <number>DOMStyle.getStyleValue(context.config.container, 'paddingLeft', true)
     item.style.transform = `translateX(${paddingLeft}px) translateY(${to.y}px)`
   }
 }).initialize()

@@ -1,47 +1,47 @@
 import {
   StackUpItem,
-} from './stackUp'
+} from './stackUp';
 
-export type StackUpLayoutOption = 'ordinal' | 'optimized'
+export type StackUpLayoutOption = 'ordinal' | 'optimized';
 
 export interface StackUpContainerScaleData {
-  width: number,
-  height: number,
-  currentWidth: number,
-  currentHeight: number,
-  maxWidth: number,
-  maxHeight: number,
-  requireScale: boolean,
+  width: number;
+  height: number;
+  currentWidth: number;
+  currentHeight: number;
+  maxWidth: number;
+  maxHeight: number;
+  requireScale: boolean;
 }
 
 export interface StackUpConfig {
-  boundary: HTMLElement | Window,
+  boundary: HTMLElement | Window;
 
-  containerSelector: string,
-  itemsSelector: string,
+  containerSelector: string;
+  itemsSelector: string;
 
-  container?: HTMLElement,
-  items?: HTMLElement[],
+  container?: HTMLElement;
+  items?: HTMLElement[];
 
-  columnWidth: number,
-  numberOfColumns: number,
-  gutter: number,
+  columnWidth: number;
+  numberOfColumns: number;
+  gutter: number;
   
-  layout: StackUpLayoutOption,
-  isFluid: boolean,
+  layout: StackUpLayoutOption;
+  isFluid: boolean;
   
-  debounceResizeWait: number,
-  moveInSequence: boolean,
+  debounceResizeWait: number;
+  moveInSequence: boolean;
 
-  scaleContainerInitial: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>,
-  scaleContainerFinal: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>,
-  moveItem: (item: StackUpItem) => Promise<void>,
+  scaleContainerInitial: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>;
+  scaleContainerFinal: (container: HTMLElement, data: StackUpContainerScaleData) => Promise<void>;
+  moveItem: (item: StackUpItem) => Promise<void>;
 
-  beforeTransition: (container: StackUpContainerScaleData, items: StackUpItem[]) => Promise<void>,
-  beforeMove: (items: StackUpItem[]) => Promise<void>,
+  beforeTransition: (container: StackUpContainerScaleData, items: StackUpItem[]) => Promise<void>;
+  beforeMove: (items: StackUpItem[]) => Promise<void>;
 
-  afterMove: (items: StackUpItem[]) => Promise<void>,
-  afterTransition: () => void,
+  afterMove: (items: StackUpItem[]) => Promise<void>;
+  afterTransition: () => void;
 }
 
 export const STACKUP_DEFAULT_CONFIG: StackUpConfig = {
@@ -84,5 +84,5 @@ export const STACKUP_DEFAULT_CONFIG: StackUpConfig = {
   beforeMove: (items) => Promise.resolve(),
 
   afterMove: (items) => Promise.resolve(),
-  afterTransition: () => {}
-}
+  afterTransition: () => {},
+};

@@ -6,56 +6,56 @@ import {
 
 import {
   ActionConfigMapEntries,
-} from './eventManager'
+} from './eventManager';
 
 import {
   PolyController,
-} from './polyController'
+} from './polyController';
 
 import {
   PolyAction,
-} from './actionManager'
+} from './actionManager';
 
 export interface PolyConfig {
-  cooldown: number,
+  cooldown: number;
 
-  deactivateAllOnOutsideAction: boolean,
+  deactivateAllOnOutsideAction: boolean;
 
-  listenToKeydown: boolean,
+  listenToKeydown: boolean;
 
-  itemsSelector: string | undefined,
-  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
+  itemsSelector: string | undefined;
+  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined;
 
-  classNameItemActive: string,
+  classNameItemActive: string;
 
-  classNameJsActivate  : string,
-  classNameJsDeactivate: string,
-  classNameJsToggle    : string,
+  classNameJsActivate: string;
+  classNameJsDeactivate: string;
+  classNameJsToggle: string;
 
-  classNameJsActivateAll  : string,
-  classNameJsDeactivateAll: string,
-  classNameJsToggleAll    : string,
+  classNameJsActivateAll: string;
+  classNameJsDeactivateAll: string;
+  classNameJsToggleAll: string;
 
-  conditionActivate  : ConditionHook<PolyAction, PolyController>,
-  conditionDeactivate: ConditionHook<PolyAction, PolyController>,
-  conditionToggle    : ConditionHook<PolyAction, PolyController>,
+  conditionActivate: ConditionHook<PolyAction, PolyController>;
+  conditionDeactivate: ConditionHook<PolyAction, PolyController>;
+  conditionToggle: ConditionHook<PolyAction, PolyController>;
 
-  conditionActivateAll  : ConditionHook<PolyAction, PolyController>,
-  conditionDeactivateAll: ConditionHook<PolyAction, PolyController>,
-  conditionToggleAll    : ConditionHook<PolyAction, PolyController>,
+  conditionActivateAll: ConditionHook<PolyAction, PolyController>;
+  conditionDeactivateAll: ConditionHook<PolyAction, PolyController>;
+  conditionToggleAll: ConditionHook<PolyAction, PolyController>;
 
-  beforeDeactivate: BeforeActionCallback<PolyAction, PolyController>,
-  afterDeactivate : AfterActionCallback<PolyAction, PolyController>,
+  beforeDeactivate: BeforeActionCallback<PolyAction, PolyController>;
+  afterDeactivate: AfterActionCallback<PolyAction, PolyController>;
 
-  beforeActivate: BeforeActionCallback<PolyAction, PolyController>,
-  afterActivate : AfterActionCallback<PolyAction, PolyController>,
+  beforeActivate: BeforeActionCallback<PolyAction, PolyController>;
+  afterActivate: AfterActionCallback<PolyAction, PolyController>;
 
-  beforeAction: BeforeActionCallback<PolyAction, PolyController>,
-  afterAction : AfterActionCallback<PolyAction, PolyController>,
+  beforeAction: BeforeActionCallback<PolyAction, PolyController>;
+  afterAction: AfterActionCallback<PolyAction, PolyController>;
 
-  onOutsideAction: (context: PolyController) => void,
+  onOutsideAction: (context: PolyController) => void;
 
-  onKeydown: (event: KeyboardEvent, context: PolyController) => void,
+  onKeydown: (event: KeyboardEvent, context: PolyController) => void;
 }
 
 export const DEFAULT_CONFIG: PolyConfig = {
@@ -94,9 +94,9 @@ export const DEFAULT_CONFIG: PolyConfig = {
   beforeAction: (action, context) => Promise.resolve(),
   afterAction : (action, context) => Promise.resolve(),
   
-  onOutsideAction: (context) => { },
-  onKeydown: (event, context) => { },
-}
+  onOutsideAction: (context) => {},
+  onKeydown: (event, context) => {},
+};
 
 export const POLY_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
   {
@@ -123,4 +123,4 @@ export const POLY_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
     configProperty: 'classNameJsToggleAll',
     action: 'toggleAll',
   },
-]
+];

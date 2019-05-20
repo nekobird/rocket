@@ -3,47 +3,47 @@ import {
   BeforeActionCallback,
   ConditionHook,
   Hook,
-} from '../index'
+} from '../index';
 
 import {
   ActionConfigMapEntries,
-} from './eventManager'
+} from './eventManager';
 
 import {
   SequenceController,
-} from './sequenceController'
+} from './sequenceController';
 
 import {
   SequenceAction,
-} from './actionManager'
+} from './actionManager';
 
 export interface SequenceConfig {
-  cooldown: number,
+  cooldown: number;
 
-  listenToKeydown: boolean,
+  listenToKeydown: boolean;
 
-  itemsSelector: string | undefined,
-  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined,
+  itemsSelector: string | undefined;
+  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined;
 
-  classNameItemActive: string,
-  classNameJsPrevious: string,
-  classNameJsNext: string,
-  classNameJsJump: string,
+  classNameItemActive: string;
+  classNameJsPrevious: string;
+  classNameJsNext: string;
+  classNameJsJump: string;
 
-  beforeActivate  : Hook<SequenceAction, SequenceController>,
-  beforeDeactivate: Hook<SequenceAction, SequenceController>,
+  beforeActivate  : Hook<SequenceAction, SequenceController>;
+  beforeDeactivate: Hook<SequenceAction, SequenceController>;
 
-  afterActivate  : Hook<SequenceAction, SequenceController>,
-  afterDeactivate: Hook<SequenceAction, SequenceController>,
+  afterActivate: Hook<SequenceAction, SequenceController>;
+  afterDeactivate: Hook<SequenceAction, SequenceController>;
 
-  conditionPrevious: ConditionHook<SequenceAction, SequenceController>,
-  conditionNext    : ConditionHook<SequenceAction, SequenceController>,
-  conditionJump    : ConditionHook<SequenceAction, SequenceController>,
+  conditionPrevious: ConditionHook<SequenceAction, SequenceController>;
+  conditionNext    : ConditionHook<SequenceAction, SequenceController>;
+  conditionJump    : ConditionHook<SequenceAction, SequenceController>;
 
-  beforeAction: BeforeActionCallback<SequenceAction, SequenceController>,
-  afterAction : AfterActionCallback<SequenceAction, SequenceController>,
+  beforeAction: BeforeActionCallback<SequenceAction, SequenceController>;
+  afterAction : AfterActionCallback<SequenceAction, SequenceController>;
 
-  onKeydown: (event: KeyboardEvent, context: SequenceController) => void,
+  onKeydown: (event: KeyboardEvent, context: SequenceController) => void;
 }
 
 export const DEFAULT_CONFIG: SequenceConfig = {
@@ -72,7 +72,7 @@ export const DEFAULT_CONFIG: SequenceConfig = {
   afterAction : (action, context) => { },
 
   onKeydown: (event, context) => { },
-}
+};
 
 export const SEQUENCE_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
   {
@@ -87,4 +87,4 @@ export const SEQUENCE_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
     configProperty: 'classNameJsJump',
     action: 'jump',
   },
-]
+];

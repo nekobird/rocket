@@ -1,5 +1,5 @@
 import {
-  DOMTransverse,
+  DOMTraverse,
 } from '../rocket'
 
 export class UITextField {

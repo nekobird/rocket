@@ -1,20 +1,19 @@
 import {
-  DOMHelper,
-  ViewportModel,
-  Util,
-  DOMStyle,
   DOMPoint,
-} from '../rocket'
+  DOMStyle,
+  Util,
+  ViewportModel,
+} from '../rocket';
 
 import {
   STACKUP_DEFAULT_CONFIG,
   StackUpConfig,
   StackUpContainerScaleData,
-} from './stackUpConfig'
+} from './stackUpConfig';
 
 import {
   StackUpLayout,
-} from './stackUpLayout'
+} from './stackUpLayout';
 
 // [index][item, itemHeight, left, top]
 export interface StackUpItem {
@@ -25,50 +24,51 @@ export interface StackUpItem {
   currentLeft: number,
   currentTop : number,
   requireMove: boolean,
-}
+};
 
 export class StackUp {
 
-  public boundaryHeight = 0
-  public boundaryWidth  = 0
+  public boundaryHeight: number = 0;
+  public boundaryWidth: number = 0;
 
-  public containerWidth  = 0
-  public containerHeight = 0
+  public containerWidth: number = 0;
+  public containerHeight: number = 0;
   
-  public previousContainerWidth  = 0
-  public previousContainerHeight = 0
+  public previousContainerWidth: number = 0;
+  public previousContainerHeight: number = 0;
 
-  public items: StackUpItem[] = []
-  public numberOfColumns: number = 0
+  public items: StackUpItem[] = [];
+  public numberOfColumns: number = 0;
 
-  public config: StackUpConfig
-  public layout: StackUpLayout
+  public config: StackUpConfig;
+  public layout: StackUpLayout;
 
-  public resizeDebounceTimeout?: number
+  public resizeDebounceTimeout?: number;
 
-  public isTransitioning: boolean = false
+  public isTransitioning: boolean = false;
 
-  private doneTransitioning?: Function
+  private doneTransitioning?: Function;
 
   constructor(config?: Partial<StackUpConfig>) {
-    this.config = Object.assign({}, STACKUP_DEFAULT_CONFIG)
+    this.config = Object.assign({}, STACKUP_DEFAULT_CONFIG);
+
     if (typeof config === 'object') {
-      this.setConfig(config)
+      this.setConfig(config);
     }
 
-    this.layout = new StackUpLayout(this, this.config.layout)
-    return this
+    this.layout = new StackUpLayout(this, this.config.layout);
+    return this;
   }
 
   public setConfig(config: Partial<StackUpConfig>): this {
-    Object.assign(this.config, config)
-    return this
+    Object.assign(this.config, config);
+    return this;
   }
 
   private getElements(): this {
-    this.getContainer()
-    this.getItems()
-    return this
+    this.getContainer();
+    this.getItems();
+    return this;
   }
 
   private getContainer(): this {
@@ -76,17 +76,17 @@ export class StackUp {
       typeof this.config.container === 'undefined'
       && typeof this.config.containerSelector === 'string'
     ) {
-      const container = document.querySelector(this.config.containerSelector)
+      const container = document.querySelector(this.config.containerSelector);
       if (container !== null) {
-        this.config.container = <HTMLElement>container
-        return this
+        this.config.container = <HTMLElement>container;
+        return this;
       }
-      throw new Error('StackUp: Fail to get container.')
+      throw new Error('StackUp: Fail to get container.');
     }
     if (typeof this.config.container === 'object') {
-      return this
+      return this;
     }
-    throw new Error('StackUp: Container not defined.')
+    throw new Error('StackUp: Container not defined.');
   }
 
   private getItems(): this {
@@ -108,17 +108,17 @@ export class StackUp {
   }
 
   public initialize(): Promise<void> {
-    window.addEventListener('resize', this.eventHandlerResize)
-    this.boundaryUpdate()
+    window.addEventListener('resize', this.eventHandlerResize);
+    this.boundaryUpdate();
 
     // Update grid selectors - reset
-    this.getElements()
-    this.populateItems()
+    this.getElements();
+    this.populateItems();
 
     // Update grid selectors - stacking
-    this.updateNumberOfColumns()
-    this.applyLayout()
-    return this.draw()
+    this.updateNumberOfColumns();
+    this.applyLayout();
+    return this.draw();
   }
 
   private boundaryUpdate(): this {
@@ -127,29 +127,29 @@ export class StackUp {
       && typeof this.config.boundary === 'object'
       && this.config.boundary !== null
     ) {
-      const boundary = <HTMLElement>this.config.boundary
-      let horizontal = 0
-      let vertical   = 0
+      const boundary = <HTMLElement>this.config.boundary;
+      let horizontal = 0;
+      let vertical = 0;
       if (DOMStyle.getStyleValue(boundary, 'boxSizing') === 'border-box') {
-        const horizontalBorderWidths = DOMStyle.getHorizontalBorderWidths(boundary)
-        const horizontalPaddings = DOMStyle.getHorizontalPaddings(boundary)
-        const verticalBorderWidths = DOMStyle.getVerticalBorderWidths(boundary)
-        const verticalPaddings = DOMStyle.getVerticalPaddings(boundary)
-        horizontal = horizontalBorderWidths + horizontalPaddings
-        vertical   = verticalBorderWidths   + verticalPaddings
+        const horizontalBorderWidths = DOMStyle.getHorizontalBorderWidths(boundary);
+        const horizontalPaddings = DOMStyle.getHorizontalPaddings(boundary);
+        const verticalBorderWidths = DOMStyle.getVerticalBorderWidths(boundary);
+        const verticalPaddings = DOMStyle.getVerticalPaddings(boundary);
+        horizontal = horizontalBorderWidths + horizontalPaddings;
+        vertical = verticalBorderWidths + verticalPaddings;
       }
-      this.boundaryWidth  = boundary.offsetWidth - horizontal
-      this.boundaryHeight = boundary.offsetHeight - vertical
+      this.boundaryWidth = boundary.offsetWidth - horizontal;
+      this.boundaryHeight = boundary.offsetHeight - vertical;
     } else {
-      this.boundaryWidth  = ViewportModel.width
-      this.boundaryHeight = ViewportModel.height
+      this.boundaryWidth = ViewportModel.width;
+      this.boundaryHeight = ViewportModel.height;
     }
-    return this
+    return this;
   }
 
   private resizeDebounce = (fn: Function, delay: number): void => {
-    clearTimeout(this.resizeDebounceTimeout)
-    this.resizeDebounceTimeout = window.setTimeout(fn, delay)
+    clearTimeout(this.resizeDebounceTimeout);
+    this.resizeDebounceTimeout = window.setTimeout(fn, delay);
   }
 
   private eventHandlerResizeComplete = (): void => {
@@ -157,16 +157,16 @@ export class StackUp {
       this.calculateNumberOfColumns() !== this.numberOfColumns &&
       this.config.isFluid === true
     ) {
-      this.restack()
+      this.restack();
     }
   }
 
   private eventHandlerResize = (event: Event): void => {
-    this.boundaryUpdate()
+    this.boundaryUpdate();
     this.resizeDebounce(
       this.eventHandlerResizeComplete,
       this.config.debounceResizeWait
-    )
+    );
   }
 
   // Update grid selectors. (1) - reset
@@ -174,17 +174,17 @@ export class StackUp {
 
   public updatePreviousContainerSize(): this {
     if (typeof this.config.container === 'object') {
-      this.previousContainerWidth  = this.config.container.offsetWidth
-      this.previousContainerHeight = this.config.container.offsetHeight
+      this.previousContainerWidth = this.config.container.offsetWidth;
+      this.previousContainerHeight = this.config.container.offsetHeight;
     }
-    return this
+    return this;
   }
 
   // This only updates this.items, it does not update the selectors
 
   private appendItem(item: HTMLElement): this {
     if (typeof this.config.container === 'object') {
-      const { x: left, y: top } = DOMPoint.getOffsetFrom(item, this.config.container)
+      const { x: left, y: top } = DOMPoint.getElementOffsetFrom(item, this.config.container);
       this.items.push(
         {
           item,
@@ -194,54 +194,54 @@ export class StackUp {
           currentTop : top,
           requireMove: false,
         }
-      )
+      );
     }
-    return this
+    return this;
   }
 
   // Populate grid items (2) - reset
   private populateItems(): this {
     // Clear items before populating
-    this.items = []
+    this.items = [];
 
     if (typeof this.config.items !== 'undefined') {
       this.config.items.forEach(item => {
         this.appendItem(item)
-      })
+      });
     }
-    return this
+    return this;
   }
 
   private calculateNumberOfColumns(): number {
-    let numberOfColumns: number
+    let numberOfColumns: number;
 
     if (this.config.isFluid === true) {
       numberOfColumns = Math.floor(
         (this.boundaryWidth      - this.config.gutter) /
         (this.config.columnWidth + this.config.gutter)
-      )
+      );
     } else {
-      numberOfColumns = this.config.numberOfColumns
+      numberOfColumns = this.config.numberOfColumns;
     }
 
     if (numberOfColumns > this.items.length) {
-      numberOfColumns = this.items.length
+      numberOfColumns = this.items.length;
     }
 
     if (
       this.items.length === 0 ||
       numberOfColumns <= 0
     ) {
-      numberOfColumns = 1
+      numberOfColumns = 1;
     }
 
-    return numberOfColumns
+    return numberOfColumns;
   }
 
   // Update numberOfColumns (3) - stack
   private updateNumberOfColumns(): this {
-    this.numberOfColumns = this.calculateNumberOfColumns()
-    return this
+    this.numberOfColumns = this.calculateNumberOfColumns();
+    return this;
   }
 
   // Scale container and move items (5) - stack

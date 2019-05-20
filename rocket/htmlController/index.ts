@@ -1,5 +1,5 @@
-export * from './interfaces'
+export * from './interfaces';
 
-export * from './monoController/monoController'
-export * from './polyController/polyController'
-export * from './sequenceController/sequenceController'
+export * from './monoController/monoController';
+export * from './polyController/polyController';
+export * from './sequenceController/sequenceController';
