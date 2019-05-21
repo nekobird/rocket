@@ -4,10 +4,11 @@ export * from './core/util';
 export * from './core/stringUtil';
 
 // @dom
-export * from './dom/DOMTraverse';
+export * from './dom/domTraverse';
 export * from './dom/domHelper';
 export * from './dom/domPoint';
 export * from './dom/domStyle';
+export * from './dom/domScroll';
 
 // @viewport
 export * from './viewport/viewportModel';
