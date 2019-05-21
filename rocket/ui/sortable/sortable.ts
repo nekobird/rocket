@@ -53,7 +53,25 @@ export class Sortable {
   public initialize() {
     this.itemManager.initialize();
     this.eventManager.initialize();
-    console.log(this.itemManager.items);
+  }
+
+  // @getters
+
+  public get groupElement(): HTMLElement | false {
+    if (typeof this.itemManager.group === 'object') {
+      return this.itemManager.group;
+    }
+    return false;
+  }
+
+  public get itemElements(): HTMLElement[] | false {
+    if (
+      typeof this.itemManager.items === 'object'
+      && Array.isArray(this.itemManager.items) === true
+    ) {
+      return this.itemManager.items;
+    }
+    return false;
   }
 
   // @event_handler
