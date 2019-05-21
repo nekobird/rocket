@@ -13,6 +13,8 @@ export interface SortableConfig {
   listenToLongPress: boolean;
   longPressWait: number;
 
+  leftMouseButtonOnly: boolean,
+
   disableTouchEventsWhileActive: boolean;
   disableEventsOnItemWhileActive: boolean;
 
@@ -51,6 +53,8 @@ export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
   listenToLongPress: true,
   longPressWait: 0.5,
 
+  leftMouseButtonOnly: true,
+
   disableTouchEventsWhileActive: true,
   disableEventsOnItemWhileActive: true,
 
@@ -62,7 +66,7 @@ export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
   childIsItem: element => true,
 
   prepareGroup: group => {
-    group.style.position = 'relatiev';
+    group.style.position = 'relative';
   },
   prepareItems: item => {
     item.style.touchAction = 'none';
@@ -76,7 +80,6 @@ export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
       boxSizing: 'border-box',
       width: `${item.offsetWidth}px`,
       height: `${item.offsetHeight}px`,
-      backgroundColor: 'black',
     });
     DOMStyle.copyStyleFrom(
       item,

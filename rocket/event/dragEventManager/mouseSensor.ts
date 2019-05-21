@@ -38,10 +38,18 @@ export class MouseSensor {
   }
 
   public eventHandlerMouseDown = (event: Event): void => {
-    this.isDown = true;
-    this.dispatch(
-      this.composeData('down', <MouseEvent>event)
-    );
+    if (
+      this.manager.config.leftMouseButtonOnly === false
+      || (
+        this.manager.config.leftMouseButtonOnly === true
+        && (<MouseEvent>event).button === 0
+      )
+    ) {
+      this.isDown = true;
+      this.dispatch(
+        this.composeData('down', <MouseEvent>event)
+      );
+    }
   }
 
   public eventHandlerMouseMove = (event: Event): void => {

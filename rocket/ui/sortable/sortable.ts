@@ -1,5 +1,6 @@
 import {
   DOMPoint,
+  DOMTraverse,
   Point,
   PointHelper,
 } from '../../rocket';
@@ -16,7 +17,6 @@ import {
 import {
   EventManager,
 } from './eventManager';
-import { DOMTraverse } from '../../dom/DOMTraverse';
 
 export class Sortable {
 

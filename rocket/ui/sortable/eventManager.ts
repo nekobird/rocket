@@ -23,8 +23,9 @@ export class EventManager {
       enableLongPress: (config.activateOnLongPress || config.listenToLongPress),
       longPressWait: config.longPressWait,
 
-      condition: this.eventCondition,
+      leftMouseButtonOnly: config.leftMouseButtonOnly,
 
+      condition: this.eventCondition,
       onDown: this.handleOnDown,
       onLongPress: this.handleOnLongPress,
       onDrag: this.handleOnDrag,
