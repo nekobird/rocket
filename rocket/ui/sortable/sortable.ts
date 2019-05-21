@@ -1,6 +1,5 @@
 import {
   DOMPoint,
-  DOMTraverse,
   Point,
   PointHelper,
   ViewportModel,
