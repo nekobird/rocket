@@ -16,6 +16,7 @@ import {
 import {
   EventManager,
 } from './eventManager';
+import { DOMTraverse } from '../../dom/DOMTraverse';
 
 export class Sortable {
 
@@ -221,9 +222,9 @@ export class Sortable {
       this.activeIdentifier = undefined;
       this.activeItemPointOffset = undefined;
 
-      this.config.onComplete(this);
-
       this.enableEventsOnDeactivate();
+
+      this.config.onComplete(this);
     }
   }
 }

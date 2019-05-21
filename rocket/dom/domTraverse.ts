@@ -228,6 +228,21 @@ export class DOMTraverse {
     return deleteCount;
   }
 
+  public static findNextSibling(element: HTMLElement, identifierFn: IdentifierFn): HTMLElement | false {
+    let nextSibling: HTMLElement | null = element;
+    while (nextSibling !== null) {
+      if (
+        element !== null
+        && identifierFn(element) === true
+      ) {
+        return element;
+      } else {
+        nextSibling = <HTMLElement | null>element.nextElementSibling;
+      }
+    }
+    return false;
+  }
+
   public static removeChild(element: HTMLElement, identifierFn: IdentifierFn): number {
     let deleteCount: number = 0;
 
