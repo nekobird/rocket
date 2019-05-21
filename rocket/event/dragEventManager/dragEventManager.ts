@@ -15,6 +15,9 @@ import {
 } from './dragEvent';
 
 export interface DragEventManagerConfig {
+  enableDownRepeater: boolean;
+  downRepeaterDelay: number;
+
   enableLongPress: boolean;
   longPressWait: number; // In seconds.
 
@@ -22,6 +25,7 @@ export interface DragEventManagerConfig {
 
   parent: HTMLElement | Window;
 
+  onDownRepeat: (event: DragEvent, manager: DragEventManager) => void;
   onLongPress: (event: DragEvent, manager: DragEventManager) => void;
   condition: (event: DragEvent, manager: DragEventManager) => boolean;
   onDown: (event: DragEvent, manager: DragEventManager) => void;
@@ -31,12 +35,16 @@ export interface DragEventManagerConfig {
 }
 
 export const DRAG_EVENT_MANAGER_DEFAULT_CONFIG: DragEventManagerConfig = {
+  enableDownRepeater: false,
+  downRepeaterDelay: 1 / 60,
+
   enableLongPress: false,
   longPressWait: 2,
   parent: window,
 
   leftMouseButtonOnly: true,
 
+  onDownRepeat: (event, manager) => {},
   onLongPress: (event, manager) => {},
   condition: (event, manager) => true,
   onDown: (event, manager) => {},

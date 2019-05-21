@@ -18,6 +18,8 @@ export interface SortableConfig {
   disableTouchEventsWhileActive: boolean;
   disableEventsOnItemWhileActive: boolean;
 
+  autoScroll: boolean;
+
   groupSelector: string;
   group?: HTMLElement;
 
@@ -57,6 +59,8 @@ export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
 
   disableTouchEventsWhileActive: true,
   disableEventsOnItemWhileActive: true,
+
+  autoScroll: false,
 
   groupSelector: '.sortableContainer',
   group: undefined,

@@ -10,6 +10,8 @@ import {
 
 export class DragEvent {
 
+  public downIntervalID?: number;
+
   public identifier: Identifier = '';
 
   public previousEvent?: EventName;
@@ -116,7 +118,13 @@ export class DragEvent {
     this.condition = config.condition(this, this.manager)
     if (this.condition === true) {
       this.manager.config.onDown(this, this.manager);
-    
+
+      if (config.enableDownRepeater === true) {
+        this.downIntervalID = setInterval(
+          () => config.onDownRepeat(this, this.manager),
+          config.downRepeaterDelay * 1000
+        );
+      }
 
       if (this.manager.config.enableLongPress === true) {
         this.longPressTimeout = setTimeout(
@@ -142,6 +150,7 @@ export class DragEvent {
 
   public onUp(data: SensorData) {
     if (this.isActive === true) {
+      this.clearDownRepeater();
       this.clearLongPress();
 
       this.isActive = false;
@@ -156,6 +165,7 @@ export class DragEvent {
 
   public onCancel(data: SensorData) {
     if (this.isActive === true) {
+      this.clearDownRepeater();
       this.clearLongPress();
 
       this.isCancelled = true;
@@ -173,6 +183,10 @@ export class DragEvent {
   public onLongPress(data: SensorData) {
     this.isLongPress = true;
     this.manager.config.onLongPress(this, this.manager);
+  }
+
+  public clearDownRepeater() {
+    clearInterval(this.downIntervalID);
   }
 
   public clearLongPress() {

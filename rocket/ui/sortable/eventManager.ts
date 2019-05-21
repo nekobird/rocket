@@ -20,12 +20,16 @@ export class EventManager {
     const { config } = this.sortable;
 
     this.dragEventManager = new DragEventManager({
+      enableDownRepeater: true,
+      downRepeaterDelay: 1 / 60,
+
       enableLongPress: (config.activateOnLongPress || config.listenToLongPress),
       longPressWait: config.longPressWait,
 
       leftMouseButtonOnly: config.leftMouseButtonOnly,
 
       condition: this.eventCondition,
+      onDownRepeat: this.handleOnActive,
       onDown: this.handleOnDown,
       onLongPress: this.handleOnLongPress,
       onDrag: this.handleOnDrag,
@@ -143,5 +147,17 @@ export class EventManager {
     ) {
       this.sortable.deactivate();
     }
+  }
+
+  private handleOnActive = (event, manager) => {
+    const { config, isActive, activeIdentifier } = this.sortable;
+
+    if (
+      isActive === true
+      && activeIdentifier === event.identifier.toString()
+      && config.autoScroll === true
+    ) {
+      this.sortable.scrollCheck();
+    } 
   }
 }

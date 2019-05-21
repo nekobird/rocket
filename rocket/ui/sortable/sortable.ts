@@ -3,6 +3,7 @@ import {
   DOMTraverse,
   Point,
   PointHelper,
+  ViewportModel,
 } from '../../rocket';
 
 import {
@@ -147,7 +148,7 @@ export class Sortable {
         this.activeItem,
         PointHelper.newPoint(
           downData.clientX,
-          downData.clientY
+          downData.clientY,
         )
       );
     }
@@ -206,15 +207,22 @@ export class Sortable {
           );
         },
       );
+
       if (typeof closestChild === 'object') {
         const topPoints = DOMPoint.getElementTopPoints(this.activeItem);
         if (DOMPoint.elementCenterIsAbovePoints(closestChild, topPoints) === true) {
-          this.groupElement.insertBefore(<HTMLElement>this.dummy, closestChild);
+          this.groupElement.insertBefore(
+            <HTMLElement>this.dummy,
+            closestChild
+          );
         }
 
         const bottomPoints = DOMPoint.getElementBottomPoints(this.activeItem);
         if (DOMPoint.elementCenterIsBelowPoints(closestChild, bottomPoints) === true) {
-          this.groupElement.insertBefore(<HTMLElement>this.dummy, closestChild.nextElementSibling);
+          this.groupElement.insertBefore(
+            <HTMLElement>this.dummy,
+            closestChild.nextElementSibling
+          );
         }
       }
     }
@@ -226,7 +234,6 @@ export class Sortable {
       && typeof this.activeItem === 'object'
       && this.groupElement !== false
     ) {
-
       this.config.deactivateItem(this.activeItem, this);
       this.config.unpopItem(this.activeItem, this.groupElement, this);
 
@@ -240,6 +247,10 @@ export class Sortable {
       this.isActive = false;
       this.hasMoved = false;
 
+      if (this.groupElement.contains(<HTMLElement>this.dummy) === true) {
+        this.groupElement.removeChild(<HTMLElement>this.dummy);
+      }
+
       this.activeItem = undefined;
       this.dummy = undefined;
       this.activeIdentifier = undefined;
@@ -248,6 +259,23 @@ export class Sortable {
       this.enableEventsOnDeactivate();
 
       this.config.onComplete(this);
+    }
+  }
+
+  public scrollCheck() {
+    // TODO: Fix flickering issues onScrollUp.
+    if (
+      this.isActive === true
+      && typeof this.activeItem !== 'undefined'
+      && this.config.autoScroll === true
+    ) {
+      const bottomPoint = DOMPoint.getElementBottomPoints(this.activeItem)[0].y;
+      const topPoint = DOMPoint.getElementTopPoints(this.activeItem)[0].y;
+      if (bottomPoint >= ViewportModel.height) {
+        window.scrollBy(0, 5);
+      } else if (topPoint <= 0) {
+        window.scrollBy(0, -5);
+      }
     }
   }
 }
