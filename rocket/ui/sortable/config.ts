@@ -58,7 +58,7 @@ export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
   leftMouseButtonOnly: true,
 
   disableTouchEventsWhileActive: true,
-  disableEventsOnItemWhileActive: true,
+  disableEventsOnItemWhileActive: false,
 
   autoScroll: false,
 
