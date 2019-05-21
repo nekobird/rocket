@@ -166,20 +166,20 @@ export class Sortable {
     if (
       this.isActive === true
       && typeof this.activeItem === 'object'
-      && typeof this.itemManager.group === 'object'
+      && this.groupElement !== false
     ) {
       if (this.hasMoved === false) {
         this.prepareDummy();
 
-        this.itemManager.group.insertBefore(
+        this.groupElement.insertBefore(
           <HTMLElement>this.dummy,
           this.activeItem
         );
-        this.config.popItem(this.activeItem, this.itemManager.group, this);
+        this.config.popItem(this.activeItem, this.groupElement, this);
         this.hasMoved = true;
       }
       const pointer = { x, y };
-      const groupPointerOffset = DOMPoint.getElementOffsetFromPoint(this.itemManager.group, pointer);
+      const groupPointerOffset = DOMPoint.getElementOffsetFromPoint(this.groupElement, pointer);
       const to = PointHelper.subtract(
         groupPointerOffset,
         <Point>this.activeItemPointOffset
@@ -192,24 +192,29 @@ export class Sortable {
   public prepareAndInsertDummy() {
     if (
       typeof this.activeItem === 'object'
-      && typeof this.itemManager.group === 'object'
+      && this.groupElement !== false
+      && this.itemElements !== false
     ) {
       const corners = DOMPoint.getElementCornerPoints(this.activeItem);
-      const element = DOMPoint.getClosestChildFromPoints(this.itemManager.group, corners, item => {
-        return (
-          item !== this.activeItem &&
-          item.classList.contains('sortableItem') === true
-        );
-      });
-      if (typeof element === 'object') {
+      const closestChild = DOMPoint.getClosestChildFromPoints(
+        this.groupElement,
+        corners,
+        item => {
+          return (
+            item !== this.activeItem
+            && (<HTMLElement[]>this.itemElements).indexOf(item) !== -1
+          );
+        },
+      );
+      if (typeof closestChild === 'object') {
         const topPoints = DOMPoint.getElementTopPoints(this.activeItem);
-        if (DOMPoint.elementCenterIsAbovePoints(element, topPoints) === true) {
-          this.itemManager.group.insertBefore(<HTMLElement>this.dummy, element);
+        if (DOMPoint.elementCenterIsAbovePoints(closestChild, topPoints) === true) {
+          this.groupElement.insertBefore(<HTMLElement>this.dummy, closestChild);
         }
 
         const bottomPoints = DOMPoint.getElementBottomPoints(this.activeItem);
-        if (DOMPoint.elementCenterIsBelowPoints(element, bottomPoints) === true) {
-          this.itemManager.group.insertBefore(<HTMLElement>this.dummy, element.nextElementSibling);
+        if (DOMPoint.elementCenterIsBelowPoints(closestChild, bottomPoints) === true) {
+          this.groupElement.insertBefore(<HTMLElement>this.dummy, closestChild.nextElementSibling);
         }
       }
     }
@@ -219,15 +224,15 @@ export class Sortable {
     if (
       this.isActive === true
       && typeof this.activeItem === 'object'
-      && typeof this.itemManager.group === 'object'
+      && this.groupElement !== false
     ) {
 
       this.config.deactivateItem(this.activeItem, this);
-      this.config.unpopItem(this.activeItem, this.itemManager.group, this);
+      this.config.unpopItem(this.activeItem, this.groupElement, this);
 
-      this.itemManager.group.replaceChild(
+      this.groupElement.replaceChild(
         this.activeItem,
-        <HTMLElement>this.dummy
+        <HTMLElement>this.dummy,
       );
 
       this.enableActiveItemEventsOnDeactivate();
