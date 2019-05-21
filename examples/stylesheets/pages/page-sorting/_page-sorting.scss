@@ -1,3 +1,5 @@
+// Test this on Tim's iPhone and Android.
+
 .page-sorting {
   padding: space('large');
 
@@ -16,28 +18,28 @@
     user-select: none !important;
     z-index: 1;
 
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    -webkit-app-region: no-drag;
-    -webkit-touch-callout: none;
-    -webkit-user-drag: none;
-    -webkit-user-select: none;
-    -webkit-user-select: none;
-    user-select: none;
-    touch-action: none;
+    // -khtml-user-select: none;
+    // -moz-user-select: none;
+    // -o-user-select: none;
+    // -webkit-app-region: no-drag;
+    // -webkit-touch-callout: none;
+    // -webkit-user-drag: none;
+    // -webkit-user-select: none;
+    // -webkit-user-select: none;
+    // user-select: none;
+    // touch-action: none;
 
-    img {
-      -khtml-user-select: none;
-      -moz-user-select: none;
-      -o-user-select: none;
-      -webkit-app-region: no-drag;  
-      -webkit-touch-callout: none;
-      -webkit-user-drag: none;
-      -webkit-user-select: none;
-      -webkit-user-select: none;
-      user-select: none;
-    }
+    // img {
+    //   -khtml-user-select: none;
+    //   -moz-user-select: none;
+    //   -o-user-select: none;
+    //   -webkit-app-region: no-drag;  
+    //   -webkit-touch-callout: none;
+    //   -webkit-user-drag: none;
+    //   -webkit-user-select: none;
+    //   -webkit-user-select: none;
+    //   user-select: none;
+    // }
 
     &:last-child {
       margin-bottom: 0;
