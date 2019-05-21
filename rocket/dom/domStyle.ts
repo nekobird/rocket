@@ -2,16 +2,54 @@ export interface StyleList {
   [key: string]: string | number;
 }
 
+export interface StyleValue {
+  [key: string]: string;
+}
+
 export class DOMStyle {
   public static applyStyle(element: HTMLElement, styles: StyleList) {
     Object.keys(styles).forEach(key => {
-      const value: string = (typeof styles[key] === 'number') ? styles[key].toString() : <string>styles[key];
+      const value = (typeof styles[key] === 'number') ? styles[key].toString() : <string>styles[key];
       element.style[key] = value;
     });
   }
 
-  public static clearStyle(element: HTMLElement) {
+  public static copyStyleFrom(from: HTMLElement, propertyNames: string | string[], ...to: HTMLElement[]): void {
+    if (typeof propertyNames === 'string') {
+      propertyNames = [propertyNames];
+    }
+    const style = window.getComputedStyle(from);
+    propertyNames.forEach(property => {
+      to.forEach(element => element.style[property] = style[property])
+    });
+  }
+
+  public static removeStyles(element: HTMLElement, propertyNames: string | string[]) {
+    if (typeof propertyNames === 'string') {
+      propertyNames = [propertyNames];
+    }
+    propertyNames.forEach(propertyName => {
+      element.style.removeProperty(propertyName);
+    });
+  }
+
+  public static clearStyles(element: HTMLElement) {
     element.removeAttribute('style');
+  }
+
+  public static getStyleValues(element: HTMLElement, propertyNames: string | string[]): StyleValue {
+    if (typeof propertyNames === 'string') {
+      propertyNames = [propertyNames]
+    }
+
+    const style = window.getComputedStyle(element);
+    const result = {};
+
+    propertyNames.forEach(propertyName => {
+      result[propertyName] = style[propertyName];
+    });
+
+    return result;
   }
 
   public static getStyleValue(element: HTMLElement, propertyName: string, isNumber: boolean = false): string | number {
@@ -44,7 +82,7 @@ export class DOMStyle {
 
     let { borderLeftWidth, borderRightWidth } = style;
 
-    const left  = borderLeftWidth  === null? 0 : parseFloat(borderLeftWidth);
+    const left = borderLeftWidth  === null? 0 : parseFloat(borderLeftWidth);
     const right = borderRightWidth === null? 0 : parseFloat(borderRightWidth);
 
     return left + right;
@@ -55,7 +93,7 @@ export class DOMStyle {
 
     let { paddingLeft, paddingRight } = style;
 
-    const left  = paddingLeft  === null? 0 : parseFloat(paddingLeft);
+    const left = paddingLeft  === null? 0 : parseFloat(paddingLeft);
     const right = paddingRight === null? 0 : parseFloat(paddingRight);
 
     return left + right;
@@ -66,7 +104,7 @@ export class DOMStyle {
 
     const { borderTopWidth, borderBottomWidth } = style;
 
-    const top    = borderTopWidth    === null? 0 : parseFloat(borderTopWidth);
+    const top = borderTopWidth === null? 0 : parseFloat(borderTopWidth);
     const bottom = borderBottomWidth === null? 0 : parseFloat(borderBottomWidth);
 
     return top + bottom;
@@ -77,7 +115,7 @@ export class DOMStyle {
 
     const { paddingTop, paddingBottom } = style;
 
-    const top    = paddingTop    === null? 0 : parseFloat(paddingTop);
+    const top = paddingTop === null? 0 : parseFloat(paddingTop);
     const bottom = paddingBottom === null? 0 : parseFloat(paddingBottom);
 
     return top + bottom;

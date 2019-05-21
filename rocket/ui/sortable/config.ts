@@ -16,12 +16,14 @@ export interface SortableConfig {
   disableTouchEventsWhileActive: boolean;
   disableEventsOnItemWhileActive: boolean;
 
-  containerSelector: string;
-  container?: HTMLElement;
+  groupSelector: string;
+  group?: HTMLElement;
 
   itemsSelector: string;
   items?: HTMLElement[];
+  childIsItem: (child: HTMLElement) => boolean;
 
+  prepareGroup: (group: HTMLElement) => void;
   prepareItems: (item: HTMLElement) => void;
 
   createDummyFromItem: (item: HTMLElement, context: Sortable) => HTMLElement;
@@ -30,8 +32,8 @@ export interface SortableConfig {
   activateItem: (item: HTMLElement, context: Sortable) => void;
   deactivateItem: (item: HTMLElement, context: Sortable) => void;
 
-  popItem: (item: HTMLElement, context: Sortable) => void;
-  unpopItem: (item: HTMLElement, context: Sortable) => void;
+  popItem: (item: HTMLElement, group: HTMLElement, context: Sortable) => void;
+  unpopItem: (item: HTMLElement, group: HTMLElement, context: Sortable) => void;
 
   moveItem: (item: HTMLElement, to: Point, context: Sortable) => void;
 
@@ -44,7 +46,7 @@ export interface SortableConfig {
   onLongPress: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void;
 }
 
-export const SORTABLE_CONFIG: SortableConfig = {
+export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
   activateOnLongPress: false,
   listenToLongPress: true,
   longPressWait: 0.5,
@@ -52,53 +54,62 @@ export const SORTABLE_CONFIG: SortableConfig = {
   disableTouchEventsWhileActive: true,
   disableEventsOnItemWhileActive: true,
 
-  containerSelector: '.sortableContainer',
-  container: undefined,
+  groupSelector: '.sortableContainer',
+  group: undefined,
 
   itemsSelector: '.sortableItem',
   items: undefined,
+  childIsItem: element => true,
 
+  prepareGroup: group => {
+    group.style.position = 'relatiev';
+  },
   prepareItems: item => {
     item.style.touchAction = 'none';
     item.style.userSelect = 'none';
   },
 
   createDummyFromItem: item => document.createElement('DIV'),
-
   setDummyElementPropertiesFromItem: (dummy, item) => {
-    dummy.classList.add('sortableItem', 'sortableItem--dummy');
     DOMStyle.applyStyle(dummy, {
+      position: 'relative',
+      boxSizing: 'border-box',
       width: `${item.offsetWidth}px`,
       height: `${item.offsetHeight}px`,
-      boxSizing: 'border-box',
-      position: 'relative',
-      zIndex: 0,
+      backgroundColor: 'black',
     });
+    DOMStyle.copyStyleFrom(
+      item,
+      ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'],
+      dummy
+    );
   },
 
   activateItem: item => {
     item.classList.add('sortableItem--active');
   },
-  deactivateItem: item => {
-    item.classList.remove('sortableItem--active');
-  },
-
-  popItem: item => {
-    const width: number = item.offsetWidth;
-    const height: number = item.offsetHeight;
-    DOMStyle.applyStyle(item, {
-      position: 'absolute',
-      left: 0,
-      top: 0,
-      width : `${width}px`,
-      height: `${height}px`,
-    });
-  },
-  unpopItem: item => DOMStyle.clearStyle(item),
-
   moveItem: (item, { x, y }) => {
     item.style.transform = `translateX(${x}px) translateY(${y}px)`;
   },
+  deactivateItem: item => {
+    item.classList.remove('sortableItem--active');
+  },
+  popItem: (item, group) => {
+    group.style.position = 'relative';
+
+    const width = item.offsetWidth;
+    const height = item.offsetHeight;
+
+    DOMStyle.applyStyle(item, {
+      boxSizing: 'border-box',
+      position: 'absolute',
+      left: '0px',
+      top: '0px',
+      width: `${width}px`,
+      height: `${height}px`,
+    });
+  },
+  unpopItem: item => DOMStyle.clearStyles(item),
 
   onComplete: () => {},
   onDown: () => {},

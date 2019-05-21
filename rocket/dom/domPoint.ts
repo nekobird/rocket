@@ -1,7 +1,7 @@
 import {
+  Num,
   Point,
   PointHelper,
-  Num,
 } from '../rocket';
 
 interface IdentifierFn {
@@ -38,7 +38,7 @@ export class DOMPoint {
 
     return {
       left, top,
-      right : rect.right + scrollLeft,
+      right: rect.right + scrollLeft,
       bottom: rect.bottom + scrollTop,
       x: left,
       y: top,
@@ -89,7 +89,25 @@ export class DOMPoint {
     const { left, right, bottom } = element.getBoundingClientRect();
 
     return [
-      PointHelper.newPoint(left,  bottom),
+      PointHelper.newPoint(left, bottom),
+      PointHelper.newPoint(right, bottom),
+    ];
+  }
+
+  public static getElementLeftPoints(element: HTMLElement): Point[] {
+    const { left, top, bottom } = element.getBoundingClientRect();
+
+    return [
+      PointHelper.newPoint(left, top),
+      PointHelper.newPoint(left, bottom),
+    ];
+  }
+
+  public static getElementRightPoints(element: HTMLElement): Point[] {
+    const { right, top, bottom } = element.getBoundingClientRect();
+
+    return [
+      PointHelper.newPoint(right, top),
       PointHelper.newPoint(right, bottom),
     ];
   }
@@ -242,8 +260,4 @@ export class DOMPoint {
 
     return selectedChildren[closesDistanceIndex];
   }
-
-  // public static getClosestChildFromElement(parent: HTMLElement, item: HTMLElement, childIdentifier: IdentifierFn): HTMLElement | false {
-    
-  // }
 }
