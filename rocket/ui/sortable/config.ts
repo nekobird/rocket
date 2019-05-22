@@ -72,10 +72,7 @@ export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
   prepareGroup: group => {
     group.style.position = 'relative';
   },
-  prepareItems: item => {
-    item.style.touchAction = 'none';
-    item.style.userSelect = 'none';
-  },
+  prepareItems: item => {},
 
   createDummyFromItem: item => document.createElement('DIV'),
   setDummyElementPropertiesFromItem: (dummy, item) => {

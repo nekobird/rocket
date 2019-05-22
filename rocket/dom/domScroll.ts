@@ -20,12 +20,12 @@ export class DOMScroll {
 
   public static getScrollLeftToElementCenterFrame(element: HTMLElement): number {
     const left = this.getScrollLeftToElement(element);
-    return left + (ViewportModel.width - element.offsetWidth) / 2;
+    return left - ((ViewportModel.width - element.offsetWidth) / 2);
   }
 
   public static getScrollTopToElementCenterFrame(element: HTMLElement): number {
     const top = this.getScrollTopToElement(element);
-    return top + (ViewportModel.height - element.offsetHeight) / 2;
+    return top - ((ViewportModel.height - element.offsetHeight) / 2);
   }
 
   public static getScrollToElementCenterFrame(element: HTMLElement): ScrollTo {
