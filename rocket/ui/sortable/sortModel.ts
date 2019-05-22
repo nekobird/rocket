@@ -6,7 +6,6 @@ export interface ItemModel {
   item: HTMLElement;
   left: number;
   top: number;
-  
 }
 
 export class SortModel {

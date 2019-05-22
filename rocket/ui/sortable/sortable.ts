@@ -265,6 +265,7 @@ export class Sortable {
     // TODO: Fix flickering issues onScrollUp.
     // TODO: Check if it's already at the bottom or top.
     // TODO: Add offset support.
+    // TODO: Add: Scroll Speed to config.
     if (
       this.isActive === true
       && typeof this.activeItem !== 'undefined'
