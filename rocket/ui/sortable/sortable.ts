@@ -263,6 +263,8 @@ export class Sortable {
 
   public scrollCheck() {
     // TODO: Fix flickering issues onScrollUp.
+    // TODO: Check if it's already at the bottom or top.
+    // TODO: Add offset support.
     if (
       this.isActive === true
       && typeof this.activeItem !== 'undefined'
@@ -271,10 +273,11 @@ export class Sortable {
       const bottomPoint = DOMPoint.getElementBottomPoints(this.activeItem)[0].y;
       const topPoint = DOMPoint.getElementTopPoints(this.activeItem)[0].y;
       if (bottomPoint >= ViewportModel.height) {
-        window.scrollBy(0, 5);
+        window.scrollBy(0, 1);
       } else if (topPoint <= 0) {
-        window.scrollBy(0, -5);
+        window.scrollBy(0, -1);
       }
+      this.prepareAndInsertDummy();
     }
   }
 }

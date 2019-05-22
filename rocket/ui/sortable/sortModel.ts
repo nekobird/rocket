@@ -2,7 +2,10 @@ import {
   Sortable,
 } from './sortable';
 
-export interface Model {
+export interface ItemModel {
+  item: HTMLElement;
+  left: number;
+  top: number;
   
 }
 

@@ -2,32 +2,35 @@ import {
   TextBoxModel,
 } from '../rocket';
 
-export const _UITextArea_eventName_input: unique symbol = Symbol();
-export const _UITextArea_eventName_keydown: unique symbol = Symbol();
-export const _UITextArea_event_input: unique symbol = Symbol();
-export const _UITextArea_event_keydown: unique symbol = Symbol();
+export const _TextAreaField_eventName_input: unique symbol = Symbol();
+export const _TextAreaField_eventName_keydown: unique symbol = Symbol();
+export const _TextAreaField_event_input: unique symbol = Symbol();
+export const _TextAreaField_event_keydown: unique symbol = Symbol();
 
 export const _textBoxModel: unique symbol = Symbol();
 
-export interface UITextAreaConfig {
+export interface TextAreaFieldConfig {
   disableLineBreaks: boolean;
   disableTabs: boolean;
+
   limitNumberOfCharacters: boolean;
   removeLeadingWhitespaces: boolean;
   removeMultipleWhitespaces: boolean;
-  onBlur: (context: UITextArea) => void;
-  onFocus: (context: UITextArea) => void;
-  onInput: (context: UITextArea) => void;
-  onPaste: (context: UITextArea) => void;
-  onGrow: (height: number, context: UITextArea) => void;
+
+  onBlur: (context: TextAreaField) => void;
+  onFocus: (context: TextAreaField) => void;
+  onInput: (context: TextAreaField) => void;
+  onPaste: (context: TextAreaField) => void;
+  onGrow: (height: number, context: TextAreaField) => void;
 }
 
-const UITEXTAREA_CONFIG: UITextAreaConfig = {
+const TEXTAREAFIELD_DEFAULT_CONFIG: TextAreaFieldConfig = {
   disableLineBreaks: false,
   disableTabs: false,
   limitNumberOfCharacters: false,
   removeLeadingWhitespaces: false,
   removeMultipleWhitespaces: false,
+
   onBlur: () => {},
   onFocus: () => {},
   onInput: () => {},
@@ -35,32 +38,36 @@ const UITEXTAREA_CONFIG: UITextAreaConfig = {
   onGrow: () => {},
 };
 
-export class UITextArea {
+export class TextAreaField {
+
+  public config: TextAreaFieldConfig;
 
   public isInFocus: boolean = false;
   public lastKeyCode?: number;
 
   public element: HTMLTextAreaElement;
-  public config: UITextAreaConfig;
 
-  constructor(element: HTMLTextAreaElement, config?: Partial<UITextAreaConfig>) {
+  constructor(element: HTMLTextAreaElement, config?: Partial<TextAreaFieldConfig>) {
     this[_textBoxModel] = new TextBoxModel;
 
-    // EVENT NAMES
-    this[_UITextArea_eventName_input] = 'UITextArea_onInput';
-    this[_UITextArea_eventName_keydown] = 'UITextArea_onKeydown';
+    // @event_names
 
-    // EVENTS
-    this[_UITextArea_event_input] = new CustomEvent(
-      this[_UITextArea_eventName_input]
+    this[_TextAreaField_eventName_input] = 'TextAreaField_onInput';
+    this[_TextAreaField_eventName_keydown] = 'TextAreaField_onKeydown';
+
+    // @events
+
+    this[_TextAreaField_event_input] = new CustomEvent(
+      this[_TextAreaField_eventName_input]
     );
-    this[_UITextArea_event_keydown] = new CustomEvent(
-      this[_UITextArea_eventName_keydown]
+
+    this[_TextAreaField_event_keydown] = new CustomEvent(
+      this[_TextAreaField_eventName_keydown]
     );
 
     this.element = element;
 
-    this.config = Object.assign({}, UITEXTAREA_CONFIG);
+    this.config = Object.assign({}, TEXTAREAFIELD_DEFAULT_CONFIG);
     if (typeof config === 'object') {
       this.setConfig(config);
     }
@@ -69,20 +76,15 @@ export class UITextArea {
     return this;
   }
 
-  public setConfig(config: Partial<UITextAreaConfig>) {
+  public setConfig(config: Partial<TextAreaFieldConfig>) {
     Object.assign(this.config, config);
   }
 
-  public initialize(): UITextArea {
-    this
-      .filterInput()
-      .grow()
-      .startListening();
+  public initialize(): TextAreaField {
+    this.filterInput();
+    this.grow();
+    this.startListening();
     return this;
-  }
-
-  get value(): string {
-    return this.element.value;
   }
 
   get selectedText(): string {
@@ -91,25 +93,35 @@ export class UITextArea {
     return this.value.substring(start, end);
   }
 
+  get value(): string {
+    return this.element.value;
+  }
+
   set value(value: string) {
     this.element.value = value;
     this.processText();
   }
 
-  public grow(): UITextArea {
-    const height: number =
-      this[_textBoxModel].getTextBoxHeightFromElement(this.element);
+  public getHeight(text?: string): number {
+    if (typeof text === 'string') {
+      return this[_textBoxModel].getTextBoxHeightFromElement(this.element, text);
+    } 
+    return this[_textBoxModel].getTextBoxHeightFromElement(this.element);
+  }
+
+  public grow(): TextAreaField {
+    const height: number = this[_textBoxModel].getTextBoxHeightFromElement(this.element);
     this.element.style.height = `${height}px`;
     this.config.onGrow(height, this);
     return this;
   }
 
-  public destroy(): UITextArea {
+  public destroy(): TextAreaField {
     this.stopListening();
     return this;
   }
 
-  public filterInput(): UITextArea {
+  public filterInput(): TextAreaField {
     // Remove new lines.
     if (this.config.disableLineBreaks === true) {
       this.element.value = this.element.value.replace(/[\r\n]+/g, '');
@@ -138,7 +150,7 @@ export class UITextArea {
     return this;
   }
 
-  public insertString(string: string): UITextArea {
+  public insertString(string: string): TextAreaField {
     const start: number = this.element.selectionStart;
     const end: number = this.element.selectionEnd;
     const text: string = this.element.value;
@@ -147,42 +159,47 @@ export class UITextArea {
     return this;
   }
 
-  public processText(): UITextArea {
+  public processText(): TextAreaField {
     this.filterInput();
     this.grow();
     return this;
   }
 
-  // HANDLER
+  // @event_handler
 
   private handleBlur = () => {
     this.isInFocus = false;
+    this.config.onBlur(this);
   }
 
   private handleFocus = () => {
     this.isInFocus = true;
+    this.config.onFocus(this);
   }
 
   private handleInput = event => {
-    this.config.onInput(this);
     this.processText();
-    window.dispatchEvent(this[_UITextArea_event_input]);
+    this.config.onInput(this);
+    window.dispatchEvent(this[_TextAreaField_event_input]);
   }
 
   private handleKeydown = event => {
     const keyCode: number = event.keyCode;
+
     if (keyCode === 9) {
       this.insertString('\t');
       event.preventDefault();
     }
+
     if (
       keyCode === 13
       && this.config.disableLineBreaks === true
     ) {
       event.preventDefault();
     }
+
     this.lastKeyCode = keyCode;
-    window.dispatchEvent(this[_UITextArea_event_keydown]);
+    window.dispatchEvent(this[_TextAreaField_event_keydown]);
   }
 
   private handlePaste = event => {
@@ -190,7 +207,7 @@ export class UITextArea {
     this.processText();
   }
 
-  // LISTEN
+  // @listen
 
   private startListening() {
     this.element.addEventListener('blur', this.handleBlur);

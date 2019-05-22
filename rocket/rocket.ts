@@ -43,8 +43,7 @@ export * from './text/textBoxModel';
 
 // @ui
 export * from './ui/sortable/sortable';
-export * from './ui/uiTextArea';
-export * from './ui/uiTextField';
+export * from './ui/textAreaField';
 
 // @form
 export * from './form/inputActiveManager';
