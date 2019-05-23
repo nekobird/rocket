@@ -76,11 +76,19 @@ export class DOMPoint {
     );
   }
 
+  public static getElementDiagonalPoints(element: HTMLElement): [Point, Point] {
+    const { top, bottom, left, right } = element.getBoundingClientRect();
+    return [
+      PointHelper.newPoint(left, top),
+      PointHelper.newPoint(right, bottom),
+    ];
+  }
+
   public static getElementTopPoints(element: HTMLElement): Point[] {
     const { left, right, top } = element.getBoundingClientRect();
 
     return [
-      PointHelper.newPoint(left,  top),
+      PointHelper.newPoint(left, top),
       PointHelper.newPoint(right, top),
     ];
   }

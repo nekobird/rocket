@@ -5,5 +5,8 @@ import {
 let textareas = document.querySelectorAll('.textareafield');
 Array.from(textareas).forEach(textarea => {
   const textareafield = new TextAreaField(<HTMLTextAreaElement>textarea);
-  console.log(textareafield.getHeight('a'));
+  textareafield.config.onGrow = (height, context) => {
+    console.log(context.isOneLine);
+  }
+  
 });

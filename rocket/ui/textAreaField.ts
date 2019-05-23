@@ -102,6 +102,10 @@ export class TextAreaField {
     this.processText();
   }
 
+  get isOneLine(): boolean {
+    return (this.getHeight('') === this.getHeight());
+  }
+
   public getHeight(text?: string): number {
     if (typeof text === 'string') {
       return this[_textBoxModel].getTextBoxHeightFromElement(this.element, text);
