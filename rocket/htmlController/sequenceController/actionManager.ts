@@ -215,7 +215,7 @@ export class ActionManager {
       }
     } catch {
       await this.endAction();
-      return Promise.resolve();
+      return Promise.reject();
     }
   }
 

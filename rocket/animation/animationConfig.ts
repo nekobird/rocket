@@ -71,5 +71,5 @@ export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = {
 
   callback: () => { },
 
-  onTick  : (n, fn, data) => { }
+  onTick  : (n, fn, data) => { },
 };

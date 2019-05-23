@@ -162,9 +162,7 @@ export class ActionManager {
             this.isNested = false;
             resolve();
           })
-          .catch(() => {
-            this.isNested = false;
-          });
+          .catch(() => this.isNested = false);
       })
     } else {
       preAction = Promise.resolve();
@@ -185,7 +183,7 @@ export class ActionManager {
       }
     } catch {
       await this.endAction(callback);
-      return Promise.resolve();
+      return Promise.reject();
     }
   }
 
