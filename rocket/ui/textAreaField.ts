@@ -1,4 +1,5 @@
 import {
+  DOMStyle,
   TextBoxModel,
 } from '../rocket';
 
@@ -102,8 +103,14 @@ export class TextAreaField {
     this.processText();
   }
 
-  get isOneLine(): boolean {
+  get isSingleLine(): boolean {
     return (this.getHeight('') === this.getHeight());
+  }
+
+  get lineCount(): number {
+    const lineHeight = <number>DOMStyle.getLineHeight(this.element);
+    const offset = this.getHeight('') - lineHeight;
+    return (this.getHeight() - offset) / lineHeight;
   }
 
   public getHeight(text?: string): number {

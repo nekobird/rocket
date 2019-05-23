@@ -7,6 +7,30 @@ export interface StyleValue {
 }
 
 export class DOMStyle {
+
+  public static getLineHeight(element: HTMLElement): number {
+    const temp = document.createElement('div')
+    temp.style.padding = '0';
+    temp.style.visibility = 'none';
+    temp.textContent = 'abcd';
+    this.copyStyleFrom(
+      element,
+      ['fontSize', 'fontFamily', 'lineHeight'],
+      temp
+    );
+    let result: number;
+    if (element.parentNode !== null) {
+      element.parentNode.appendChild(temp);
+      result = temp.clientHeight;
+      element.parentNode.removeChild(temp);
+    } else {
+      document.appendChild(temp);
+      result = temp.clientHeight;
+      document.removeChild(temp);
+    }
+    return result;
+  }
+
   public static applyStyle(element: HTMLElement, styles: StyleList) {
     Object.keys(styles).forEach(key => {
       const value = (typeof styles[key] === 'number') ? styles[key].toString() : <string>styles[key];
@@ -65,16 +89,6 @@ export class DOMStyle {
 
   public static setFontSize(element: HTMLElement, fontSize: number) {
     element.style.fontSize = `${fontSize}px`;
-  }
-
-  public static getLineHeight(element: HTMLElement): number {
-    const style = window.getComputedStyle(element);
-
-    if (style.lineHeight !== null) {
-      return parseFloat(style.lineHeight);
-    }
-
-    return 0;
   }
 
   public static getHorizontalBorderWidths(element: HTMLElement) {
