@@ -67,7 +67,7 @@ export class Color {
   }
 
   get clone(): Color {
-    return Color.equals(this)
+    return Color.equals(this);
   }
 
   public set(input) {
@@ -171,184 +171,182 @@ export class Color {
   }
 
   get hslString(): string {
-    const hsl: ColorArray3 = this.hsl
-    const s = (hsl[1] * 100).toFixed(0)
-    const l = (hsl[2] * 100).toFixed(0)
-    return `hsl(${hsl[0]}, %${s}, ${l})`
+    const hsl: ColorArray3 = this.hsl;
+    const s = (hsl[1] * 100).toFixed(0);
+    const l = (hsl[2] * 100).toFixed(0);
+    return `hsl(${hsl[0]}, %${s}, ${l})`;
   }
 
   get hslaString(): string {
-    const hsl: ColorArray3 = this.hsl
-    const s = (hsl[1] * 100).toFixed(0)
-    const l = (hsl[2] * 100).toFixed(0)
-    return `hsl(${hsl[0]}, %${s}, ${l}, ${this.a})`
+    const hsl: ColorArray3 = this.hsl;
+    const s = (hsl[1] * 100).toFixed(0);
+    const l = (hsl[2] * 100).toFixed(0);
+    return `hsl(${hsl[0]}, %${s}, ${l}, ${this.a})`;
   }
 
   // Alias to this.hex
   set hexString(hex: string) {
-    this.hex = hex
+    this.hex = hex;
   }
 
   get hexString(): string {
-    return this.hex
+    return this.hex;
   }
 
   // HEX
 
   set hex(hex: string) {
-    let rgb: ColorArray3 = ConvertColor.HEXToRGB(hex)
-    this.r = rgb[0]
-    this.g = rgb[1]
-    this.b = rgb[2]
+    let rgb: ColorArray3 = ConvertColor.HEXToRGB(hex);
+    this.r = rgb[0];
+    this.g = rgb[1];
+    this.b = rgb[2];
   }
 
   get hex(): string {
-    let rgb: ColorArray3 = [this.r, this.g, this.b]
-    return ConvertColor.RGBToHEX(rgb)
+    let rgb: ColorArray3 = [this.r, this.g, this.b];
+    return ConvertColor.RGBToHEX(rgb);
   }
 
   // RGB
 
   set rgb255(rgb: ColorArray3) {
-    this.r = Num.cycle(rgb[0] / 255, 1)
-    this.g = Num.cycle(rgb[1] / 255, 1)
-    this.b = Num.cycle(rgb[2] / 255, 1)
+    this.r = Num.cycle(rgb[0] / 255, 1);
+    this.g = Num.cycle(rgb[1] / 255, 1);
+    this.b = Num.cycle(rgb[2] / 255, 1);
   }
 
   get rgb255(): ColorArray3 {
-    const rgb: ColorArray3 = [this.r, this.g, this.b]
-    return <ColorArray3>rgb.map(v => {
-      return Math.round(v * 255)
-    })
+    const rgb: ColorArray3 = [this.r, this.g, this.b];
+    return <ColorArray3>rgb.map(v => Math.round(v * 255));
   }
 
   set rgb(rgb: ColorArray3) {
-    this.r = Num.cycle(rgb[0], 1)
-    this.g = Num.cycle(rgb[1], 1)
-    this.b = Num.cycle(rgb[2], 1)
+    this.r = Num.cycle(rgb[0], 1);
+    this.g = Num.cycle(rgb[1], 1);
+    this.b = Num.cycle(rgb[2], 1);
   }
 
   get rgb(): ColorArray3 {
-    return [this.r, this.g, this.b]
+    return [this.r, this.g, this.b];
   }
 
   // RGBA
 
   set rgba255(rgba: ColorArray4) {
-    this.r = Num.cycle(rgba[0], 1)
-    this.g = Num.cycle(rgba[1], 1)
-    this.b = Num.cycle(rgba[2], 1)
-    this.a = Num.cycle(rgba[3], 1)
+    this.r = Num.cycle(rgba[0], 1);
+    this.g = Num.cycle(rgba[1], 1);
+    this.b = Num.cycle(rgba[2], 1);
+    this.a = Num.cycle(rgba[3], 1);
   }
 
   get rgba255(): ColorArray4 {
-    return [this.r, this.g, this.b, this.a]
+    return [this.r, this.g, this.b, this.a];
   }
 
   set rgba(rgba: ColorArray4) {
-    this.r = Num.cycle(rgba[0], 1)
-    this.g = Num.cycle(rgba[1], 1)
-    this.b = Num.cycle(rgba[2], 1)
-    this.a = Num.cycle(rgba[3], 1)
+    this.r = Num.cycle(rgba[0], 1);
+    this.g = Num.cycle(rgba[1], 1);
+    this.b = Num.cycle(rgba[2], 1);
+    this.a = Num.cycle(rgba[3], 1);
   }
 
   get rgba(): ColorArray4 {
-    return [this.r, this.g, this.b, this.a]
+    return [this.r, this.g, this.b, this.a];
   }
 
   // HSL
 
   set hsl(hsl: ColorArray3) {
-    const rgb: ColorArray3 = ConvertColor.HSLToRGB(hsl)
-    this.r = rgb[0]
-    this.g = rgb[1]
-    this.b = rgb[2]
+    const rgb: ColorArray3 = ConvertColor.HSLToRGB(hsl);
+    this.r = rgb[0];
+    this.g = rgb[1];
+    this.b = rgb[2];
   }
 
   get hsl(): ColorArray3 {
-    return ConvertColor.RGBToHSL([this.r, this.g, this.b])
+    return ConvertColor.RGBToHSL([this.r, this.g, this.b]);
   }
 
   // HSV and HSB
 
   set hsv(hsv: ColorArray3) {
     if (hsv.length === 3) {
-      const rgb: ColorArray3 = ConvertColor.HSVToRGB(hsv)
-      this.r = rgb[0]
-      this.g = rgb[1]
-      this.b = rgb[2]
+      const rgb: ColorArray3 = ConvertColor.HSVToRGB(hsv);
+      this.r = rgb[0];
+      this.g = rgb[1];
+      this.b = rgb[2];
     }
   }
 
   get hsv(): ColorArray3 {
-    return ConvertColor.HSVToRGB([this.r, this.g, this.b])
+    return ConvertColor.HSVToRGB([this.r, this.g, this.b]);
   }
 
   // CMYK
 
   set cmyk(cmyk: ColorArray4) {
-    const rgb: ColorArray3 = ConvertColor.CMYKToRGB(cmyk)
-    this.r = rgb[0]
-    this.g = rgb[1]
-    this.b = rgb[2]
+    const rgb: ColorArray3 = ConvertColor.CMYKToRGB(cmyk);
+    this.r = rgb[0];
+    this.g = rgb[1];
+    this.b = rgb[2];
   }
 
   get cmyk(): ColorArray4 {
-    return ConvertColor.RGBToCMYK([this.r, this.g, this.b])
+    return ConvertColor.RGBToCMYK([this.r, this.g, this.b]);
   }
 
   // RED
 
   set red255(red: number) {
-    this.r = Num.cycle(red / 255, 1)
+    this.r = Num.cycle(red / 255, 1);
   }
 
   get red255(): number {
-    return Math.round(this.r * 255)
+    return Math.round(this.r * 255);
   }
 
   set red(red: number) {
-    this.r = red
+    this.r = red;
   }
 
   get red(): number {
-    return this.r
+    return this.r;
   }
 
   // GREEN
 
   set green255(green: number) {
-    this.g = Num.cycle(green / 255, 1)
+    this.g = Num.cycle(green / 255, 1);
   }
 
   get green255(): number {
-    return Math.round(this.g * 255)
+    return Math.round(this.g * 255);
   }
 
   set green(green: number) {
-    this.g = green
+    this.g = green;
   }
 
   get green(): number {
-    return this.g
+    return this.g;
   }
 
   // BLUE
 
   set blue255(blue: number) {
-    this.b = Num.cycle(blue / 255, 1)
+    this.b = Num.cycle(blue / 255, 1);
   }
 
   get blue255(): number {
-    return Math.round(this.b * 255)
+    return Math.round(this.b * 255);
   }
 
   set blue(blue: number) {
-    this.b = blue
+    this.b = blue;
   }
 
   get blue(): number {
-    return this.b
+    return this.b;
   }
 
   // CYAN
@@ -356,16 +354,16 @@ export class Color {
   set cyan(cyan: number) {
     const cmyk: ColorArray4 = ConvertColor.RGBToCMYK(
       [this.r, this.g, this.b]
-    )
-    cmyk[0] = cyan
-    const rgb: ColorArray3 = ConvertColor.CMYKToRGB(cmyk)
-    this.r = rgb[0]
-    this.g = rgb[1]
-    this.b = rgb[2]
+    );
+    cmyk[0] = cyan;
+    const rgb: ColorArray3 = ConvertColor.CMYKToRGB(cmyk);
+    this.r = rgb[0];
+    this.g = rgb[1];
+    this.b = rgb[2];
   }
 
   get cyan(): number {
-    return ConvertColor.RGBToCMYK([this.r, this.g, this.b])[0]
+    return ConvertColor.RGBToCMYK([this.r, this.g, this.b])[0];
   }
 
   // MAGENTA
@@ -373,18 +371,18 @@ export class Color {
   set magenta(magenta: number) {
     const cmyk: ColorArray4 = ConvertColor.RGBToCMYK(
       [this.r, this.g, this.b]
-    )
-    cmyk[1] = magenta
-    const rgb: ColorArray3 = ConvertColor.CMYKToRGB(cmyk)
-    this.r = rgb[0]
-    this.g = rgb[1]
-    this.b = rgb[2]
+    );
+    cmyk[1] = magenta;
+    const rgb: ColorArray3 = ConvertColor.CMYKToRGB(cmyk);
+    this.r = rgb[0];
+    this.g = rgb[1];
+    this.b = rgb[2];
   }
 
   get magenta(): number {
     return ConvertColor.RGBToCMYK(
       [this.r, this.g, this.b]
-    )[1]
+    )[1];
   }
 
   // YELLOW
@@ -392,28 +390,28 @@ export class Color {
   set yellow(yellow: number) {
     const cmyk: ColorArray4 = ConvertColor.RGBToCMYK(
       [this.r, this.g, this.b]
-    )
-    cmyk[2] = yellow
-    const rgb: ColorArray3 = ConvertColor.CMYKToRGB(cmyk)
-    this.r = rgb[0]
-    this.g = rgb[1]
-    this.b = rgb[2]
+    );
+    cmyk[2] = yellow;
+    const rgb: ColorArray3 = ConvertColor.CMYKToRGB(cmyk);
+    this.r = rgb[0];
+    this.g = rgb[1];
+    this.b = rgb[2];
   }
 
   get yellow(): number {
     return ConvertColor.RGBToCMYK(
       [this.r, this.g, this.b]
-    )[2]
+    )[2];
   }
 
   // ALPHA
 
   set alpha(alpha: number) {
-    this.a = Num.cycle(alpha, 1)
+    this.a = Num.cycle(alpha, 1);
   }
 
   get alpha(): number {
-    return this.a
+    return this.a;
   }
 
   // HUE
@@ -421,19 +419,19 @@ export class Color {
   set hue(degrees: number) {
     const hsl: ColorArray3 = ConvertColor.RGBToHSL(
       [this.r, this.g, this.b]
-    )
-    hsl[0] = Math.abs(Math.round(Num.cycle(degrees, 359)))
-    const rgb: ColorArray3 = ConvertColor.HSLToRGB(hsl)
-    this.r = rgb[0]
-    this.g = rgb[1]
-    this.b = rgb[2]
+    );
+    hsl[0] = Math.abs(Math.round(Num.cycle(degrees, 359)));
+    const rgb: ColorArray3 = ConvertColor.HSLToRGB(hsl);
+    this.r = rgb[0];
+    this.g = rgb[1];
+    this.b = rgb[2];
   }
 
   get hue(): number {
     const hsl: ColorArray3 = ConvertColor.RGBToHSL(
       [this.r, this.g, this.b]
-    )
-    return Math.round(hsl[0])
+    );
+    return Math.round(hsl[0]);
   }
 
   // SATURATION
@@ -441,19 +439,19 @@ export class Color {
   set saturation(saturation: number) {
     const hsl: ColorArray3 = ConvertColor.RGBToHSL(
       [this.r, this.g, this.b]
-    )
-    hsl[1] = Num.cycle(saturation, 1)
-    const rgb: ColorArray3 = ConvertColor.HSLToRGB(hsl)
-    this.r = rgb[0]
-    this.g = rgb[1]
-    this.b = rgb[2]
+    );
+    hsl[1] = Num.cycle(saturation, 1);
+    const rgb: ColorArray3 = ConvertColor.HSLToRGB(hsl);
+    this.r = rgb[0];
+    this.g = rgb[1];
+    this.b = rgb[2];
   }
 
   get saturation(): number {
     const hsl: ColorArray3 = ConvertColor.RGBToHSL(
       [this.r, this.g, this.b]
-    )
-    return hsl[1]
+    );
+    return hsl[1];
   }
 
   // VALUE
@@ -461,19 +459,19 @@ export class Color {
   set value(value: number) {
     const hsv: ColorArray3 = ConvertColor.RGBToHSV(
       [this.r, this.g, this.b]
-    )
-    hsv[2] = Num.cycle(value, 1)
-    const rgb: ColorArray3 = ConvertColor.HSVToRGB(hsv)
-    this.r = rgb[0]
-    this.g = rgb[1]
-    this.b = rgb[2]
+    );
+    hsv[2] = Num.cycle(value, 1);
+    const rgb: ColorArray3 = ConvertColor.HSVToRGB(hsv);
+    this.r = rgb[0];
+    this.g = rgb[1];
+    this.b = rgb[2];
   }
 
   get value(): number {
     const hsv: ColorArray3 = ConvertColor.RGBToHSV(
       [this.r, this.g, this.b]
-    )
-    return hsv[2]
+    );
+    return hsv[2];
   }
 
   get brightness(): number {
@@ -481,71 +479,71 @@ export class Color {
       0.299 * this.r * this.r +
       0.587 * this.g * this.g +
       0.114 * this.b * this.b
-    )
+    );
   }
 
   // MODIFIER
 
   public hueRotate(increment: number): this {
-    this.hue = this.hue + increment
-    return this
+    this.hue = this.hue + increment;
+    return this;
   }
 
   public invert(): this {
-    this.r = 1 - this.r
-    this.g = 1 - this.g
-    this.b = 1 - this.b
-    return this
+    this.r = 1 - this.r;
+    this.g = 1 - this.g;
+    this.b = 1 - this.b;
+    return this;
   }
 
   // INTERPOLATION
 
   public lerp(target: Color, t: number): this {
-    this.r = Num.lerp(this.r, target.r, t)
-    this.g = Num.lerp(this.g, target.g, t)
-    this.b = Num.lerp(this.b, target.b, t)
-    this.a = Num.lerp(this.a, target.a, t)
-    return this
+    this.r = Num.lerp(this.r, target.r, t);
+    this.g = Num.lerp(this.g, target.g, t);
+    this.b = Num.lerp(this.b, target.b, t);
+    this.a = Num.lerp(this.a, target.a, t);
+    return this;
   }
 
   // STATIC
 
   static isColor(color: Color): boolean {
-    return color instanceof Color
+    return color instanceof Color;
   }
 
   static equals(color: Color): Color {
-    return new Color(color)
+    return new Color(color);
   }
 
   static triadic(color: Color): [Color, Color, Color] {
-    let color_a = color.clone.hueRotate(-120)
-    let color_c = color.clone.hueRotate(120)
-    return [color_a, color, color_c]
+    let color_a = color.clone.hueRotate(-120);
+    let color_c = color.clone.hueRotate(120);
+    return [color_a, color, color_c];
   }
 
   static complement(color: Color): Color {
-    return color.clone.hueRotate(180)
+    return color.clone.hueRotate(180);
   }
 
   static splitComplements(color: Color): [Color, Color, Color] {
-    let color_a: Color = color.clone.hueRotate(-150)
-    let color_c: Color = color.clone.hueRotate(150)
-    return [color_a, color, color_c]
+    let color_a: Color = color.clone.hueRotate(-150);
+    let color_c: Color = color.clone.hueRotate(150);
+    return [color_a, color, color_c];
   }
 
   static analogous(color: Color): [Color, Color, Color] {
-    let color_a: Color = color.clone.hueRotate(-30)
-    let color_c: Color = color.clone.hueRotate(30)
-    return [color_a, color, color_c]
+    let color_a: Color = color.clone.hueRotate(-30);
+    let color_c: Color = color.clone.hueRotate(30);
+    return [color_a, color, color_c];
   }
 
   static lerp(color_a: Color, color_b: Color, t: number): Color {
-    let color: Color = Color.equals(color_a)
-    color.r = Num.lerp(color_a.r, color_b.r, t)
-    color.g = Num.lerp(color_a.g, color_b.g, t)
-    color.b = Num.lerp(color_a.b, color_b.b, t)
-    color.a = Num.lerp(color_a.a, color_b.a, t)
-    return color
+    let color: Color = Color.equals(color_a);
+    color.r = Num.lerp(color_a.r, color_b.r, t);
+    color.g = Num.lerp(color_a.g, color_b.g, t);
+    color.b = Num.lerp(color_a.b, color_b.b, t);
+    color.a = Num.lerp(color_a.a, color_b.a, t);
+    return color;
   }
 }
