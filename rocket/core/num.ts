@@ -30,7 +30,10 @@ export class Num {
     const max = Math.max(range[0], range[1]);
     const min = Math.min(range[0], range[1]);
 
-    if (max === 0 && min === 0) {
+    if (
+      max === 0
+      && min === 0
+    ) {
       return 0;
     }
 
@@ -152,6 +155,9 @@ export class Num {
     if (typeof range === 'number') {
       range = [0, range];
     }
-    return (number >= range[0] && number <= range[1]);
+    return (
+      number >= range[0]
+      && number <= range[1]
+    );
   }
 }

@@ -44,9 +44,7 @@ export * from './text/textBoxModel';
 // @ui
 export * from './ui/sortable/sortable';
 export * from './ui/textAreaField';
-
-// @form
-export * from './form/inputActiveManager';
+export * from './ui/inputActiveManager';
 
 // @controller
 export * from './htmlController/monoController/monoController';

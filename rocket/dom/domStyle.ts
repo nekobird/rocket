@@ -137,13 +137,11 @@ export class DOMStyle {
 
   public static getAnimationDuration(element: HTMLElement): number {
     const computedStyle = getComputedStyle(element);
-
     return parseFloat(computedStyle.animationDuration) * 1000;
   }
 
   public static getTransitionDuration(element: HTMLElement): number {
     const computedStyle = getComputedStyle(element);
-
     return parseFloat(computedStyle.transitionDuration) * 1000;
   }
 }
