@@ -13,7 +13,7 @@ export class DOMStyle {
     temp.style.padding = '0';
     temp.style.visibility = 'none';
     temp.textContent = 'abcd';
-    this.copyStyleFrom(
+    this.copyStylesFrom(
       element,
       ['fontSize', 'fontFamily', 'lineHeight'],
       temp
@@ -38,7 +38,7 @@ export class DOMStyle {
     });
   }
 
-  public static copyStyleFrom(from: HTMLElement, propertyNames: string | string[], ...to: HTMLElement[]): void {
+  public static copyStylesFrom(from: HTMLElement, propertyNames: string | string[], ...to: HTMLElement[]): void {
     if (typeof propertyNames === 'string') {
       propertyNames = [propertyNames];
     }

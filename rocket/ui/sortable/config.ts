@@ -82,7 +82,7 @@ export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
       width: `${item.offsetWidth}px`,
       height: `${item.offsetHeight}px`,
     });
-    DOMStyle.copyStyleFrom(
+    DOMStyle.copyStylesFrom(
       item,
       ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'],
       dummy

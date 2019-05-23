@@ -11,10 +11,10 @@ export class DOMHelper {
 
   public static getTextFromElement(element: HTMLElement): string {
     if (
-      element instanceof HTMLTextAreaElement ||
-      element instanceof HTMLInputElement ||
-      element.nodeName === 'INPUT' ||
-      element.nodeName === 'TEXTAREA'
+      element instanceof HTMLTextAreaElement
+      || element instanceof HTMLInputElement
+      || element.nodeName === 'INPUT'
+      || element.nodeName === 'TEXTAREA'
     ) {
       return (<HTMLTextAreaElement | HTMLInputElement>element).value;
     }

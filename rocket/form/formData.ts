@@ -1,10 +1,10 @@
 export interface FormDataConfig {
-  trimValue?: boolean,
-  inputSelector?: string,
+  trimValue: boolean,
+  inputSelector: string,
 
-  useCustomInput?: boolean,
-  customInputSelector?: string,
-  getValueFromCustomInput?: Function,
+  useCustomInput: boolean,
+  customInputSelector: string,
+  getValueFromCustomInput: Function,
 }
 
 export const FORMDATA_DEFAULT_CONFIG: FormDataConfig = {
@@ -14,10 +14,7 @@ export const FORMDATA_DEFAULT_CONFIG: FormDataConfig = {
   
   useCustomInput: false,
   customInputSelector: '',
-  getValueFromCustomInput: (customInput: HTMLElement) => {
-    return ''
-  },
-
+  getValueFromCustomInput: (customInput: HTMLElement) => '',
 }
 
 // Type Data = field: string

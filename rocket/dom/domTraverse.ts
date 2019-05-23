@@ -10,7 +10,7 @@ export type DOMTraverseResult = HTMLElement | HTMLElement[] | false;
 
 export class DOMTraverse {
 
-  // ANCESTOR
+  // @ancestor
 
   // Find ancestor element that match identifierFn.
   //
@@ -36,7 +36,10 @@ export class DOMTraverse {
 
     let currentEl: HTMLElement | null = element;
 
-    while (currentEl === null || currentEl.nodeName !== 'HTML') {
+    while (
+      currentEl === null
+      || currentEl.nodeName !== 'HTML'
+    ) {
       currentEl = <HTMLElement>currentEl;
 
       if (identifierFn(currentEl) === true) {
@@ -94,7 +97,7 @@ export class DOMTraverse {
     return this.findAncestor(parent, identifierFn, false);
   }
 
-  // DESCENDANT
+  // @descendant
 
   public static findDescendant(element: HTMLElement, identifierFn: IdentifierFn, getAll: boolean = true): DOMTraverseResult {
     const results: HTMLElement[] = [];
@@ -170,7 +173,7 @@ export class DOMTraverse {
     return this.findDescendant(element, identifierFn, false);
   }
 
-  // SIBLING
+  // @siblings
 
   public static getSiblings(element: HTMLElement, isExclusive:boolean = false): HTMLElement[] | false {
     if (element.parentElement !== null) {
@@ -209,7 +212,7 @@ export class DOMTraverse {
     return this.findSibling(element, identifierFn, getAll);
   }
 
-  // Remove
+  // @remove
 
   public static removeElement(element: HTMLElement): void {
     if (element.parentNode !== null) {
