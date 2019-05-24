@@ -3,13 +3,6 @@ import {
   TextBoxModel,
 } from '../rocket';
 
-export const _TextAreaField_eventName_input: unique symbol = Symbol();
-export const _TextAreaField_eventName_keydown: unique symbol = Symbol();
-export const _TextAreaField_event_input: unique symbol = Symbol();
-export const _TextAreaField_event_keydown: unique symbol = Symbol();
-
-export const _textBoxModel: unique symbol = Symbol();
-
 export interface TextAreaFieldConfig {
   disableLineBreaks: boolean;
   disableTabs: boolean;
@@ -40,31 +33,16 @@ const TEXTAREAFIELD_DEFAULT_CONFIG: TextAreaFieldConfig = {
 };
 
 export class TextAreaField {
+  public textBoxModel: TextBoxModel;
 
   public config: TextAreaFieldConfig;
-
-  public isInFocus: boolean = false;
-  public lastKeyCode?: number;
-
   public element: HTMLTextAreaElement;
+  
+  public isInFocus: boolean = false;
+  public previousKeyCode?: number;
 
   constructor(element: HTMLTextAreaElement, config?: Partial<TextAreaFieldConfig>) {
-    this[_textBoxModel] = new TextBoxModel;
-
-    // @event_names
-
-    this[_TextAreaField_eventName_input] = 'TextAreaField_onInput';
-    this[_TextAreaField_eventName_keydown] = 'TextAreaField_onKeydown';
-
-    // @events
-
-    this[_TextAreaField_event_input] = new CustomEvent(
-      this[_TextAreaField_eventName_input]
-    );
-
-    this[_TextAreaField_event_keydown] = new CustomEvent(
-      this[_TextAreaField_eventName_keydown]
-    );
+    this.textBoxModel = new TextBoxModel;
 
     this.element = element;
 
@@ -72,19 +50,16 @@ export class TextAreaField {
     if (typeof config === 'object') {
       this.setConfig(config);
     }
-
-    this.initialize();
-    return this;
   }
 
   public setConfig(config: Partial<TextAreaFieldConfig>) {
     Object.assign(this.config, config);
   }
 
-  public initialize(): TextAreaField {
+  public initialize(): this {
     this.filterInput();
     this.grow();
-    this.startListening();
+    this.listen();
     return this;
   }
 
@@ -100,7 +75,16 @@ export class TextAreaField {
 
   set value(value: string) {
     this.element.value = value;
-    this.processText();
+    this.filterAndGrow();
+  }
+
+  public insertText(string: string): this {
+    const start: number = this.element.selectionStart;
+    const end: number = this.element.selectionEnd;
+    const text: string = this.element.value;
+    this.element.value = text.substring(0, start) + string + text.substring(end);
+    this.element.selectionEnd = start + string.length;
+    return this;
   }
 
   get isSingleLine(): boolean {
@@ -115,24 +99,26 @@ export class TextAreaField {
 
   public getHeight(text?: string): number {
     if (typeof text === 'string') {
-      return this[_textBoxModel].getTextBoxHeightFromElement(this.element, text);
+      return this.textBoxModel.getTextBoxHeightFromElement(this.element, text);
     } 
-    return this[_textBoxModel].getTextBoxHeightFromElement(this.element);
+    return this.textBoxModel.getTextBoxHeightFromElement(this.element);
   }
 
-  public grow(): TextAreaField {
-    const height: number = this[_textBoxModel].getTextBoxHeightFromElement(this.element);
+  // TODO Rename This...
+  public filterAndGrow(): this {
+    this.filterInput();
+    this.grow();
+    return this;
+  }
+  
+  public grow(): this {
+    const height: number = this.textBoxModel.getTextBoxHeightFromElement(this.element);
     this.element.style.height = `${height}px`;
     this.config.onGrow(height, this);
     return this;
   }
 
-  public destroy(): TextAreaField {
-    this.stopListening();
-    return this;
-  }
-
-  public filterInput(): TextAreaField {
+  public filterInput(): this {
     // Remove new lines.
     if (this.config.disableLineBreaks === true) {
       this.element.value = this.element.value.replace(/[\r\n]+/g, '');
@@ -161,21 +147,6 @@ export class TextAreaField {
     return this;
   }
 
-  public insertString(string: string): TextAreaField {
-    const start: number = this.element.selectionStart;
-    const end: number = this.element.selectionEnd;
-    const text: string = this.element.value;
-    this.element.value = text.substring(0, start) + string + text.substring(end);
-    this.element.selectionEnd = start + string.length;
-    return this;
-  }
-
-  public processText(): TextAreaField {
-    this.filterInput();
-    this.grow();
-    return this;
-  }
-
   // @event_handler
 
   private handleBlur = () => {
@@ -189,16 +160,15 @@ export class TextAreaField {
   }
 
   private handleInput = event => {
-    this.processText();
+    this.filterAndGrow();
     this.config.onInput(this);
-    window.dispatchEvent(this[_TextAreaField_event_input]);
   }
 
   private handleKeydown = event => {
-    const keyCode: number = event.keyCode;
+    const keyCode = event.keyCode;
 
     if (keyCode === 9) {
-      this.insertString('\t');
+      this.insertText('\t');
       event.preventDefault();
     }
 
@@ -209,18 +179,17 @@ export class TextAreaField {
       event.preventDefault();
     }
 
-    this.lastKeyCode = keyCode;
-    window.dispatchEvent(this[_TextAreaField_event_keydown]);
+    this.previousKeyCode = keyCode;
   }
 
   private handlePaste = event => {
     this.config.onPaste(this);
-    this.processText();
+    this.filterAndGrow();
   }
 
   // @listen
 
-  private startListening() {
+  private listen() {
     this.element.addEventListener('blur', this.handleBlur);
     this.element.addEventListener('focus', this.handleFocus);
     this.element.addEventListener('input', this.handleInput);
@@ -230,7 +199,7 @@ export class TextAreaField {
     return this;
   }
 
-  private stopListening() {
+  private stopListen() {
     this.element.removeEventListener('blur', this.handleBlur);
     this.element.removeEventListener('focus', this.handleFocus);
     this.element.removeEventListener('input', this.handleInput);

@@ -13,25 +13,24 @@ export interface ScrollLocation {
 export interface ScrollTrigger {
   condition: (scrollLocation: ScrollLocation, trigger: ScrollTrigger, manager: ScrollTriggerManager) => boolean;
   action: (scrollLocation: ScrollLocation, trigger: ScrollTrigger, manager: ScrollTriggerManager) => Promise<void>;
-  isActive: boolean;
-  isTriggered: boolean;
-  previousTriggeredTime: number;
   enabled: boolean;
   removeOnceTriggered: boolean;
+  previousTriggeredTime: number;
+  isActive: boolean;
+  isTriggered: boolean;
 }
 
 export const DEFAULT_SCROLL_TRIGGER: ScrollTrigger = {
   condition: () => true,
   action: () => Promise.resolve(),
-  isActive: false,
-  isTriggered: false,
-  previousTriggeredTime: undefined,
   enabled: true,
   removeOnceTriggered: false,
+  previousTriggeredTime: undefined,
+  isActive: false,
+  isTriggered: false,  
 }
 
 export class ScrollTriggerManager {
-
   public triggerOnlyOnResizeEnd: boolean = false;
   public resizeDebounceDelay: number = 0.5;
   private resizeDebounce: Function;
@@ -103,9 +102,7 @@ export class ScrollTriggerManager {
               trigger.previousTriggeredTime = Date.now();
               trigger.isActive = false;
             })
-            .catch(() => {
-              trigger.isActive = false;
-            });
+            .catch(() => trigger.isActive = false);
         }
       });
     }
