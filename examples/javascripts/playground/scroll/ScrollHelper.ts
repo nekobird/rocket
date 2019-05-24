@@ -1,5 +1,5 @@
 import {
-  DOMHelper,
+  DOMUtil,
 } from '../../rocket'
 
 export interface ScrollToData {

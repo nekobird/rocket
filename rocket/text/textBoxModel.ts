@@ -1,5 +1,5 @@
 import {
-  DOMHelper,
+  DOMUtil,
   DOMStyle,
 } from '../rocket';
 
@@ -87,7 +87,7 @@ export class TextBoxModel {
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
-      text = DOMHelper.getTextFromElement(element);
+      text = DOMUtil.getTextFromElement(element);
     }
 
     this.modelText = text;
@@ -130,7 +130,7 @@ export class TextBoxModel {
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
-      text = DOMHelper.getTextFromElement(element);
+      text = DOMUtil.getTextFromElement(element);
     }
 
     this.modelText = text;

@@ -2,7 +2,7 @@ import {
   Size,
 } from '../rocket';
 
-export class DOMHelper {
+export class DOMUtil {
 
   public static onImageLoad(src: string): Promise<void> {
     return new Promise((resolve, reject) => {

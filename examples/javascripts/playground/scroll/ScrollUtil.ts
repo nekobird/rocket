@@ -1,7 +1,7 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
 // https://www.w3schools.com/jsref/event_onscroll.asp
 import {
-  DOMHelper,
+  DOMUtil,
 } from '../../rocket'
 
 export class ScrollUtil {
@@ -55,10 +55,10 @@ export class ScrollUtil {
   public static scrollTopToCenterOf(parent: HTMLElement | Window, target: HTMLElement): void {
     let offset
     if (parent === window) {
-      offset = DOMHelper.getOffset(target)
+      offset = DOMUtil.getOffset(target)
       ScrollUtil.scrollTopBy(parent, offset.y)
     } else {
-      offset = DOMHelper.getOffsetFrom(target, <HTMLElement>parent)
+      offset = DOMUtil.getOffsetFrom(target, <HTMLElement>parent)
     }
   }
 }

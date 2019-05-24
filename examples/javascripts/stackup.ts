@@ -1,6 +1,6 @@
 import {
   Animation,
-  DOMHelper,
+  DOMUtil,
   Easings,
   Num,
   StackUp,
@@ -53,7 +53,7 @@ stackup.initialize()
 const containerElement = document.querySelector('.container')
 
 const appendItem = (src: string) => {
-  return DOMHelper
+  return DOMUtil
     .onImageLoad(src)
     .then(() => {
       const img: HTMLImageElement = <HTMLImageElement>document.createElement('IMG')
@@ -72,7 +72,7 @@ const appendItems = () => {
   const items = []
   const promises = []
   images.forEach(url => {
-    const promise = DOMHelper
+    const promise = DOMUtil
       .onImageLoad(url)
       .then(() => {
         const img: HTMLImageElement = <HTMLImageElement>document.createElement('IMG')

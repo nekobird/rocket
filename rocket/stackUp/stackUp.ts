@@ -1,5 +1,5 @@
 import {
-  DOMPoint,
+  DOMOffset,
   DOMStyle,
   Util,
   ViewportModel,
@@ -182,7 +182,7 @@ export class StackUp {
 
   private appendItem(item: HTMLElement): this {
     if (typeof this.config.container === 'object') {
-      const { x: left, y: top } = DOMPoint.getElementOffsetFrom(item, this.config.container);
+      const { x: left, y: top } = DOMOffset.getElementOffsetFrom(item, this.config.container);
       this.items.push(
         {
           item,

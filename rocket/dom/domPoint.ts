@@ -9,42 +9,6 @@ interface IdentifierFn {
 }
 
 export class DOMPoint {
-
-  public static getElementOffsetFrom(target: HTMLElement, from: HTMLElement): Point {
-    const targetRect: DOMRect | ClientRect = target.getBoundingClientRect();
-    const fromRect: DOMRect | ClientRect = from.getBoundingClientRect();
-
-    const left: number = Num.getNumberLineDistance(targetRect.left, fromRect.left);
-    const top: number = Num.getNumberLineDistance(targetRect.top , fromRect.top);
-
-    return {
-      left, top,
-      right: Num.getNumberLineDistance(targetRect.right, fromRect.right),
-      bottom: Num.getNumberLineDistance(targetRect.bottom, fromRect.bottom),
-      x: left,
-      y: top,
-    };
-  }
-
-  // Get element offset relative to the document.
-  public static getElementOffsetFromDocument(element: HTMLElement): Point {
-    const rect = element.getBoundingClientRect();
-
-    const scrollLeft: number = window.pageXOffset || document.documentElement.scrollLeft;
-    const scrollTop: number = window.pageYOffset || document.documentElement.scrollTop;
-
-    const left: number = rect.left + scrollLeft;
-    const top: number = rect.top + scrollTop;
-
-    return {
-      left, top,
-      right: rect.right + scrollLeft,
-      bottom: rect.bottom + scrollTop,
-      x: left,
-      y: top,
-    };
-  }
-
   // Point is relative to viewport. (clientX, clientY)
   // Offset is relative to Point.
   public static getElementOffsetFromPoint(element: HTMLElement, { x, y }: Point): Point {
@@ -84,7 +48,6 @@ export class DOMPoint {
 
   public static getElementTopPoints(element: HTMLElement): Point[] {
     const { left, right, top } = element.getBoundingClientRect();
-
     return [
       PointHelper.newPoint(left, top),
       PointHelper.newPoint(right, top),
@@ -93,7 +56,6 @@ export class DOMPoint {
 
   public static getElementBottomPoints(element: HTMLElement): Point[] {
     const { left, right, bottom } = element.getBoundingClientRect();
-
     return [
       PointHelper.newPoint(left, bottom),
       PointHelper.newPoint(right, bottom),
@@ -102,7 +64,6 @@ export class DOMPoint {
 
   public static getElementLeftPoints(element: HTMLElement): Point[] {
     const { left, top, bottom } = element.getBoundingClientRect();
-
     return [
       PointHelper.newPoint(left, top),
       PointHelper.newPoint(left, bottom),
@@ -111,7 +72,6 @@ export class DOMPoint {
 
   public static getElementRightPoints(element: HTMLElement): Point[] {
     const { right, top, bottom } = element.getBoundingClientRect();
-
     return [
       PointHelper.newPoint(right, top),
       PointHelper.newPoint(right, bottom),
@@ -120,7 +80,6 @@ export class DOMPoint {
 
   public static elementIsAbovePoints(element: HTMLElement, points: Point | Point[], offset: number = 0) {
     const { bottom } = element.getBoundingClientRect();
-
     if (Array.isArray(points) === true) {
       let isAbovePoints: boolean = true;
 
@@ -132,13 +91,11 @@ export class DOMPoint {
 
       return isAbovePoints;
     }
-
     return bottom + offset < (<Point>points).y;
   }
 
   public static elementIsBelowPoints(element: HTMLElement, points: Point | Point[], offset: number = 0) {
     const { top } = element.getBoundingClientRect();
-
     if (Array.isArray(points) === true) {
       let isBelowPoints: boolean = true;
 
@@ -147,10 +104,8 @@ export class DOMPoint {
           isBelowPoints = false;
         }
       });
-
       return isBelowPoints;
     }
-
     return top + offset > (<Point>points).y;
   }
 

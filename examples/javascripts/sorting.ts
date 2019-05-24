@@ -12,4 +12,5 @@ const sortable = new Sortable({
 
 sortable.config.items = items;
 sortable.config.group = container;
+
 sortable.initialize();

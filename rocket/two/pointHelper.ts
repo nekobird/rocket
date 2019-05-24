@@ -34,7 +34,7 @@ export class PointHelper {
       point.y = y;
       return point;
     }
-    return {x, y};
+    return { x, y };
   }
 
   public static absolute(point: Point, mutate: boolean = false): Point {
@@ -45,7 +45,7 @@ export class PointHelper {
       point.y = y;
       return point;
     }
-    return {x, y};
+    return { x, y };
   }
 
   public static add(point1: Point, point2: Point, mutate: boolean = false): Point {
@@ -56,7 +56,7 @@ export class PointHelper {
       point1.y = y;
       return point1;
     }
-    return {x, y};
+    return { x, y };
   }
 
   public static subtract(point: Point, by: Point, mutate: boolean = false): Point {
@@ -67,7 +67,7 @@ export class PointHelper {
       point.y = y;
       return point;
     }
-    return {x, y};
+    return { x, y };
   }
 
   public static multiply(point: Point, by: Point, mutate: boolean = false): Point {
@@ -78,7 +78,7 @@ export class PointHelper {
       point.y = y;
       return point;
     }
-    return {x, y};
+    return { x, y };
   }
 
   public divide(point: Point, by: Point, mutate: boolean = false): Point | undefined {
@@ -92,10 +92,10 @@ export class PointHelper {
       point.y = y;
       return point;
     }
-    return {x, y};
+    return { x, y };
   }
 
-  public static magnitude({x, y}: Point): number {
+  public static magnitude({ x, y }: Point): number {
     return Num.hypotenuse(x, y);
   }
 
@@ -109,7 +109,7 @@ export class PointHelper {
       point.y = y;
       return point;
     }
-    return {x, y};
+    return { x, y };
   }
 
   public static getDistanceTo(from: Point, to: Point): number {
@@ -124,7 +124,7 @@ export class PointHelper {
     y /= 2;
     x += b.x;
     y += b.y;
-    return {x, y};
+    return { x, y };
   }
 
   public static lerp(from: Point, to: Point, time: number, mutate: boolean = false): Point {
@@ -135,18 +135,21 @@ export class PointHelper {
       from.y = y;
       return from;
     }
-    return {x, y};
+    return { x, y };
   }
 
   // @zero
 
-  public static zero(point: Point, mutate: boolean = false): Point {
-    if (mutate === true) {
+  public static zero(point?: Point, mutate: boolean = false): Point {
+    if (
+      typeof point !== 'undefined'
+      && mutate === true
+    ) {
       point.x = 0;
       point.y = 0;
       return point;
     }
-    return {x: 0, y: 0};
+    return { x: 0, y: 0 };
   }
 
   public static isZero(point: Point): boolean {
