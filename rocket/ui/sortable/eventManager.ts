@@ -10,16 +10,17 @@ import {
 export class EventManager {
   public sortable: Sortable;
 
-  public dragEventManager?: DragEventManager;
+  public dragEventManager: DragEventManager;
 
   constructor(sortable: Sortable) {
+    this.dragEventManager = new DragEventManager();
     this.sortable = sortable;
   }
 
   public initialize() {
     const { config } = this.sortable;
 
-    this.dragEventManager = new DragEventManager({
+    this.dragEventManager.setConfig({
       enableDownRepeater: true,
       downRepeaterDelay: 1 / 60,
 
@@ -36,6 +37,7 @@ export class EventManager {
       onUp: this.handleOnUp,
       onCancel: this.handleOnCancel,
     });
+
     this.dragEventManager.initialize();
   }
 

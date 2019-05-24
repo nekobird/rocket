@@ -4,10 +4,9 @@ import {
   Vector2,
 } from '../rocket';
 
-
 export class PointHelper {
   public static newPoint(x: number, y: number): Point {
-    return {x, y};
+    return { x, y };
   }
 
   public static toVector2({ x, y }: Point): Vector2 {

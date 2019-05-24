@@ -35,6 +35,7 @@ export class EventManager {
   }
 
   public initialize() {
+    this.dragEventManager.initialize()
     if (this.controller.config.listenToKeydown === true) {
       window.addEventListener('keydown', this.eventHandlerKeydown);
     }
