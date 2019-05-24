@@ -189,10 +189,12 @@ export class ActionManager {
   public endAction(callback?: Function): Promise<void> {
     if (this.isNested === false) {
       return new Promise(resolve => {
-        setTimeout(() => {
-          this.isRunning = false;
-          resolve();
-        }, this.controller.config.cooldown);
+        setTimeout(
+          () => {
+            this.isRunning = false;
+            resolve();
+          }, this.controller.config.cooldown
+        );
       });
     }
 

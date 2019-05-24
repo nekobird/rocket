@@ -43,7 +43,7 @@ export class Util {
 
       timeout = setTimeout(
         () => fn.apply(this, arguments),
-        1000 * delay
+        delay * 1000
       );
     };
   }

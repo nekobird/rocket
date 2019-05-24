@@ -21,7 +21,6 @@ export class DOMPoint {
 
   public static getElementCornerPoints(element: HTMLElement): Point[] {
     const { top, bottom, left, right } = element.getBoundingClientRect();
-
     return [
       PointHelper.newPoint(left, top),
       PointHelper.newPoint(left, bottom),
@@ -111,7 +110,6 @@ export class DOMPoint {
 
   public static elementCenterIsAbovePoints(element: HTMLElement, points: Point | Point[], offset: number = 0) {
     const centerPoint = this.getElementCenterPoint(element);
-
     if (Array.isArray(points) === true) {
       let isAbovePoint: boolean = true;
 
@@ -129,7 +127,6 @@ export class DOMPoint {
 
   public static elementCenterIsBelowPoints(element: HTMLElement, points: Point | Point[], offset: number = 0) {
     const centerPoint = this.getElementCenterPoint(element);
-
     if (Array.isArray(points) === true) {
       let isBelowPoint: boolean = true;
 
