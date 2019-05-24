@@ -30,7 +30,7 @@ export interface PolyConfig {
 
   isTrigger: (element: HTMLElement) => boolean;
   mapTriggerToAction: (trigger: HTMLElement) => PolyTriggerMap | false;
-  getIdFromItem: (item: HTMLElement) => string | false;
+  getItemId: (item: HTMLElement) => string | false;
 
   conditionActivate: ConditionHook<PolyAction, PolyController>;
   conditionDeactivate: ConditionHook<PolyAction, PolyController>;
@@ -103,7 +103,7 @@ export const DEFAULT_CONFIG: PolyConfig = {
     }
     return false;
   },
-  getIdFromItem: item => typeof item.dataset.id === 'string' ? item.dataset.id : false,
+  getItemId: item => typeof item.dataset.id === 'string' ? item.dataset.id : false,
 
   conditionActivate: (action, context) => true,
   conditionDeactivate: (action, context) => true,

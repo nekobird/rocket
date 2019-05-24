@@ -54,7 +54,7 @@ export class PolyController {
   public isItemActive(id: string): boolean {
     let isActive: boolean = false;
     this.itemManager.activeItems.forEach(item => {
-      if (this.config.getIdFromItem(item) === id) {
+      if (this.config.getItemId(item) === id) {
         isActive = true;
       }
     });

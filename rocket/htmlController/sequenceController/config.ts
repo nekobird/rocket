@@ -29,7 +29,7 @@ export interface SequenceConfig {
 
   isTrigger: (element: HTMLElement) => boolean;
   mapTriggerToAction: (trigger: HTMLElement) => SequenceTriggerMap | false;
-  getIdFromItem: (item: HTMLElement) => string | false;
+  getItemId: (item: HTMLElement) => string | false;
 
   conditionPrevious: ConditionHook<SequenceAction, SequenceController>;
   conditionNext: ConditionHook<SequenceAction, SequenceController>;
@@ -79,7 +79,7 @@ export const DEFAULT_CONFIG: SequenceConfig = {
     }
     return false;
   },
-  getIdFromItem: item => typeof item.dataset.id === 'string' ? item.dataset.id : false,
+  getItemId: item => typeof item.dataset.id === 'string' ? item.dataset.id : false,
 
   conditionPrevious: (action, context) => true,
   conditionNext: (action, context) => true,

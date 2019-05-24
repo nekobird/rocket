@@ -88,7 +88,7 @@ export class ItemManager {
   public itemIsValid(item: HTMLElement): boolean {
     const { config } = this.controller;
     let valid: boolean = true;
-    if (typeof config.getIdFromItem(item) !== 'string') {
+    if (typeof config.getItemId(item) !== 'string') {
       valid = false;
     }
     return valid;
@@ -98,7 +98,7 @@ export class ItemManager {
     const { config } = this.controller;
     let matchedItems: HTMLElement[] = [];
     this.items.forEach(item => {
-      if (config.getIdFromItem(item) === id) {
+      if (config.getItemId(item) === id) {
         matchedItems.push(item);
       }
     });

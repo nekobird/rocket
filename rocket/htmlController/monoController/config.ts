@@ -30,7 +30,7 @@ export interface MonoConfig {
 
   isTrigger: (element: HTMLElement) => boolean;
   mapTriggerToAction: (trigger: HTMLElement) => MonoTriggerMap | false;
-  getIdFromItem: (item: HTMLElement) => string | false;
+  getItemId: (item: HTMLElement) => string | false;
 
   conditionActivate: ConditionHook<MonoAction, MonoController>;
   conditionDeactivate: ConditionHook<MonoAction, MonoController>;
@@ -82,7 +82,7 @@ export const DEFAULT_CONFIG: MonoConfig = {
     }
     return false;
   },
-  getIdFromItem: item => typeof item.dataset.id === 'string' ? item.dataset.id : false,
+  getItemId: item => typeof item.dataset.id === 'string' ? item.dataset.id : false,
 
   conditionActivate: (action, context) => true,
   conditionDeactivate: (action, context) => true,

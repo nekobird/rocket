@@ -100,7 +100,7 @@ export class ActionManager {
         if (config.itemIsActive(item, this.controller) === false) {
           const subAction: PolyAction = Object.assign({
             targetItem: item,
-            targetId: config.getIdFromItem(item),
+            targetId: config.getItemId(item),
           }, action);
           actionPromises.push(this.handleActionActivate(subAction));
         }
@@ -123,7 +123,7 @@ export class ActionManager {
         if (config.itemIsActive(item, this.controller) === true) {
           const subAction: PolyAction = Object.assign({
             targetItem: item,
-            targetId: config.getIdFromItem(item),
+            targetId: config.getItemId(item),
           }, action);
           actionPromises.push(
             this.handleActionDeactivate(subAction)
@@ -147,7 +147,7 @@ export class ActionManager {
       itemManager.items.forEach(item => {
         const subAction: PolyAction = Object.assign({
           targetItem: item,
-          targetId: config.getIdFromItem(item),
+          targetId: config.getItemId(item),
         }, action);
         actionPromises.push(
           this.handleActionToggle(subAction)

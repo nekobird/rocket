@@ -77,7 +77,7 @@ export class ItemManager {
     if (this.items.length > 0) {
       this.items.forEach(item => {
         if (config.itemIsActive(item, this.controller) === true) {
-          const id = config.getIdFromItem(item);
+          const id = config.getItemId(item);
           if (this.isActive === true) {
             config.deactivateItem(item, this.controller);
           } else if (id !== false) {
@@ -95,7 +95,7 @@ export class ItemManager {
   public itemIsValid(item: HTMLElement): boolean {
     const { config } = this.controller;
     let valid: boolean = true;
-    if (config.getIdFromItem(item) === false) {
+    if (config.getItemId(item) === false) {
       valid = false;
     }
     return valid;
@@ -106,7 +106,7 @@ export class ItemManager {
     const matchedItems: HTMLElement[] = [];
 
     this.items.forEach(item => {
-      if (config.getIdFromItem(item) === id) {
+      if (config.getItemId(item) === id) {
         matchedItems.push(item);
       }
     });
@@ -124,7 +124,7 @@ export class ItemManager {
     if (this.itemIsValid(item) === true) {
       config.activateItem(item, this.controller);
       this.activeItem = item;
-      this.activeItemId = <string>config.getIdFromItem(item);
+      this.activeItemId = <string>config.getItemId(item);
       this.isActive = true;
     }
   }
