@@ -2,7 +2,7 @@
 // https://www.w3schools.com/jsref/event_onscroll.asp
 import {
   DOMUtil,
-} from '../../rocket'
+} from '../../../rocket'
 
 export class ScrollUtil {
 

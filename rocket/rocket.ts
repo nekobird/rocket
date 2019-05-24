@@ -39,8 +39,8 @@ export * from './canvas/CanvasLayerManager';
 export * from './color/convertColor';
 export * from './color/color';
 
-// @event
-export * from './event/dragEventManager/dragEventManager';
+// @dragEventManager
+export * from './dragEventManager/dragEventManager';
 
 // @text
 export * from './text/textBoxModel';
