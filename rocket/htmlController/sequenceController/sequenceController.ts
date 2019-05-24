@@ -52,8 +52,9 @@ export class SequenceController {
   }
 
   public isItemActive(id: string): boolean {
-    if (typeof this.itemManager.activeItem == 'object') {
-      return this.itemManager.activeItem.dataset.id === id;
+    const { activeItem } = this.itemManager;
+    if (typeof activeItem == 'object') {
+      return this.config.getIdFromItem(activeItem) === id;
     }
     return false;
   }

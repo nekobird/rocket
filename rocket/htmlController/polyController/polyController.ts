@@ -93,7 +93,7 @@ export class PolyController {
 
   public async activateAll(): Promise<void> {
     try {
-      const action = this.actionManager.composeAction('activateAll');
+      const action = this.actionManager.composeAction('activate-all');
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {
@@ -103,7 +103,7 @@ export class PolyController {
 
   public async deactivateAll(): Promise<void> {
     try {
-      const action = this.actionManager.composeAction('deactivateAll');
+      const action = this.actionManager.composeAction('deactivate-all');
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {
@@ -113,7 +113,7 @@ export class PolyController {
 
   public async toggleAll(): Promise<void> {
     try {
-      const action = this.actionManager.composeAction('toggleAll');
+      const action = this.actionManager.composeAction('toggle-all');
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {

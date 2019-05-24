@@ -3,13 +3,33 @@ import {
   SequenceController,
 } from '../../rocket/rocket';
 
+const items: HTMLElement[] = Array.from(document.querySelectorAll('.js-item'))
+
 const controller = new SequenceController();
 controller.setConfig({
-  itemsSelector: '.item',
+  items,
 
-  classNameJsPrevious: 'js-item-previous',
-  classNameJsNext: 'js-item-next',
-  classNameJsJump: 'js-item-jump',
+  isTrigger: element => element.classList.contains('js-item-trigger'),
+  mapTriggerToAction: trigger => {
+    if (trigger.dataset.action === 'previous') {
+      return {
+        trigger,
+        action: 'previous',
+      };
+    } else if (trigger.dataset.action === 'next') {
+      return {
+        trigger,
+        action: 'next',
+      };
+    } else if (trigger.dataset.action === 'jump') {
+      return {
+        trigger,
+        action: 'jump',
+        payload: trigger.dataset.target,
+      };
+    }
+    return false;
+  },
 
   itemIsActive: item => item.classList.contains('item--active'),
   activateItem: item => item.classList.add('item--active'),

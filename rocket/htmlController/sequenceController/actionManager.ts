@@ -4,6 +4,7 @@ import {
 
 import {
   SequenceConfig,
+  SequenceTriggerMap,
 } from './config';
 
 import {
@@ -135,11 +136,9 @@ export class ActionManager {
     return action;
   }
 
-  public composeActionFromEvent(actionName: SequenceActionName, trigger: HTMLElement): SequenceAction {
-    const action = this.createAction(actionName);
-    if (typeof trigger.dataset.target === 'string') {
-      action.nextItemId = trigger.dataset.target;
-    }
+  public composeActionFromTrigger(trigger: HTMLElement, triggerMap: SequenceTriggerMap): SequenceAction {
+    const action = this.createAction(triggerMap.action);
+    action.nextItemId = triggerMap.payload;
     action.trigger = trigger;
     return action;
   }

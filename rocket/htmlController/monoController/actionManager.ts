@@ -23,7 +23,6 @@ export interface MonoAction {
 }
 
 export class ActionManager {
-
   private controller: MonoController;
 
   public isRunning: boolean = false;
@@ -37,7 +36,6 @@ export class ActionManager {
 
   private async activate(action: MonoAction): Promise<void> {
     const { config, itemManager } = this.controller;
-
     if (
       itemManager.isActive === false
       && itemManager.activeItem !== action.nextItem
@@ -48,17 +46,14 @@ export class ActionManager {
       config.afterActivate(action, this.controller);
       return Promise.resolve();
     }
-
     return Promise.reject();
   }
 
   private async deactivate(action: MonoAction): Promise<void> {
     const { config, itemManager } = this.controller;
-
     if (itemManager.isActive === false) {
       return Promise.resolve();
     }
-
     if (
       action.name === 'deactivate'
       && typeof action.targetId === 'string'
@@ -66,7 +61,6 @@ export class ActionManager {
     ) {
       return Promise.resolve();
     }
-
     if (config.conditionDeactivate(action, this.controller) === true) {
       await config.beforeDeactivate(action, this.controller);
       itemManager.deactivate();
@@ -79,7 +73,6 @@ export class ActionManager {
 
   private async completeAction(action: MonoAction): Promise<void> {
     const { itemManager } = this.controller;
-
     if (
       action.name === 'activate'
       && itemManager.activeItemId !== action.targetId

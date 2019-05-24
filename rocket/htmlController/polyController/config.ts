@@ -88,17 +88,17 @@ export const DEFAULT_CONFIG: PolyConfig = {
     } else if (trigger.dataset.action === 'activate-all') {
       return {
         trigger,
-        action: 'activateAll',
+        action: 'activate-all',
       };
     } else if (trigger.dataset.action === 'deactivate-all') {
       return {
         trigger,
-        action: 'deactivateAll',
+        action: 'deactivate-all',
       };
     } else if (trigger.dataset.action === 'toggle-all') {
       return {
         trigger,
-        action: 'toggleAll',
+        action: 'toggle-all',
       };
     }
     return false;

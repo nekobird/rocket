@@ -8,14 +8,12 @@ import {
 } from './SequenceController';
 
 import {
-  SEQUENCE_ACTION_CONFIG_MAP,
+  SequenceTriggerMap,
 } from './config';
 
 import {
   SequenceActionName,
-  SequenceAction,
 } from './actionManager';
-
 
 export interface ActionConfigMapEntry {
   configProperty: string;
@@ -43,40 +41,34 @@ export class EventManager {
   }
 
   private onUp = event => {
-    if (typeof event.downData === 'object') {
-      const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData);
-      if (targetDownElement !== false) {
-        SEQUENCE_ACTION_CONFIG_MAP.forEach(entry => {
-          const className: string = this.controller.config[entry.configProperty];
-          const trigger = DOMTraverse.findAncestorWithClass(targetDownElement, className, false);
-          if (trigger !== false) {
-            this.eventHub(<HTMLElement>trigger, entry.action);
-          }
-        });
-      }
+    if (typeof event.downData !== 'object') {
+      return;
     }
+    const targetDownElement = event.getTargetElementFromData(event.downData);
+    if (targetDownElement === false) {
+      return;
+    }
+    const { config } = this.controller;
+    const trigger = DOMTraverse.findAncestor(targetDownElement, config.isTrigger, false);
+    if (trigger === false) {
+      return;
+    }
+    const triggerMap = config.mapTriggerToAction(<HTMLElement>trigger);
+    if (triggerMap === false) {
+      return;
+    }
+    this.eventHub(<HTMLElement>trigger, triggerMap);
   }
 
-  private eventHub(trigger: HTMLElement, actionName: SequenceActionName): this {
-    const { actionManager } = this.controller;
+  private eventHub(trigger: HTMLElement, triggerMap: SequenceTriggerMap): this {
+    const { actionManager, isReady } = this.controller;
     if (
-      this.controller.isReady === true
+      isReady === true
       && actionManager.isRunning === false
     ) {
       actionManager.isRunning = true;
-      if (
-        typeof trigger !== 'undefined'
-        && trigger instanceof HTMLElement
-      ) {
-        const action: SequenceAction = actionManager.composeActionFromEvent(actionName, trigger);
-        if (typeof action === 'object') {
-          actionManager.actionHub(action);
-        } else {
-          actionManager.endAction();
-        }
-      } else {
-        actionManager.endAction();
-      }
+      const action = actionManager.composeActionFromTrigger(trigger, triggerMap);
+      actionManager.actionHub(action);
     }
     return this;
   }

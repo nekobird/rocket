@@ -1,6 +1,6 @@
 import {
-  PolyTriggerMap,
   PolyConfig,
+  PolyTriggerMap,
 } from './config';
 
 import {
@@ -8,8 +8,8 @@ import {
 } from './polyController';
 
 export type PolyActionName =
-  'activate' | 'activateAll' | 'deactivate' |
-  'deactivateAll' | 'toggle' | 'toggleAll';
+  'activate' | 'activate-all' | 'deactivate' |
+  'deactivate-all' | 'toggle' | 'toggle-all';
 
 export interface PolyAction {
   name: PolyActionName;
@@ -171,13 +171,13 @@ export class ActionManager {
       case 'toggle': {
         return this.handleActionToggle(action);
       }
-      case 'activateAll': {
+      case 'activate-all': {
         return this.handleActionActivateAll(action);
       }
-      case 'deactivateAll': {
+      case 'deactivate-all': {
         return this.handleActionDeactivateAll(action);
       }
-      case 'toggleAll': {
+      case 'toggle-all': {
         return this.handleActionToggleAll(action);
       }
     }

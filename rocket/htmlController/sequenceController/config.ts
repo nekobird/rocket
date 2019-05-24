@@ -6,28 +6,30 @@ import {
 } from '../index';
 
 import {
-  ActionConfigMapEntries,
-} from './eventManager';
-
-import {
   SequenceController,
 } from './sequenceController';
 
 import {
   SequenceAction,
+  SequenceActionName,
 } from './actionManager';
+
+export interface SequenceTriggerMap {
+  trigger: HTMLElement;
+  action: SequenceActionName;
+  payload?: string;
+}
 
 export interface SequenceConfig {
   cooldown: number;
 
   listenToKeydown: boolean;
 
-  itemsSelector?: string;
   items?: HTMLElement[] | NodeListOf<HTMLElement>;
 
-  classNameJsPrevious: string;
-  classNameJsNext: string;
-  classNameJsJump: string;
+  isTrigger: (element: HTMLElement) => boolean;
+  mapTriggerToAction: (trigger: HTMLElement) => SequenceTriggerMap | false;
+  getIdFromItem: (item: HTMLElement) => string | false;
 
   conditionPrevious: ConditionHook<SequenceAction, SequenceController>;
   conditionNext: ConditionHook<SequenceAction, SequenceController>;
@@ -54,12 +56,30 @@ export const DEFAULT_CONFIG: SequenceConfig = {
 
   listenToKeydown: false,
 
-  itemsSelector: '.js-sequence-item',
   items: undefined,
 
-  classNameJsPrevious: 'js-sequence-item-previous',
-  classNameJsNext: 'js-sequence-item-next',
-  classNameJsJump: 'js-sequence-item-jump',
+  isTrigger: element => element.classList.contains('js-sequence-item-trigger'),
+  mapTriggerToAction: trigger => {
+    if (trigger.dataset.action === 'previous') {
+      return {
+        trigger,
+        action: 'previous',
+      };
+    } else if (trigger.dataset.action === 'next') {
+      return {
+        trigger,
+        action: 'next',
+      };
+    } else if (trigger.dataset.action === 'jump') {
+      return {
+        trigger,
+        action: 'jump',
+        payload: trigger.dataset.target,
+      };
+    }
+    return false;
+  },
+  getIdFromItem: item => typeof item.dataset.id === 'string' ? item.dataset.id : false,
 
   conditionPrevious: (action, context) => true,
   conditionNext: (action, context) => true,
@@ -80,18 +100,3 @@ export const DEFAULT_CONFIG: SequenceConfig = {
 
   onKeydown: (event, context) => {},
 };
-
-export const SEQUENCE_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
-  {
-    configProperty: 'classNameJsPrevious',
-    action: 'previous',
-  },
-  {
-    configProperty: 'classNameJsNext',
-    action: 'next',
-  },
-  {
-    configProperty: 'classNameJsJump',
-    action: 'jump',
-  },
-];
