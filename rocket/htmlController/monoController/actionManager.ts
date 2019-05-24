@@ -102,7 +102,6 @@ export class ActionManager {
 
   public createAction(actionName: MonoActionName): MonoAction {
     const { itemManager } = this.controller;
-
     return {
       name: actionName,
 

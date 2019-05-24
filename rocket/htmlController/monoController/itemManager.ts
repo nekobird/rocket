@@ -15,11 +15,10 @@ export class ItemManager {
 
   constructor(controller: MonoController) {
     this.controller = controller;
-
     this.items = [];
   }
 
-  // Initialize
+  // @initialize
 
   public initialize(): this {
     this.loadItemsFromConfig();
@@ -30,7 +29,6 @@ export class ItemManager {
 
   public loadItemsFromConfig(): this {
     const { config } = this.controller;
-
     if (
       typeof config.itemsSelector === 'string'
       && typeof config.items === 'undefined'
@@ -79,18 +77,19 @@ export class ItemManager {
   }
 
   public filterItems(): this {
-    this.items = this.items.filter(item => this.itemIsValid(item));
+    this.items = this.items.filter(
+      item => this.itemIsValid(item)
+    );
     return this;
   }
 
   public filterActiveItems(): this {
     const { config } = this.controller;
-
     if (this.items.length > 0) {
       this.items.forEach(item => {
-        if (item.classList.contains(config.classNameItemActive) === true) {
+        if (config.itemIsActive(item, this.controller) === true) {
           if (this.isActive === true) {
-            item.classList.remove(config.classNameItemActive);
+            config.deactivateItem(item, this.controller);
           } else {
             this.activeItem = item;
             this.activeItemId = item.dataset.id;
@@ -126,13 +125,12 @@ export class ItemManager {
     return false;
   }
 
-  // @action
+  // @actions
 
   public activate(item: HTMLElement) {
+    const { config } = this.controller;
     if (this.itemIsValid(item) === true) {
-      item.classList.add(
-        this.controller.config.classNameItemActive
-      );
+      config.activateItem(item, this.controller);
       this.activeItem = item;
       this.activeItemId = item.dataset.id;
       this.isActive = true;
@@ -140,10 +138,9 @@ export class ItemManager {
   }
 
   public deactivate() {
+    const { config } = this.controller;
     if (typeof this.activeItem !== 'undefined') {
-      this.activeItem.classList.remove(
-        this.controller.config.classNameItemActive
-      );
+      config.deactivateItem(this.activeItem, this.controller);
       this.activeItem = undefined;
       this.activeItemId = undefined;
       this.isActive = false;

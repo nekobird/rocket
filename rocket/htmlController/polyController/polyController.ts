@@ -70,7 +70,7 @@ export class PolyController {
 
   public async activate(id: string): Promise<void> {
     try {
-      const action: PolyAction = this.actionManager.composeAction('activate', id);
+      const action = this.actionManager.composeAction('activate', id);
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {
@@ -80,7 +80,7 @@ export class PolyController {
 
   public async deactivate(id: string): Promise<void> {
     try {
-      const action: PolyAction = this.actionManager.composeAction('deactivate', id);
+      const action = this.actionManager.composeAction('deactivate', id);
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {
@@ -90,7 +90,7 @@ export class PolyController {
 
   public async toggle(id: string): Promise<void> {
     try {
-      const action: PolyAction = this.actionManager.composeAction('toggle', id);
+      const action = this.actionManager.composeAction('toggle', id);
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {
@@ -102,7 +102,7 @@ export class PolyController {
 
   public async activateAll(): Promise<void> {
     try {
-      const action: PolyAction = this.actionManager.composeAction('activateAll');
+      const action = this.actionManager.composeAction('activateAll');
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {
@@ -112,7 +112,7 @@ export class PolyController {
 
   public async deactivateAll(): Promise<void> {
     try {
-      const action: PolyAction = this.actionManager.composeAction('deactivateAll');
+      const action = this.actionManager.composeAction('deactivateAll');
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {
@@ -122,7 +122,7 @@ export class PolyController {
 
   public async toggleAll(): Promise<void> {
     try {
-      const action: PolyAction = this.actionManager.composeAction('toggleAll');
+      const action = this.actionManager.composeAction('toggleAll');
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {

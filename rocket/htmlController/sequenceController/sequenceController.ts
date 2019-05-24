@@ -63,11 +63,11 @@ export class SequenceController {
     return false;
   }
 
-  // Actions
+  // @actions
 
   public async previous(): Promise<void> {
     try {
-      const action: SequenceAction = this.actionManager.composeAction('previous');
+      const action = this.actionManager.composeAction('previous');
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {
@@ -77,7 +77,7 @@ export class SequenceController {
 
   public async next(): Promise<void> {
     try {
-      const action: SequenceAction = this.actionManager.composeAction('next');
+      const action = this.actionManager.composeAction('next');
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {
@@ -87,7 +87,7 @@ export class SequenceController {
 
   public async jump(id: string): Promise<void> {
     try {
-      const action: SequenceAction = this.actionManager.composeAction('jump', id);
+      const action = this.actionManager.composeAction('jump', id);
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {

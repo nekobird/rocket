@@ -25,20 +25,23 @@ export interface SequenceConfig {
   itemsSelector: string | undefined;
   items: HTMLElement[] | NodeListOf<HTMLElement> | undefined;
 
-  classNameItemActive: string;
   classNameJsPrevious: string;
   classNameJsNext: string;
   classNameJsJump: string;
 
-  beforeActivate: Hook<SequenceAction, SequenceController>;
-  beforeDeactivate: Hook<SequenceAction, SequenceController>;
-
-  afterActivate: Hook<SequenceAction, SequenceController>;
-  afterDeactivate: Hook<SequenceAction, SequenceController>;
-
   conditionPrevious: ConditionHook<SequenceAction, SequenceController>;
   conditionNext: ConditionHook<SequenceAction, SequenceController>;
   conditionJump: ConditionHook<SequenceAction, SequenceController>;
+
+  beforeActivate: Hook<SequenceAction, SequenceController>;
+  beforeDeactivate: Hook<SequenceAction, SequenceController>;
+
+  itemIsActive: (item: HTMLElement, controller: SequenceController) => boolean;
+  activateItem: (item: HTMLElement, controller: SequenceController) => void;
+  deactivateItem: (item: HTMLElement, controller: SequenceController) => void;
+
+  afterActivate: Hook<SequenceAction, SequenceController>;
+  afterDeactivate: Hook<SequenceAction, SequenceController>;
 
   beforeAction: BeforeActionCallback<SequenceAction, SequenceController>;
   afterAction: AfterActionCallback<SequenceAction, SequenceController>;
@@ -54,19 +57,23 @@ export const DEFAULT_CONFIG: SequenceConfig = {
   itemsSelector: '.js-sequence-item',
   items: undefined,
 
-  classNameItemActive: 'js-sequence-item--active',
   classNameJsPrevious: 'js-sequence-item-previous',
   classNameJsNext: 'js-sequence-item-next',
   classNameJsJump: 'js-sequence-item-jump',
 
-  beforeDeactivate: (action, context) => Promise.resolve(),
-  beforeActivate: (action, context) => Promise.resolve(),
-  afterDeactivate: (action, context) => Promise.resolve(),
-  afterActivate: (action, context) => Promise.resolve(),
-
   conditionPrevious: (action, context) => true,
   conditionNext: (action, context) => true,
   conditionJump: (action, context) => true,
+
+  beforeDeactivate: (action, context) => Promise.resolve(),
+  beforeActivate: (action, context) => Promise.resolve(),
+
+  itemIsActive: item => item.classList.contains('js-sequence-item--active'),
+  activateItem: item => item.classList.add('js-sequence-item--active'),
+  deactivateItem: item => item.classList.remove('js-sequence-item--active'),
+
+  afterDeactivate: (action, context) => Promise.resolve(),
+  afterActivate: (action, context) => Promise.resolve(),
 
   beforeAction: (action, context) => Promise.resolve(),
   afterAction: (action, context) => {},

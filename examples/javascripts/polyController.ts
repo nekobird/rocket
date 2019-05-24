@@ -1,41 +1,42 @@
 import {
   DOMStyle,
   PolyController,
-} from '../../rocket/rocket'
+} from '../../rocket/rocket';
 
 const controller = new PolyController({
   itemsSelector: '.item',
-
   deactivateAllOnOutsideAction: false,
 
-  classNameItemActive: 'item--active',
-
-  classNameJsActivate  : 'js-item-open',
+  classNameJsActivate: 'js-item-open',
   classNameJsDeactivate: 'js-item-close',
-  classNameJsToggle    : 'js-item-toggle',
+  classNameJsToggle: 'js-item-toggle',
 
-  classNameJsActivateAll  : 'js-item-open-all',
+  classNameJsActivateAll: 'js-item-open-all',
   classNameJsDeactivateAll: 'js-item-close-all',
-  classNameJsToggleAll    : 'js-item-toggle-all',
+  classNameJsToggleAll: 'js-item-toggle-all',
 
-  beforeDeactivate: (action, context) => {
+  itemIsActive: item => item.classList.contains('item--active'),
+  activateItem: item => item.classList.add('item--active'),
+  deactivateItem: item => item.classList.remove('item--active'),
+
+  beforeDeactivate: action => {
     return new Promise(resolve => {
-      action.targetItem.classList.remove('item--animate-in')
-      action.targetItem.classList.add('item--animate-out')
+      action.targetItem.classList.remove('item--animate-in');
+      action.targetItem.classList.add('item--animate-out');
       setTimeout(
         () => resolve(),
         DOMStyle.getAnimationDuration(action.targetItem)
-      )
-    })
+      );
+    });
   },
-  afterActivate: (action, context) => {
+  afterActivate: action => {
     return new Promise(resolve => {
-      action.targetItem.classList.remove('item--animate-out')
-      action.targetItem.classList.add('item--animate-in')
+      action.targetItem.classList.remove('item--animate-out');
+      action.targetItem.classList.add('item--animate-in');
       setTimeout(
         () => resolve(),
         DOMStyle.getAnimationDuration(action.targetItem)
-      )
-    })
+      );
+    });
   }
-})
+});

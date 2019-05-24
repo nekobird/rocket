@@ -13,7 +13,6 @@ import {
 
 import {
   ActionManager,
-  MonoAction,
 } from './actionManager';
 
 export class MonoController {
@@ -44,7 +43,7 @@ export class MonoController {
     return this;
   }
 
-  // Initialize
+  // @initialize
 
   public initialize(): this {
     this.itemManager.initialize();
@@ -67,11 +66,11 @@ export class MonoController {
     return false;
   }
 
-  // Action
+  // @actions
 
   public async activate(id: string): Promise<void> {
     try {
-      const action: MonoAction = this.actionManager.composeAction('activate', id);
+      const action = this.actionManager.composeAction('activate', id);
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {
@@ -81,7 +80,7 @@ export class MonoController {
 
   public async deactivate(id?: string): Promise<void> {
     try {
-      const action: MonoAction = this.actionManager.composeAction('deactivate', id);
+      const action = this.actionManager.composeAction('deactivate', id);
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {
@@ -91,7 +90,7 @@ export class MonoController {
 
   public async toggle(id?: string): Promise<void> {
     try {
-      const action: MonoAction = this.actionManager.composeAction('toggle', id);
+      const action = this.actionManager.composeAction('toggle', id);
       await this.actionManager.actionHub(action);
       return Promise.resolve();
     } catch {

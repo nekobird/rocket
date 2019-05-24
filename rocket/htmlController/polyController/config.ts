@@ -26,8 +26,6 @@ export interface PolyConfig {
   itemsSelector: string | undefined;
   items: HTMLElement[] | NodeListOf<HTMLElement> | undefined;
 
-  classNameItemActive: string;
-
   classNameJsActivate: string;
   classNameJsDeactivate: string;
   classNameJsToggle: string;
@@ -46,6 +44,10 @@ export interface PolyConfig {
 
   beforeDeactivate: BeforeActionCallback<PolyAction, PolyController>;
   afterDeactivate: AfterActionCallback<PolyAction, PolyController>;
+
+  itemIsActive: (item: HTMLElement, context: PolyController) => boolean;
+  activateItem: (item: HTMLElement, context: PolyController) => void;
+  deactivateItem: (item: HTMLElement, context: PolyController) => void;
 
   beforeActivate: BeforeActionCallback<PolyAction, PolyController>;
   afterActivate: AfterActionCallback<PolyAction, PolyController>;
@@ -67,32 +69,34 @@ export const DEFAULT_CONFIG: PolyConfig = {
   itemsSelector: '.js-poly-item',
   items: undefined,
 
-  classNameItemActive: 'js-poly-item--active',
-
-  classNameJsActivate  : 'js-poly-item-activate',
+  classNameJsActivate: 'js-poly-item-activate',
   classNameJsDeactivate: 'js-poly-item-deactivate',
-  classNameJsToggle    : 'js-poly-item-toggle',
+  classNameJsToggle: 'js-poly-item-toggle',
 
-  classNameJsActivateAll  : 'js-poly-item-activate-all',
+  classNameJsActivateAll: 'js-poly-item-activate-all',
   classNameJsDeactivateAll: 'js-poly-item-deactivate-all',
-  classNameJsToggleAll    : 'js-poly-item-toggle-all',
+  classNameJsToggleAll: 'js-poly-item-toggle-all',
 
-  conditionActivate  : (action, context) => true,
+  conditionActivate: (action, context) => true,
   conditionDeactivate: (action, context) => true,
-  conditionToggle    : (action, context) => true,
+  conditionToggle: (action, context) => true,
 
-  conditionActivateAll  : (action, context) => true,
+  conditionActivateAll: (action, context) => true,
   conditionDeactivateAll: (action, context) => true,
-  conditionToggleAll    : (action, context) => true,
+  conditionToggleAll: (action, context) => true,
 
   beforeDeactivate: (action, context) => Promise.resolve(),
-  afterDeactivate : (action, context) => Promise.resolve(),
+  afterDeactivate: (action, context) => Promise.resolve(),
+
+  itemIsActive: item => item.classList.contains('js-poly-item--active'),
+  activateItem: item => item.classList.add('js-poly-item--active'),
+  deactivateItem: item => item.classList.remove('js-poly-item--active'),
 
   beforeActivate: (action, context) => Promise.resolve(),
-  afterActivate : (action, context) => Promise.resolve(),
+  afterActivate: (action, context) => Promise.resolve(),
 
   beforeAction: (action, context) => Promise.resolve(),
-  afterAction : (action, context) => Promise.resolve(),
+  afterAction: (action, context) => Promise.resolve(),
   
   onOutsideAction: (context) => {},
   onKeydown: (event, context) => {},

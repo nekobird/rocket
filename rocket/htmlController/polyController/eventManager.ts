@@ -31,10 +31,7 @@ export class EventManager {
 
   constructor(controller: PolyController) {
     this.controller = controller;
-
-    this.dragEventManager = new DragEventManager({
-      onUp: this.onUp,
-    });
+    this.dragEventManager = new DragEventManager({ onUp: this.onUp });
   }
 
   public initialize() {
@@ -45,7 +42,6 @@ export class EventManager {
 
   private onUp = event => {
     this.handleOutsideAction(event);
-
     if (typeof event.downData === 'object') {
       const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData);
       if (targetDownElement !== false) {

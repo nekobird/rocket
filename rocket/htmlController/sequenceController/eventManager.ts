@@ -25,17 +25,13 @@ export interface ActionConfigMapEntry {
 export type ActionConfigMapEntries = ActionConfigMapEntry[];
 
 export class EventManager {
-
   public controller: SequenceController;
 
   public dragEventManager: DragEventManager;
 
   constructor(controller: SequenceController) {
     this.controller = controller;
-
-    this.dragEventManager = new DragEventManager({
-      onUp: this.onUp,
-    });
+    this.dragEventManager = new DragEventManager({ onUp: this.onUp });
   }
 
   public initialize(): this {
@@ -62,7 +58,6 @@ export class EventManager {
 
   private eventHub(trigger: HTMLElement, actionName: SequenceActionName): this {
     const { actionManager } = this.controller;
-
     if (
       this.controller.isReady === true
       && actionManager.isRunning === false
@@ -87,7 +82,6 @@ export class EventManager {
 
   private eventHandlerKeydown = (event: KeyboardEvent) => {
     const { config, actionManager } = this.controller;
-
     if (
       config.listenToKeydown === true
       && actionManager.isRunning === false

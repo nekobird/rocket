@@ -85,7 +85,7 @@ export class ItemManager {
 
     if (this.items.length > 0) {
       this.items.forEach(item => {
-        if (item.classList.contains(config.classNameItemActive)) {
+        if (config.itemIsActive(item, this.controller) === true) {
           this.activeItems.push(item);
           this.isActive = true;
         }
@@ -125,9 +125,8 @@ export class ItemManager {
 
   public activate(item: HTMLElement): boolean {
     const { config } = this.controller;
-
     if (this.activeItems.indexOf(item) === -1) {
-      item.classList.add(config.classNameItemActive);
+      config.activateItem(item, this.controller);
       this.activeItems.push(item);
       this.isActive = true;
       return true;
@@ -137,11 +136,9 @@ export class ItemManager {
 
   public deactivate(item: HTMLElement): boolean {
     const { config } = this.controller;
-
     const index: number = this.activeItems.indexOf(item);
-
     if (index !== -1) {
-      item.classList.remove(config.classNameItemActive);
+      config.deactivateItem(item, this.controller);
       this.activeItems.splice(index, 1);
       if (this.activeItems.length === 0) {
         this.isActive = false;

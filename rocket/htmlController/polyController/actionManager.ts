@@ -6,7 +6,9 @@ import {
   PolyController,
 } from './polyController';
 
-export type PolyActionName = 'activate' | 'activateAll' | 'deactivate' | 'deactivateAll' | 'toggle' | 'toggleAll';
+export type PolyActionName =
+  'activate' | 'activateAll' | 'deactivate' |
+  'deactivateAll' | 'toggle' | 'toggleAll';
 
 export interface PolyAction {
   name: PolyActionName;
@@ -18,7 +20,6 @@ export interface PolyAction {
 }
 
 export class ActionManager {
-
   private controller: PolyController;
 
   public isRunning: boolean = false;
@@ -28,7 +29,7 @@ export class ActionManager {
     this.controller = controller;
   }
 
-  // 5) Handle Actions
+  // 5) Handle actions
 
   private activateItem({ targetItem }: PolyAction) {
     if (typeof targetItem === 'object') {
@@ -44,10 +45,9 @@ export class ActionManager {
 
   private async handleActionActivate(action: PolyAction): Promise<void> {
     const { config } = this.controller;
-
     if (
       typeof action.targetItem === 'object'
-      && action.targetItem.classList.contains(config.classNameItemActive) === false
+      && config.itemIsActive(action.targetItem, this.controller) === false
       && config.conditionActivate(action, this.controller) === true
     ) {
       await config.beforeActivate(action, this.controller);
@@ -59,111 +59,104 @@ export class ActionManager {
   }
 
   private async handleActionDeactivate(action: PolyAction): Promise<void> {
-    const { config } = this.controller
-
+    const { config } = this.controller;
     if (
       typeof action.targetItem === 'object'
-      && action.targetItem.classList.contains(config.classNameItemActive) === true
+      && config.itemIsActive(action.targetItem, this.controller) === true
       && config.conditionDeactivate(action, this.controller) === true
     ) {
-      await config.beforeDeactivate(action, this.controller)
-      this.deactivateItem(action)
-      config.afterDeactivate(action, this.controller)
-      return Promise.resolve()
+      await config.beforeDeactivate(action, this.controller);
+      this.deactivateItem(action);
+      config.afterDeactivate(action, this.controller);
+      return Promise.resolve();
     }
-    return Promise.reject()
+    return Promise.reject();
   }
 
   private handleActionToggle(action: PolyAction): Promise<void> {
-    const { config } = this.controller
-
+    const { config } = this.controller;
     if (config.conditionToggle(action, this.controller) === true) {
       if (
         typeof action.targetItem === 'object'
-        && action.targetItem.classList.contains(config.classNameItemActive) === false
+        && config.itemIsActive(action.targetItem, this.controller) === false
       ) {
-        return this.handleActionActivate(action)
+        return this.handleActionActivate(action);
       } else {
-        return this.handleActionDeactivate(action)
+        return this.handleActionDeactivate(action);
       }
     }
-    return Promise.resolve()
+    return Promise.resolve();
   }
 
   private handleActionActivateAll(action: PolyAction): Promise<void> {
-    const { config, itemManager } = this.controller
-
+    const { config, itemManager } = this.controller;
     if (
-      config.conditionActivateAll(action, this.controller) === true &&
-      itemManager.items.length > 0
+      config.conditionActivateAll(action, this.controller) === true
+      && itemManager.items.length > 0
     ) {
-      const actionPromises: Promise<void>[] = []
-
+      const actionPromises: Promise<void>[] = [];
       itemManager.items.forEach(item => {
-        if (item.classList.contains(config.classNameItemActive) === false) {
+        if (config.itemIsActive(item, this.controller) === false) {
           const subAction: PolyAction = Object.assign({
             targetItem: item,
             targetId  : item.dataset.id,
-          }, action)
-
-          actionPromises.push(this.handleActionActivate(subAction))
+          }, action);
+          actionPromises.push(this.handleActionActivate(subAction));
         }
-      })
-
-      return Promise.all(actionPromises)
-        .then(() => Promise.resolve())
+      });
+      return Promise
+        .all(actionPromises)
+        .then(() => Promise.resolve());
     }
-    return Promise.reject()
+    return Promise.reject();
   }
 
   private handleActionDeactivateAll(action: PolyAction): Promise<void> {
-    const { config, itemManager } = this.controller
-
+    const { config, itemManager } = this.controller;
     if (
-      config.conditionActivateAll(action, this.controller) === true &&
-      itemManager.items.length > 0
+      config.conditionActivateAll(action, this.controller) === true
+      && itemManager.items.length > 0
     ) {
-      const actionPromises: Promise<void>[] = []
-
+      const actionPromises: Promise<void>[] = [];
       itemManager.items.forEach(item => {
-        if (item.classList.contains(config.classNameItemActive) === true) {
+        if (config.itemIsActive(item, this.controller) === true) {
           const subAction: PolyAction = Object.assign({
             targetItem: item,
-            targetId  : item.dataset.id,
-          }, action)
-
-          actionPromises.push(this.handleActionDeactivate(subAction))
+            targetId: item.dataset.id,
+          }, action);
+          actionPromises.push(
+            this.handleActionDeactivate(subAction)
+          );
         }
-      })
-
-      return Promise.all(actionPromises)
-        .then(() => Promise.resolve())
+      });
+      return Promise
+        .all(actionPromises)
+        .then(() => Promise.resolve());
     }
-    return Promise.reject()
+    return Promise.reject();
   }
 
   private handleActionToggleAll(action: PolyAction): Promise<void> {
-    const { config, itemManager } = this.controller
-
+    const { config, itemManager } = this.controller;
     if (
-      config.conditionActivateAll(action, this.controller) === true &&
-      itemManager.items.length > 0
+      config.conditionActivateAll(action, this.controller) === true
+      && itemManager.items.length > 0
     ) {
-      const actionPromises: Promise<void>[] = []
-
+      const actionPromises: Promise<void>[] = [];
       itemManager.items.forEach(item => {
         const subAction: PolyAction = Object.assign({
           targetItem: item,
-          targetId  : item.dataset.id,
-        }, action)
-
-        actionPromises.push(this.handleActionToggle(subAction))
-      })
-
-      return Promise.all(actionPromises)
-        .then(() => Promise.resolve())
+          targetId: item.dataset.id,
+        }, action);
+        actionPromises.push(
+          this.handleActionToggle(subAction)
+        );
+      });
+      return Promise
+        .all(actionPromises)
+        .then(() => Promise.resolve());
     }
-    return Promise.reject()
+    return Promise.reject();
   }
 
   private handleAction(action: PolyAction): Promise<void> {
@@ -245,9 +238,7 @@ export class ActionManager {
             this.isNested = false;
             resolve();
           })
-          .catch(() => {
-            this.isNested = false;
-          });
+          .catch(() => this.isNested = false);
       });
     } else {
       preAction = Promise.resolve();

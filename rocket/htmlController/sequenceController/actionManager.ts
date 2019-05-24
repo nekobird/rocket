@@ -25,7 +25,6 @@ export interface SequenceAction {
 }
 
 export class ActionManager {
-
   private controller: SequenceController;
 
   public isRunning: boolean = false;
@@ -35,14 +34,11 @@ export class ActionManager {
     this.controller = controller;
   }
 
-  // 5) COMPLETE ACTION
+  // Complete action
 
   private async completeAction(action: SequenceAction): Promise<void> {
     const { config, itemManager } = this.controller;
-
     const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name);
-
-    // condition[actionName]
     if (
       itemManager.activeItem !== action.nextItem
       && config[`condition${actionNameString}`](action, this) === true
@@ -59,11 +55,7 @@ export class ActionManager {
 
   private deactivate(): this {
     const { config, itemManager } = this.controller;
-
-    itemManager.items.forEach(item => {
-      item.classList.remove(config.classNameItemActive);
-    });
-
+    itemManager.items.forEach(item => config.deactivateItem(item, this.controller));
     itemManager.activeItem = undefined;
     itemManager.activeIndex = undefined;
     itemManager.isActive = false;
@@ -72,10 +64,8 @@ export class ActionManager {
 
   private activate({nextItem, nextItemIndex}: SequenceAction): this {
     const { config, itemManager } = this.controller;
-
     if (typeof nextItem === 'object') {
-      nextItem.classList.add(config.classNameItemActive);
-
+      config.activateItem(nextItem, this.controller);
       itemManager.activeItem = nextItem;
       itemManager.activeIndex = nextItemIndex;
       itemManager.isActive = true;
@@ -83,20 +73,17 @@ export class ActionManager {
     return this;
   }
 
-  // Set Action
+  // Set action
 
   private setActionTargetPrevious(action: SequenceAction): SequenceAction {
     const { itemManager } = this.controller;
-
     if (typeof itemManager.activeIndex === 'number') {
       let index: number;
-
       if (itemManager.activeIndex - 1 >= 0) {
         index = itemManager.activeIndex - 1;
       } else {
         index = itemManager.items.length - 1;
       }
-
       action.nextItem = itemManager.items[index];
       action.nextItemIndex = index;
     }
@@ -105,10 +92,8 @@ export class ActionManager {
 
   private setActionTargetNext(action: SequenceAction): SequenceAction {
     const { itemManager } = this.controller;
-
     if (typeof itemManager.activeIndex === 'number') {
       let index: number;
-
       if (itemManager.activeIndex + 1 >= itemManager.items.length) {
         index = 0;
       } else {
@@ -122,10 +107,8 @@ export class ActionManager {
 
   private setActionTargetJump(action: SequenceAction): SequenceAction {
     const { itemManager } = this.controller;
-
     if (typeof action.nextItemId === 'string') {
       const item: HTMLElement | false = itemManager.getItemFromId(action.nextItemId);
-
       if (item !== false) {
         action.nextItem = item;
         action.nextItemIndex = itemManager.items.indexOf(action.nextItem);
@@ -138,7 +121,6 @@ export class ActionManager {
 
   public createAction(actionName: SequenceActionName): SequenceAction {
     const { itemManager } = this.controller;
-
     return {
       name: actionName,
       currentItem: itemManager.activeItem,
@@ -146,22 +128,18 @@ export class ActionManager {
   }
 
   public composeAction(actionName: SequenceActionName, id?: string): SequenceAction {
-    const action: SequenceAction = this.createAction(actionName);
-
+    const action = this.createAction(actionName);
     if (typeof id === 'string') {
       action.nextItemId = id;
     }
-
     return action;
   }
 
   public composeActionFromEvent(actionName: SequenceActionName, trigger: HTMLElement): SequenceAction {
-    const action: SequenceAction = this.createAction(actionName);
-
+    const action = this.createAction(actionName);
     if (typeof trigger.dataset.target === 'string') {
       action.nextItemId = trigger.dataset.target;
     }
-
     action.trigger = trigger;
     return action;
   }
@@ -186,15 +164,12 @@ export class ActionManager {
     if (this.isNested === false) {
       preAction = new Promise(resolve => {
         this.isNested = true;
-        config
-          .beforeAction(action, this.controller)
+        config.beforeAction(action, this.controller)
           .then(() => {
             this.isNested = false;
             resolve();
           })
-          .catch(() => {
-            this.isNested = false;
-          });
+          .catch(() => this.isNested = false);
       });
     } else {
       preAction = Promise.resolve();

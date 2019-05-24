@@ -91,7 +91,7 @@ export class EventManager {
       && actionManager.isRunning === false
     ) {
       const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData);
-      const targetUpElement  : HTMLElement | false = event.getTargetElementFromData(event.upData);
+      const targetUpElement: HTMLElement | false = event.getTargetElementFromData(event.upData);
 
       let classNames: string[] = [
         config.classNameJsActivate,
