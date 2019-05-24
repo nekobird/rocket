@@ -54,7 +54,6 @@ export class StackUp {
     if (typeof config === 'object') {
       this.setConfig(config);
     }
-
     this.layout = new StackUpLayout(this, this.config.layout);
     return this;
   }
@@ -62,6 +61,20 @@ export class StackUp {
   public setConfig(config: Partial<StackUpConfig>): this {
     Object.assign(this.config, config);
     return this;
+  }
+
+  public initialize(): Promise<void> {
+    window.addEventListener('resize', this.eventHandlerResize);
+    this.boundaryUpdate();
+
+    // Update grid selectors - reset
+    this.getElements();
+    this.populateItems();
+
+    // Update grid selectors - stacking
+    this.updateNumberOfColumns();
+    this.applyLayout();
+    return this.draw();
   }
 
   private getElements(): this {
@@ -104,20 +117,6 @@ export class StackUp {
       return this;
     }
     throw new Error('StackUp: items not defined.');
-  }
-
-  public initialize(): Promise<void> {
-    window.addEventListener('resize', this.eventHandlerResize);
-    this.boundaryUpdate();
-
-    // Update grid selectors - reset
-    this.getElements();
-    this.populateItems();
-
-    // Update grid selectors - stacking
-    this.updateNumberOfColumns();
-    this.applyLayout();
-    return this.draw();
   }
 
   private boundaryUpdate(): this {

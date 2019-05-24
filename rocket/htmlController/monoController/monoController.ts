@@ -34,16 +34,12 @@ export class MonoController {
     this.itemManager = new ItemManager(this);
     this.eventManager = new EventManager(this);
     this.actionManager = new ActionManager(this);
-
-    this.initialize();
   }
 
   public setConfig(config: Partial<MonoConfig>): this {
     Object.assign(this.config, config);
     return this;
   }
-
-  // @initialize
 
   public initialize(): this {
     this.itemManager.initialize();
@@ -65,8 +61,6 @@ export class MonoController {
     }
     return false;
   }
-
-  // @actions
 
   public async activate(id: string): Promise<void> {
     try {

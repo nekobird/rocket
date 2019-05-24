@@ -13,7 +13,6 @@ import {
 
 import {
   ActionManager,
-  SequenceAction,
 } from './actionManager'
 
 export class SequenceController {
@@ -35,16 +34,12 @@ export class SequenceController {
     this.itemManager = new ItemManager(this);
     this.eventManager = new EventManager(this);
     this.actionManager = new ActionManager(this);
-
-    this.initialize();
   }
 
   public setConfig(config: Partial<SequenceConfig>): this {
     Object.assign(this.config, config);
     return this;
   }
-
-  // Initialize
 
   public initialize(): this {
     this.itemManager.initialize();
@@ -62,8 +57,6 @@ export class SequenceController {
     }
     return false;
   }
-
-  // @actions
 
   public async previous(): Promise<void> {
     try {

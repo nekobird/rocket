@@ -3,7 +3,8 @@ import {
   PolyController,
 } from '../../rocket/rocket';
 
-const controller = new PolyController({
+const controller = new PolyController();
+controller.setConfig({
   itemsSelector: '.item',
   deactivateAllOnOutsideAction: false,
 
@@ -40,3 +41,4 @@ const controller = new PolyController({
     });
   }
 });
+controller.initialize();

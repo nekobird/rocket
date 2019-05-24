@@ -13,7 +13,6 @@ import {
 
 import {
   ActionManager,
-  PolyAction,
 } from './actionManager';
 
 export class PolyController {
@@ -35,16 +34,12 @@ export class PolyController {
     this.itemManager = new ItemManager(this);
     this.eventManager = new EventManager(this);
     this.actionManager = new ActionManager(this);
-
-    this.initialize();
   }
 
   public setConfig(config: Partial<PolyConfig>): this {
     Object.assign(this.config, config);
     return this;
   }
-
-  // Initialize
 
   public initialize(): this {
     this.itemManager.initialize();
@@ -65,8 +60,6 @@ export class PolyController {
     });
     return isActive;
   }
-
-  // Actions
 
   public async activate(id: string): Promise<void> {
     try {
@@ -97,8 +90,6 @@ export class PolyController {
       return Promise.reject();
     }
   }
-
-  // Group Actions
 
   public async activateAll(): Promise<void> {
     try {

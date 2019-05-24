@@ -3,7 +3,8 @@ import {
   SequenceController,
 } from '../../rocket/rocket';
 
-const controller = new SequenceController({
+const controller = new SequenceController();
+controller.setConfig({
   itemsSelector: '.item',
 
   classNameJsPrevious: 'js-item-previous',
@@ -35,3 +36,4 @@ const controller = new SequenceController({
     });
   }
 });
+controller.initialize();

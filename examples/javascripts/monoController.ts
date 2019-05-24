@@ -3,7 +3,8 @@ import {
   MonoController,
 } from '../../rocket/rocket';
 
-const controller = new MonoController({
+const controller = new MonoController();
+controller.setConfig({
   itemsSelector: '.js-item',
 
   classNameJsActivate: 'js-item-activate',
@@ -40,3 +41,4 @@ const controller = new MonoController({
     }
   }
 });
+controller.initialize();
