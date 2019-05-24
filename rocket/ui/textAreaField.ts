@@ -18,7 +18,7 @@ export interface TextAreaFieldConfig {
   onGrow: (height: number, context: TextAreaField) => void;
 }
 
-const TEXTAREAFIELD_DEFAULT_CONFIG: TextAreaFieldConfig = {
+const TEXTAREAFIELD_DEFAULT_CONFIG: TextAreaFieldConfig = {  
   disableLineBreaks: false,
   disableTabs: false,
   limitNumberOfCharacters: false,
@@ -63,10 +63,19 @@ export class TextAreaField {
     return this;
   }
 
-  get selectedText(): string {
+  get selected(): string {
+    const start = this.element.selectionStart;
+    const end = this.element.selectionEnd;
+    return this.value.substring(start, end);
+  }
+
+  public insert(string: string): this {
     const start: number = this.element.selectionStart;
     const end: number = this.element.selectionEnd;
-    return this.value.substring(start, end);
+    const text: string = this.element.value;
+    this.element.value = text.substring(0, start) + string + text.substring(end);
+    this.element.selectionEnd = start + string.length;
+    return this;
   }
 
   get value(): string {
@@ -76,15 +85,6 @@ export class TextAreaField {
   set value(value: string) {
     this.element.value = value;
     this.filterAndGrow();
-  }
-
-  public insertText(string: string): this {
-    const start: number = this.element.selectionStart;
-    const end: number = this.element.selectionEnd;
-    const text: string = this.element.value;
-    this.element.value = text.substring(0, start) + string + text.substring(end);
-    this.element.selectionEnd = start + string.length;
-    return this;
   }
 
   get isSingleLine(): boolean {
@@ -168,7 +168,7 @@ export class TextAreaField {
     const keyCode = event.keyCode;
 
     if (keyCode === 9) {
-      this.insertText('\t');
+      this.insert('\t');
       event.preventDefault();
     }
 

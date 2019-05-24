@@ -30,17 +30,6 @@ export class ItemManager {
   public loadItemsFromConfig(): this {
     const { config } = this.controller;
     if (
-      typeof config.itemsSelector === 'string'
-      && typeof config.items === 'undefined'
-    ) {
-      const items: NodeListOf<HTMLElement> = document.querySelectorAll(config.itemsSelector);
-      if (items !== null) {
-        this.items = Array.from(items);
-        return this;
-      }
-    }
-      
-    if (
       Array.isArray(config.items) === false
       && NodeList.prototype.isPrototypeOf(<NodeListOf<HTMLElement>>config.items)
     ) {
@@ -88,11 +77,12 @@ export class ItemManager {
     if (this.items.length > 0) {
       this.items.forEach(item => {
         if (config.itemIsActive(item, this.controller) === true) {
+          const id = config.getIdFromItem(item);
           if (this.isActive === true) {
             config.deactivateItem(item, this.controller);
-          } else {
+          } else if (id !== false) {
             this.activeItem = item;
-            this.activeItemId = item.dataset.id;
+            this.activeItemId = id;
             this.isActive = true;
           }
         }
@@ -103,18 +93,20 @@ export class ItemManager {
   }
 
   public itemIsValid(item: HTMLElement): boolean {
+    const { config } = this.controller;
     let valid: boolean = true;
-    if (typeof item.dataset.id !== 'string') {
+    if (config.getIdFromItem(item) === false) {
       valid = false;
     }
     return valid;
   }
 
   public getItemFromId(id: string): HTMLElement | false {
+    const { config } = this.controller;
     const matchedItems: HTMLElement[] = [];
 
     this.items.forEach(item => {
-      if (item.dataset.id === id) {
+      if (config.getIdFromItem(item) === id) {
         matchedItems.push(item);
       }
     });
@@ -132,7 +124,7 @@ export class ItemManager {
     if (this.itemIsValid(item) === true) {
       config.activateItem(item, this.controller);
       this.activeItem = item;
-      this.activeItemId = item.dataset.id;
+      this.activeItemId = <string>config.getIdFromItem(item);
       this.isActive = true;
     }
   }

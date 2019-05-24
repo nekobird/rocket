@@ -1,4 +1,5 @@
 import {
+  MonoTriggerMap,
   MonoConfig,
 } from './config';
 
@@ -132,8 +133,8 @@ export class ActionManager {
     return action;
   }
 
-  public composeActionFromEvent(actionName: MonoActionName, trigger: HTMLElement): MonoAction {
-    const action: MonoAction = this.composeAction(actionName, trigger.dataset.target);
+  public composeActionFromTrigger(trigger: HTMLElement, triggerMap: MonoTriggerMap): MonoAction {
+    const action: MonoAction = this.composeAction(triggerMap.action, triggerMap.payload);
     action.trigger = trigger;
     return action;
   }

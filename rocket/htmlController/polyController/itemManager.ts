@@ -26,19 +26,7 @@ export class ItemManager {
   }
 
   public loadItemsFromConfig(): this {
-    const { config } = this.controller;
-
-    if (
-      typeof config.itemsSelector === 'string'
-      && typeof config.items === 'undefined'
-    ) {
-      const items: NodeListOf<HTMLElement> = document.querySelectorAll(config.itemsSelector);
-      if (items !== null) {
-        this.items = Array.from(items);
-        return this;
-      }
-    }
-      
+    const { config } = this.controller;      
     if (
       Array.isArray(config.items) === false
       && NodeList.prototype.isPrototypeOf(<NodeListOf<HTMLElement>>config.items)
@@ -82,7 +70,6 @@ export class ItemManager {
 
   private filterActiveItems(): this {
     const { config } = this.controller;
-
     if (this.items.length > 0) {
       this.items.forEach(item => {
         if (config.itemIsActive(item, this.controller) === true) {
@@ -96,28 +83,25 @@ export class ItemManager {
   }
 
   public itemIsValid(item: HTMLElement): boolean {
+    const { config } = this.controller;
     let valid: boolean = true;
-
-    if (typeof item.dataset.id !== 'string') {
+    if (config.getIdFromItem(item) === false) {
       valid = false;
     }
-
     return valid;
   }
 
   public getItemFromId(id: string): HTMLElement | false {
+    const { config } = this.controller;
     let matchedItems: HTMLElement[] = [];
-
     this.items.forEach(item => {
-      if (item.dataset.id === id) {
+      if (config.getIdFromItem(item) === id) {
         matchedItems.push(item);
       }
     });
-
     if (matchedItems.length > 0) {
       return matchedItems[0];
     }
-
     return false;
   }
 

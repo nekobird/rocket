@@ -8,12 +8,11 @@ import {
 } from './polyController';
 
 import {
-  PolyAction,
   PolyActionName,
 } from './actionManager';
 
 import {
-  POLY_ACTION_CONFIG_MAP,
+  PolyTriggerMap,
 } from './config';
 
 export interface ActionConfigMapEntry {
@@ -24,7 +23,6 @@ export interface ActionConfigMapEntry {
 export type ActionConfigMapEntries = ActionConfigMapEntry[];
 
 export class EventManager {
-
   public controller: PolyController;
 
   public dragEventManager: DragEventManager;
@@ -43,81 +41,53 @@ export class EventManager {
 
   private onUp = event => {
     this.handleOutsideAction(event);
-    if (typeof event.downData === 'object') {
-      const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData);
-      if (targetDownElement !== false) {
-        POLY_ACTION_CONFIG_MAP.forEach(entry => {
-          const className: string = this.controller.config[entry.configProperty];
-          const trigger = DOMTraverse.findAncestorWithClass(targetDownElement, className, false);
-          if (trigger !== false) {
-            this.eventHub(<HTMLElement>trigger, entry.action);
-          }
-        });
-      }
+    if (typeof event.downData !== 'object') {
+      return;
     }
-  }
+    const targetDownElement = event.getTargetElementFromData(event.downData);
+    if (targetDownElement === false) {
+      return;
+    }
+    const { config } = this.controller;
+    const trigger = DOMTraverse.findAncestor(targetDownElement, config.isTrigger, false);
+    if (trigger === false) {
+      return;
+    }
+    const triggerMap = config.mapTriggerToAction(<HTMLElement>trigger);
+    if (triggerMap === false) {
+      return;
+    }
+    this.eventHub(<HTMLElement>trigger, triggerMap);
+  };
 
-  private eventHub(trigger: HTMLElement, actionName: PolyActionName): this {
-    const { actionManager } = this.controller;
-
+  private eventHub(trigger: HTMLElement, triggerMap: PolyTriggerMap): this {
+    const { actionManager, isReady } = this.controller;
     if (
-      this.controller.isReady === true
+      isReady === true
       && actionManager.isRunning === false
     ) {
       actionManager.isRunning = true;
-      if (
-        typeof trigger !== 'undefined'
-        && trigger instanceof HTMLElement
-      ) {
-        const action: PolyAction = actionManager.composeActionFromEvent(actionName, trigger);
-        if (typeof action === 'object') {
-          actionManager.actionHub(action);
-        } else {
-          actionManager.endAction();
-        }
-      } else {
-        actionManager.endAction();
-      }
+      const action = actionManager.composeActionFromTrigger(trigger, triggerMap);
+      actionManager.actionHub(action);
     }
     return this;
   }
 
   private handleOutsideAction = event => {
     const { config, actionManager, itemManager } = this.controller;
-
     if (
       config.deactivateAllOnOutsideAction === true
       && actionManager.isRunning === false
     ) {
       const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData);
       const targetUpElement: HTMLElement | false = event.getTargetElementFromData(event.upData);
-
-      let classNames: string[] = [
-        config.classNameJsActivate,
-        config.classNameJsDeactivate,
-        config.classNameJsToggle,
-        config.classNameJsActivateAll,
-        config.classNameJsDeactivateAll,
-        config.classNameJsToggleAll,
-      ];
-
-      const identifierFn = element => {
-        let containsClassName: boolean = false;
-        classNames.forEach(className => {
-          if (element.classList.contains(className) === true) {
-            containsClassName = true;
-          }
-        })
-        return containsClassName;
-      };
-
       if (
         itemManager.isActive === true
         && targetDownElement !== false
         && targetUpElement !== false
         && DOMTraverse.hasAncestor(targetDownElement, itemManager.activeItems) === false
         && DOMTraverse.hasAncestor(targetUpElement, itemManager.activeItems) === false
-        && DOMTraverse.findAncestor(targetDownElement, identifierFn) === false
+        && DOMTraverse.findAncestor(targetDownElement, config.isTrigger) === false
       ) {
         this.controller.deactivateAll();
         config.onOutsideAction(this.controller);

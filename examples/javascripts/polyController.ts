@@ -3,18 +3,53 @@ import {
   PolyController,
 } from '../../rocket/rocket';
 
+
+const items: HTMLElement[] = Array.from(document.querySelectorAll('.js-item'))
+
 const controller = new PolyController();
 controller.setConfig({
-  itemsSelector: '.item',
+  items,
+
   deactivateAllOnOutsideAction: false,
 
-  classNameJsActivate: 'js-item-open',
-  classNameJsDeactivate: 'js-item-close',
-  classNameJsToggle: 'js-item-toggle',
-
-  classNameJsActivateAll: 'js-item-open-all',
-  classNameJsDeactivateAll: 'js-item-close-all',
-  classNameJsToggleAll: 'js-item-toggle-all',
+  isTrigger: element => element.classList.contains('js-item-trigger'),
+  mapTriggerToAction: trigger => {
+    if (trigger.dataset.action === 'activate') {
+      return {
+        trigger,
+        action: 'activate',
+        payload: trigger.dataset.target,
+      };
+    } else if (trigger.dataset.action === 'deactivate') {
+      return {
+        trigger,
+        action: 'deactivate',
+        payload: trigger.dataset.target,
+      };
+    } else if (trigger.dataset.action === 'toggle') {
+      return {
+        trigger,
+        action: 'toggle',
+        payload: trigger.dataset.target,
+      };
+    } else if (trigger.dataset.action === 'activate-all') {
+      return {
+        trigger,
+        action: 'activateAll',
+      };
+    } else if (trigger.dataset.action === 'deactivate-all') {
+      return {
+        trigger,
+        action: 'deactivateAll',
+      };
+    } else if (trigger.dataset.action === 'toggle-all') {
+      return {
+        trigger,
+        action: 'toggleAll',
+      };
+    }
+    return false;
+  },
 
   itemIsActive: item => item.classList.contains('item--active'),
   activateItem: item => item.classList.add('item--active'),

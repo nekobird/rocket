@@ -14,76 +14,97 @@
 
       <div class="items">
         <div class="itemContainer">
-          <div class="item item--active js-item"
-               data-id="1">
+          <div
+            class="item item--active js-item"
+            data-id="1">
             A - 1
           </div>
 
-          <div class="item js-item"
-               data-id="2">
+          <div
+            class="item js-item"
+            data-id="2">
             A - 2
           </div>
 
-          <div class="item js-item"
-               data-id="3">
+          <div
+            class="item js-item"
+            data-id="3">
             A - 3
           </div>
 
-          <div class="item js-item"
-               data-id="4">
+          <div
+            class="item js-item"
+            data-id="4">
             A - 4
           </div>
 
-          <div class="item js-item"
-               data-id="5">
+          <div
+            class="item js-item"
+            data-id="5">
             A - 5
           </div>
         </div><!-- itemContainer -->
       </div><!-- items -->
 
       <div class="controls">
-        <a class="button button--primary js-item-open"
-           data-target="1"
-           href="javascript:void(0)">
+        <a
+          class="button button--primary js-item-trigger"
+          data-action="activate"
+          data-target="1"
+          href="javascript:void(0)">
           1
         </a>
 
-        <a class="button button--primary js-item-open"
-           data-target="2"
-           href="javascript:void(0)">
+        <a
+          class="button button--primary js-item-trigger"
+          data-action="activate"
+          data-target="2"
+          href="javascript:void(0)">
           2
         </a>
 
-        <a class="button button--primary js-item-open"
-           data-target="3"
-           href="javascript:void(0)">
+        <a
+          class="button button--primary js-item-trigger"
+          data-action="activate"
+          data-target="3"
+          href="javascript:void(0)">
           3
         </a>
 
-        <a class="button button--primary js-item-close"
-           data-target="1"
-           href="javascript:void(0)">
+        <a
+          class="button button--primary js-item-trigger"
+          data-action="deactivate"
+          data-target="1"
+          href="javascript:void(0)">
           Close 1
         </a>
 
-        <a class="button button--primary js-item-toggle"
+        <a
+          class="button button--primary js-item-trigger"
+          data-action="toggle"
           data-target="1"
           href="javascript:void(0)">
           Toggle 1
         </a>
 
-        <a class="js-item-open-all"
-           href="javascript:void(0)">
+        <a
+          class="js-item-trigger"
+          data-action="activate-all"
+          href="javascript:void(0)">
           Activate All
         </a>
 
-        <a class="js-item-close-all"
-           href="javascript:void(0)">
+        <a
+          class="js-item-trigger"
+          data-action="deactivate-all"
+          href="javascript:void(0)">
           Deactivate All
         </a>
 
-        <a class="js-item-toggle-all"
-           href="javascript:void(0)">
+        <a
+          class="js-item-trigger"
+          data-action="toggle-all"
+          href="javascript:void(0)">
           Toggle All
         </a>
       </div>

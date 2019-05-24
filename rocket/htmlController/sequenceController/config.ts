@@ -22,8 +22,8 @@ export interface SequenceConfig {
 
   listenToKeydown: boolean;
 
-  itemsSelector: string | undefined;
-  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined;
+  itemsSelector?: string;
+  items?: HTMLElement[] | NodeListOf<HTMLElement>;
 
   classNameJsPrevious: string;
   classNameJsNext: string;

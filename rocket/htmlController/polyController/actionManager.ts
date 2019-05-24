@@ -1,4 +1,5 @@
 import {
+  PolyTriggerMap,
   PolyConfig,
 } from './config';
 
@@ -99,7 +100,7 @@ export class ActionManager {
         if (config.itemIsActive(item, this.controller) === false) {
           const subAction: PolyAction = Object.assign({
             targetItem: item,
-            targetId  : item.dataset.id,
+            targetId: config.getIdFromItem(item),
           }, action);
           actionPromises.push(this.handleActionActivate(subAction));
         }
@@ -122,7 +123,7 @@ export class ActionManager {
         if (config.itemIsActive(item, this.controller) === true) {
           const subAction: PolyAction = Object.assign({
             targetItem: item,
-            targetId: item.dataset.id,
+            targetId: config.getIdFromItem(item),
           }, action);
           actionPromises.push(
             this.handleActionDeactivate(subAction)
@@ -146,7 +147,7 @@ export class ActionManager {
       itemManager.items.forEach(item => {
         const subAction: PolyAction = Object.assign({
           targetItem: item,
-          targetId: item.dataset.id,
+          targetId: config.getIdFromItem(item),
         }, action);
         actionPromises.push(
           this.handleActionToggle(subAction)
@@ -204,14 +205,12 @@ export class ActionManager {
     return action;
   }
 
-  public composeActionFromEvent(actionName: PolyActionName, trigger: HTMLElement): PolyAction {
+  public composeActionFromTrigger(trigger: HTMLElement, triggerMap: PolyTriggerMap): PolyAction {
     const whitelist: string[] = ['activate', 'deactivate', 'toggle'];
-
-    if (whitelist.indexOf(actionName) !== -1) {
-      return this.composeAction(actionName, trigger.dataset.target);
+    if (whitelist.indexOf(triggerMap.action) !== -1) {
+      return this.composeAction(triggerMap.action, triggerMap.payload);
     }
-
-    return this.composeAction(actionName);
+    return this.composeAction(triggerMap.action);
   }
 
   // 1) Action Hub

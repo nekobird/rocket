@@ -6,10 +6,7 @@ import {
 } from '../index';
 
 import {
-  ActionConfigMapEntries,
-} from './eventManager';
-
-import {
+  MonoActionName,
   MonoAction,
 } from './actionManager';
 
@@ -17,18 +14,23 @@ import {
   MonoController,
 } from './monoController';
 
+export interface MonoTriggerMap {
+  trigger: HTMLElement;
+  action: MonoActionName;
+  payload?: string;
+}
+
 export interface MonoConfig {
   cooldown: number;
 
   listenToKeydown: boolean;
   deactivateOnOutsideAction: boolean;
   
-  itemsSelector: string;
-  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined;
+  items?: HTMLElement[] | NodeListOf<HTMLElement>;
 
-  classNameJsActivate: string;
-  classNameJsDeactivate: string;
-  classNameJsToggle: string;
+  isTrigger: (element: HTMLElement) => boolean;
+  mapTriggerToAction: (trigger: HTMLElement) => MonoTriggerMap | false;
+  getIdFromItem: (item: HTMLElement) => string | false;
 
   conditionActivate: ConditionHook<MonoAction, MonoController>;
   conditionDeactivate: ConditionHook<MonoAction, MonoController>;
@@ -56,12 +58,31 @@ export const DEFAULT_CONFIG: MonoConfig = {
   listenToKeydown: false,
   deactivateOnOutsideAction: true,
 
-  itemsSelector: '.js-mono-item',
   items: undefined,
 
-  classNameJsActivate: 'js-mono-item-activate',
-  classNameJsDeactivate: 'js-mono-item-deactivate',
-  classNameJsToggle: 'js-mono-item-toggle',
+  isTrigger: element => element.classList.contains('js-mono-item-trigger'),
+  mapTriggerToAction: trigger => {
+    if (trigger.dataset.action === 'activate') {
+      return {
+        trigger,
+        action: 'activate',
+        payload: trigger.dataset.target,
+      };
+    } else if (trigger.dataset.action === 'deactivate') {
+      return {
+        trigger,
+        action: 'deactivate',
+      };
+    } else if (trigger.dataset.action === 'toggle') {
+      return {
+        trigger,
+        action: 'toggle',
+        payload: trigger.dataset.target,
+      };
+    }
+    return false;
+  },
+  getIdFromItem: item => typeof item.dataset.id === 'string' ? item.dataset.id : false,
 
   conditionActivate: (action, context) => true,
   conditionDeactivate: (action, context) => true,
@@ -86,18 +107,3 @@ export const DEFAULT_CONFIG: MonoConfig = {
   onKeydown: (event, context) => {},
   onOutsideAction: (context) => {},
 };
-
-export const MONO_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
-  {
-    configProperty: 'classNameJsActivate',
-    action: 'activate',
-  },
-  {
-    configProperty: 'classNameJsDeactivate',
-    action: 'deactivate',
-  },
-  {
-    configProperty: 'classNameJsToggle',
-    action: 'toggle',
-  },
-];

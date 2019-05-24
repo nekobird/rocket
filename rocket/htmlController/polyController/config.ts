@@ -5,16 +5,19 @@ import {
 } from '../index';
 
 import {
-  ActionConfigMapEntries,
-} from './eventManager';
-
-import {
   PolyController,
 } from './polyController';
 
 import {
   PolyAction,
+  PolyActionName,
 } from './actionManager';
+
+export interface PolyTriggerMap {
+  trigger: HTMLElement;
+  action: PolyActionName;
+  payload?: string;
+}
 
 export interface PolyConfig {
   cooldown: number;
@@ -23,16 +26,11 @@ export interface PolyConfig {
 
   listenToKeydown: boolean;
 
-  itemsSelector: string | undefined;
-  items: HTMLElement[] | NodeListOf<HTMLElement> | undefined;
+  items?: HTMLElement[] | NodeListOf<HTMLElement>;
 
-  classNameJsActivate: string;
-  classNameJsDeactivate: string;
-  classNameJsToggle: string;
-
-  classNameJsActivateAll: string;
-  classNameJsDeactivateAll: string;
-  classNameJsToggleAll: string;
+  isTrigger: (element: HTMLElement) => boolean;
+  mapTriggerToAction: (trigger: HTMLElement) => PolyTriggerMap | false;
+  getIdFromItem: (item: HTMLElement) => string | false;
 
   conditionActivate: ConditionHook<PolyAction, PolyController>;
   conditionDeactivate: ConditionHook<PolyAction, PolyController>;
@@ -66,16 +64,46 @@ export const DEFAULT_CONFIG: PolyConfig = {
   deactivateAllOnOutsideAction: false,
   listenToKeydown: false,
 
-  itemsSelector: '.js-poly-item',
   items: undefined,
 
-  classNameJsActivate: 'js-poly-item-activate',
-  classNameJsDeactivate: 'js-poly-item-deactivate',
-  classNameJsToggle: 'js-poly-item-toggle',
-
-  classNameJsActivateAll: 'js-poly-item-activate-all',
-  classNameJsDeactivateAll: 'js-poly-item-deactivate-all',
-  classNameJsToggleAll: 'js-poly-item-toggle-all',
+  isTrigger: element => element.classList.contains('js-poly-item-trigger'),
+  mapTriggerToAction: trigger => {
+    if (trigger.dataset.action === 'activate') {
+      return {
+        trigger,
+        action: 'activate',
+        payload: trigger.dataset.target,
+      };
+    } else if (trigger.dataset.action === 'deactivate') {
+      return {
+        trigger,
+        action: 'deactivate',
+      };
+    } else if (trigger.dataset.action === 'toggle') {
+      return {
+        trigger,
+        action: 'toggle',
+        payload: trigger.dataset.target,
+      };
+    } else if (trigger.dataset.action === 'activate-all') {
+      return {
+        trigger,
+        action: 'activateAll',
+      };
+    } else if (trigger.dataset.action === 'deactivate-all') {
+      return {
+        trigger,
+        action: 'deactivateAll',
+      };
+    } else if (trigger.dataset.action === 'toggle-all') {
+      return {
+        trigger,
+        action: 'toggleAll',
+      };
+    }
+    return false;
+  },
+  getIdFromItem: item => typeof item.dataset.id === 'string' ? item.dataset.id : false,
 
   conditionActivate: (action, context) => true,
   conditionDeactivate: (action, context) => true,
@@ -101,30 +129,3 @@ export const DEFAULT_CONFIG: PolyConfig = {
   onOutsideAction: (context) => {},
   onKeydown: (event, context) => {},
 };
-
-export const POLY_ACTION_CONFIG_MAP: ActionConfigMapEntries = [
-  {
-    configProperty: 'classNameJsActivate',
-    action: 'activate',
-  },
-  {
-    configProperty: 'classNameJsDeactivate',
-    action: 'deactivate',
-  },
-  {
-    configProperty: 'classNameJsToggle',
-    action: 'toggle',
-  },
-  {
-    configProperty: 'classNameJsActivateAll',
-    action: 'activateAll',
-  },
-  {
-    configProperty: 'classNameJsDeactivateAll',
-    action: 'deactivateAll',
-  },
-  {
-    configProperty: 'classNameJsToggleAll',
-    action: 'toggleAll',
-  },
-];
