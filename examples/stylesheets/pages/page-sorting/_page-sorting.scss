@@ -1,5 +1,3 @@
-// Test this on Tim's iPhone and Android.
-
 .page-sorting {
   padding: space('large');
 
@@ -10,11 +8,13 @@
   }
 
   .sortableItem {
+    border-radius: px-to-rem(12);
     background-color: color('light');
     box-sizing: border-box;
     display: block;
     margin-bottom: space('medium');
     padding: space('medium');
+    cursor: pointer;
     user-select: none !important;
     z-index: 1;
 
@@ -48,6 +48,7 @@
     &.sortableItem--active {
       box-shadow: 0 0.5rem 3rem 0 hsla(220, 10, 5, 0.5);
       background-color: color('white');
+      cursor: grab;
     }
 
     &.sortableItem--dummy {

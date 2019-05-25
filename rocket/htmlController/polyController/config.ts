@@ -26,7 +26,7 @@ export interface PolyConfig {
 
   listenToKeydown: boolean;
 
-  items?: HTMLElement[] | NodeListOf<HTMLElement>;
+  items: NodeListOf<HTMLElement> | HTMLElement[];
 
   isTrigger: (element: HTMLElement) => boolean;
   mapTriggerToAction: (trigger: HTMLElement) => PolyTriggerMap | false;
@@ -64,7 +64,7 @@ export const DEFAULT_CONFIG: PolyConfig = {
   deactivateAllOnOutsideAction: false,
   listenToKeydown: false,
 
-  items: undefined,
+  items: [],
 
   isTrigger: element => element.classList.contains('js-poly-item-trigger'),
   mapTriggerToAction: trigger => {

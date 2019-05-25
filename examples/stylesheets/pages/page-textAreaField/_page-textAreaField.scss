@@ -1,0 +1,19 @@
+.page-textAreaField {
+  padding: space('medium');
+
+  .textareafield {
+    @extend %style-text-body;
+
+    box-shadow: 0 0 px-to-rem(40) hsla(220, 10, 50, 0.5);
+    border: 0;
+    border-radius: px-to-rem(8);
+    display: block;
+    padding: space('medium');
+    margin-bottom: space('medium');
+    resize: none;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}

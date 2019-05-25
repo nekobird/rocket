@@ -1,8 +1,0 @@
-@import 'main';
-
-.uiTextArea {
-  @extend %style_input_normalize;
-  padding: 20px;
-  width: 400px;
-  resize: none;
-}

@@ -11,13 +11,10 @@ export type MonoActionName = 'activate' | 'deactivate' | 'toggle';
 
 export interface MonoAction {
   name: MonoActionName;
-
   currentItem?: HTMLElement;
   currentItemId?: string;
-
   nextItem?: HTMLElement;
   nextItemId?: string;
-
   targetId?: string;
   trigger?: HTMLElement;
 }

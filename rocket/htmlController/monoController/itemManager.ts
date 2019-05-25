@@ -18,8 +18,6 @@ export class ItemManager {
     this.items = [];
   }
 
-  // @initialize
-
   public initialize(): this {
     this.loadItemsFromConfig();
     this.filterItems();
@@ -116,8 +114,6 @@ export class ItemManager {
     }
     return false;
   }
-
-  // @actions
 
   public activate(item: HTMLElement) {
     const { config } = this.controller;

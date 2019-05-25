@@ -25,7 +25,7 @@ export interface SequenceConfig {
 
   listenToKeydown: boolean;
 
-  items?: HTMLElement[] | NodeListOf<HTMLElement>;
+  items: NodeListOf<HTMLElement> | HTMLElement[];
 
   isTrigger: (element: HTMLElement) => boolean;
   mapTriggerToAction: (trigger: HTMLElement) => SequenceTriggerMap | false;
@@ -56,7 +56,7 @@ export const DEFAULT_CONFIG: SequenceConfig = {
 
   listenToKeydown: false,
 
-  items: undefined,
+  items: [],
 
   isTrigger: element => element.classList.contains('js-sequence-item-trigger'),
   mapTriggerToAction: trigger => {

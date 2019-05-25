@@ -166,19 +166,16 @@ export class TextAreaField {
 
   private handleKeydown = event => {
     const keyCode = event.keyCode;
-
     if (keyCode === 9) {
       this.insert('\t');
       event.preventDefault();
     }
-
     if (
       keyCode === 13
       && this.config.disableLineBreaks === true
     ) {
       event.preventDefault();
     }
-
     this.previousKeyCode = keyCode;
   }
 

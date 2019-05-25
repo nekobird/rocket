@@ -183,31 +183,26 @@ export class TextBoxModel {
     if (typeof this.modelElement === 'object') {
       Object.assign(this.modelElement.style, MODEL_ATTRIBUTES);
     }
-
     return this;
   }
 
   public applyBoxModelPropertiesFromElement(element: HTMLElement): this {
     const style = window.getComputedStyle(element);
-
     STYLE_PROPERTIES.forEach(name => {
       if (typeof this.modelElement === 'object') {
         this.modelElement.style[name] = style[name];
       }
     });
-
     return this;
   }
 
   public applyFontPropertiesFromElement(element: HTMLElement): this {
     const style = window.getComputedStyle(element);
-
     FONT_STYLE_PROPERTIES.forEach(name => {
       if (typeof this.modelElement === 'object') {
         this.modelElement.style[name] = style[name];
       }
     });
-
     return this;
   }
 
@@ -226,7 +221,6 @@ export class TextBoxModel {
       document.body.removeChild(this.modelElement);
       this.modelElement.remove();
     }
-
     return this;
   }
 }

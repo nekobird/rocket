@@ -26,7 +26,8 @@ export interface MonoConfig {
   listenToKeydown: boolean;
   deactivateOnOutsideAction: boolean;
   
-  items?: HTMLElement[] | NodeListOf<HTMLElement>;
+  // TODO: Maybe add string selector support.
+  items: NodeListOf<HTMLElement> | HTMLElement[];
 
   isTrigger: (element: HTMLElement) => boolean;
   mapTriggerToAction: (trigger: HTMLElement) => MonoTriggerMap | false;
@@ -58,7 +59,7 @@ export const DEFAULT_CONFIG: MonoConfig = {
   listenToKeydown: false,
   deactivateOnOutsideAction: true,
 
-  items: undefined,
+  items: [],
 
   isTrigger: element => element.classList.contains('js-mono-item-trigger'),
   mapTriggerToAction: trigger => {

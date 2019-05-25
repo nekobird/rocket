@@ -24,26 +24,6 @@ export class ItemManager {
     return this
   }
 
-  public setItems(items: HTMLElement[] | NodeListOf<HTMLElement> | string): this {
-    if (typeof items === 'string') {
-      const results: NodeListOf<HTMLElement> = document.querySelectorAll(items);
-      if (results !== null) {
-        this.items = Array.from(results);
-      }
-      return this;
-    }
-
-    if (NodeList.prototype.isPrototypeOf(items)) {
-      this.items = Array.from(<NodeListOf<HTMLElement>>items);
-      return this;
-    }
-
-    if (Array.isArray(items) === true) {
-      this.items = <HTMLElement[]>items;
-    }
-    return this;
-  }
-
   public loadItemsFromConfig(): this {
     const { config } = this.controller;
     if (
