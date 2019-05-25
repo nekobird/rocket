@@ -220,8 +220,8 @@ export class TextBoxModel {
 
   public destroy(): this {
     if (
-      typeof this.modelElement !== 'undefined' &&
-      this.modelElement.nodeType === 1
+      typeof this.modelElement !== 'undefined'
+      && this.modelElement.nodeType === 1
     ) {
       document.body.removeChild(this.modelElement);
       this.modelElement.remove();
