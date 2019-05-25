@@ -12,43 +12,6 @@ controller.setConfig({
   deactivateAllOnOutsideAction: false,
 
   isTrigger: element => element.classList.contains('js-item-trigger'),
-  mapTriggerToAction: trigger => {
-    if (trigger.dataset.action === 'activate') {
-      return {
-        trigger,
-        action: 'activate',
-        payload: trigger.dataset.target,
-      };
-    } else if (trigger.dataset.action === 'deactivate') {
-      return {
-        trigger,
-        action: 'deactivate',
-        payload: trigger.dataset.target,
-      };
-    } else if (trigger.dataset.action === 'toggle') {
-      return {
-        trigger,
-        action: 'toggle',
-        payload: trigger.dataset.target,
-      };
-    } else if (trigger.dataset.action === 'activate-all') {
-      return {
-        trigger,
-        action: 'activate-all',
-      };
-    } else if (trigger.dataset.action === 'deactivate-all') {
-      return {
-        trigger,
-        action: 'deactivate-all',
-      };
-    } else if (trigger.dataset.action === 'toggle-all') {
-      return {
-        trigger,
-        action: 'toggle-all',
-      };
-    }
-    return false;
-  },
 
   itemIsActive: item => item.classList.contains('item--active'),
   activateItem: item => item.classList.add('item--active'),

@@ -10,27 +10,6 @@ controller.setConfig({
   items,
 
   isTrigger: element => element.classList.contains('js-item-trigger'),
-  mapTriggerToAction: trigger => {
-    if (trigger.dataset.action === 'activate') {
-      return {
-        trigger,
-        action: 'activate',
-        payload: trigger.dataset.target,
-      };
-    } else if (trigger.dataset.action === 'deactivate') {
-      return {
-        trigger,
-        action: 'deactivate',
-      };
-    } else if (trigger.dataset.action === 'toggle') {
-      return {
-        trigger,
-        action: 'toggle',
-        payload: trigger.dataset.target,
-      };
-    }
-    return false;
-  },
 
   itemIsActive: item => item.classList.contains('item--active'),
   activateItem: item => item.classList.add('item--active'),
