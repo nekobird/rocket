@@ -32,8 +32,6 @@ export class ActionManager {
     this.controller = controller;
   }
 
-  // 2) Complete Action
-
   private async activate(action: MonoAction): Promise<void> {
     const { config, itemManager } = this.controller;
     if (
@@ -92,19 +90,14 @@ export class ActionManager {
     return Promise.reject();
   }
 
-  // Create & Compose Action
-
   public createAction(actionName: MonoActionName): MonoAction {
     const { itemManager } = this.controller;
     return {
       name: actionName,
-
       currentItem: itemManager.activeItem,
       currentItemId: itemManager.activeItemId,
-
       nextItem: undefined,
       nextItemId: undefined,
-
       targetId: undefined,
       trigger: undefined,
     };
@@ -112,9 +105,7 @@ export class ActionManager {
 
   public composeAction(actionName: MonoActionName, id?: string): MonoAction {
     const { itemManager } = this.controller;
-
     const action: MonoAction = this.createAction(actionName);
-
     if (typeof id === 'string') {
       const nextItem: HTMLElement | false = itemManager.getItemFromId(id);
       if (typeof nextItem === 'object') {
@@ -131,8 +122,6 @@ export class ActionManager {
     action.trigger = trigger;
     return action;
   }
-
-  // 1) Action Hub
 
   public async actionHub(action: MonoAction, isNestedAction: boolean = false, callback?: Function): Promise<void> {
     if (
@@ -191,14 +180,12 @@ export class ActionManager {
         );
       });
     }
-
     if (
       this.isRunning === false
       && this.isNested === true
     ) {
       this.isNested = false;
     }
-
     if (typeof callback === 'function') {
       callback();
     }

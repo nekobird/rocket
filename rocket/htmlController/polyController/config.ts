@@ -105,27 +105,27 @@ export const DEFAULT_CONFIG: PolyConfig = {
   },
   getItemId: item => typeof item.dataset.id === 'string' ? item.dataset.id : false,
 
-  conditionActivate: (action, context) => true,
-  conditionDeactivate: (action, context) => true,
-  conditionToggle: (action, context) => true,
+  conditionActivate: () => true,
+  conditionDeactivate: () => true,
+  conditionToggle: () => true,
 
-  conditionActivateAll: (action, context) => true,
-  conditionDeactivateAll: (action, context) => true,
-  conditionToggleAll: (action, context) => true,
+  conditionActivateAll: () => true,
+  conditionDeactivateAll: () => true,
+  conditionToggleAll: () => true,
 
-  beforeDeactivate: (action, context) => Promise.resolve(),
-  afterDeactivate: (action, context) => Promise.resolve(),
+  beforeDeactivate: () => Promise.resolve(),
+  afterDeactivate: () => Promise.resolve(),
 
   itemIsActive: item => item.classList.contains('js-poly-item--active'),
   activateItem: item => item.classList.add('js-poly-item--active'),
   deactivateItem: item => item.classList.remove('js-poly-item--active'),
 
-  beforeActivate: (action, context) => Promise.resolve(),
-  afterActivate: (action, context) => Promise.resolve(),
+  beforeActivate: () => Promise.resolve(),
+  afterActivate: () => Promise.resolve(),
 
-  beforeAction: (action, context) => Promise.resolve(),
-  afterAction: (action, context) => Promise.resolve(),
+  beforeAction: () => Promise.resolve(),
+  afterAction: () => Promise.resolve(),
   
-  onOutsideAction: (context) => {},
-  onKeydown: (event, context) => {},
+  onOutsideAction: () => {},
+  onKeydown: () => {},
 };

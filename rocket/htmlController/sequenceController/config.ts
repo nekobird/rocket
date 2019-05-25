@@ -81,22 +81,22 @@ export const DEFAULT_CONFIG: SequenceConfig = {
   },
   getItemId: item => typeof item.dataset.id === 'string' ? item.dataset.id : false,
 
-  conditionPrevious: (action, context) => true,
-  conditionNext: (action, context) => true,
-  conditionJump: (action, context) => true,
+  conditionPrevious: () => true,
+  conditionNext: () => true,
+  conditionJump: () => true,
 
-  beforeDeactivate: (action, context) => Promise.resolve(),
-  beforeActivate: (action, context) => Promise.resolve(),
+  beforeDeactivate: () => Promise.resolve(),
+  beforeActivate: () => Promise.resolve(),
 
   itemIsActive: item => item.classList.contains('js-sequence-item--active'),
   activateItem: item => item.classList.add('js-sequence-item--active'),
   deactivateItem: item => item.classList.remove('js-sequence-item--active'),
 
-  afterDeactivate: (action, context) => Promise.resolve(),
-  afterActivate: (action, context) => Promise.resolve(),
+  afterDeactivate: () => Promise.resolve(),
+  afterActivate: () => Promise.resolve(),
 
-  beforeAction: (action, context) => Promise.resolve(),
-  afterAction: (action, context) => {},
+  beforeAction: () => Promise.resolve(),
+  afterAction: () => {},
 
-  onKeydown: (event, context) => {},
+  onKeydown: () => {},
 };

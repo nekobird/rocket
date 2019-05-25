@@ -6,8 +6,8 @@ import {
 } from '../index';
 
 import {
-  MonoActionName,
   MonoAction,
+  MonoActionName,
 } from './actionManager';
 
 import {
@@ -84,26 +84,22 @@ export const DEFAULT_CONFIG: MonoConfig = {
   },
   getItemId: item => typeof item.dataset.id === 'string' ? item.dataset.id : false,
 
-  conditionActivate: (action, context) => true,
-  conditionDeactivate: (action, context) => true,
+  conditionActivate: () => true,
+  conditionDeactivate: () => true,
 
-  beforeActivate: (action, context) => Promise.resolve(),
-  beforeDeactivate: (action, context) => Promise.resolve(),
+  beforeActivate: () => Promise.resolve(),
+  beforeDeactivate: () => Promise.resolve(),
 
   itemIsActive: item => item.classList.contains('js-mono-item--active'),
-  activateItem: (item: HTMLElement, context: MonoController) => {
-    item.classList.add('js-mono-item--active');
-  },
-  deactivateItem: (item: HTMLElement, context: MonoController) => {
-    item.classList.remove('js-mono-item--active');
-  },
+  activateItem: item => item.classList.add('js-mono-item--active'),
+  deactivateItem: item => item.classList.remove('js-mono-item--active'),
 
-  afterActivate: (action, context) => Promise.resolve(),
-  afterDeactivate: (action, context) => Promise.resolve(),
+  afterActivate: () => Promise.resolve(),
+  afterDeactivate: () => Promise.resolve(),
 
-  beforeAction: (action, context) => Promise.resolve(),
-  afterAction: (action, context) => {},
+  beforeAction: () => Promise.resolve(),
+  afterAction: () => {},
 
-  onKeydown: (event, context) => {},
-  onOutsideAction: (context) => {},
+  onKeydown: () => {},
+  onOutsideAction: () => {},
 };
