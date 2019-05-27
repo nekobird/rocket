@@ -42,6 +42,9 @@ export * from './color/color';
 // @dragEventManager
 export * from './dragEventManager/dragEventManager';
 
+// @scroll
+export * from './scroll/scrollTriggerManager';
+
 // @text
 export * from './text/textBoxModel';
 
