@@ -8,15 +8,13 @@ import {
 } from './polyController';
 
 export type PolyActionName =
-  'activate' | 'activate-all' | 'deactivate' |
-  'deactivate-all' | 'toggle' | 'toggle-all';
+  'activate' | 'activate-all' | 'deactivate'
+  | 'deactivate-all' | 'toggle' | 'toggle-all';
 
 export interface PolyAction {
   name: PolyActionName;
-
   targetItem?: HTMLElement;
   targetId?: string;
-
   trigger?: HTMLElement;
 }
 
@@ -29,8 +27,6 @@ export class ActionManager {
   constructor(controller: PolyController) {
     this.controller = controller;
   }
-
-  // 5) Handle actions
 
   private activateItem({ targetItem }: PolyAction) {
     if (typeof targetItem === 'object') {
@@ -183,8 +179,6 @@ export class ActionManager {
     }
   }
 
-  // Compose & Create Action
-
   private createAction(actionName: PolyActionName): PolyAction {
     return { name: actionName };
   }
@@ -212,8 +206,6 @@ export class ActionManager {
     }
     return this.composeAction(triggerMap.action);
   }
-
-  // 1) Action Hub
 
   public async actionHub(action: PolyAction, isNestedAction: boolean = false, callback?: Function): Promise<void> {
     if (

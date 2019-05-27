@@ -20,9 +20,9 @@ export interface StackUpItem {
   item: HTMLElement;
   height: number;
   left: number;
-  top : number;
+  top: number;
   currentLeft: number;
-  currentTop : number;
+  currentTop: number;
   requireMove: boolean;
 }
 
@@ -152,8 +152,8 @@ export class StackUp {
 
   private eventHandlerResizeComplete = (): void => {
     if (
-      this.calculateNumberOfColumns() !== this.numberOfColumns &&
-      this.config.isFluid === true
+      this.calculateNumberOfColumns() !== this.numberOfColumns
+      && this.config.isFluid === true
     ) {
       this.restack();
     }
