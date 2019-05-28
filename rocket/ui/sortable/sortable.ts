@@ -125,14 +125,14 @@ export class Sortable {
       this.isActive === false
       && typeof this.targetItem !== 'undefined'
     ) {
-      this.disableEventsOnActivate();
+      this.config.beforeActivate(this);
 
+      this.disableEventsOnActivate();
       this.isActive = true;
       this.activeItem = this.targetItem;
       this.activeIdentifier = identifier.toString();
 
       this.disableActiveItemEventsOnActivate();
-      this.config.beforeActivate(this);
 
       this.config.activateItem(<HTMLElement>this.activeItem, this);
       this.updateInitialActiveItemOffset(downData);
