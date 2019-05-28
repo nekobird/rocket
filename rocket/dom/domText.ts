@@ -35,7 +35,7 @@ export class DOMText {
         const wordLength = words[index].length + 1;
         textCopy = textCopy.substring(0, textCopy.length - wordLength);
         temp.textContent = textCopy;
-        lastLine.push(words[index]);
+        lastLine.unshift(words[index]);
         if (temp.clientHeight < startingHeight) {
           break;
         } else {
