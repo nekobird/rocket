@@ -21,7 +21,6 @@ export class Num {
     return number;
   }
 
-  // Range can be a number or an array with two numbers [0, 10].
   static cycle(number: number, range: number | [number, number]): number {
     if (typeof range === 'number') {
       range = [0, range];
