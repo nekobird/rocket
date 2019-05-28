@@ -1,4 +1,5 @@
 import {
+  DOMText,
   TextScaleModel,
 } from '../../rocket/rocket';
 
@@ -13,3 +14,6 @@ items.forEach(item => {
   model.initialize();
   model.optimize();
 });
+
+const lastLineElement = document.querySelector('.last-line');
+console.log(DOMText.getLastLine(<HTMLElement>lastLineElement));

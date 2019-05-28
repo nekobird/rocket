@@ -4,6 +4,7 @@ export * from './core/util';
 export * from './core/stringUtil';
 
 // @dom
+export * from './dom/domText';
 export * from './dom/domUtil';
 export * from './dom/domTraverse';
 export * from './dom/domStyle';
