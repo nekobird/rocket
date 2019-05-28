@@ -20,7 +20,8 @@
     "buildExamples": "parcel build ./examples/index.html --public-url ./",
     "prepare": "npm run build",
     "documentation": "parcel ./documentation/index.html",
-    "examples": "parcel ./examples/index.html"
+    "examples": "parcel ./examples/index.html",
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
@@ -29,8 +30,11 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-typescript": "^7.3.3",
+    "@types/jest": "^24.0.13",
+    "jest": "^24.8.0",
     "posthtml-include": "^1.2.0",
     "sass": "^1.20.1",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.4.5"
   },
   "dependencies": {
