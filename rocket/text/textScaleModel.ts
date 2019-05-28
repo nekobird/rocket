@@ -60,26 +60,30 @@ export class TextScaleModel {
       const text = DOMUtil.getTextFromElement(this.element);
       this.originalWidth = this.element.offsetWidth - DOMStyle.getTotalHorizontalSpacing(this.element);
       let modelWidth = 0;
-      let currentFontSize = this.config.maxFontSize;
+      let modelFontSize = this.config.minFontSize;
       while (true) {
-        console.log(`modelWidth = ${modelWidth}`);
-        console.log(`originalWidth = ${this.originalWidth}`);
-        console.log(currentFontSize);
-        modelWidth = this.model.getTextBoxWidthFromElement(this.element, text, { fontSize: `${currentFontSize}px` });
-        console.log(`afterWidth = ${modelWidth}`);
-        console.log('_____');
-        if (modelWidth <= this.originalWidth) {
+        modelWidth = this.model.getTextBoxWidthFromElement(this.element, text, { fontSize: `${modelFontSize}px` });
+        if (modelWidth >= this.originalWidth) {
+          while(true) {
+            modelFontSize -= this.config.increment;
+            if (modelFontSize <= this.config.minFontSize) {
+              modelFontSize = this.config.minFontSize;
+              break;
+            }
+            modelWidth = this.model.getTextBoxWidthFromElement(this.element, text, { fontSize: `${modelFontSize}px` });
+            if (modelWidth <= this.originalWidth) {
+              break;
+            }
+          }
           break;
         }
-        currentFontSize -= this.config.increment;
-
-        if (currentFontSize <= this.config.minFontSize) {
-          currentFontSize = this.config.minFontSize;
+        modelFontSize += this.config.increment;
+        if (modelFontSize >= this.config.maxFontSize) {
+          modelFontSize = this.config.maxFontSize;
           break;
         }
       }
-      // console.log(currentFontSize);
-      this.config.setFontSize(this.element, currentFontSize, this);
+      this.config.setFontSize(this.element, modelFontSize, this);
     }
   }
 }
