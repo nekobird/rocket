@@ -19,7 +19,6 @@ export class EventManager {
 
   public initialize() {
     const { config } = this.sortable;
-
     this.dragEventManager.setConfig({
       enableDownRepeater: true,
       downRepeaterDelay: 1 / 60,
@@ -53,9 +52,7 @@ export class EventManager {
 
   public eventCondition = event => {
     const { itemManager } = this.sortable;
-
     const item = this.getTargetItemFromDownEvent(event);
-
     if (
       item !== false
       && typeof itemManager.items === 'object'
@@ -74,12 +71,10 @@ export class EventManager {
 
   private handleOnDown = (event, manager) => {
     const { config, targetItem } = this.sortable;
-
     config.onDown(
       <HTMLElement>targetItem, event,
       manager, this.sortable
     );
-
     if (config.activateOnLongPress === false) {
       this.sortable.activate(event);
     }
@@ -87,12 +82,10 @@ export class EventManager {
 
   private handleOnLongPress = (event, manager) => {
     const { config, targetItem } = this.sortable;
-
     config.onLongPress(
       <HTMLElement>targetItem, event,
       manager, this.sortable
     );
-
     if (
       config.activateOnLongPress === true
       && event.previousEvent !== 'drag'
@@ -103,12 +96,10 @@ export class EventManager {
 
   public handleOnDrag = (event, manager) => {
     const { config, targetItem, isActive, activeIdentifier } = this.sortable;
-
     config.onDrag(
       <HTMLElement>targetItem, event,
       manager, this.sortable
     );
-
     if (
       isActive === true
       && activeIdentifier === event.identifier.toString()
@@ -120,12 +111,10 @@ export class EventManager {
 
   public handleOnUp = (event, manager) => {
     const { config, targetItem, isActive, activeIdentifier } = this.sortable;
-
     config.onUp(
       <HTMLElement>targetItem, event,
       manager, this.sortable
     );
-
     if (
       isActive === true
       && activeIdentifier === event.identifier.toString()
@@ -137,12 +126,10 @@ export class EventManager {
 
   private handleOnCancel = (event, manager) => {
     const { config, targetItem, isActive, activeIdentifier } = this.sortable;
-
     config.onCancel(
       <HTMLElement>targetItem, event,
       manager, this.sortable
     );
-
     if (
       isActive === true
       && activeIdentifier === event.identifier.toString()
@@ -153,7 +140,6 @@ export class EventManager {
 
   private handleOnActive = (event, manager) => {
     const { config, isActive, activeIdentifier } = this.sortable;
-
     if (
       isActive === true
       && activeIdentifier === event.identifier.toString()

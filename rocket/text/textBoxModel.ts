@@ -1,6 +1,6 @@
 import {
-  DOMUtil,
   DOMStyle,
+  DOMUtil,
 } from '../rocket';
 
 const MODEL_ATTRIBUTES = {

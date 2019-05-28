@@ -105,20 +105,16 @@ export class Num {
     if (typeof from === 'number') {
       from = [0, from];
     }
-
     if (typeof to === 'number') {
       to = [0, to];
     }
-
     const percent: number = (number - from[0]) / (from[1] - from[0]);
     let result: number;
-
     if (to[1] > to[0]) {
       result = percent * (to[1] - to[0]) + to[0];
     } else {
       result = to[0] - (percent * (to[0] - to[1]));
     }
-
     return constrain === true ? Num.constrain(result, to) : result;
   }
 
@@ -142,13 +138,8 @@ export class Num {
     }
   }
 
-  // Numbers are array
   static sum(numbers: number[]): number {
-    let sum: number = 0;
-    numbers.forEach(number => {
-      sum += number;
-    });
-    return sum;
+    return numbers.reduce((previous, current) => previous + current);
   }
 
   static within(number: number, range: number | [number, number]): boolean {

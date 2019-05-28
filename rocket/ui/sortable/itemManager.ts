@@ -3,7 +3,6 @@ import {
 } from './sortable';
 
 export class ItemManager {
-
   public sortable: Sortable;
 
   public group?: HTMLElement;

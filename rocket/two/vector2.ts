@@ -507,7 +507,7 @@ export class Vector2 {
     return Math.min(b1, b2);
   }
 
-  // TRIANGLE
+  // @triangle
 
   static getBasePointOfTriangle(v1: Point, v2: Point, v3: Point): Vector2 {
     const a1: number = v1.getAngleTo(v3);

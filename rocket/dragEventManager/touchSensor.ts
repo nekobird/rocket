@@ -83,4 +83,4 @@ export class TouchSensor {
     this.manager.config.parent.removeEventListener('touchend', this.eventHandlerTouchEnd);
     this.manager.config.parent.removeEventListener('touchcancel', this.eventHandlerTouchCancel);
   }
-} 
+}

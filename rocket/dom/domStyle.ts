@@ -16,7 +16,7 @@ export class DOMStyle {
     this.copyStylesFrom(
       element,
       ['fontSize', 'fontFamily', 'lineHeight'],
-      temp
+      temp,
     );
     let result: number;
     if (element.parentNode !== null) {

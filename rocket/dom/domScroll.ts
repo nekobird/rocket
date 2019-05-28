@@ -11,11 +11,11 @@ export interface ScrollTo {
 export class DOMScroll {
 
   public static getScrollLeftToElements(elements: HTMLElement | HTMLElement[]): number {
-    let left: number = 0;
+    let left = 0;
     if (Array.isArray(elements) === true) {
       const rect = DOMRect.getRectFromElements(elements);
       if (rect !== false) {
-        left = rect.left
+        left = rect.left;
       }
     } else {
       left = (<HTMLElement>elements).getBoundingClientRect().left;
@@ -24,11 +24,11 @@ export class DOMScroll {
   }
 
   public static getScrollTopToElements(elements: HTMLElement | HTMLElement[]): number {
-    let top: number = 0;
+    let top = 0;
     if (Array.isArray(elements) === true) {
       const rect = DOMRect.getRectFromElements(elements);
       if (rect !== false) {
-        top = rect.top
+        top = rect.top;
       }
     } else {
       top = (<HTMLElement>elements).getBoundingClientRect().top;
@@ -37,13 +37,13 @@ export class DOMScroll {
   }
 
   public static getScrollLeftToElementsCenterFrame(elements: HTMLElement | HTMLElement[]): number {
-    let left: number = 0;
-    let width: number = 0;
+    let left = 0;
+    let width = 0;
     if (Array.isArray(elements) === true) {
       const rect = DOMRect.getRectFromElements(elements);
       if (rect !== false) {
-        left = rect.left
-        width = (<HTMLElement>elements).offsetWidth
+        left = rect.left;
+        width = (<HTMLElement>elements).offsetWidth;
       }
     } else {
       let rect = (<HTMLElement>elements).getBoundingClientRect();
@@ -54,8 +54,8 @@ export class DOMScroll {
   }
 
   public static getScrollTopToElementsCenterFrame(elements: HTMLElement | HTMLElement[]): number {
-    let top: number = 0;
-    let height: number = 0;
+    let top = 0;
+    let height = 0;
     if (Array.isArray(elements) === true) {
       const rect = DOMRect.getRectFromElements(elements);
       if (rect !== false) {

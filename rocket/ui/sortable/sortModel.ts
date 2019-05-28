@@ -67,7 +67,7 @@ export class SortModel {
   }
 
   public getClosestItemTopBottom() {
-    const { activeItem } = this.sortable;
+    let { activeItem } = this.sortable;
     for (let i = 0; i < this.items.length; i++) {
       activeItem = this.items[i].top
     }

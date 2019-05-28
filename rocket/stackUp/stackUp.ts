@@ -15,7 +15,6 @@ import {
   StackUpLayout,
 } from './stackUpLayout';
 
-// [index][item, itemHeight, left, top]
 export interface StackUpItem {
   item: HTMLElement;
   height: number;

@@ -76,9 +76,7 @@ export class Sortable {
 
   // @event_handler
 
-  public preventDefault = event => {
-    event.preventDefault();
-  }
+  public preventDefault = event => event.preventDefault();
 
   // @events
 
@@ -134,10 +132,12 @@ export class Sortable {
       this.activeIdentifier = identifier.toString();
 
       this.disableActiveItemEventsOnActivate();
+      this.config.beforeActivate(this);
 
       this.config.activateItem(<HTMLElement>this.activeItem, this);
-
       this.updateInitialActiveItemOffset(downData);
+
+      this.config.afterActivate(this);
     }
   }
 
@@ -233,6 +233,7 @@ export class Sortable {
       && typeof this.activeItem === 'object'
       && this.groupElement !== false
     ) {
+      this.config.beforeDeactivate(this);
       this.config.deactivateItem(this.activeItem, this);
       this.config.unpopItem(this.activeItem, this.groupElement, this);
 
@@ -256,7 +257,7 @@ export class Sortable {
       this.activeItemPointOffset = undefined;
 
       this.enableEventsOnDeactivate();
-
+      this.config.afterDeactivate(this);
       this.config.onComplete(this);
     }
   }
