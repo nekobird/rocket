@@ -144,4 +144,18 @@ export class DOMStyle {
     const computedStyle = getComputedStyle(element);
     return parseFloat(computedStyle.transitionDuration) * 1000;
   }
+
+  public static getTotalHorizontalSpacing(element: HTMLElement): number {
+    if (this.getStyleValue(element, 'box-sizing') === 'border-box') {
+      return this.getHorizontalPaddings(element) + this.getHorizontalBorderWidths(element);
+    }
+    return this.getHorizontalPaddings(element);
+  }
+
+  public static getTotalVerticalSpacing(element: HTMLElement): number {
+    if (this.getStyleValue(element, 'box-sizing') === 'border-box') {
+      return this.getVerticalPaddings(element) + this.getVerticalBorderWidths(element);
+    }
+    return this.getVerticalPaddings(element);
+  }
 }

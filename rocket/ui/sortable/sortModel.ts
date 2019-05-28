@@ -56,8 +56,9 @@ export class SortModel {
 
       // Check if its first item.
       if (activeItem.getBoundingClientRect().top <= this.items[0].top + this.items[0].item.offsetHeight / 2) {
-
+        // Disable further scrolling.
       }
+
 
       // Check if it's last item.
       if (activeItem.getBoundingClientRect().bottom >= this.items[this.items.length - 1].top + this.items[0].item.offsetHeight / 2) {

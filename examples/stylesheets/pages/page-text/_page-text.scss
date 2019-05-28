@@ -1,0 +1,10 @@
+.scale-text {
+  @extend %style-text-body;
+
+  border: px-to-rem(1) solid color('black');
+  padding: space('medium');
+  max-width: 200px;
+  box-sizing: border-box;
+  line-height: 24px;
+  margin-bottom: space('medium');
+}
