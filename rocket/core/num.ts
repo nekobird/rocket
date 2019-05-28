@@ -11,8 +11,8 @@ export class Num {
     if (typeof range === 'number') {
       range = [0, range];
     }
-    const max: number = Math.max(range[0], range[1]);
-    const min: number = Math.min(range[0], range[1]);
+    const max = Math.max(range[0], range[1]);
+    const min = Math.min(range[0], range[1]);
     if (number >= max) {
       return max;
     } else if (number <= min) {
@@ -37,7 +37,7 @@ export class Num {
       return 0;
     }
 
-    const da: number = this.getNumberLineDistance(min, max);
+    const da = this.getNumberLineDistance(min, max);
     let db: number;
     let c: number;
 
@@ -59,8 +59,8 @@ export class Num {
     if (a === b) {
       return 0;
     }
-    const min: number = Math.min(a, b);
-    const max: number = Math.max(a, b);
+    const min = Math.min(a, b);
+    const max = Math.max(a, b);
     if (min >= 0 && max > 0) {
       return max - min;
     } else if (min < 0 && max > 0) {
@@ -108,7 +108,7 @@ export class Num {
     if (typeof to === 'number') {
       to = [0, to];
     }
-    const percent: number = (number - from[0]) / (from[1] - from[0]);
+    const percent = (number - from[0]) / (from[1] - from[0]);
     let result: number;
     if (to[1] > to[0]) {
       result = percent * (to[1] - to[0]) + to[0];

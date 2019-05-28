@@ -21,7 +21,7 @@ export class Util {
   }
 
   static cycle<A>(array: A[]): Function {
-    let index: number = -1;
+    let index = -1;
     return () => {
       index++;
       if (index > array.length - 1) {

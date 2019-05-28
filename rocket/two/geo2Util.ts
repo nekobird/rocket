@@ -54,12 +54,12 @@ export class Geo2Util {
       return false;
     }
 
-    let ix: number = 0;
-    let iy: number = 0;
+    let ix = 0;
+    let iy = 0;
 
     // Get slope.
-    let m1: number | false = Geo2Util.getSlopeOfLine(ls1, le1);
-    let m2: number | false = Geo2Util.getSlopeOfLine(ls2, le2);
+    let m1 = Geo2Util.getSlopeOfLine(ls1, le1);
+    let m2 = Geo2Util.getSlopeOfLine(ls2, le2);
 
     let yi1;
     let yi2;

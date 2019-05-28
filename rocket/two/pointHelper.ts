@@ -14,7 +14,7 @@ export class PointHelper {
   }
 
   public static isEqual(point: Point, ...points: Point[]): boolean {
-    let isEqual: boolean = true;
+    let isEqual = true;
     points.forEach(_point => {
       if (
         point.x !== _point.x
@@ -27,8 +27,8 @@ export class PointHelper {
   }
 
   public static round(point: Point, to: number = 0, mutate: boolean = false): Point {
-    const x: number = parseFloat(point.x.toFixed(to));
-    const y: number = parseFloat(point.y.toFixed(to));
+    const x = parseFloat(point.x.toFixed(to));
+    const y = parseFloat(point.y.toFixed(to));
     if (mutate === true) {
       point.x = x;
       point.y = y;
@@ -38,8 +38,8 @@ export class PointHelper {
   }
 
   public static absolute(point: Point, mutate: boolean = false): Point {
-    const x: number = Math.abs(point.x);
-    const y: number = Math.abs(point.y);
+    const x = Math.abs(point.x);
+    const y = Math.abs(point.y);
     if (mutate === true) {
       point.x = x;
       point.y = y;
@@ -49,8 +49,8 @@ export class PointHelper {
   }
 
   public static add(point1: Point, point2: Point, mutate: boolean = false): Point {
-    const x: number = point1.x + point2.x;
-    const y: number = point1.y + point2.y;
+    const x = point1.x + point2.x;
+    const y = point1.y + point2.y;
     if (mutate === true) {  
       point1.x = x;
       point1.y = y;
@@ -60,8 +60,8 @@ export class PointHelper {
   }
 
   public static subtract(point: Point, by: Point, mutate: boolean = false): Point {
-    const x: number = point.x - by.x;
-    const y: number = point.y - by.y;
+    const x = point.x - by.x;
+    const y = point.y - by.y;
     if (mutate === true) {  
       point.x = x;
       point.y = y;
@@ -71,8 +71,8 @@ export class PointHelper {
   }
 
   public static multiply(point: Point, by: Point, mutate: boolean = false): Point {
-    const x: number = point.x * by.x;
-    const y: number = point.y * by.y;
+    const x = point.x * by.x;
+    const y = point.y * by.y;
     if (mutate === true) {
       point.x = x;
       point.y = y;
@@ -85,8 +85,8 @@ export class PointHelper {
     if (by.x === 0 || by.y === 0) {
       return undefined;
     }
-    const x: number = point.x / by.x;
-    const y: number = point.y / by.y;
+    const x = point.x / by.x;
+    const y = point.y / by.y;
     if (mutate === true) {
       point.x = x;
       point.y = y;
@@ -100,10 +100,10 @@ export class PointHelper {
   }
 
   public static normalize(point: Point, mutate: boolean = false): Point {
-    let mag: number = Math.abs(PointHelper.magnitude(point));
+    let mag = Math.abs(PointHelper.magnitude(point));
     mag = mag === 0 ? 1 : mag;
-    const x: number = point.x / mag;
-    const y: number = point.y / mag;
+    const x = point.x / mag;
+    const y = point.y / mag;
     if (mutate === true) {
       point.x = x;
       point.y = y;
@@ -113,13 +113,13 @@ export class PointHelper {
   }
 
   public static getDistanceTo(from: Point, to: Point): number {
-    const difference: Point = PointHelper.subtract(from, to, true);
+    const difference = PointHelper.subtract(from, to, true);
     return PointHelper.magnitude(difference);
   }
 
   public static getMidPointBetween(a: Point, b: Point): Point {
-    let x: number = a.x - b.x;
-    let y: number = a.y - b.y;
+    let x = a.x - b.x;
+    let y = a.y - b.y;
     x /= 2;
     y /= 2;
     x += b.x;
@@ -128,8 +128,8 @@ export class PointHelper {
   }
 
   public static lerp(from: Point, to: Point, time: number, mutate: boolean = false): Point {
-    const x: number = Num.modulate(time, 1, [from.x, to.x], false);
-    const y: number = Num.modulate(time, 1, [from.y, to.y], false);
+    const x = Num.modulate(time, 1, [from.x, to.x], false);
+    const y = Num.modulate(time, 1, [from.y, to.y], false);
     if (mutate === true) {
       from.x = x;
       from.y = y;

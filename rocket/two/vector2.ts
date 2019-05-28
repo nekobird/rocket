@@ -85,7 +85,7 @@ export class Vector2 {
     return this;
   }
 
-  // ADD
+  // @add
 
   public add(point: Point): this {
     this.x += point.x;
@@ -111,7 +111,7 @@ export class Vector2 {
     return this;
   }
 
-  // SUBTRACT
+  // @subtract
 
   public subtract(point: Point): this {
     this.x -= point.x;
@@ -137,7 +137,7 @@ export class Vector2 {
     return this;
   }
 
-  // MULTIPLY
+  // @multiply
 
   public multiply(by: number): this {
     this.x *= by;
@@ -155,7 +155,7 @@ export class Vector2 {
     return this;
   }
 
-  // DIVIDE
+  // @divide
 
   public divide(by: number): this {
     by = by === 0 ? 1 : by;
@@ -187,7 +187,7 @@ export class Vector2 {
   }
 
   public normalize(): this {
-    let mag: number = Math.abs(this.magnitude);
+    let mag = Math.abs(this.magnitude);
     mag = mag === 0 ? 1 : mag;
     this.x /= mag;
     this.y /= mag;
@@ -200,13 +200,13 @@ export class Vector2 {
       .magnitude;
   }
 
-  // Angle
+  // @angle
 
   get angle() {
-    let m: number = Math.abs(
+    let m = Math.abs(
       Math.sqrt(this.x * this.x + this.y * this.y)
     );
-    let angle: number = Math.acos(this.x / m);
+    let angle = Math.acos(this.x / m);
     if (this.y < 0) {
       angle = Math.PI + (Math.PI - angle);
     }
@@ -214,12 +214,12 @@ export class Vector2 {
   }
 
   public getAngleFrom(from: Point): number {
-    const x: number = (this.x - from.x);
-    const y: number = (this.y - from.y);
-    const m: number = Math.abs(
+    const x = (this.x - from.x);
+    const y = (this.y - from.y);
+    const m = Math.abs(
       Math.sqrt(x * x + y * y)
     );
-    let angle: number = Math.acos(x / m);
+    let angle = Math.acos(x / m);
     if (y < 0) {
       angle = Math.PI + (Math.PI - angle);
     }
@@ -227,23 +227,23 @@ export class Vector2 {
   }
 
   public getAngleTo(to: Point): number {
-    const x: number = (to.x - this.x);
-    const y: number = (to.y - this.y);
-    const m: number = Math.abs(
+    const x = (to.x - this.x);
+    const y = (to.y - this.y);
+    const m = Math.abs(
       Math.sqrt(x * x + y * y)
     );
-    let angle: number = Math.acos(x / m);
+    let angle = Math.acos(x / m);
     if (y < 0) {
       angle = Math.PI + (Math.PI - angle);
     }
     return angle;
   }
 
-  // ROTATE
+  // @rotate
 
   public rotateBy(by: number): this {
-    const angle: number = this.angle + by;
-    const m: number = Math.abs(
+    const angle = this.angle + by;
+    const m = Math.abs(
       Math.sqrt(this.x * this.x + this.y * this.y)
     );
     this.x = Math.cos(angle) * m;
@@ -253,7 +253,7 @@ export class Vector2 {
 
   public rotateTo(angle: number): this {
     angle = Num.cycle(angle, Math.PI * 2);
-    const m: number = Math.abs(
+    const m = Math.abs(
       Math.sqrt(this.x * this.x + this.y * this.y)
     );
     this.x = Math.cos(angle) * m;
@@ -263,16 +263,16 @@ export class Vector2 {
 
   public rotateByFrom(by: number, from: Point): this {
     by = Num.cycle(by, Math.PI * 2);
-    const x: number = this.x - from.x;
-    const y: number = this.y - from.y;
-    const m: number = Math.abs(
+    const x = this.x - from.x;
+    const y = this.y - from.y;
+    const m = Math.abs(
       Math.sqrt(x * x + y * y)
     );
-    let a: number = Math.acos(x / m);
+    let a = Math.acos(x / m);
     if (y < 0) {
       a = Math.PI + (Math.PI - a);
     }
-    const finalAngle: number = Num.cycle(a + by, Math.PI * 2);
+    const finalAngle = Num.cycle(a + by, Math.PI * 2);
     this.x = from.x + Math.cos(finalAngle) * m;
     this.y = from.y + Math.sin(finalAngle) * m;
     return this;
@@ -280,9 +280,9 @@ export class Vector2 {
 
   public rotateToFrom(to: number, from: Point): this {
     to = Num.cycle(to, Math.PI * 2);
-    const x: number = this.x - from.x;
-    const y: number = this.y - from.y;
-    const m: number = Math.abs(
+    const x = this.x - from.x;
+    const y = this.y - from.y;
+    const m = Math.abs(
       Math.sqrt(x * x + y * y)
     );
     this.x = from.x + Math.cos(to) * m;
@@ -290,7 +290,7 @@ export class Vector2 {
     return this;
   }
 
-  // MOVE
+  // @move
 
   public moveBy(x: number | Point, y?: number): this {
     if (
@@ -473,47 +473,41 @@ export class Vector2 {
       .normalize();
   }
 
-  // COMPARISON
-
-  static isEqual(a: Point, b: Point): boolean {
-    return (a.x === a.x && a.y === b.y);
-  }
-
-  // ANGLES
+  // @angles
 
   static angleIsInProximity(a: number, b: number, tolerance: number): boolean {
-    const d1: number = Angle.differenceClockwise(a, b);
-    const d2: number = Angle.differenceCounterclockwise(a, b);
-    const d: number = Math.min(d1, d2);
+    const d1 = Angle.differenceClockwise(a, b);
+    const d2 = Angle.differenceCounterclockwise(a, b);
+    const d = Math.min(d1, d2);
     return d <= tolerance;
   }
 
   static getAngleBetween2Points(a: Point, b: Point): number {
-    const a1: number = Vector2.equals(a).angle;
-    const a2: number = Vector2.equals(b).angle;
-    const b1: number = Angle.differenceClockwise(a1, a2);
-    const b2: number = Angle.differenceCounterclockwise(a1, a2);
+    const a1 = Vector2.equals(a).angle;
+    const a2 = Vector2.equals(b).angle;
+    const b1 = Angle.differenceClockwise(a1, a2);
+    const b2 = Angle.differenceCounterclockwise(a1, a2);
     return Math.min(b1, b2);
   }
 
   static getAngleBetween3Points(a: Point, b: Point, c: Point): number {
-    const va: Vector2 = Vector2.equals(a);
-    const vb: Vector2 = Vector2.equals(b);
-    const vc: Vector2 = Vector2.equals(c);
-    const a1: number = vb.getAngleTo(va);
-    const a2: number = vb.getAngleTo(vc);
-    const b1: number = Angle.differenceClockwise(a1, a2);
-    const b2: number = Angle.differenceCounterclockwise(a1, a2);
+    const va = Vector2.equals(a);
+    const vb = Vector2.equals(b);
+    const vc = Vector2.equals(c);
+    const a1 = vb.getAngleTo(va);
+    const a2 = vb.getAngleTo(vc);
+    const b1 = Angle.differenceClockwise(a1, a2);
+    const b2 = Angle.differenceCounterclockwise(a1, a2);
     return Math.min(b1, b2);
   }
 
   // @triangle
 
   static getBasePointOfTriangle(v1: Point, v2: Point, v3: Point): Vector2 {
-    const a1: number = v1.getAngleTo(v3);
-    const a2: number = v1.getAngleTo(v2);
-    const a: number = Math.abs(a1 - a2);
-    const h: number = v1.getDistanceTo(v2);
+    const a1 = v1.getAngleTo(v3);
+    const a2 = v1.getAngleTo(v2);
+    const a = Math.abs(a1 - a2);
+    const h = v1.getDistanceTo(v2);
     const bh = Math.sin(a) * h;
     const ml = Math.atan(a) / bh;
     const fv = Vector2.equals(v1);
