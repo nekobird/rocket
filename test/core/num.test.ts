@@ -2,7 +2,6 @@ import {
   Num,
 } from '../../rocket/rocket';
 
-
 describe('Num.average', () => {
   test('should return the average of numbers', () => {
     expect(Num.average([1, 2, 3, 4])).toBe(2.5);
