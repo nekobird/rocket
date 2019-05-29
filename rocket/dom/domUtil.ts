@@ -4,11 +4,11 @@ import {
 
 export class DOMUtil {
 
-  public static onImageLoad(src: string): Promise<void> {
+  public static onImageLoad(src: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onerror = () => reject();
-      img.onload = () => resolve();
+      img.onload = () => resolve(src);
       img.src = src;
     });
   }

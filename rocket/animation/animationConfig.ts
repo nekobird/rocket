@@ -7,7 +7,7 @@ export interface AnimationTimingFunction {
 }
 
 export interface AnimationTickFunction {
-  (n: number, iterationCount:number, context: Animation, data: any): void;
+  (n: number, iterationCount: number, context: Animation, data: any): void;
 }
 
 export interface AnimationBeforeHook<T=void> {

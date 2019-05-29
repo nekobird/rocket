@@ -7,12 +7,13 @@
     "outDir": "build/",
     "preserveConstEnums": true,
     "removeComments": true,
+    "resolveJsonModule": true,
     "sourceMap": false,
     "strict": true,
     "target": "ES2015",
   },
   "include": [
-    "rocket/*"
+    "rocket/*",
   ],
   "exclude": [
     "node_modules",
