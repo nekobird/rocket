@@ -15,13 +15,10 @@ export type SequenceActionName = 'previous' | 'next' | 'jump';
 
 export interface SequenceAction {
   name: SequenceActionName;
-
   currentItem?: HTMLElement;
-  
   nextItem?: HTMLElement;
   nextItemIndex?: number;
   nextItemId?: string;
-
   trigger?: HTMLElement;
 }
 
@@ -34,8 +31,6 @@ export class ActionManager {
   constructor(controller: SequenceController) {
     this.controller = controller;
   }
-
-  // Complete action
 
   private async completeAction(action: SequenceAction): Promise<void> {
     const { config, itemManager } = this.controller;
@@ -73,8 +68,6 @@ export class ActionManager {
     }
     return this;
   }
-
-  // Set action
 
   private setActionTargetPrevious(action: SequenceAction): SequenceAction {
     const { itemManager } = this.controller;
@@ -118,8 +111,6 @@ export class ActionManager {
     return action;
   }
 
-  // Create & Compose Action
-
   public createAction(actionName: SequenceActionName): SequenceAction {
     const { itemManager } = this.controller;
     return {
@@ -142,8 +133,6 @@ export class ActionManager {
     action.trigger = trigger;
     return action;
   }
-
-  // 1) Action Hub
 
   public async actionHub(action: SequenceAction, isNestedAction: boolean = false): Promise<void> {
     if (

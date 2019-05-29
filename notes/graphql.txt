@@ -1,0 +1,2 @@
+https://learn.hasura.io/graphql/vue/intro-to-graphql/2-fetching-data-queries
+https://news.vuejs.org/

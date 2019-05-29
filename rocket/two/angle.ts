@@ -13,11 +13,11 @@ export class Angle {
   }
 
   public static deltaClockwise(from: number, to: number, direction: boolean = false): number {
-    let sign: number = 1;
-    let range: number = from - Math.PI;
+    let sign = 1;
+    let range = from - Math.PI;
 
     if (range < 0) {
-      let offset: number = Num.cycle(range, Math.PI * 2);
+      let offset = Num.cycle(range, Math.PI * 2);
       if (
         to < from
         || to >= offset
@@ -35,7 +35,7 @@ export class Angle {
       sign = 1;
     }
 
-    let result: number = 0;
+    let result = 0;
 
     if (from > to) {
       result = from - to;
@@ -47,8 +47,8 @@ export class Angle {
   }
 
   public static deltaCounterclockwise(from: number, to: number, direction: boolean = false): number {
-    let sign: number = 1;
-    let range: number = from + Math.PI;
+    let sign = 1;
+    let range = from + Math.PI;
 
     if (range > Math.PI * 2) {
       let offset = Num.cycle(range, Math.PI * 2);
@@ -70,7 +70,7 @@ export class Angle {
       sign = 1;
     }
 
-    let result: number = 0;
+    let result = 0;
 
     if (from > to) {
       result = from - to;
@@ -82,7 +82,7 @@ export class Angle {
   }
 
   public static differenceClockwise(from: number, to: number) {
-    let result: number = 0;
+    let result = 0;
 
     if (from > to) {
       result = (Math.PI * 2) - from + to;
@@ -94,7 +94,7 @@ export class Angle {
   }
 
   public static differenceCounterclockwise(from: number, to: number) {
-    let result: number = 0;
+    let result = 0;
 
     if (from > to) {
       result = from - to;

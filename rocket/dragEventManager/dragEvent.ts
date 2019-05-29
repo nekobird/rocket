@@ -9,6 +9,7 @@ import {
 } from './sensorHub';
 
 export class DragEvent {
+  public manager: DragEventManager;
 
   public downIntervalID?: number;
 
@@ -29,8 +30,6 @@ export class DragEvent {
 
   public longPressTimeout;
   public longPressIsCleared: boolean = false;
-
-  public manager: DragEventManager;
 
   constructor(manager: DragEventManager) {
     this.manager = manager;

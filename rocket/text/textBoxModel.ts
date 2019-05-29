@@ -1,6 +1,6 @@
 import {
-  DOMUtil,
   DOMStyle,
+  DOMUtil,
 } from '../rocket';
 
 const MODEL_ATTRIBUTES = {
@@ -64,13 +64,17 @@ const FONT_STYLE_PROPERTIES = [
   'wordWrap',
 ];
 
+interface Style {
+  [name: string]: string;
+}
+
 export class TextBoxModel {
 
   private modelElement?: HTMLElement;
 
   constructor() {}
 
-  public getTextBoxHeightFromElement(element: HTMLElement, text?: string): number {
+  public getTextBoxHeightFromElement(element: HTMLElement, text?: string, modelStyleOverride?: Style): number {
     // Create and prepare model to measure height.
     this
       .destroy()
@@ -84,16 +88,18 @@ export class TextBoxModel {
       maxHeight: '0',
       whiteSpace: 'pre-wrap',
     };
+    if (typeof modelStyleOverride !== 'undefined') {
+      this.style = modelStyleOverride;
+    }
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
       text = DOMUtil.getTextFromElement(element);
     }
-
     this.modelText = text;
 
     // Set offset for when boxSizing is set to border-box.
-    let offset: number = 0;
+    let offset = 0;
 
     if (DOMStyle.getStyleValue(element, 'boxSizing') === 'border-box') {
       offset = DOMStyle.getVerticalBorderWidths(element);
@@ -102,11 +108,13 @@ export class TextBoxModel {
       offset -= DOMStyle.getVerticalPaddings(element);
     }
 
-    // Return calculated height value.
-    return (<HTMLElement>this.modelElement).scrollHeight + offset;
+    const result = (<HTMLElement>this.modelElement).scrollHeight + offset;
+    this.destroy();
+    return result;
   }
 
-  public getTextBoxWidthFromElement(element: HTMLElement, text?: string): number {
+  // This returns textbox width.
+  public getTextBoxWidthFromElement(element: HTMLElement, text?: string, modelStyleOverride?: Style): number {
     // Create and prepare model to measure width.
     this
       .destroy()
@@ -125,26 +133,20 @@ export class TextBoxModel {
       whiteSpace: 'nowrap',
       width: '0',
       wordBreak: 'normal',
-      wordWrap: 'normal'
+      wordWrap: 'normal',
     };
+    if (typeof modelStyleOverride !== 'undefined') {
+      this.style = modelStyleOverride;
+    }
 
-    // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined') {
       text = DOMUtil.getTextFromElement(element);
     }
-
     this.modelText = text;
 
-    // Set offset for when boxSizing is set to border-box.
-    let offset = 0;
-
-    if (DOMStyle.getStyleValue(element, 'boxSizing') === 'border-box') {
-      offset = DOMStyle.getHorizontalBorderWidths(element);
-      offset += DOMStyle.getHorizontalPaddings(element);
-    }
-
-    // Return calculated width value.
-    return (<HTMLElement>this.modelElement).scrollWidth + offset;
+    const result = (<HTMLElement>this.modelElement).scrollWidth;
+    this.destroy();
+    return result;
   }
 
   // @model
@@ -216,9 +218,9 @@ export class TextBoxModel {
   public destroy(): this {
     if (
       typeof this.modelElement !== 'undefined'
-      && this.modelElement.nodeType === 1
+      && this.modelElement.parentElement !== null
     ) {
-      document.body.removeChild(this.modelElement);
+      this.modelElement.parentElement.removeChild(this.modelElement);
       this.modelElement.remove();
     }
     return this;

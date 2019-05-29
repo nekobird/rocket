@@ -2,7 +2,7 @@ export class Num {
 
   static average(numbers: number[]): number {
     if (numbers.length < 2) {
-      throw new Error('num.average expects at least 2 numbers');
+      throw new Error('Num.average expects at least 2 numbers');
     }
     return this.sum(numbers) / numbers.length;
   }
@@ -11,8 +11,8 @@ export class Num {
     if (typeof range === 'number') {
       range = [0, range];
     }
-    const max: number = Math.max(range[0], range[1]);
-    const min: number = Math.min(range[0], range[1]);
+    const max = Math.max(range[0], range[1]);
+    const min = Math.min(range[0], range[1]);
     if (number >= max) {
       return max;
     } else if (number <= min) {
@@ -21,7 +21,6 @@ export class Num {
     return number;
   }
 
-  // Range can be a number or an array with two numbers [0, 10].
   static cycle(number: number, range: number | [number, number]): number {
     if (typeof range === 'number') {
       range = [0, range];
@@ -37,7 +36,7 @@ export class Num {
       return 0;
     }
 
-    const da: number = this.getNumberLineDistance(min, max);
+    const da = this.getNumberLineDistance(min, max);
     let db: number;
     let c: number;
 
@@ -59,8 +58,8 @@ export class Num {
     if (a === b) {
       return 0;
     }
-    const min: number = Math.min(a, b);
-    const max: number = Math.max(a, b);
+    const min = Math.min(a, b);
+    const max = Math.max(a, b);
     if (min >= 0 && max > 0) {
       return max - min;
     } else if (min < 0 && max > 0) {
@@ -105,20 +104,16 @@ export class Num {
     if (typeof from === 'number') {
       from = [0, from];
     }
-
     if (typeof to === 'number') {
       to = [0, to];
     }
-
-    const percent: number = (number - from[0]) / (from[1] - from[0]);
+    const percent = (number - from[0]) / (from[1] - from[0]);
     let result: number;
-
     if (to[1] > to[0]) {
       result = percent * (to[1] - to[0]) + to[0];
     } else {
       result = to[0] - (percent * (to[0] - to[1]));
     }
-
     return constrain === true ? Num.constrain(result, to) : result;
   }
 
@@ -142,13 +137,8 @@ export class Num {
     }
   }
 
-  // Numbers are array
   static sum(numbers: number[]): number {
-    let sum: number = 0;
-    numbers.forEach(number => {
-      sum += number;
-    });
-    return sum;
+    return numbers.reduce((previous, current) => previous + current);
   }
 
   static within(number: number, range: number | [number, number]): boolean {

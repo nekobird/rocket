@@ -13,36 +13,42 @@ export interface ScrollLocation {
 export interface ScrollTrigger {
   condition: (scrollLocation: ScrollLocation, trigger: ScrollTrigger, manager: ScrollTriggerManager) => boolean;
   action: (scrollLocation: ScrollLocation, trigger: ScrollTrigger, manager: ScrollTriggerManager) => Promise<void>;
+  prepare: (scrollLocation: ScrollLocation, trigger: ScrollTrigger, manager: ScrollTriggerManager) => void;
   enabled: boolean;
   removeOnceTriggered: boolean;
-  previousTriggeredTime: number;
+  previousTriggeredTime?: number;
   isActive: boolean;
   isTriggered: boolean;
+  export?: any;
 }
 
 export const DEFAULT_SCROLL_TRIGGER: ScrollTrigger = {
   condition: () => true,
   action: () => Promise.resolve(),
+  prepare: () => {},
   enabled: true,
   removeOnceTriggered: false,
   previousTriggeredTime: undefined,
   isActive: false,
-  isTriggered: false,  
+  isTriggered: false,
+  export: {},
 }
 
 export class ScrollTriggerManager {
   public triggerOnlyOnResizeEnd: boolean = false;
   public resizeDebounceDelay: number = 0.5;
-  private resizeDebounce: Function;
+  private resizeDebounce?: Function;
 
-  public previousScrollLocation: ScrollLocation;
-  public currentScrollLocation: ScrollLocation;
+  public previousScrollLocation?: ScrollLocation;
+  public currentScrollLocation?: ScrollLocation;
 
   public triggers: ScrollTrigger[];
 
   public isScrolling: boolean = false;
   public isResizing: boolean = false;
   public isDisabled: boolean = false;
+
+  public isReady: boolean = false;
 
   constructor() {
     this.triggers = [];
@@ -51,7 +57,23 @@ export class ScrollTriggerManager {
   public initialize() {
     this.previousScrollLocation = this.scrollLocation;
     this.currentScrollLocation = this.scrollLocation;
+    this.prepare();
     this.listen();
+  }
+
+  public prepare() {
+    this.updateScrollLocation();
+    if (this.isReady === false) {
+      this.triggers.forEach(trigger => {
+        if (
+          trigger.enabled === true
+          && typeof this.currentScrollLocation !== 'undefined'
+        ) {
+          trigger.prepare(this.currentScrollLocation, trigger, this);
+        }
+      });
+      this.isReady = true;
+    }
   }
 
   public set disable(disable: boolean) {
@@ -91,9 +113,11 @@ export class ScrollTriggerManager {
         if (
           trigger.enabled === true
           && trigger.isActive === false
+          && typeof this.currentScrollLocation !== 'undefined'
           && trigger.condition(this.currentScrollLocation, trigger, this) === true
         ) {
-          trigger.action(this.currentScrollLocation, trigger, this)
+          trigger
+            .action(this.currentScrollLocation, trigger, this)
             .then(() => {
               if (trigger.removeOnceTriggered === true) {
                 this.removeTrigger(trigger);

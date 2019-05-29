@@ -1,0 +1,19 @@
+.scale-text {
+  @extend %style-text-body;
+
+  border: px-to-rem(1) solid color('black');
+  box-sizing: border-box;
+  line-height: 24px;
+  margin-bottom: space('medium');
+  max-width: 300px;
+  padding: space('medium');
+  display: block;
+  height: auto;
+}
+
+.last-line {
+  width: 400px;
+  padding: space('medium');
+  border: px-to-rem(1) solid color('black');
+  line-height: 1.5;
+}

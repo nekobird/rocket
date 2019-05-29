@@ -53,3 +53,5 @@ https://www.quirksmode.org/dom/w3c_cssom.html#t20
 https://medium.com/@onlykiosk/complete-babel-7-guide-for-beginners-in-2019-7dd78214c464
 
 https://stackoverflow.com/questions/33770549/viewport-vs-window-vs-document
+
+https://www.pixijs.com/gallery

@@ -44,13 +44,13 @@ export const DRAG_EVENT_MANAGER_DEFAULT_CONFIG: DragEventManagerConfig = {
 
   leftMouseButtonOnly: true,
 
-  onDownRepeat: (event, manager) => {},
-  onLongPress: (event, manager) => {},
-  condition: (event, manager) => true,
-  onDown: (event, manager) => {},
-  onDrag: (event, manager) => {},
-  onUp: (event, manager) => {},
-  onCancel: (event, manager) => {},
+  onDownRepeat: () => {},
+  onLongPress: () => {},
+  condition: () => true,
+  onDown: () => {},
+  onDrag: () => {},
+  onUp: () => {},
+  onCancel: () => {},
 };
 
 export class DragEventManager {

@@ -1,13 +1,16 @@
 @import './page-home/page-home';
 
-@import './page-sorting/page-sorting';
-
 @import './page-typography/page-typography';
+
+@import './page-sorting/page-sorting';
 
 @import './page-monoController/page-monoController';
 @import './page-polyController/page-polyController';
 @import './page-sequenceController/page-sequenceController';
 
+@import './page-scrollTriggerManager/page-scrollTriggerManager';
+@import './page-stackUp/page-stackUp';
+
 @import './page-textAreaField/page-textAreaField';
 
-@import './page-stackUp/page-stackUp';
+@import './page-text/page-text';

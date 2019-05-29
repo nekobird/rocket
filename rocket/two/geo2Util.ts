@@ -1,10 +1,9 @@
 import {
   Point,
-  Vector2,
+  PointHelper,
 } from '../rocket';
 
 export class Geo2Util {
-
   // linear
   // negative  = \
   // positive  = /
@@ -14,26 +13,22 @@ export class Geo2Util {
     if (le.x === ls.x) {
       return false;
     } else {
-      let rise: number = le.y - ls.y;
-      let run: number = le.x - ls.x;
+      let rise = le.y - ls.y;
+      let run = le.x - ls.x;
       return rise / run;
     }
   }
 
-  public static checkIfTwoLineSegmentsAreParallel(
-    ls1: Point, le1: Point, ls2: Point, le2: Point
-  ): boolean {
-    let s1: number | false = Geo2Util.getSlopeOfLine(ls1, le1)
-    let s2: number | false = Geo2Util.getSlopeOfLine(ls2, le2)
+  public static checkIfTwoLineSegmentsAreParallel(ls1: Point, le1: Point, ls2: Point, le2: Point): boolean {
+    let s1 = Geo2Util.getSlopeOfLine(ls1, le1)
+    let s2 = Geo2Util.getSlopeOfLine(ls2, le2)
     return s1 === s2
   }
 
   // Two lines will always intersect unless they are parallel.
   // Check if two line segments intersect each other.
-  public static checkIfTwoLineSegmentsIntersect(
-    ls1: Point, le1: Point, ls2: Point, le2: Point
-  ): boolean {
-    const pi: Point | false = Geo2Util.getPointOfIntersectionBetweenTwoLineSegments(ls1, le1, ls2, le2);
+  public static checkIfTwoLineSegmentsIntersect(ls1: Point, le1: Point, ls2: Point, le2: Point): boolean {
+    const pi = Geo2Util.getPointOfIntersectionBetweenTwoLineSegments(ls1, le1, ls2, le2);
 
     if (pi === false) {
       return false;
@@ -54,19 +49,17 @@ export class Geo2Util {
     return true;
   }
 
-  public static getPointOfIntersectionBetweenTwoLineSegments(
-    ls1: Point, le1: Point, ls2: Point, le2: Point
-  ): Vector2 | false {
+  public static getPointOfIntersectionBetweenTwoLineSegments(ls1: Point, le1: Point, ls2: Point, le2: Point): Point | false {
     if (Geo2Util.checkIfTwoLineSegmentsAreParallel(ls1, le1, ls2, le2) === true) {
       return false;
     }
 
-    let ix: number = 0;
-    let iy: number = 0;
+    let ix = 0;
+    let iy = 0;
 
     // Get slope.
-    let m1: number | false = Geo2Util.getSlopeOfLine(ls1, le1);
-    let m2: number | false = Geo2Util.getSlopeOfLine(ls2, le2);
+    let m1 = Geo2Util.getSlopeOfLine(ls1, le1);
+    let m2 = Geo2Util.getSlopeOfLine(ls2, le2);
 
     let yi1;
     let yi2;
@@ -98,6 +91,6 @@ export class Geo2Util {
       iy = m1 * ix + yi1;
     }
 
-    return new Vector2(ix, iy);
+    return PointHelper.newPoint(ix, iy);
   }
 }

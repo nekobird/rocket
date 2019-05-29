@@ -60,8 +60,8 @@ export class ViewportModel {
 
   public static get diagonal(): number {
     this.createModel();
-    const w: number = modelElement.offsetWidth;
-    const h: number = modelElement.offsetHeight;
+    const w = modelElement.offsetWidth;
+    const h = modelElement.offsetHeight;
     return Num.hypotenuse(w, h);
   }
 
@@ -78,8 +78,8 @@ export class ViewportModel {
 
   public static get modelIsCreated(): boolean {
     return (
-      typeof modelElement !== 'undefined' &&
-      modelElement.nodeType === 1
+      typeof modelElement !== 'undefined'
+      && modelElement.nodeType === 1
     );
   }
 

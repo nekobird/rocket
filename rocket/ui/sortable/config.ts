@@ -33,8 +33,14 @@ export interface SortableConfig {
   createDummyFromItem: (item: HTMLElement, context: Sortable) => HTMLElement;
   setDummyElementPropertiesFromItem: (dummyElement: HTMLElement, item: HTMLElement, context: Sortable) => void;
 
+  beforeActivate: (context: Sortable) => void;
+  beforeDeactivate: (context: Sortable) => void;
+
   activateItem: (item: HTMLElement, context: Sortable) => void;
   deactivateItem: (item: HTMLElement, context: Sortable) => void;
+
+  afterActivate: (context: Sortable) => void;
+  afterDeactivate: (context: Sortable) => void;
 
   popItem: (item: HTMLElement, group: HTMLElement, context: Sortable) => void;
   unpopItem: (item: HTMLElement, group: HTMLElement, context: Sortable) => void;
@@ -88,6 +94,11 @@ export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
       dummy
     );
   },
+
+  beforeActivate: () => {},
+  beforeDeactivate: () => {},
+  afterActivate: () => {},
+  afterDeactivate: () => {},
 
   activateItem: item => {
     item.classList.add('sortableItem--active');

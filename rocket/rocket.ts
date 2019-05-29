@@ -4,6 +4,7 @@ export * from './core/util';
 export * from './core/stringUtil';
 
 // @dom
+export * from './dom/domText';
 export * from './dom/domUtil';
 export * from './dom/domTraverse';
 export * from './dom/domStyle';
@@ -42,8 +43,12 @@ export * from './color/color';
 // @dragEventManager
 export * from './dragEventManager/dragEventManager';
 
+// @scroll
+export * from './scroll/scrollTriggerManager';
+
 // @text
 export * from './text/textBoxModel';
+export * from './text/textScaleModel';
 
 // @ui
 export * from './ui/sortable/sortable';
