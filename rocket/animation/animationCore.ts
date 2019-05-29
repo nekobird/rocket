@@ -24,7 +24,7 @@ export class AnimationCore {
   private endTime: number = 0;
   private pauseTime: number = 0;
 
-  private RAFID?: number;
+  private animationFrameId?: number;
   private timeoutID?: number;
 
   public callback?: Function;
@@ -201,7 +201,7 @@ export class AnimationCore {
     }; // End frame.
 
     // Go!
-    this.RAFID = window.requestAnimationFrame(frame);
+    this.animationFrameId = window.requestAnimationFrame(frame);
     return this;
   }
 
@@ -250,8 +250,8 @@ export class AnimationCore {
 
   private clearSessions(): this {
     clearTimeout(this.timeoutID);
-    if (typeof this.RAFID === 'number') {
-      window.cancelAnimationFrame(this.RAFID);
+    if (typeof this.animationFrameId === 'number') {
+      window.cancelAnimationFrame(this.animationFrameId);
     }
     return this;
   }

@@ -1,4 +1,5 @@
 export interface RepeaterConfig {
+  useAnimationFrame: boolean;
   timeout: boolean;
   timeoutDelay: number;
   frequency: number;
@@ -9,6 +10,7 @@ export interface RepeaterConfig {
 }
 
 const REPEATER_DEFAULT_CONFIG: RepeaterConfig = {
+  useAnimationFrame: true,
   timeout: true,
   timeoutDelay: 10,
   frequency: 24,
@@ -27,6 +29,7 @@ export class Repeater {
 
   public intervalId: number = 0;
   public timeoutId: number = 0;
+  public animationFrameId: number = 0;
 
   public isActive: boolean = false;
   public count: number = 0;
@@ -56,14 +59,27 @@ export class Repeater {
 
   private onRepeat() {
     this.count++;
-    this.config.onRepeat(this);
+    if (this.config.useAnimationFrame === true) {
+      this.animationFrameId = window.requestAnimationFrame(
+        () => this.config.onRepeat(this)
+      );
+    } else {
+      this.config.onRepeat(this);
+    }
+  }
+
+  public forceStart() {
+    if (this.isActive === true) {
+      this.stop();
+    }
+    this.start();
   }
 
   public start() {
     if (
       this.isActive === false
       && this.config.condition(this) === true
-    ) {    
+    ) {
       this.isActive = true;
       this.count = 0;
       this.startTime = Date.now();
@@ -84,11 +100,14 @@ export class Repeater {
 
   public stop() {
     if (this.isActive === true) {
+      cancelAnimationFrame(this.animationFrameId);
+      clearTimeout(this.timeoutId);
       clearInterval(this.intervalId);
       this.endTime = Date.now();
       if (typeof this.startTime === 'number') {
         this.duration = this.endTime - this.startTime;
       }
+      this.isActive = false;
       this.config.onEnd(this);
     }
   }
