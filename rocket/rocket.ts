@@ -26,6 +26,7 @@ export * from './two/point';
 export * from './two/pointHelper';
 export * from './two/vector2';
 export * from './two/vector2Group';
+export * from './two/rectHelper';
 
 // @animation
 export * from './animation/Animation';
