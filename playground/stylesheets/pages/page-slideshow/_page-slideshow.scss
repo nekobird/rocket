@@ -3,4 +3,20 @@
   max-width: 100%;
   position: relative;
   width: 100vw;
+
+  .container {
+    position: relative;
+
+    .item {
+      display: inline-block;
+      height: 800px;
+      background: red;
+      margin-left: 20px;
+
+      img {
+        display: inline-block;
+        height: 100%;
+      }
+    }
+  }
 }
