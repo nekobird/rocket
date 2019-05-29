@@ -71,10 +71,4 @@ export class DOMRect {
     );
     return result;
   }
-
-  public static elementAreaInView(element: HTMLElement): number {
-    const rect = this.getRectFromElements(element);
-    // TODO: Fix this function.
-    return 1;
-  }
 }

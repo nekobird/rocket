@@ -56,7 +56,7 @@ export class Animation {
   }
 
   public goToEnd(): this {
-    let iterationCount: number = this.core.iterationCount;
+    let iterationCount = this.core.iterationCount;
     if (typeof this.config.numberOfIterations === 'number') {
       iterationCount = this.config.numberOfIterations;
     }

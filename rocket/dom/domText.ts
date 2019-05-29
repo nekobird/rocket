@@ -46,9 +46,8 @@ export class DOMText {
         lastLine.unshift(words[index]);
         if (temp.clientHeight < startingHeight) {
           break;
-        } else {
-          index--;
         }
+        index--;
       }
       if (element.parentNode !== null) {
         element.parentNode.removeChild(temp);

@@ -98,10 +98,10 @@ export class FormData {
           )
         } else if (
           (
-            input.getAttribute('type') === 'radio' ||
-            input.getAttribute('type') === 'checkbox'
-          ) &&
-          (<HTMLInputElement>input).checked === true
+            input.getAttribute('type') === 'radio'
+            || input.getAttribute('type') === 'checkbox'
+          )
+          && (<HTMLInputElement>input).checked === true
         ) {
           const overwrite: boolean = input.getAttribute('type') === 'radio'
           this.addData(
