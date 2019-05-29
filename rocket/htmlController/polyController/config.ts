@@ -78,6 +78,7 @@ export const DEFAULT_CONFIG: PolyConfig = {
       return {
         trigger,
         action: 'deactivate',
+        payload: trigger.dataset.target,
       };
     } else if (trigger.dataset.action === 'toggle') {
       return {

@@ -194,6 +194,7 @@ export class Sortable {
       typeof this.activeItem === 'object'
       && this.groupElement !== false
       && this.itemElements !== false
+      && typeof this.dummy === 'object'
     ) {
       const corners = DOMPoint.getElementCornerPoints(this.activeItem);
       const closestChild = DOMPoint.getClosestChildFromPoints(

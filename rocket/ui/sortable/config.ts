@@ -53,7 +53,7 @@ export interface SortableConfig {
 export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
   activateOnLongPress: false,
   listenToLongPress: true,
-  longPressWait: 0.5,
+  longPressWait: 0.4,
 
   leftMouseButtonOnly: true,
 

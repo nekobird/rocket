@@ -2,7 +2,8 @@
   padding: space('large');
 
   .sortableContainer {
-    background-color: color('medium');
+    background-color: color('medium-light');
+    border-radius: border-radius('large');
     padding: space('medium');
     position: relative;
   }
@@ -46,7 +47,7 @@
     }
 
     &.sortableItem--active {
-      box-shadow: 0 0.5rem 3rem 0 hsla(220, 10, 5, 0.5);
+      box-shadow: 0 0.5rem 3rem 0 hsla(220, 10, 5, 0.4);
       background-color: color('white');
       cursor: grab;
     }
