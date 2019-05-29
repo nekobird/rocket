@@ -61,5 +61,8 @@ export * from './htmlController/monoController/monoController';
 export * from './htmlController/polyController/polyController';
 export * from './htmlController/sequenceController/sequenceController';
 
+// @repeater
+export * from './repeater';
+
 // @stackup
 export * from './stackUp/stackUp';

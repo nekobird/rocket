@@ -1,4 +1,8 @@
 import {
+  Vector2,
+} from '../rocket';
+
+import {
   DragEventManager,
 } from './dragEventManager';
 
@@ -31,8 +35,26 @@ export class DragEvent {
   public longPressTimeout;
   public longPressIsCleared: boolean = false;
 
+  public position: Vector2;
+  public lastPosition: Vector2;
+
+  public velocity: Vector2;
+  public lastVelocity: Vector2;
+
+  public acceleration: Vector2;
+  public lastAcceleration: Vector2;
+
   constructor(manager: DragEventManager) {
     this.manager = manager;
+
+    this.position = new Vector2();
+    this.lastPosition = new Vector2();
+
+    this.velocity = new Vector2();
+    this.lastVelocity = new Vector2();
+
+    this.acceleration = new Vector2();
+    this.lastAcceleration = new Vector2();
   }
   
   public get duration(): number | undefined {
@@ -105,12 +127,45 @@ export class DragEvent {
     return this;
   }
 
+  public initializeVectors(data: SensorData) {
+    this.position = new Vector2(data.clientX, data.clientY);
+    this.lastPosition = new Vector2(data.clientX, data.clientY);
+
+    this.velocity = new Vector2();
+    this.lastVelocity = new Vector2();
+
+    this.acceleration = new Vector2();
+    this.lastAcceleration = new Vector2();
+  }
+
+  public updateVectors(data: SensorData) {
+    const point = {
+      x: data.clientX,
+      y: data.clientY,
+    };
+    this.position.equals(point);
+    this.velocity.equals(
+      Vector2.subtract(this.position, this.lastPosition)
+    );
+    this.acceleration.equals(
+      Vector2.subtract(this.velocity, this.lastVelocity)
+    );
+  }
+
+  public updateLastVectors() {
+    this.lastPosition.equals(this.position);
+    this.lastVelocity.equals(this.velocity);
+    this.lastAcceleration.equals(this.acceleration);
+  }
+
   public onDown(data: SensorData) {
     const { config } = this.manager;
 
     this.isActive = true;
     this.identifier = data.identifier;
     this.downData = data;
+
+    this.initializeVectors(data);
 
     this.currentEvent = data.name;
 
@@ -140,10 +195,13 @@ export class DragEvent {
     if (this.isActive  === true) {
       this.dragData = data;
 
+      this.updateVectors(data);
+
       this.previousEvent = this.currentEvent;
       this.currentEvent = data.name;
 
       this.manager.config.onDrag(this, this.manager);
+      this.updateLastVectors();
     }
   }
 
@@ -155,10 +213,13 @@ export class DragEvent {
       this.isActive = false;
       this.upData = data;
 
+      this.updateVectors(data);
+
       this.previousEvent = this.currentEvent;
       this.currentEvent = data.name;
 
       this.manager.config.onUp(this, this.manager);
+      this.updateLastVectors();
     }
   }
 
@@ -172,10 +233,13 @@ export class DragEvent {
 
       this.cancelData = data;
 
+      this.updateVectors(data);
+
       this.previousEvent = this.currentEvent;
       this.currentEvent = data.name;
 
       this.manager.config.onCancel(this, this.manager);
+      this.updateLastVectors();
     }
   }
 

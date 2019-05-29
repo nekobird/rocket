@@ -1,14 +1,24 @@
 // @ts-ignore
 import jsondata from './data.json';
 
+// Kinematic drag?
+
 import {
   RectHelper,
   DOMUtil,
   Util,
   ViewportModel,
+  DragEventManager,
 } from '../../rocket/rocket';
 
 // Fixed Height Slideshow
+const manager = new DragEventManager({
+  onDrag: (data) => {
+    window.scrollBy(- data.velocity.x, - data.velocity.y);
+  }
+});
+
+manager.initialize();
 
 const data = jsondata;
 const gutter = 20;
@@ -23,6 +33,7 @@ let containerWidth: number = 0;
 const addImage = (url: string) => {
   const img = new Image();
   img.src = url;
+  img.draggable = false;
 
   updateContainerWidth(img);
   const item = document.createElement('DIV');
@@ -30,6 +41,8 @@ const addImage = (url: string) => {
   item.appendChild(img);
   addItemToContainer(item);
 }
+
+// Repeater
 
 const loadItems = () => {
   Util.promiseEach<any>(data, datum => {

@@ -55,3 +55,6 @@ https://medium.com/@onlykiosk/complete-babel-7-guide-for-beginners-in-2019-7dd78
 https://stackoverflow.com/questions/33770549/viewport-vs-window-vs-document
 
 https://www.pixijs.com/gallery
+
+https://flickity.metafizzy.co/
+

@@ -1,5 +1,4 @@
 .slideshow {
-  height: 100vh;
   max-width: 100%;
   position: relative;
   width: 100vw;
@@ -10,10 +9,16 @@
     .item {
       display: inline-block;
       height: 800px;
-      background: red;
       margin-left: 20px;
+      user-select: none;
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
 
       img {
+        @include disableUserSelect();
         display: inline-block;
         height: 100%;
       }
