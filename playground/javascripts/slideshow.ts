@@ -2,6 +2,7 @@
 import jsondata from './data.json';
 
 import {
+  RectHelper,
   DOMUtil,
   Util,
   ViewportModel,
@@ -11,6 +12,7 @@ import {
 
 const data = jsondata;
 const gutter = 20;
+
 const maxHeight = () => {
   return ViewportModel.height;
 }
