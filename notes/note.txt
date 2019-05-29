@@ -58,3 +58,4 @@ https://www.pixijs.com/gallery
 
 https://flickity.metafizzy.co/
 
+https://developer.mozilla.org/en-US/docs/Web/CSS/touch-action
