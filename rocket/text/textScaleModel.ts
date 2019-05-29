@@ -1,20 +1,17 @@
 import {
-  DOMStyle,
+  DOMText,
   DOMUtil,
   TextBoxModel,
 } from '../rocket';
 
 export interface TextScaleModelConfig {
-  maxFontSize: number;
-  minFontSize: number;
-  increment: number;
+  fontSizeSet?: number[];
+  fontSizeRange?: [number, number];
+  increment?: number;
   setFontSize: (element: HTMLElement, fontSize: number, context: TextScaleModel) => void;
 }
 
 const TEXTSCALEMODEL_DEFAULT_CONFIG: TextScaleModelConfig = {
-  maxFontSize: 18,
-  minFontSize: 16,
-  increment: 1,
   setFontSize: (element, fontSize) => element.style.fontSize = `${fontSize}px`,
 };
 
@@ -23,7 +20,6 @@ export class TextScaleModel {
   element: HTMLElement;
 
   model: TextBoxModel;
-  originalFontSize: number = 0;
   originalWidth: number = 0;
 
   constructor(element: HTMLElement, config: Partial<TextScaleModelConfig>) {
@@ -38,52 +34,116 @@ export class TextScaleModel {
   public setConfig(config: Partial<TextScaleModelConfig>) {
     Object.assign(this.config, config);
   }
-  
-  public initialize() {
-    this.originalFontSize = DOMStyle.getFontSize(this.element);
-    this.originalWidth = this.element.offsetWidth - DOMStyle.getTotalHorizontalSpacing(this.element);
+
+  public configRangeIsValid(): boolean {
+    if (
+      typeof this.config.fontSizeRange === 'object'
+      && Array.isArray(this.config.fontSizeRange) === true
+      && this.config.fontSizeRange.length === 2
+      && this.config.fontSizeRange[0] < this.config.fontSizeRange[1]
+      && typeof this.config.increment === 'number'
+      && this.config.increment > 0
+    ) {
+      return true;
+    }
+    return false;
   }
 
-  public validateConfig(): boolean {
-    let valid = true;
-    if (this.config.maxFontSize <= this.config.minFontSize) {
-      valid = false;
+  public configSetIsvalid(): boolean {
+    if (
+      typeof this.config.fontSizeSet === 'object'
+      && Array.isArray(this.config.fontSizeSet) === true
+      && this.config.fontSizeSet.length > 0
+    ) {
+      return true;
     }
-    if (this.config.increment <= 0) {
-      valid = false;
-    }
-    return valid;
+    return false;
+  }
+    
+  public getTextBoxWidth(): number {
+    return DOMText.getElementTextBoxWidth(this.element);
   }
 
-  public optimize() {
-    if (this.validateConfig() === true) {
+  public getModelWidth(text: string, fontSize: number): number {
+    return this.model.getTextBoxWidthFromElement(
+      this.element, text, { fontSize: `${fontSize}px` }
+    );
+  }
+
+  public optimize(): number | false {
+    if (typeof this.config.fontSizeSet !== 'undefined') {
+      return this.optimizeFromSet();
+    }
+    return this.optimizeFromRange();
+  }
+
+  public optimizeFromSet(): number | false {
+    if (
+      this.configSetIsvalid() === true
+      && typeof this.config.fontSizeSet !== 'undefined'
+    ) {
+      this.config.fontSizeSet.sort((a, b) => a - b);
+
       const text = DOMUtil.getTextFromElement(this.element);
-      this.originalWidth = this.element.offsetWidth - DOMStyle.getTotalHorizontalSpacing(this.element);
+      const originalWidth = this.getTextBoxWidth();
+
       let modelWidth = 0;
-      let modelFontSize = this.config.minFontSize;
+      let finalFontSize = this.config.fontSizeSet[this.config.fontSizeSet.length - 1];
+
+      for (let i = 0; i < this.config.fontSizeSet.length; i++) {
+        modelWidth = this.getModelWidth(text, this.config.fontSizeSet[i]);
+        if (modelWidth >= originalWidth) {
+          if (i === 0) {
+            finalFontSize = this.config.fontSizeSet[0];
+            break;
+          }
+          finalFontSize = this.config.fontSizeSet[i - 1];
+          break;
+        }
+      }
+      this.config.setFontSize(this.element, finalFontSize, this);
+      return finalFontSize;
+    }
+    return false;
+  }
+
+  public optimizeFromRange(): number | false {
+    if (
+      this.configRangeIsValid() === true
+      && typeof this.config.fontSizeRange !== 'undefined'
+      && typeof this.config.increment !== 'undefined'
+    ) {
+      const [ minFontSize, maxFontSize ] = this.config.fontSizeRange;
+      const text = DOMUtil.getTextFromElement(this.element);
+      const originalWidth = this.getTextBoxWidth();
+
+      let modelWidth = 0;
+      let finalFontSize = minFontSize;
       while (true) {
-        modelWidth = this.model.getTextBoxWidthFromElement(this.element, text, { fontSize: `${modelFontSize}px` });
-        if (modelWidth >= this.originalWidth) {
+        modelWidth = this.getModelWidth(text, finalFontSize);
+        if (modelWidth >= originalWidth) {
           while(true) {
-            modelFontSize -= this.config.increment;
-            if (modelFontSize <= this.config.minFontSize) {
-              modelFontSize = this.config.minFontSize;
+            finalFontSize -= this.config.increment;
+            if (finalFontSize <= minFontSize) {
+              finalFontSize = minFontSize;
               break;
             }
-            modelWidth = this.model.getTextBoxWidthFromElement(this.element, text, { fontSize: `${modelFontSize}px` });
-            if (modelWidth <= this.originalWidth) {
+            modelWidth = this.getModelWidth(text, finalFontSize);
+            if (modelWidth <= originalWidth) {
               break;
             }
           }
           break;
         }
-        modelFontSize += this.config.increment;
-        if (modelFontSize >= this.config.maxFontSize) {
-          modelFontSize = this.config.maxFontSize;
+        finalFontSize += this.config.increment;
+        if (finalFontSize >= maxFontSize) {
+          finalFontSize = maxFontSize;
           break;
         }
       }
-      this.config.setFontSize(this.element, modelFontSize, this);
+      this.config.setFontSize(this.element, finalFontSize, this);
+      return finalFontSize;
     }
+    return false;
   }
 }

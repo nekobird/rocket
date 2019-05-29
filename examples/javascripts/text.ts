@@ -7,12 +7,11 @@ const items = document.querySelectorAll('.scale-text');
 
 items.forEach(item => {
   const model = new TextScaleModel(<HTMLElement>item, {
-    maxFontSize: 24,
-    minFontSize: 14,
+    fontSizeSet: [3, 8, 12, 20, 24, 30],
+    fontSizeRange: [4, 24],
     increment: 1,
   });
-  model.initialize();
-  model.optimize();
+  model.optimizeFromRange();
 });
 
 const lastLineElement = document.querySelector('.last-line');

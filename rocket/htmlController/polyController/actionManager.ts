@@ -1,5 +1,4 @@
 import {
-  PolyConfig,
   PolyTriggerMap,
 } from './config';
 
@@ -8,8 +7,8 @@ import {
 } from './polyController';
 
 export type PolyActionName =
-  'activate' | 'activate-all' | 'deactivate'
-  | 'deactivate-all' | 'toggle' | 'toggle-all';
+  'activate' | 'activate-all' | 'deactivate' |
+  'deactivate-all' | 'toggle' | 'toggle-all';
 
 export interface PolyAction {
   name: PolyActionName;
@@ -186,10 +185,10 @@ export class ActionManager {
   public composeAction(actionName: PolyActionName, id?: string): PolyAction {
     const { itemManager } = this.controller;
 
-    const action: PolyAction = this.createAction(actionName);
+    const action = this.createAction(actionName);
 
     if (typeof id === 'string') {
-      const targetItem: HTMLElement | false = itemManager.getItemFromId(id);
+      const targetItem = itemManager.getItemFromId(id);
 
       if (targetItem !== false) {
         action.targetId = id;
@@ -200,7 +199,7 @@ export class ActionManager {
   }
 
   public composeActionFromTrigger(trigger: HTMLElement, triggerMap: PolyTriggerMap): PolyAction {
-    const whitelist: string[] = ['activate', 'deactivate', 'toggle'];
+    const whitelist = ['activate', 'deactivate', 'toggle'];
     if (whitelist.indexOf(triggerMap.action) !== -1) {
       return this.composeAction(triggerMap.action, triggerMap.payload);
     }
@@ -216,7 +215,7 @@ export class ActionManager {
     }
     this.isRunning = true;
 
-    const config: PolyConfig = this.controller.config;
+    const { config } = this.controller;
 
     let preAction: Promise<void>;
 

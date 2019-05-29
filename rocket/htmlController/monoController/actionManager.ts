@@ -1,6 +1,5 @@
 import {
   MonoTriggerMap,
-  MonoConfig,
 } from './config';
 
 import {
@@ -102,9 +101,9 @@ export class ActionManager {
 
   public composeAction(actionName: MonoActionName, id?: string): MonoAction {
     const { itemManager } = this.controller;
-    const action: MonoAction = this.createAction(actionName);
+    const action = this.createAction(actionName);
     if (typeof id === 'string') {
-      const nextItem: HTMLElement | false = itemManager.getItemFromId(id);
+      const nextItem = itemManager.getItemFromId(id);
       if (typeof nextItem === 'object') {
         action.nextItem = nextItem;
         action.nextItemId = id;
@@ -115,7 +114,7 @@ export class ActionManager {
   }
 
   public composeActionFromTrigger(trigger: HTMLElement, triggerMap: MonoTriggerMap): MonoAction {
-    const action: MonoAction = this.composeAction(triggerMap.action, triggerMap.payload);
+    const action = this.composeAction(triggerMap.action, triggerMap.payload);
     action.trigger = trigger;
     return action;
   }
@@ -129,7 +128,7 @@ export class ActionManager {
     }
     this.isRunning = true;
 
-    const config: MonoConfig = this.controller.config;
+    const { config } = this.controller;
 
     let preAction: Promise<void>;
     if (this.isNested === false) {

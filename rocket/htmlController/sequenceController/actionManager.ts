@@ -3,7 +3,6 @@ import {
 } from '../../rocket';
 
 import {
-  SequenceConfig,
   SequenceTriggerMap,
 } from './config';
 
@@ -34,7 +33,7 @@ export class ActionManager {
 
   private async completeAction(action: SequenceAction): Promise<void> {
     const { config, itemManager } = this.controller;
-    const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name);
+    const actionNameString = StringUtil.upperCaseFirstLetter(action.name);
     if (
       itemManager.activeItem !== action.nextItem
       && config[`condition${actionNameString}`](action, this) === true
@@ -102,7 +101,7 @@ export class ActionManager {
   private setActionTargetJump(action: SequenceAction): SequenceAction {
     const { itemManager } = this.controller;
     if (typeof action.nextItemId === 'string') {
-      const item: HTMLElement | false = itemManager.getItemFromId(action.nextItemId);
+      const item = itemManager.getItemFromId(action.nextItemId);
       if (item !== false) {
         action.nextItem = item;
         action.nextItemIndex = itemManager.items.indexOf(action.nextItem);
@@ -146,7 +145,7 @@ export class ActionManager {
     const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name);
     this[`setActionTarget${actionNameString}`](action);
 
-    const config: SequenceConfig = this.controller.config;
+    const { config } = this.controller;
 
     let preAction: Promise<void>;
     if (this.isNested === false) {

@@ -4,6 +4,14 @@ import {
 
 export class DOMText {
 
+  public static getElementTextBoxWidth(element: HTMLElement): number {
+    return element.offsetWidth - DOMStyle.getTotalHorizontalSpacing(element);
+  }
+
+  public static getElementTextBoxHeight(element: HTMLElement): number {
+    return element.offsetHeight - DOMStyle.getTotalVerticalSpacing(element);
+  }
+
   public static getLastLine(element: HTMLElement): string {
     const text = element.textContent;
     if (text !== null) {
