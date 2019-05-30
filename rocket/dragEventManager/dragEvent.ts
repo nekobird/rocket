@@ -1,4 +1,5 @@
 import {
+  Repeater,
   Vector2,
 } from '../rocket';
 
@@ -14,8 +15,7 @@ import {
 
 export class DragEvent {
   public manager: DragEventManager;
-
-  public downIntervalID?: number;
+  public repeater: Repeater;
 
   public identifier: Identifier = '';
 
@@ -27,7 +27,6 @@ export class DragEvent {
   public upData?: SensorData;
   public cancelData?: SensorData;
 
-  public condition: boolean = false;
   public isActive: boolean = false;
   public isLongPress: boolean = false;
   public isCancelled: boolean = false;
@@ -46,6 +45,9 @@ export class DragEvent {
 
   constructor(manager: DragEventManager) {
     this.manager = manager;
+    this.repeater = new Repeater({
+      frequency: this.manager.config.downRepeaterFrequency
+    });
 
     this.position = new Vector2();
     this.lastPosition = new Vector2();
@@ -169,21 +171,24 @@ export class DragEvent {
 
     this.currentEvent = data.name;
 
-    this.condition = config.condition(this, this.manager)
-    if (this.condition === true) {
-      this.manager.config.onDown(this, this.manager);
+    if (config.condition(this, this.manager) === true) {
+      config.onDown(this, this.manager);
 
       if (config.enableDownRepeater === true) {
-        this.downIntervalID = setInterval(
-          () => config.onDownRepeat(this, this.manager),
-          config.downRepeaterDelay * 1000
-        );
+        this.repeater.setConfig({
+          frequency: config.downRepeaterFrequency,
+          onStart: () => config.onDownRepeatStart(this.repeater, this, this.manager),
+          onRepeat: () => config.onDownRepeat(this.repeater, this, this.manager),
+          onEnd: () => config.onDownRepeatEnd(this.repeater, this, this.manager),
+        });
+        config.beforeDownRepeatStart(this.repeater, this, this.manager);
+        this.repeater.start();
       }
 
-      if (this.manager.config.enableLongPress === true) {
+      if (config.enableLongPress === true) {
         this.longPressTimeout = setTimeout(
           () => this.onLongPress(data),
-          this.manager.config.longPressWait * 1000
+          config.longPressWait * 1000
         );
       }
     } else {
@@ -207,7 +212,7 @@ export class DragEvent {
 
   public onUp(data: SensorData) {
     if (this.isActive === true) {
-      this.clearDownRepeater();
+      this.repeater.stop();
       this.clearLongPress();
 
       this.isActive = false;
@@ -225,7 +230,7 @@ export class DragEvent {
 
   public onCancel(data: SensorData) {
     if (this.isActive === true) {
-      this.clearDownRepeater();
+      this.repeater.stop();
       this.clearLongPress();
 
       this.isCancelled = true;
@@ -244,12 +249,9 @@ export class DragEvent {
   }
 
   public onLongPress(data: SensorData) {
+    const { config } = this.manager;
     this.isLongPress = true;
-    this.manager.config.onLongPress(this, this.manager);
-  }
-
-  public clearDownRepeater() {
-    clearInterval(this.downIntervalID);
+    config.onLongPress(this, this.manager);
   }
 
   public clearLongPress() {

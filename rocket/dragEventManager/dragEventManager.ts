@@ -1,4 +1,8 @@
 import {
+  Repeater,
+} from '../rocket';
+
+import {
   MouseSensor,
 } from './mouseSensor';
 
@@ -16,7 +20,6 @@ import {
 
 export interface DragEventManagerConfig {
   enableDownRepeater: boolean;
-  downRepeaterDelay: number;
 
   enableLongPress: boolean;
   longPressWait: number; // In seconds.
@@ -25,7 +28,12 @@ export interface DragEventManagerConfig {
 
   parent: HTMLElement | Window;
 
-  onDownRepeat: (event: DragEvent, manager: DragEventManager) => void;
+  downRepeaterFrequency: number;
+  beforeDownRepeatStart: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
+  onDownRepeatStart: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
+  onDownRepeat: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
+  onDownRepeatEnd: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
+
   onLongPress: (event: DragEvent, manager: DragEventManager) => void;
   condition: (event: DragEvent, manager: DragEventManager) => boolean;
   onDown: (event: DragEvent, manager: DragEventManager) => void;
@@ -36,15 +44,20 @@ export interface DragEventManagerConfig {
 
 export const DRAG_EVENT_MANAGER_DEFAULT_CONFIG: DragEventManagerConfig = {
   enableDownRepeater: false,
-  downRepeaterDelay: 1 / 60,
 
   enableLongPress: false,
   longPressWait: 2,
-  parent: window,
 
   leftMouseButtonOnly: true,
 
+  parent: window,
+
+  downRepeaterFrequency: 60,
+  beforeDownRepeatStart: () => {},
+  onDownRepeatStart: () => {},
   onDownRepeat: () => {},
+  onDownRepeatEnd: () => {},
+
   onLongPress: () => {},
   condition: () => true,
   onDown: () => {},
