@@ -34,7 +34,9 @@ export interface DragEventManagerConfig {
   onDownRepeat: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
   onDownRepeatEnd: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
 
+  longPressCondition: (event: DragEvent, manager: DragEventManager) => boolean;
   onLongPress: (event: DragEvent, manager: DragEventManager) => void;
+
   condition: (event: DragEvent, manager: DragEventManager) => boolean;
   onDown: (event: DragEvent, manager: DragEventManager) => void;
   onDrag: (event: DragEvent, manager: DragEventManager) => void;
@@ -58,7 +60,9 @@ export const DRAG_EVENT_MANAGER_DEFAULT_CONFIG: DragEventManagerConfig = {
   onDownRepeat: () => {},
   onDownRepeatEnd: () => {},
 
+  longPressCondition: () => true,
   onLongPress: () => {},
+
   condition: () => true,
   onDown: () => {},
   onDrag: () => {},

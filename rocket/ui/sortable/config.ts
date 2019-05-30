@@ -9,10 +9,6 @@ import {
 } from './sortable';
 
 export interface SortableConfig {
-  activateOnLongPress: boolean;
-  listenToLongPress: boolean;
-  longPressWait: number;
-
   leftMouseButtonOnly: boolean,
 
   disableTouchEventsWhileActive: boolean;
@@ -31,6 +27,11 @@ export interface SortableConfig {
 
   createDummyFromItem: (item: HTMLElement, context: Sortable) => HTMLElement;
   setDummyElementPropertiesFromItem: (dummyElement: HTMLElement, item: HTMLElement, context: Sortable) => void;
+
+  activateOnLongPress: boolean;
+  listenToLongPress: boolean;
+  longPressWait: number;
+  longPressCondition: (event, manager: DragEventManager, context: Sortable) => true,
 
   beforeActivate: (context: Sortable) => void;
   beforeDeactivate: (context: Sortable) => void;
@@ -56,10 +57,6 @@ export interface SortableConfig {
 }
 
 export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
-  activateOnLongPress: false,
-  listenToLongPress: true,
-  longPressWait: 0.4,
-
   leftMouseButtonOnly: true,
 
   disableTouchEventsWhileActive: true,
@@ -92,6 +89,11 @@ export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
       dummy
     );
   },
+
+  activateOnLongPress: false,
+  listenToLongPress: true,
+  longPressWait: 0.4,
+  longPressCondition: () => true,
 
   beforeActivate: () => {},
   beforeDeactivate: () => {},

@@ -88,7 +88,7 @@ export class EventManager {
     );
     if (
       config.activateOnLongPress === true
-      && event.previousEvent !== 'drag'
+      && config.longPressCondition(event, manager, this.sortable) === true
     ) {
       this.sortable.activate(event);
     }

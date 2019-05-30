@@ -9,6 +9,12 @@ const sortable = new Sortable({
   activateOnLongPress: true,
   autoScroll: true,
   longPressWait: 0.2,
+  longPressCondition: (event, manager, context) => {
+    console.log(event);
+    console.log(manager);
+    console.log(context);
+    return true;
+  },
 });
 
 sortable.config.items = items;

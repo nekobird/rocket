@@ -187,7 +187,11 @@ export class DragEvent {
 
       if (config.enableLongPress === true) {
         this.longPressTimeout = setTimeout(
-          () => this.onLongPress(data),
+          () => {
+            if (config.longPressCondition(this, this.manager) === true) {
+              this.onLongPress(data);
+            }
+          },
           config.longPressWait * 1000
         );
       }
