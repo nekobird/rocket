@@ -8,8 +8,9 @@ import {
 } from './sensorHub';
 
 export class TouchSensor {
-
   public manager: DragEventManager;
+
+  public isActive: boolean = false;
 
   constructor(manager: DragEventManager) {
     this.manager = manager;
@@ -71,16 +72,24 @@ export class TouchSensor {
   }
 
   public listen() {
-    this.manager.config.parent.addEventListener('touchstart', this.eventHandlerTouchStart);
-    this.manager.config.parent.addEventListener('touchmove', this.eventHandlerTouchMove);
-    this.manager.config.parent.addEventListener('touchend', this.eventHandlerTouchEnd);
-    this.manager.config.parent.addEventListener('touchcancel', this.eventHandlerTouchCancel);
+    if (this.isActive === false) {
+      const { parent } = this.manager.config;
+      parent.addEventListener('touchstart', this.eventHandlerTouchStart);
+      parent.addEventListener('touchmove', this.eventHandlerTouchMove);
+      parent.addEventListener('touchend', this.eventHandlerTouchEnd);
+      parent.addEventListener('touchcancel', this.eventHandlerTouchCancel);
+      this.isActive = true;
+    }
   }
 
   public stop() {
-    this.manager.config.parent.removeEventListener('touchstart', this.eventHandlerTouchStart);
-    this.manager.config.parent.removeEventListener('touchmove', this.eventHandlerTouchMove);
-    this.manager.config.parent.removeEventListener('touchend', this.eventHandlerTouchEnd);
-    this.manager.config.parent.removeEventListener('touchcancel', this.eventHandlerTouchCancel);
+    if (this.isActive === true) {
+      const { parent } = this.manager.config;
+      parent.removeEventListener('touchstart', this.eventHandlerTouchStart);
+      parent.removeEventListener('touchmove', this.eventHandlerTouchMove);
+      parent.removeEventListener('touchend', this.eventHandlerTouchEnd);
+      parent.removeEventListener('touchcancel', this.eventHandlerTouchCancel);
+      this.isActive = false;
+    }
   }
 }

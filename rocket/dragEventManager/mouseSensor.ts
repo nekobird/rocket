@@ -8,9 +8,9 @@ import {
 } from './sensorHub';
 
 export class MouseSensor {
-
   public manager: DragEventManager;
 
+  public isActive: boolean = false;
   public isDown: boolean = false;
 
   constructor(manager: DragEventManager) {
@@ -68,16 +68,22 @@ export class MouseSensor {
   }
 
   public listen() {
-    const { parent } = this.manager.config;
-    parent.addEventListener('mousedown', this.eventHandlerMouseDown);
-    parent.addEventListener('mousemove', this.eventHandlerMouseMove);
-    parent.addEventListener('mouseup', this.eventHandlerMouseUp);
+    if (this.isActive === false) {
+      const { parent } = this.manager.config;
+      parent.addEventListener('mousedown', this.eventHandlerMouseDown);
+      parent.addEventListener('mousemove', this.eventHandlerMouseMove);
+      parent.addEventListener('mouseup', this.eventHandlerMouseUp);
+      this.isActive = true;
+    }
   }
 
   public stop() {
-    const { parent } = this.manager.config;
-    parent.removeEventListener('mousedown', this.eventHandlerMouseDown);
-    parent.removeEventListener('mousemove', this.eventHandlerMouseMove);
-    parent.removeEventListener('mouseup', this.eventHandlerMouseUp);
+    if (this.isActive === true) {
+      const { parent } = this.manager.config;
+      parent.removeEventListener('mousedown', this.eventHandlerMouseDown);
+      parent.removeEventListener('mousemove', this.eventHandlerMouseMove);
+      parent.removeEventListener('mouseup', this.eventHandlerMouseUp);
+      this.isActive = false;
+    }
   }
 }
