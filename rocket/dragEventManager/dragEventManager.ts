@@ -79,6 +79,8 @@ export class DragEventManager {
   }
 
   public initialize(): this {
+    this.mouseSensor.stop();
+    this.touchSensor.stop();
     this.mouseSensor.listen();
     this.touchSensor.listen();
     return this;
