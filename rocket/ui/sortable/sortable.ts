@@ -1,5 +1,6 @@
 import {
   DOMPoint,
+  DOMUtil,
   Point,
   PointHelper,
   ViewportModel,
@@ -19,7 +20,6 @@ import {
 } from './eventManager';
 
 export class Sortable {
-
   public config: SortableConfig;
   public itemManager: ItemManager;
   public eventManager: EventManager;
@@ -31,10 +31,7 @@ export class Sortable {
   public activeItem?: HTMLElement;
   public activeIdentifier?: string;
   public activeItemPointOffset?: Point;
-
   public dummy?: HTMLElement;
-
-  public determineItem = item => item.classList.contains('sortableItem');
 
   constructor(config?: Partial<SortableConfig>) {
     this.config = Object.assign({}, SORTABLE_DEFAULT_CONFIG);
@@ -55,8 +52,6 @@ export class Sortable {
     this.eventManager.initialize();
   }
 
-  // @getters
-
   public get groupElement(): HTMLElement | false {
     if (typeof this.itemManager.group === 'object') {
       return this.itemManager.group;
@@ -74,11 +69,7 @@ export class Sortable {
     return false;
   }
 
-  // @event_handler
-
   public preventDefault = event => event.preventDefault();
-
-  // @events
 
   public disableEventsOnActivate() {
     if (this.config.disableTouchEventsWhileActive === true) {
@@ -96,30 +87,6 @@ export class Sortable {
     }
   }
 
-  public disableActiveItemEventsOnActivate() {
-    if (
-      this.config.disableEventsOnItemWhileActive === true
-      && typeof this.activeItem === 'object'
-    ) {
-      this.activeItem.addEventListener('touchstart', this.preventDefault, { passive: false });
-      this.activeItem.addEventListener('touchmove', this.preventDefault, { passive: false });
-      this.activeItem.addEventListener('touchend', this.preventDefault, { passive: false });
-    }
-  }
-
-  public enableActiveItemEventsOnDeactivate() {
-    if (
-      this.config.disableEventsOnItemWhileActive === true
-      && typeof this.activeItem === 'object'
-    ) {
-      this.activeItem.removeEventListener('touchstart', this.preventDefault);
-      this.activeItem.removeEventListener('touchmove', this.preventDefault);
-      this.activeItem.removeEventListener('touchend', this.preventDefault);
-    }
-  }
-
-  // @actions
-
   public activate({ identifier, downData }) {
     if (
       this.isActive === false
@@ -131,8 +98,6 @@ export class Sortable {
       this.isActive = true;
       this.activeItem = this.targetItem;
       this.activeIdentifier = identifier.toString();
-
-      this.disableActiveItemEventsOnActivate();
 
       this.config.activateItem(<HTMLElement>this.activeItem, this);
       this.updateInitialActiveItemOffset(downData);
@@ -194,9 +159,7 @@ export class Sortable {
       typeof this.activeItem === 'object'
       && this.groupElement !== false
       && this.itemElements !== false
-      && typeof this.dummy === 'object'
-      && this.dummy instanceof HTMLElement
-      && this.dummy.nodeType === 1
+      && DOMUtil.isHTMLElement(<HTMLElement>this.dummy) === true
     ) {
       const corners = DOMPoint.getElementCornerPoints(this.activeItem);
       const closestChild = DOMPoint.getClosestChildFromPoints(
@@ -240,25 +203,18 @@ export class Sortable {
       this.config.deactivateItem(this.activeItem, this);
       this.config.unpopItem(this.activeItem, this.groupElement, this);
 
-      if (
-        typeof this.dummy === 'object'
-        && this.dummy instanceof HTMLElement
-        && this.dummy.nodeType === 1
-      ) {
+      if (DOMUtil.isHTMLElement(<HTMLElement>this.dummy) === true) {
         this.groupElement.replaceChild(
           this.activeItem,
           <HTMLElement>this.dummy,
         );
+        if (this.groupElement.contains(<HTMLElement>this.dummy) === true) {
+          this.groupElement.removeChild(<HTMLElement>this.dummy);
+        }
       }
-
-      this.enableActiveItemEventsOnDeactivate();
 
       this.isActive = false;
       this.hasMoved = false;
-
-      if (this.groupElement.contains(<HTMLElement>this.dummy) === true) {
-        this.groupElement.removeChild(<HTMLElement>this.dummy);
-      }
 
       this.activeItem = undefined;
       this.dummy = undefined;

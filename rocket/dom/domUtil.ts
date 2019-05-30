@@ -4,6 +4,18 @@ import {
 
 export class DOMUtil {
 
+  public static isHTMLElement(element: HTMLElement): boolean {
+    if (
+      typeof element === 'object'
+      && typeof element.nodeType === 'number'
+      && element.nodeType === 1
+      && element instanceof HTMLElement === true
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   public static onImageLoad(src: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const img = new Image();

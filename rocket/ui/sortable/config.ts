@@ -16,7 +16,6 @@ export interface SortableConfig {
   leftMouseButtonOnly: boolean,
 
   disableTouchEventsWhileActive: boolean;
-  disableEventsOnItemWhileActive: boolean;
 
   autoScroll: boolean;
 
@@ -64,7 +63,6 @@ export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
   leftMouseButtonOnly: true,
 
   disableTouchEventsWhileActive: true,
-  disableEventsOnItemWhileActive: false,
 
   autoScroll: false,
 
