@@ -195,6 +195,8 @@ export class Sortable {
       && this.groupElement !== false
       && this.itemElements !== false
       && typeof this.dummy === 'object'
+      && this.dummy instanceof HTMLElement
+      && this.dummy.nodeType === 1
     ) {
       const corners = DOMPoint.getElementCornerPoints(this.activeItem);
       const closestChild = DOMPoint.getClosestChildFromPoints(
@@ -238,10 +240,16 @@ export class Sortable {
       this.config.deactivateItem(this.activeItem, this);
       this.config.unpopItem(this.activeItem, this.groupElement, this);
 
-      this.groupElement.replaceChild(
-        this.activeItem,
-        <HTMLElement>this.dummy,
-      );
+      if (
+        typeof this.dummy === 'object'
+        && this.dummy instanceof HTMLElement
+        && this.dummy.nodeType === 1
+      ) {
+        this.groupElement.replaceChild(
+          this.activeItem,
+          <HTMLElement>this.dummy,
+        );
+      }
 
       this.enableActiveItemEventsOnDeactivate();
 
