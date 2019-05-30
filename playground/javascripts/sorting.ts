@@ -8,7 +8,7 @@ const items: HTMLElement[] = Array.from(document.querySelectorAll('.sortableItem
 const sortable = new Sortable({
   activateOnLongPress: true,
   autoScroll: true,
-  longPressWait: 0.3,
+  longPressWait: 0.2,
 });
 
 sortable.config.items = items;

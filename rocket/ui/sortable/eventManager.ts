@@ -20,16 +20,16 @@ export class EventManager {
   public initialize() {
     const { config } = this.sortable;
     this.dragEventManager.setConfig({
-      enableDownRepeater: true,
-      downRepeaterDelay: 1 / 60,
-
       enableLongPress: (config.activateOnLongPress || config.listenToLongPress),
       longPressWait: config.longPressWait,
 
       leftMouseButtonOnly: config.leftMouseButtonOnly,
 
-      condition: this.eventCondition,
+      enableDownRepeater: true,
+      downRepeaterFrequency: 60,
       onDownRepeat: this.handleOnActive,
+
+      condition: this.eventCondition,
       onDown: this.handleOnDown,
       onLongPress: this.handleOnLongPress,
       onDrag: this.handleOnDrag,
@@ -138,7 +138,7 @@ export class EventManager {
     }
   }
 
-  private handleOnActive = (event, manager) => {
+  private handleOnActive = (repeater, event, manager) => {
     const { config, isActive, activeIdentifier } = this.sortable;
     if (
       isActive === true
