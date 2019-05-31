@@ -69,7 +69,24 @@ export class Sortable {
     return false;
   }
 
-  public preventDefault = event => event.preventDefault();
+  public preventDefault = (event: TouchEvent) => {
+    if (
+      event.cancelable === true
+      && this.eventManager.isActive === true
+      && typeof event.changedTouches === 'object'
+    ) {
+      Array
+        .from(event.changedTouches)
+        .forEach(touch => {
+          if (
+            typeof touch.identifier !== 'undefined'
+            && this.eventManager.activeIdentifier === touch.identifier.toString()
+          ) {
+            event.preventDefault();
+          }
+        });
+    }
+  }
 
   public disableEventsOnActivate() {
     if (this.config.disableTouchEventsWhileActive === true) {

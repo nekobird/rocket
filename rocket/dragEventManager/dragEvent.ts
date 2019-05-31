@@ -1,4 +1,6 @@
 import {
+  Point,
+  PointHelper,
   Repeater,
   Vector2,
 } from '../rocket';
@@ -43,6 +45,9 @@ export class DragEvent {
   public acceleration: Vector2;
   public lastAcceleration: Vector2;
 
+  public firstDragPoint: Point | false = false;
+  public wasScrolling: boolean = false;
+
   constructor(manager: DragEventManager) {
     this.manager = manager;
     this.repeater = new Repeater({
@@ -57,6 +62,40 @@ export class DragEvent {
 
     this.acceleration = new Vector2();
     this.lastAcceleration = new Vector2();
+  }
+
+  public get downPoint(): Point | false {
+    if (typeof this.downData === 'object') {
+      return PointHelper.newPoint(
+        this.downData.clientX,
+        this.downData.clientY,
+      );
+    }
+    return false;
+  }
+
+  public get dragPoint(): Point | false {
+    if (typeof this.dragData === 'object') {
+      return PointHelper.newPoint(
+        this.dragData.clientX,
+        this.dragData.clientY,
+      );
+    }
+    return false;
+  }
+
+  public get upPoint(): Point | false {
+    if (typeof this.upData === 'object') {
+      return PointHelper.newPoint(
+        this.upData.clientX,
+        this.upData.clientY,
+      );
+    }
+    return false;
+  }
+
+  public get isScrolling(): boolean {
+    return this.manager.isScrolling;
   }
   
   public get duration(): number | undefined {
@@ -165,6 +204,7 @@ export class DragEvent {
 
     this.isActive = true;
     this.identifier = data.identifier;
+
     this.downData = data;
 
     this.initializeVectors(data);
@@ -172,13 +212,18 @@ export class DragEvent {
     this.currentEvent = data.name;
 
     if (config.condition(this, this.manager) === true) {
+      this.checkWasScrolling();
+
       config.onDown(this, this.manager);
 
       if (config.enableDownRepeater === true) {
         this.repeater.setConfig({
           frequency: config.downRepeaterFrequency,
           onStart: () => config.onDownRepeatStart(this.repeater, this, this.manager),
-          onRepeat: () => config.onDownRepeat(this.repeater, this, this.manager),
+          onRepeat: () => {
+            this.checkWasScrolling();
+            config.onDownRepeat(this.repeater, this, this.manager);
+          },
           onEnd: () => config.onDownRepeatEnd(this.repeater, this, this.manager),
         });
         config.beforeDownRepeatStart(this.repeater, this, this.manager);
@@ -186,6 +231,7 @@ export class DragEvent {
       }
 
       if (config.enableLongPress === true) {
+        this.checkWasScrolling();
         this.longPressTimeout = setTimeout(
           () => {
             if (config.longPressCondition(this, this.manager) === true) {
@@ -202,6 +248,14 @@ export class DragEvent {
 
   public onDrag(data: SensorData) {
     if (this.isActive  === true) {
+      if (this.firstDragPoint === false) {
+        this.firstDragPoint = PointHelper.newPoint(
+          data.clientX,
+          data.clientY,
+        );
+      }
+      this.checkWasScrolling();
+
       this.dragData = data;
 
       this.updateVectors(data);
@@ -219,7 +273,8 @@ export class DragEvent {
       this.repeater.stop();
       this.clearLongPress();
 
-      this.isActive = false;
+      this.isActive = false;      
+
       this.upData = data;
 
       this.updateVectors(data);
@@ -228,6 +283,8 @@ export class DragEvent {
       this.currentEvent = data.name;
 
       this.manager.config.onUp(this, this.manager);
+
+      this.wasScrolling = false;
       this.updateLastVectors();
     }
   }
@@ -248,6 +305,7 @@ export class DragEvent {
       this.currentEvent = data.name;
 
       this.manager.config.onCancel(this, this.manager);
+      this.wasScrolling = false;
       this.updateLastVectors();
     }
   }
@@ -261,5 +319,11 @@ export class DragEvent {
   public clearLongPress() {
     clearTimeout(this.longPressTimeout);
     this.longPressIsCleared = true;
+  }
+
+  private checkWasScrolling() {
+    if (this.isScrolling === true) {
+      this.wasScrolling = true;
+    }
   }
 }

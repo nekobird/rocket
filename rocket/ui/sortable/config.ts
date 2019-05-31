@@ -31,7 +31,7 @@ export interface SortableConfig {
   activateOnLongPress: boolean;
   listenToLongPress: boolean;
   longPressWait: number;
-  longPressCondition: (event, manager: DragEventManager, context: Sortable) => true,
+  longPressCondition: (event, manager: DragEventManager, context: Sortable) => boolean,
 
   beforeActivate: (context: Sortable) => void;
   beforeDeactivate: (context: Sortable) => void;

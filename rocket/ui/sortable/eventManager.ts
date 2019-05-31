@@ -9,8 +9,10 @@ import {
 
 export class EventManager {
   public sortable: Sortable;
-
   public dragEventManager: DragEventManager;
+
+  public isActive: boolean = false;
+  public activeIdentifier?: string;
 
   constructor(sortable: Sortable) {
     this.dragEventManager = new DragEventManager();
@@ -59,7 +61,9 @@ export class EventManager {
       && Array.isArray(itemManager.items) === true
     ) {
       const targetItem = DOMTraverse.findAncestor(
-        item, element => (<HTMLElement[]>itemManager.items).indexOf(element) !== -1, false
+        item,
+        element => (<HTMLElement[]>itemManager.items).indexOf(element) !== -1,
+        false,
       );
       if (targetItem !== false) {
         this.sortable.targetItem = <HTMLElement>targetItem;
@@ -72,10 +76,10 @@ export class EventManager {
   private handleOnDown = (event, manager) => {
     const { config, targetItem } = this.sortable;
     config.onDown(
-      <HTMLElement>targetItem, event,
-      manager, this.sortable
+      <HTMLElement>targetItem, event, manager, this.sortable
     );
     if (config.activateOnLongPress === false) {
+      this.activate(event);
       this.sortable.activate(event);
     }
   }
@@ -83,13 +87,13 @@ export class EventManager {
   private handleOnLongPress = (event, manager) => {
     const { config, targetItem } = this.sortable;
     config.onLongPress(
-      <HTMLElement>targetItem, event,
-      manager, this.sortable
+      <HTMLElement>targetItem, event, manager, this.sortable
     );
     if (
       config.activateOnLongPress === true
       && config.longPressCondition(event, manager, this.sortable) === true
     ) {
+      this.activate(event);
       this.sortable.activate(event);
     }
   }
@@ -97,8 +101,7 @@ export class EventManager {
   public handleOnDrag = (event, manager) => {
     const { config, targetItem, isActive, activeIdentifier } = this.sortable;
     config.onDrag(
-      <HTMLElement>targetItem, event,
-      manager, this.sortable
+      <HTMLElement>targetItem, event, manager, this.sortable
     );
     if (
       isActive === true
@@ -112,14 +115,14 @@ export class EventManager {
   public handleOnUp = (event, manager) => {
     const { config, targetItem, isActive, activeIdentifier } = this.sortable;
     config.onUp(
-      <HTMLElement>targetItem, event,
-      manager, this.sortable
+      <HTMLElement>targetItem, event, manager, this.sortable
     );
     if (
       isActive === true
       && activeIdentifier === event.identifier.toString()
       && typeof event.upData === 'object'
     ) {
+      this.deactivate();
       this.sortable.deactivate();
     }
   }
@@ -127,13 +130,13 @@ export class EventManager {
   private handleOnCancel = (event, manager) => {
     const { config, targetItem, isActive, activeIdentifier } = this.sortable;
     config.onCancel(
-      <HTMLElement>targetItem, event,
-      manager, this.sortable
+      <HTMLElement>targetItem, event, manager, this.sortable
     );
     if (
       isActive === true
       && activeIdentifier === event.identifier.toString()
     ) {
+      this.deactivate();
       this.sortable.deactivate();
     }
   }
@@ -147,5 +150,15 @@ export class EventManager {
     ) {
       this.sortable.scrollCheck();
     } 
+  }
+
+  private activate(event) {
+    this.isActive = true;
+    this.activeIdentifier = event.identifier;
+  }
+
+  private deactivate() {
+    this.isActive = false;
+    this.activeIdentifier = undefined;
   }
 }

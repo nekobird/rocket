@@ -1,5 +1,6 @@
 import {
   Repeater,
+  Util,
 } from '../rocket';
 
 import {
@@ -20,6 +21,7 @@ import {
 
 export interface DragEventManagerConfig {
   enableDownRepeater: boolean;
+  scrollEndDebounceDelay: number;
 
   enableLongPress: boolean;
   longPressWait: number; // In seconds.
@@ -46,6 +48,7 @@ export interface DragEventManagerConfig {
 
 export const DRAG_EVENT_MANAGER_DEFAULT_CONFIG: DragEventManagerConfig = {
   enableDownRepeater: false,
+  scrollEndDebounceDelay: 0.3,
 
   enableLongPress: false,
   longPressWait: 2,
@@ -79,6 +82,10 @@ export class DragEventManager {
 
   public isActive: boolean = false;
 
+  public isListeningToScroll: boolean = false;
+  public scrollDebounce?: Function;
+  public isScrolling: boolean = false;
+
   constructor(config?: Partial<DragEventManagerConfig>) {
     this.config = Object.assign({}, DRAG_EVENT_MANAGER_DEFAULT_CONFIG);
     if (typeof config === 'object') {
@@ -96,10 +103,40 @@ export class DragEventManager {
   }
 
   public initialize(): this {
+    this.stopListenToScroll();
     this.mouseSensor.stop();
     this.touchSensor.stop();
+    this.listenToScroll();
     this.mouseSensor.listen();
     this.touchSensor.listen();
     return this;
+  }
+
+  public eventHandlerScroll = () => this.isScrolling = true;
+
+  public eventHandlerScrollEnd = () => this.isScrolling = false;
+
+  public listenToScroll() {
+    if (this.isListeningToScroll === false) {
+      this.scrollDebounce = Util.debounce(
+        this.config.scrollEndDebounceDelay,
+        this.eventHandlerScrollEnd,
+      );
+      document.body.addEventListener('touchmove', this.eventHandlerScroll);
+      document.body.addEventListener('touchmove', <EventListener>this.scrollDebounce);
+      window.addEventListener('scroll', this.eventHandlerScroll);
+      window.addEventListener('scroll', <EventListener>this.scrollDebounce);
+      this.isListeningToScroll = true;
+    }
+  }
+
+  public stopListenToScroll() {
+    if (this.isListeningToScroll === true) {
+      document.body.addEventListener('touchmove', this.eventHandlerScroll);
+      document.body.addEventListener('touchmove', <EventListener>this.eventHandlerScrollEnd);
+      window.removeEventListener('scroll', this.eventHandlerScroll);
+      window.removeEventListener('scroll', <EventListener>this.eventHandlerScrollEnd);
+      this.isListeningToScroll = false;
+    }
   }
 }
