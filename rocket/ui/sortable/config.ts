@@ -33,6 +33,8 @@ export interface SortableConfig {
   longPressWait: number;
   longPressCondition: (event, manager: DragEventManager, context: Sortable) => boolean,
 
+  condition: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => boolean;
+
   beforeActivate: (context: Sortable) => void;
   beforeDeactivate: (context: Sortable) => void;
 
@@ -99,6 +101,8 @@ export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
   beforeDeactivate: () => {},
   afterActivate: () => {},
   afterDeactivate: () => {},
+
+  condition: () => true,
 
   activateItem: item => {
     item.classList.add('sortableItem--active');

@@ -17,6 +17,10 @@ const sortable = new Sortable({
     }
     return true;
   },
+
+  condition: (item) => {
+    return true;
+  }
 });
 
 sortable.config.items = items;

@@ -53,7 +53,7 @@ export class EventManager {
   }
 
   public eventCondition = event => {
-    const { itemManager } = this.sortable;
+    const { config, itemManager } = this.sortable;
     const item = this.getTargetItemFromDownEvent(event);
     if (
       item !== false
@@ -65,7 +65,12 @@ export class EventManager {
         element => (<HTMLElement[]>itemManager.items).indexOf(element) !== -1,
         false,
       );
-      if (targetItem !== false) {
+      if (
+        targetItem !== false
+        && config.condition(
+          <HTMLElement>targetItem, event, this.dragEventManager, this.sortable
+        ) === true
+      ) {
         this.sortable.targetItem = <HTMLElement>targetItem;
         return true;
       }
