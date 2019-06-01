@@ -19,50 +19,52 @@ import {
   DragEvent,
 } from './dragEvent';
 
+export type EventTypes = 'TOUCH' | 'MOUSE';
+
 export interface DragEventManagerConfig {
-  enableDownRepeater: boolean;
   scrollEndDebounceDelay: number;
-
-  enableLongPress: boolean;
-  longPressWait: number; // In seconds.
-
   leftMouseButtonOnly: boolean;
 
   parent: HTMLElement | Window;
 
+  listenTo: EventTypes[];
+
+  enableDownRepeater: boolean;
   downRepeaterFrequency: number;
   beforeDownRepeatStart: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
-  onDownRepeatStart: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
-  onDownRepeat: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
+  onDownRepeatStart:     (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
+  onDownRepeat:    (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
   onDownRepeatEnd: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
 
+  enableLongPress: boolean;
+  longPressWait:   number; // In seconds.
   longPressCondition: (event: DragEvent, manager: DragEventManager) => boolean;
-  onLongPress: (event: DragEvent, manager: DragEventManager) => void;
+  onLongPress:        (event: DragEvent, manager: DragEventManager) => void;
 
   condition: (event: DragEvent, manager: DragEventManager) => boolean;
-  onDown: (event: DragEvent, manager: DragEventManager) => void;
-  onDrag: (event: DragEvent, manager: DragEventManager) => void;
-  onUp: (event: DragEvent, manager: DragEventManager) => void;
+  onDown:    (event: DragEvent, manager: DragEventManager) => void;
+  onDrag:    (event: DragEvent, manager: DragEventManager) => void;
+  onUp:     (event: DragEvent, manager: DragEventManager) => void;
   onCancel: (event: DragEvent, manager: DragEventManager) => void;
 }
 
 export const DRAG_EVENT_MANAGER_DEFAULT_CONFIG: DragEventManagerConfig = {
-  enableDownRepeater: false,
   scrollEndDebounceDelay: 0.3,
-
-  enableLongPress: false,
-  longPressWait: 2,
-
   leftMouseButtonOnly: true,
 
   parent: window,
 
+  listenTo: ['TOUCH', 'MOUSE'],
+
+  enableDownRepeater: false,
   downRepeaterFrequency: 60,
   beforeDownRepeatStart: () => {},
   onDownRepeatStart: () => {},
   onDownRepeat: () => {},
   onDownRepeatEnd: () => {},
 
+  enableLongPress: false,
+  longPressWait: 2,
   longPressCondition: () => true,
   onLongPress: () => {},
 

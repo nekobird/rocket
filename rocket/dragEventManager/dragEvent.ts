@@ -50,8 +50,10 @@ export class DragEvent {
 
   constructor(manager: DragEventManager) {
     this.manager = manager;
+
+    const { downRepeaterFrequency } = this.manager.config;
     this.repeater = new Repeater({
-      frequency: this.manager.config.downRepeaterFrequency
+      frequency: downRepeaterFrequency
     });
 
     this.position = new Vector2();

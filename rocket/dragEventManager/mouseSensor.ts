@@ -18,7 +18,10 @@ export class MouseSensor {
   }
 
   public dispatch(data: SensorData) {
-    this.manager.sensorHub.receive(data);
+    const { config, sensorHub } = this.manager;
+    if (config.listenTo.indexOf('MOUSE') !== -1) {
+      sensorHub.receive(data);
+    }
   }
 
   public composeData(name: EventName, event: MouseEvent): SensorData {
@@ -38,10 +41,11 @@ export class MouseSensor {
   }
 
   public eventHandlerMouseDown = (event: Event): void => {
+    const { leftMouseButtonOnly } = this.manager.config; 
     if (
-      this.manager.config.leftMouseButtonOnly === false
+      leftMouseButtonOnly === false
       || (
-        this.manager.config.leftMouseButtonOnly === true
+        leftMouseButtonOnly === true
         && (<MouseEvent>event).button === 0
       )
     ) {
