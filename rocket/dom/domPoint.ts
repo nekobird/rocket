@@ -4,7 +4,7 @@ import {
   PointHelper,
 } from '../rocket';
 
-interface IdentifierFn {
+interface IdentifyElementFn {
   (element: HTMLElement): boolean;
 }
 
@@ -139,7 +139,7 @@ export class DOMPoint {
       return isBelowPoint;
     }
 
-    return centerPoint.y + offset < (<Point>points).y;
+    return centerPoint.y + offset < (points as Point).y;
   }
 
   public static getClosestDistanceFromElementCornersToPoint(element: HTMLElement, point: Point): number {
@@ -163,20 +163,21 @@ export class DOMPoint {
     return document.elementsFromPoint(x, y).indexOf(element) !== -1;
   }
 
-  public static findElementFromPoint({ x, y }: Point, identifierFn: IdentifierFn, getAll: boolean = true): HTMLElement | HTMLElement[] | false {
+  public static findElementFromPoint({ x, y }: Point, identifyElementFn?: IdentifyElementFn, getAll: boolean = true): HTMLElement | HTMLElement[] | false {
     const elements = document.elementsFromPoint(x, y);
 
     if (elements.length === 0) {
       return false;
     }
 
-    let results: HTMLElement[] = [];
+    const identifyElement = typeof identifyElementFn === 'undefined' ? () => true : identifyElementFn;
 
+    let results: HTMLElement[] = [];
     elements.forEach(element => {
-      if (identifierFn(<HTMLElement>element) === true) {
-        results.push(<HTMLElement>element);
+      if (identifyElement(element as HTMLElement) === true) {
+        results.push(element as HTMLElement);
       }
-    })
+    });
 
     if (results.length === 0) {
       return false;
@@ -186,18 +187,17 @@ export class DOMPoint {
 
     if (getAll === true) {
       return results;
-    } else {
-      return results[0];
     }
+    return results[0];
   }
 
-  public static getClosestChildFromPoints(parent: HTMLElement, points: Point | Point[], identifierFn?: IdentifierFn): HTMLElement | false {
-    if (typeof identifierFn === 'undefined') {
-      identifierFn = element => true;
+  public static getClosestChildFromPoints(parent: HTMLElement, points: Point | Point[], identifyElementFn?: IdentifyElementFn): HTMLElement | false {
+    if (typeof identifyElementFn === 'undefined') {
+      identifyElementFn = element => true;
     }
 
     const children: HTMLElement[] = <HTMLElement[]>Array.from(parent.children);
-    const selectedChildren: HTMLElement[] = children.filter(identifierFn);
+    const selectedChildren: HTMLElement[] = children.filter(identifyElementFn);
 
     if (selectedChildren.length === 0)  {
       return false;
@@ -210,7 +210,7 @@ export class DOMPoint {
         );
         return Math.min(...distances);
       } else {
-        return this.getClosestDistanceFromElementCornersToPoint(item, <Point>points);
+        return this.getClosestDistanceFromElementCornersToPoint(item, points as Point);
       }
     })
 

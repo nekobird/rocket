@@ -1,5 +1,6 @@
 import {
   DOMTraverse,
+  DOMUtil,
   DragEventManager,
 } from '../../rocket';
 
@@ -46,6 +47,7 @@ export class EventManager {
     if (
       typeof event.downData === 'object'
       && typeof event.downData.target === 'object'
+      && DOMUtil.isHTMLElement(event.downData.target)
     ) {
       return event.downData.target;
     }
@@ -62,16 +64,16 @@ export class EventManager {
     ) {
       const targetItem = DOMTraverse.findAncestor(
         item,
-        element => (<HTMLElement[]>itemManager.items).indexOf(element) !== -1,
+        element => (itemManager.items as HTMLElement[]).indexOf(element) !== -1,
         false,
       );
       if (
         targetItem !== false
         && config.condition(
-          <HTMLElement>targetItem, event, this.dragEventManager, this.sortable
+          targetItem as HTMLElement, event, this.dragEventManager, this.sortable
         ) === true
       ) {
-        this.sortable.targetItem = <HTMLElement>targetItem;
+        this.sortable.targetItem = targetItem as HTMLElement;
         return true;
       }
     }
@@ -81,7 +83,7 @@ export class EventManager {
   private handleOnDown = (event, manager) => {
     const { config, targetItem } = this.sortable;
     config.onDown(
-      <HTMLElement>targetItem, event, manager, this.sortable
+      targetItem as HTMLElement, event, manager, this.sortable
     );
     if (config.activateOnLongPress === false) {
       this.activate(event);
@@ -92,7 +94,7 @@ export class EventManager {
   private handleOnLongPress = (event, manager) => {
     const { config, targetItem } = this.sortable;
     config.onLongPress(
-      <HTMLElement>targetItem, event, manager, this.sortable
+      targetItem as HTMLElement, event, manager, this.sortable
     );
     if (
       config.activateOnLongPress === true
@@ -106,7 +108,7 @@ export class EventManager {
   public handleOnDrag = (event, manager) => {
     const { config, targetItem, isActive, activeIdentifier } = this.sortable;
     config.onDrag(
-      <HTMLElement>targetItem, event, manager, this.sortable
+      targetItem as HTMLElement, event, manager, this.sortable
     );
     if (
       isActive === true
@@ -120,7 +122,7 @@ export class EventManager {
   public handleOnUp = (event, manager) => {
     const { config, targetItem, isActive, activeIdentifier } = this.sortable;
     config.onUp(
-      <HTMLElement>targetItem, event, manager, this.sortable
+      targetItem as HTMLElement, event, manager, this.sortable
     );
     if (
       isActive === true
@@ -135,7 +137,7 @@ export class EventManager {
   private handleOnCancel = (event, manager) => {
     const { config, targetItem, isActive, activeIdentifier } = this.sortable;
     config.onCancel(
-      <HTMLElement>targetItem, event, manager, this.sortable
+      targetItem as HTMLElement, event, manager, this.sortable
     );
     if (
       isActive === true

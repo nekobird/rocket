@@ -18,7 +18,7 @@ export class DOMScroll {
         left = rect.left;
       }
     } else {
-      left = (<HTMLElement>elements).getBoundingClientRect().left;
+      left = (elements as HTMLElement).getBoundingClientRect().left;
     }
     return window.scrollX + left;
   }
@@ -31,7 +31,7 @@ export class DOMScroll {
         top = rect.top;
       }
     } else {
-      top = (<HTMLElement>elements).getBoundingClientRect().top;
+      top = (elements as HTMLElement).getBoundingClientRect().top;
     }
     return window.scrollX + top;
   }
@@ -43,10 +43,10 @@ export class DOMScroll {
       const rect = DOMRect.getRectFromElements(elements);
       if (rect !== false) {
         left = rect.left;
-        width = (<HTMLElement>elements).offsetWidth;
+        width = (elements as HTMLElement).offsetWidth;
       }
     } else {
-      let rect = (<HTMLElement>elements).getBoundingClientRect();
+      let rect = (elements as HTMLElement).getBoundingClientRect();
       left = rect.left;
       width = rect.width;
     }
@@ -60,10 +60,10 @@ export class DOMScroll {
       const rect = DOMRect.getRectFromElements(elements);
       if (rect !== false) {
         top = rect.top
-        height = (<HTMLElement>elements).offsetHeight
+        height = (elements as HTMLElement).offsetHeight
       }
     } else {
-      let rect = (<HTMLElement>elements).getBoundingClientRect();
+      let rect = (elements as HTMLElement).getBoundingClientRect();
       top = rect.top;
       height = rect.height;
     }

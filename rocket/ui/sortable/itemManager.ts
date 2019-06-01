@@ -20,7 +20,6 @@ export class ItemManager {
 
   public getGroup(): this {
     const { config } = this.sortable;
-
     if (
       typeof config.group === 'undefined'
       && typeof config.groupSelector === 'string'
@@ -42,7 +41,6 @@ export class ItemManager {
 
   public getItems(): this {
     const { config } = this.sortable;
-
     if (
       typeof config.items === 'undefined'
       && typeof config.itemsSelector === 'string'
@@ -72,8 +70,9 @@ export class ItemManager {
       typeof this.items === 'object'
       && Array.isArray(this.items) === true
     ) {
+      const { config } = this.sortable;
       this.items.forEach(item => {
-        this.sortable.config.prepareItems(item);
+        config.prepareItems(item);
       });
     }
     return this;
