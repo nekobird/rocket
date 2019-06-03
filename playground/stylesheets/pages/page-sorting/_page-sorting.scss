@@ -2,14 +2,14 @@
   padding: space('large');
 
   .sortableContainer {
-    background-color: color('medium-light');
+    background-color: color('white');
     border-radius: border-radius('large');
     padding: space('medium');
     position: relative;
   }
 
   .sortableItem {
-    border-radius: px-to-rem(12);
+    border-radius: px-to-rem(8);
     background-color: color('light');
     box-sizing: border-box;
     display: block;
@@ -27,7 +27,7 @@
     user-select: none;
 
     -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none; 
+    -webkit-touch-callout: none;
 
     img {
       -webkit-touch-callout: none;
@@ -43,7 +43,7 @@
     }
 
     &.sortableItem--active {
-      box-shadow: 0 0.5rem 3rem 0 hsla(220, 10, 5, 0.4);
+      box-shadow: 0 0.5rem 3rem 0 hsla(220, 20, 10, 0.2);
       background-color: color('white');
       cursor: grab;
     }

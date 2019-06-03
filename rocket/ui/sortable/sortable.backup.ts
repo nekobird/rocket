@@ -19,15 +19,10 @@ import {
   EventManager,
 } from './eventManager';
 
-import {
-  SortModel,
-} from './sortModel';
-
 export class Sortable {
   public config: SortableConfig;
   public itemManager: ItemManager;
   public eventManager: EventManager;
-  public sortModel: SortModel;
 
   public isActive: boolean = false;
   public hasMoved: boolean = false;
@@ -46,7 +41,6 @@ export class Sortable {
 
     this.itemManager = new ItemManager(this);
     this.eventManager = new EventManager(this);
-    this.sortModel = new SortModel(this);
   }
 
   public setConfig(config: Partial<SortableConfig>) {
@@ -122,7 +116,7 @@ export class Sortable {
       this.activeItem = this.targetItem;
       this.activeIdentifier = identifier.toString();
 
-      this.config.activateItem(this.activeItem as HTMLElement, this);
+      this.config.activateItem(<HTMLElement>this.activeItem, this);
       this.updateInitialActiveItemOffset(downData);
 
       this.config.afterActivate(this);
@@ -158,20 +152,19 @@ export class Sortable {
     ) {
       if (this.hasMoved === false) {
         this.prepareDummy();
+
         this.groupElement.insertBefore(
-          this.dummy as HTMLElement,
+          <HTMLElement>this.dummy,
           this.activeItem
         );
         this.config.popItem(this.activeItem, this.groupElement, this);
-        this.sortModel.
         this.hasMoved = true;
       }
-
       const pointer = { x, y };
       const groupPointerOffset = DOMPoint.getElementOffsetFromPoint(this.groupElement, pointer);
       const to = PointHelper.subtract(
         groupPointerOffset,
-        this.activeItemPointOffset as Point
+        <Point>this.activeItemPointOffset
       );
       this.config.moveItem(this.activeItem, to, this);
       this.prepareAndInsertDummy();
@@ -183,7 +176,7 @@ export class Sortable {
       typeof this.activeItem === 'object'
       && this.groupElement !== false
       && this.itemElements !== false
-      && DOMUtil.isHTMLElement(this.dummy as HTMLElement) === true
+      && DOMUtil.isHTMLElement(<HTMLElement>this.dummy) === true
     ) {
       const corners = DOMPoint.getElementCornerPoints(this.activeItem);
       const closestChild = DOMPoint.getClosestChildFromPoints(
@@ -192,7 +185,7 @@ export class Sortable {
         item => {
           return (
             item !== this.activeItem
-            && (this.itemElements as HTMLElement[]).indexOf(item) !== -1
+            && (<HTMLElement[]>this.itemElements).indexOf(item) !== -1
           );
         },
       );
@@ -202,7 +195,7 @@ export class Sortable {
         const topPoints = DOMPoint.getElementTopPoints(this.activeItem);
         if (DOMPoint.elementCenterIsAbovePoints(closestChild, topPoints) === true) {
           this.groupElement.insertBefore(
-            this.dummy as HTMLElement,
+            <HTMLElement>this.dummy,
             closestChild
           );
         }
@@ -210,7 +203,7 @@ export class Sortable {
         const bottomPoints = DOMPoint.getElementBottomPoints(this.activeItem);
         if (DOMPoint.elementCenterIsBelowPoints(closestChild, bottomPoints) === true) {
           this.groupElement.insertBefore(
-            this.dummy as HTMLElement,
+            <HTMLElement>this.dummy,
             closestChild.nextElementSibling
           );
         }

@@ -5,11 +5,11 @@ import {
 export class DOMText {
 
   public static getElementTextBoxWidth(element: HTMLElement): number {
-    return element.offsetWidth - DOMStyle.getTotalHorizontalSpacing(element);
+    return element.offsetWidth - DOMStyle.getTotalHorizontalInnerSpace(element);
   }
 
   public static getElementTextBoxHeight(element: HTMLElement): number {
-    return element.offsetHeight - DOMStyle.getTotalVerticalSpacing(element);
+    return element.offsetHeight - DOMStyle.getTotalVerticalInnerSpace(element);
   }
 
   public static getLastLine(element: HTMLElement): string {
@@ -28,7 +28,7 @@ export class DOMText {
         ['fontSize', 'fontFamily', 'lineHeight'],
         temp,
       );
-      temp.style.maxWidth = `${element.clientWidth - DOMStyle.getTotalHorizontalSpacing(element)}px`;
+      temp.style.maxWidth = `${element.clientWidth - DOMStyle.getTotalHorizontalInnerSpace(element)}px`;
       temp.textContent = text;
       if (element.parentNode !== null) {
         element.parentNode.appendChild(temp);

@@ -31,6 +31,7 @@ export class DOMStyle {
     return result;
   }
 
+  // @style
   public static applyStyle(element: HTMLElement, styles: StyleList) {
     Object.keys(styles).forEach(key => {
       const value = (typeof styles[key] === 'number') ? styles[key].toString() : <string>styles[key];
@@ -48,6 +49,10 @@ export class DOMStyle {
     });
   }
 
+  public static clearStyles(element: HTMLElement) {
+    element.removeAttribute('style');
+  }
+
   public static removeStyles(element: HTMLElement, propertyNames: string | string[]) {
     if (typeof propertyNames === 'string') {
       propertyNames = [propertyNames];
@@ -57,32 +62,25 @@ export class DOMStyle {
     });
   }
 
-  public static clearStyles(element: HTMLElement) {
-    element.removeAttribute('style');
+  public static getStyleValue(element: HTMLElement, propertyName: string, isNumber: boolean = false): string | number {
+    const style = window.getComputedStyle(element);
+    const value = style[propertyName];
+    return isNumber === true ? parseFloat(value) : value;
   }
 
   public static getStyleValues(element: HTMLElement, propertyNames: string | string[]): StyleValue {
     if (typeof propertyNames === 'string') {
       propertyNames = [propertyNames]
     }
-
     const style = window.getComputedStyle(element);
     const result = {};
-
     propertyNames.forEach(propertyName => {
       result[propertyName] = style[propertyName];
     });
-
     return result;
   }
 
-  public static getStyleValue(element: HTMLElement, propertyName: string, isNumber: boolean = false): string | number {
-    const style = window.getComputedStyle(element);
-    const value = style[propertyName];
-
-    return isNumber === true ? parseFloat(value) : value;
-  }
-
+  // @fonts
   public static getFontSize(element: HTMLElement): number {
     return <number>this.getStyleValue(element, 'fontSize', true);
   }
@@ -91,50 +89,97 @@ export class DOMStyle {
     element.style.fontSize = `${fontSize}px`;
   }
 
+  // @border_widths
   public static getHorizontalBorderWidths(element: HTMLElement) {
     const style = window.getComputedStyle(element);
-
     let { borderLeftWidth, borderRightWidth } = style;
-
     const left = borderLeftWidth  === null? 0 : parseFloat(borderLeftWidth);
     const right = borderRightWidth === null? 0 : parseFloat(borderRightWidth);
-
-    return left + right;
-  }
-
-  public static getHorizontalPaddings(element: HTMLElement): number {
-    const style = window.getComputedStyle(element);
-
-    let { paddingLeft, paddingRight } = style;
-
-    const left = paddingLeft  === null? 0 : parseFloat(paddingLeft);
-    const right = paddingRight === null? 0 : parseFloat(paddingRight);
-
     return left + right;
   }
 
   public static getVerticalBorderWidths(element: HTMLElement): number {
     const style = window.getComputedStyle(element);
-
     const { borderTopWidth, borderBottomWidth } = style;
-
     const top = borderTopWidth === null? 0 : parseFloat(borderTopWidth);
     const bottom = borderBottomWidth === null? 0 : parseFloat(borderBottomWidth);
-
     return top + bottom;
+  }
+
+  // @paddings
+  public static getHorizontalPaddings(element: HTMLElement): number {
+    const style = window.getComputedStyle(element);
+    let { paddingLeft, paddingRight } = style;
+    const left = paddingLeft  === null? 0 : parseFloat(paddingLeft);
+    const right = paddingRight === null? 0 : parseFloat(paddingRight);
+    return left + right;
   }
 
   public static getVerticalPaddings(element: HTMLElement): number {
     const style = window.getComputedStyle(element);
-
     const { paddingTop, paddingBottom } = style;
-
     const top = paddingTop === null? 0 : parseFloat(paddingTop);
     const bottom = paddingBottom === null? 0 : parseFloat(paddingBottom);
-
     return top + bottom;
   }
 
+  // @margins
+  public static getHorizontalMargins(element: HTMLElement): number {
+    const style = window.getComputedStyle(element);
+    const { marginTop, marginBottom } = style;
+    const top = marginTop === null? 0 : parseFloat(marginTop);
+    const bottom = marginBottom === null? 0 : parseFloat(marginBottom);
+    return top + bottom;
+  }
+
+  public static getVerticalMargins(element: HTMLElement): number {
+    const style = window.getComputedStyle(element);
+    const { marginTop, marginBottom } = style;
+    const top = marginTop === null? 0 : parseFloat(marginTop);
+    const bottom = marginBottom === null? 0 : parseFloat(marginBottom);
+    return top + bottom;
+  }
+
+  // @inner_area
+  public static getTotalHorizontalInnerSpace(element: HTMLElement): number {
+    if (this.getStyleValue(element, 'box-sizing') === 'border-box') {
+      return this.getHorizontalPaddings(element) + this.getHorizontalBorderWidths(element);
+    }
+    return this.getHorizontalPaddings(element);
+  }
+
+  public static getTotalVerticalInnerSpace(element: HTMLElement): number {
+    if (this.getStyleValue(element, 'box-sizing') === 'border-box') {
+      return this.getVerticalPaddings(element) + this.getVerticalBorderWidths(element);
+    }
+    return this.getVerticalPaddings(element);
+  }
+
+  // @outer_area
+  public static getTotalHorizontalOuterSpace(element: HTMLElement): number {
+    if (this.getStyleValue(element, 'box-sizing') !== 'border-box') {
+      return this.getHorizontalMargins(element) + this.getHorizontalBorderWidths(element);
+    }
+    return this.getHorizontalMargins(element);
+  }
+
+  public static getTotalVerticalOuterSpace(element: HTMLElement): number {
+    if (this.getStyleValue(element, 'box-sizing') !== 'border-box') {
+      return this.getVerticalMargins(element) + this.getVerticalBorderWidths(element);
+    }
+    return this.getVerticalMargins(element);
+  }
+
+  // @dimension
+  public static getTotalHorizontalDimension(element: HTMLElement): number {
+    return element.offsetWidth + this.getTotalHorizontalOuterSpace(element);
+  }
+
+  public static getTotalVerticalDimension(element: HTMLElement): number {
+    return element.offsetHeight + this.getTotalVerticalOuterSpace(element);
+  }
+
+  // @animation
   public static getAnimationDuration(element: HTMLElement): number {
     const computedStyle = getComputedStyle(element);
     return parseFloat(computedStyle.animationDuration) * 1000;
@@ -143,19 +188,5 @@ export class DOMStyle {
   public static getTransitionDuration(element: HTMLElement): number {
     const computedStyle = getComputedStyle(element);
     return parseFloat(computedStyle.transitionDuration) * 1000;
-  }
-
-  public static getTotalHorizontalSpacing(element: HTMLElement): number {
-    if (this.getStyleValue(element, 'box-sizing') === 'border-box') {
-      return this.getHorizontalPaddings(element) + this.getHorizontalBorderWidths(element);
-    }
-    return this.getHorizontalPaddings(element);
-  }
-
-  public static getTotalVerticalSpacing(element: HTMLElement): number {
-    if (this.getStyleValue(element, 'box-sizing') === 'border-box') {
-      return this.getVerticalPaddings(element) + this.getVerticalBorderWidths(element);
-    }
-    return this.getVerticalPaddings(element);
   }
 }

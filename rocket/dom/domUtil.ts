@@ -4,7 +4,7 @@ import {
 
 export class DOMUtil {
 
-  public static isHTMLElement(element: HTMLElement): boolean {
+  public static isHTMLElement(element?: HTMLElement): boolean {
     if (
       typeof element === 'object'
       && typeof element.nodeType === 'number'
