@@ -1,9 +1,4 @@
 import {
-  DOMRect,
-  DOMUtil,
-} from '../../rocket';
-
-import {
   Sortable,
 } from './sortable';
 

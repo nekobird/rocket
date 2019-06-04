@@ -20,8 +20,8 @@ import {
 } from './eventManager';
 
 import {
-  SortModel,
-} from './sortModel';
+  SortableTransition,
+} from './sortableTransition';
 
 import {
   Dummy,
@@ -38,8 +38,7 @@ export class Sortable {
   public eventManager: EventManager;
   public dummy: Dummy;
   public activeItem: ActiveItem;
-
-  public sortModel: SortModel;
+  public transition: SortableTransition;
 
   public isActive: boolean = false;
   public hasMoved: boolean = false;
@@ -58,7 +57,7 @@ export class Sortable {
     this.eventManager = new EventManager(this);
     this.dummy = new Dummy(this);
     this.activeItem = new ActiveItem(this);
-    this.sortModel = new SortModel(this);
+    this.transition = new SortableTransition(this);
   }
 
   public setConfig(config: Partial<SortableConfig>) {
@@ -207,23 +206,34 @@ export class Sortable {
 
         // We need to defer inserting element until deactivation.
         if (typeof closestChild === 'object') {
+          let target
           const topPoints = DOMPoint.getElementTopPoints(this.activeItem.element as HTMLElement);
-          if (DOMPoint.elementCenterIsAbovePoints(closestChild, topPoints) === true) {
-            group.insertBefore(
-              this.dummy.element as HTMLElement,
-              closestChild
-            );
+          if (
+            closestChild !== (this.dummy.element as HTMLElement).nextElementSibling
+            && DOMPoint.elementCenterIsAbovePoints(closestChild, topPoints) === true
+          ) {
+            target = closestChild;
           }
-
           const bottomPoints = DOMPoint.getElementBottomPoints(this.activeItem.element as HTMLElement);
-          if (DOMPoint.elementCenterIsBelowPoints(closestChild, bottomPoints) === true) {
-            group.insertBefore(
-              this.dummy.element as HTMLElement,
-              closestChild.nextElementSibling
-            );
+          if (
+            closestChild.nextElementSibling !== this.dummy.element
+            && DOMPoint.elementCenterIsBelowPoints(closestChild, bottomPoints) === true
+          ) {
+            target = closestChild.nextElementSibling;
+          }
+          if (typeof target !== 'undefined') {
+            this.transition.go(group, target, () => {
+              if (this.dummy.isActive === true) {
+                group.insertBefore(
+                  this.dummy.element as HTMLElement,
+                  target,
+                );
+              }
+            });
           }
         }
       } else {
+        // Add to the end
         group.appendChild(this.dummy.element as HTMLElement);
       }
     }
@@ -234,6 +244,9 @@ export class Sortable {
       this.isActive === true
       && typeof this.activeItem === 'object'
     ) {
+      this.transition.cleanup();
+      this.transition.destroy();
+
       this.config.beforeDeactivate(this);
       this.config.deactivateItem(this.activeItem.element as HTMLElement, this);
       this.config.unpopItem(this.activeItem.element as HTMLElement, this);

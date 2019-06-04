@@ -72,9 +72,13 @@ export class Dummy {
       this.isActive === true
       && DOMUtil.isHTMLElement(this.element)
     ) {
+      
       const parent = (this.element as HTMLElement).parentElement;
       if (parent !== null) {
         parent.removeChild(this.element as HTMLElement);
+      }
+      if (DOMUtil.isHTMLElement(this.element) === true) {
+        (this.element as HTMLElement).remove();
       }
       this.element = undefined;
       this.isActive = false;
