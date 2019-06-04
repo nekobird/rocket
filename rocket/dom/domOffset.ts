@@ -15,14 +15,14 @@ export class DOMOffset {
 
   public static getElementOffsetFrom(target: HTMLElement, from: HTMLElement): Offset {
     const targetRect: DOMRect | ClientRect = target.getBoundingClientRect();
-    const fromRect: DOMRect | ClientRect = from.getBoundingClientRect();
+    const fromRect  : DOMRect | ClientRect = from.getBoundingClientRect();
 
-    const left: number = Num.getNumberLineDistance(targetRect.left, fromRect.left);
-    const top: number = Num.getNumberLineDistance(targetRect.top , fromRect.top);
+    const left = Num.getNumberLineDistance(targetRect.left, fromRect.left);
+    const top  = Num.getNumberLineDistance(targetRect.top , fromRect.top);
 
     return {
       left, top,
-      right: Num.getNumberLineDistance(targetRect.right, fromRect.right),
+      right : Num.getNumberLineDistance(targetRect.right,  fromRect.right),
       bottom: Num.getNumberLineDistance(targetRect.bottom, fromRect.bottom),
       x: left,
       y: top,
@@ -33,15 +33,15 @@ export class DOMOffset {
   public static getElementOffsetFromDocument(element: HTMLElement): Offset {
     const rect = element.getBoundingClientRect();
 
-    const scrollLeft: number = window.pageXOffset || document.documentElement.scrollLeft;
-    const scrollTop: number = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollTop  = window.pageYOffset || document.documentElement.scrollTop;
 
-    const left: number = rect.left + scrollLeft;
-    const top: number = rect.top + scrollTop;
+    const left = rect.left + scrollLeft;
+    const top  = rect.top + scrollTop;
 
     return {
       left, top,
-      right: rect.right + scrollLeft,
+      right : rect.right  + scrollLeft,
       bottom: rect.bottom + scrollTop,
       x: left,
       y: top,

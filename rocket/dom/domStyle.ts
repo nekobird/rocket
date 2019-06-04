@@ -10,9 +10,9 @@ export class DOMStyle {
 
   public static getLineHeight(element: HTMLElement): number {
     const temp = document.createElement('div')
-    temp.style.padding = '0';
+    temp.style.padding    = '0';
     temp.style.visibility = 'none';
-    temp.textContent = 'abcd';
+    temp.textContent      = 'abcd';
     this.copyStylesFrom(
       element,
       ['fontSize', 'fontFamily', 'lineHeight'],
@@ -34,7 +34,7 @@ export class DOMStyle {
   // @style
   public static applyStyle(element: HTMLElement, styles: StyleList) {
     Object.keys(styles).forEach(key => {
-      const value = (typeof styles[key] === 'number') ? styles[key].toString() : <string>styles[key];
+      const value = (typeof styles[key] === 'number') ? styles[key].toString() : styles[key] as string;
       element.style[key] = value;
     });
   }
