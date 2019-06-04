@@ -9,6 +9,7 @@
     width: 100%;
     max-width: px-to-rem(400);
     display: inline-block;
+    min-height: 400px;
   }
 
   .sortableItem {

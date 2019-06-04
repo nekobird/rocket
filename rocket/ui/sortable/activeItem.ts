@@ -50,12 +50,15 @@ export class ActiveItem {
       const { config } = this.sortable;
       this.updateCurrentGroup();
       const pointerToGroupOffset = DOMPoint.getElementOffsetFromPoint(
-        this.currentGroup as HTMLElement, pointer
+        this.currentGroup as HTMLElement,
+        pointer,
       );
+
       const to = PointHelper.subtract(
         pointerToGroupOffset,
         this.pointToItemOffset as Point,
       );
+
       config.moveItem(this.element as HTMLElement, to, this.sortable);
     }
   }

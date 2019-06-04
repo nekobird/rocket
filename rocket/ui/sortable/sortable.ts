@@ -147,6 +147,19 @@ export class Sortable {
     }
   }
 
+  public move({ clientX: x, clientY: y }) {
+    const group = this.activeItem.activeGroup;
+    if (
+      this.isActive === true
+      && DOMUtil.isHTMLElement(this.activeItem.element)
+      && group !== false
+    ) {
+      this.prepareMove();
+      this.activeItem.move({ x, y });
+      this.prepareAndInsertDummy();
+    }
+  }
+
   public prepareMove() {
     const group = this.activeItem.activeGroup;
     if (
@@ -170,56 +183,48 @@ export class Sortable {
     }
   }
 
-  public move({ clientX: x, clientY: y }) {
-    const group = this.activeItem.activeGroup;
-    if (
-      this.isActive === true
-      && DOMUtil.isHTMLElement(this.activeItem.element)
-      && group !== false
-    ) {
-      this.prepareMove();
-      this.activeItem.move({ x, y });
-      this.prepareAndInsertDummy();
-    }
-  }
-
   public prepareAndInsertDummy() {
-    const group = this.activeItem.activeGroup;
+    const group = this.activeItem.currentGroup;
     if (
-      group !== false
+      typeof group !== 'undefined'
       && this.itemElements !== false
       && this.dummy.isActive == true
       && this.activeItem.isActive == true
     ) {
-      const corners = DOMPoint.getElementCornerPoints(this.activeItem.element as HTMLElement);
-      const closestChild = DOMPoint.getClosestChildFromPoints(
-        group,
-        corners,
-        item => {
-          return (
-            item !== this.activeItem.element
-            && (this.itemElements as HTMLElement[]).indexOf(item) !== -1
-          );
-        },
-      );
 
-      // We need to defer inserting element until deactivation.
-      if (typeof closestChild === 'object') {
-        const topPoints = DOMPoint.getElementTopPoints(this.activeItem.element as HTMLElement);
-        if (DOMPoint.elementCenterIsAbovePoints(closestChild, topPoints) === true) {
-          group.insertBefore(
-            this.dummy.element as HTMLElement,
-            closestChild
-          );
-        }
+      if (this.elementManager.groupHasItem(group) === true) {
+        const corners = DOMPoint.getElementCornerPoints(this.activeItem.element as HTMLElement);
+        const closestChild = DOMPoint.getClosestChildFromPoints(
+          group,
+          corners,
+          item => {
+            return (
+              item !== this.activeItem.element
+              && (this.itemElements as HTMLElement[]).indexOf(item) !== -1
+            );
+          },
+        );
 
-        const bottomPoints = DOMPoint.getElementBottomPoints(this.activeItem.element as HTMLElement);
-        if (DOMPoint.elementCenterIsBelowPoints(closestChild, bottomPoints) === true) {
-          group.insertBefore(
-            this.dummy.element as HTMLElement,
-            closestChild.nextElementSibling
-          );
+        // We need to defer inserting element until deactivation.
+        if (typeof closestChild === 'object') {
+          const topPoints = DOMPoint.getElementTopPoints(this.activeItem.element as HTMLElement);
+          if (DOMPoint.elementCenterIsAbovePoints(closestChild, topPoints) === true) {
+            group.insertBefore(
+              this.dummy.element as HTMLElement,
+              closestChild
+            );
+          }
+
+          const bottomPoints = DOMPoint.getElementBottomPoints(this.activeItem.element as HTMLElement);
+          if (DOMPoint.elementCenterIsBelowPoints(closestChild, bottomPoints) === true) {
+            group.insertBefore(
+              this.dummy.element as HTMLElement,
+              closestChild.nextElementSibling
+            );
+          }
         }
+      } else {
+        group.appendChild(this.dummy.element as HTMLElement);
       }
     }
   }

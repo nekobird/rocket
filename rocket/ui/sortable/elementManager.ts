@@ -94,4 +94,21 @@ export class ElementManager {
     }
     return false;
   }
+
+  public getItemsFromGroup(group: HTMLElement): HTMLElement[] {
+    const { config, activeItem } = this.sortable;
+    return Array.from(group.children).filter(child => {
+      if (
+        config.childIsItem(child as HTMLElement)
+        && child !== activeItem.element
+      ) {
+        return true;
+      }
+      return false;
+    }) as HTMLElement[];
+  }
+
+  public groupHasItem(group: HTMLElement): boolean {
+    return this.getItemsFromGroup(group).length > 0;
+  }
 }

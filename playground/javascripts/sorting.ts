@@ -5,26 +5,15 @@ import {
 const containers = document.querySelectorAll('.sortableContainer');
 
 // document.addEventListener('contextmenu', event => event.preventDefault());
-
 const sortable = new Sortable({
   activateOnLongPress: true,
   autoScroll: true,
   longPressWait: 0.2,
   childIsItem: child => child.classList.contains('sortableItem'),
-  longPressCondition: (event, manager, context) => {
-    if (event.wasScrolling === true) {
-      return false;
-    }
-    return true;
-  },
-
-  condition: (item) => {
-    return true;
-  }
+  longPressCondition: event => event.wasScrolling !== true,
+  condition: item => true,
 });
-
 sortable.config.groups = containers as NodeListOf<HTMLElement>;
-
 sortable.initialize();
 
 console.log(sortable);
