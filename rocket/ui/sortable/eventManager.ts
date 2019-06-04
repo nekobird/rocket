@@ -55,16 +55,16 @@ export class EventManager {
   }
 
   public eventCondition = event => {
-    const { config, itemManager } = this.sortable;
+    const { config, elementManager } = this.sortable;
     const item = this.getTargetItemFromDownEvent(event);
     if (
       item !== false
-      && typeof itemManager.items === 'object'
-      && Array.isArray(itemManager.items) === true
+      && typeof elementManager.items === 'object'
+      && Array.isArray(elementManager.items) === true
     ) {
       const targetItem = DOMTraverse.findAncestor(
         item,
-        element => (itemManager.items as HTMLElement[]).indexOf(element) !== -1,
+        element => (elementManager.items as HTMLElement[]).indexOf(element) !== -1,
         false,
       );
       if (

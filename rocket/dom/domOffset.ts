@@ -14,16 +14,17 @@ export interface Offset {
 export class DOMOffset {
 
   public static getElementOffsetFrom(target: HTMLElement, from: HTMLElement): Offset {
-    const targetRect: DOMRect | ClientRect = target.getBoundingClientRect();
-    const fromRect: DOMRect | ClientRect = from.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+    const fromRect   = from.getBoundingClientRect();
 
-    const left: number = Num.getNumberLineDistance(targetRect.left, fromRect.left);
-    const top: number = Num.getNumberLineDistance(targetRect.top , fromRect.top);
+    const top    = Num.getNumberLineDistance(targetRect.top,    fromRect.top);
+    const bottom = Num.getNumberLineDistance(targetRect.bottom, fromRect.bottom);
+    const left   = Num.getNumberLineDistance(targetRect.left,  fromRect.left);
+    const right  = Num.getNumberLineDistance(targetRect.right, fromRect.right);
 
     return {
-      left, top,
-      right: Num.getNumberLineDistance(targetRect.right, fromRect.right),
-      bottom: Num.getNumberLineDistance(targetRect.bottom, fromRect.bottom),
+      top, bottom,
+      left, right,
       x: left,
       y: top,
     };
@@ -33,11 +34,11 @@ export class DOMOffset {
   public static getElementOffsetFromDocument(element: HTMLElement): Offset {
     const rect = element.getBoundingClientRect();
 
-    const scrollLeft: number = window.pageXOffset || document.documentElement.scrollLeft;
-    const scrollTop: number = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const scrollTop  = window.pageYOffset || document.documentElement.scrollTop;
 
-    const left: number = rect.left + scrollLeft;
-    const top: number = rect.top + scrollTop;
+    const left = rect.left + scrollLeft;
+    const top  = rect.top + scrollTop;
 
     return {
       left, top,

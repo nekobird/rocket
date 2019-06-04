@@ -12,8 +12,8 @@ import {
 } from './config';
 
 import {
-  ItemManager,
-} from './itemManager';
+  ElementManager,
+} from './elementManager';
 
 import {
   EventManager,
@@ -25,7 +25,8 @@ import {
 
 export class Sortable {
   public config: SortableConfig;
-  public itemManager: ItemManager;
+
+  public elementManager: ElementManager;
   public eventManager: EventManager;
   public sortModel: SortModel;
 
@@ -43,8 +44,7 @@ export class Sortable {
     if (typeof config === 'object') {
       this.setConfig(config);
     }
-
-    this.itemManager = new ItemManager(this);
+    this.elementManager = new ElementManager(this);
     this.eventManager = new EventManager(this);
     this.sortModel = new SortModel(this);
   }
@@ -54,23 +54,28 @@ export class Sortable {
   }
 
   public initialize() {
-    this.itemManager.initialize();
+    this.elementManager.initialize();
     this.eventManager.initialize();
   }
 
-  public get groupElement(): HTMLElement | false {
-    if (typeof this.itemManager.group === 'object') {
-      return this.itemManager.group;
+  public get groupElements(): HTMLElement[] | false {
+    const { groups } = this.elementManager;
+    if (
+      typeof groups === 'object'
+      && Array.isArray(groups) === true
+    ) {
+      return groups;
     }
     return false;
   }
 
   public get itemElements(): HTMLElement[] | false {
+    const { items } = this.elementManager;
     if (
-      typeof this.itemManager.items === 'object'
-      && Array.isArray(this.itemManager.items) === true
+      typeof items === 'object'
+      && Array.isArray(items) === true
     ) {
-      return this.itemManager.items;
+      return items;
     }
     return false;
   }
@@ -97,16 +102,16 @@ export class Sortable {
   public disableEventsOnActivate() {
     if (this.config.disableTouchEventsWhileActive === true) {
       window.addEventListener('touchstart', this.preventDefault, { passive: false });
-      window.addEventListener('touchmove', this.preventDefault, { passive: false });
-      window.addEventListener('touchend', this.preventDefault, { passive: false });
+      window.addEventListener('touchmove',  this.preventDefault, { passive: false });
+      window.addEventListener('touchend',   this.preventDefault, { passive: false });
     }
   }
 
   public enableEventsOnDeactivate() {
     if (this.config.disableTouchEventsWhileActive === true) {
       window.removeEventListener('touchstart', this.preventDefault);
-      window.removeEventListener('touchmove', this.preventDefault);
-      window.removeEventListener('touchend', this.preventDefault);
+      window.removeEventListener('touchmove',  this.preventDefault);
+      window.removeEventListener('touchend',   this.preventDefault);
     }
   }
 
@@ -154,7 +159,7 @@ export class Sortable {
     if (
       this.isActive === true
       && typeof this.activeItem === 'object'
-      && this.groupElement !== false
+      && this.groupElements !== false
     ) {
       if (this.hasMoved === false) {
         this.prepareDummy();

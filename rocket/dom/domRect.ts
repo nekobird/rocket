@@ -71,4 +71,33 @@ export class DOMRect {
     );
     return result;
   }
+
+  public static elementsAreOverlapping(element1: HTMLElement, element2: HTMLElement): boolean {
+    const rect1 = element1.getBoundingClientRect();
+    const rect2 = element2.getBoundingClientRect();
+    if (
+      rect1.left > rect2.right
+      || rect2.left > rect1.right
+      || rect1.top > rect2.bottom
+      || rect2.top > rect1.bottom
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  public static getOverlappingAreaFromElements(element1: HTMLElement, element2: HTMLElement): number {
+    const rect1 = element1.getBoundingClientRect();
+    const rect2 = element2.getBoundingClientRect();
+    if (this.elementsAreOverlapping(element1, element2) === true) {
+      const top    = Math.max(rect1.top,    rect2.top);
+      const bottom = Math.min(rect1.bottom, rect2.bottom);
+      const left  = Math.max(rect1.left,  rect2.left);
+      const right = Math.min(rect1.right, rect2.right);
+      const width  = Num.getNumberLineDistance(left, right);
+      const height = Num.getNumberLineDistance(top, bottom);
+      return width * height;
+    }
+    return 0;
+  }
 }

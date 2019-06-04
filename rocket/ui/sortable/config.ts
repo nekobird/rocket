@@ -15,11 +15,8 @@ export interface SortableConfig {
 
   autoScroll: boolean;
 
-  groupSelector: string;
-  group?: HTMLElement;
-
-  itemsSelector: string;
-  items?: HTMLElement[];
+  groupsSelector?: string;
+  groups?: HTMLElement[] | NodeListOf<HTMLElement> | HTMLCollection;
   childIsItem: (child: HTMLElement) => boolean;
 
   prepareGroup: (group: HTMLElement) => void;
@@ -65,11 +62,8 @@ export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
 
   autoScroll: false,
 
-  groupSelector: '.sortableContainer',
-  group: undefined,
-
-  itemsSelector: '.sortableItem',
-  items: undefined,
+  groupsSelector: '.sortableContainer',
+  groups: undefined,
   childIsItem: element => true,
 
   prepareGroup: group => {
