@@ -42,7 +42,7 @@ export class DOMOffset {
 
     return {
       left, top,
-      right: rect.right + scrollLeft,
+      right : rect.right  + scrollLeft,
       bottom: rect.bottom + scrollTop,
       x: left,
       y: top,

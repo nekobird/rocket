@@ -10,9 +10,9 @@ export class DOMStyle {
 
   public static getLineHeight(element: HTMLElement): number {
     const temp = document.createElement('div')
-    temp.style.padding = '0';
+    temp.style.padding    = '0';
     temp.style.visibility = 'none';
-    temp.textContent = 'abcd';
+    temp.textContent      = 'abcd';
     this.copyStylesFrom(
       element,
       ['fontSize', 'fontFamily', 'lineHeight'],
@@ -34,7 +34,7 @@ export class DOMStyle {
   // @style
   public static applyStyle(element: HTMLElement, styles: StyleList) {
     Object.keys(styles).forEach(key => {
-      const value = (typeof styles[key] === 'number') ? styles[key].toString() : <string>styles[key];
+      const value = (typeof styles[key] === 'number') ? styles[key].toString() : styles[key] as string;
       element.style[key] = value;
     });
   }
@@ -82,7 +82,7 @@ export class DOMStyle {
 
   // @fonts
   public static getFontSize(element: HTMLElement): number {
-    return <number>this.getStyleValue(element, 'fontSize', true);
+    return this.getStyleValue(element, 'fontSize', true) as number;
   }
 
   public static setFontSize(element: HTMLElement, fontSize: number) {
@@ -93,16 +93,16 @@ export class DOMStyle {
   public static getHorizontalBorderWidths(element: HTMLElement) {
     const style = window.getComputedStyle(element);
     let { borderLeftWidth, borderRightWidth } = style;
-    const left = borderLeftWidth  === null? 0 : parseFloat(borderLeftWidth);
-    const right = borderRightWidth === null? 0 : parseFloat(borderRightWidth);
+    const left  = (borderLeftWidth  === null || borderLeftWidth  === '') ? 0 : parseFloat(borderLeftWidth);
+    const right = (borderRightWidth === null || borderRightWidth === '') ? 0 : parseFloat(borderRightWidth);
     return left + right;
   }
 
   public static getVerticalBorderWidths(element: HTMLElement): number {
     const style = window.getComputedStyle(element);
     const { borderTopWidth, borderBottomWidth } = style;
-    const top = borderTopWidth === null? 0 : parseFloat(borderTopWidth);
-    const bottom = borderBottomWidth === null? 0 : parseFloat(borderBottomWidth);
+    const top    = (borderTopWidth    === null || borderTopWidth    === '') ? 0 : parseFloat(borderTopWidth);
+    const bottom = (borderBottomWidth === null || borderBottomWidth === '') ? 0 : parseFloat(borderBottomWidth);
     return top + bottom;
   }
 
@@ -110,33 +110,33 @@ export class DOMStyle {
   public static getHorizontalPaddings(element: HTMLElement): number {
     const style = window.getComputedStyle(element);
     let { paddingLeft, paddingRight } = style;
-    const left = paddingLeft  === null? 0 : parseFloat(paddingLeft);
-    const right = paddingRight === null? 0 : parseFloat(paddingRight);
+    const left  = (paddingLeft  === null || paddingLeft  === '') ? 0 : parseFloat(paddingLeft);
+    const right = (paddingRight === null || paddingRight === '') ? 0 : parseFloat(paddingRight);
     return left + right;
   }
 
   public static getVerticalPaddings(element: HTMLElement): number {
     const style = window.getComputedStyle(element);
     const { paddingTop, paddingBottom } = style;
-    const top = paddingTop === null? 0 : parseFloat(paddingTop);
-    const bottom = paddingBottom === null? 0 : parseFloat(paddingBottom);
+    const top    = (paddingTop    === null || paddingTop    === '') ? 0 : parseFloat(paddingTop);
+    const bottom = (paddingBottom === null || paddingBottom === '') ? 0 : parseFloat(paddingBottom);
     return top + bottom;
   }
 
   // @margins
   public static getHorizontalMargins(element: HTMLElement): number {
     const style = window.getComputedStyle(element);
-    const { marginTop, marginBottom } = style;
-    const top = marginTop === null? 0 : parseFloat(marginTop);
-    const bottom = marginBottom === null? 0 : parseFloat(marginBottom);
-    return top + bottom;
+    const { marginLeft, marginRight } = style;
+    const left  = (marginLeft  === null || marginLeft  === '') ? 0 : parseFloat(marginLeft);
+    const right = (marginRight === null || marginRight === '') ? 0 : parseFloat(marginRight);
+    return left + right;
   }
 
   public static getVerticalMargins(element: HTMLElement): number {
     const style = window.getComputedStyle(element);
     const { marginTop, marginBottom } = style;
-    const top = marginTop === null? 0 : parseFloat(marginTop);
-    const bottom = marginBottom === null? 0 : parseFloat(marginBottom);
+    const top    = (marginTop    === null || marginTop    === '') ? 0 : parseFloat(marginTop);
+    const bottom = (marginBottom === null || marginBottom === '') ? 0 : parseFloat(marginBottom);
     return top + bottom;
   }
 
@@ -182,11 +182,13 @@ export class DOMStyle {
   // @animation
   public static getAnimationDuration(element: HTMLElement): number {
     const computedStyle = getComputedStyle(element);
-    return parseFloat(computedStyle.animationDuration) * 1000;
+    const duration = computedStyle.animationDuration;
+    return (duration === null || duration === '') ? 0 : parseFloat(duration) * 1000;
   }
 
   public static getTransitionDuration(element: HTMLElement): number {
     const computedStyle = getComputedStyle(element);
-    return parseFloat(computedStyle.transitionDuration) * 1000;
+    const duration = computedStyle.transitionDuration;
+    return (duration === null || duration === '') ? 0 : parseFloat(duration) * 1000;
   }
 }

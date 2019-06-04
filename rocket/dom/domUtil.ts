@@ -49,7 +49,7 @@ export class DOMUtil {
       || element.nodeName === 'INPUT'
       || element.nodeName === 'TEXTAREA'
     ) {
-      return (<HTMLTextAreaElement | HTMLInputElement>element).value;
+      return (element as HTMLTextAreaElement | HTMLInputElement).value;
     }
     if (element.textContent !== null) {
       return element.textContent;
