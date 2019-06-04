@@ -2,15 +2,15 @@ import {
   Sortable,
 } from '../../rocket/rocket';
 
-const container: HTMLElement = document.querySelector('.sortableContainer');
-const items: HTMLElement[] = Array.from(document.querySelectorAll('.sortableItem'));
+const containers = document.querySelectorAll('.sortableContainer');
 
-document.addEventListener('contextmenu', event => event.preventDefault());
+// document.addEventListener('contextmenu', event => event.preventDefault());
 
 const sortable = new Sortable({
   activateOnLongPress: true,
   autoScroll: true,
   longPressWait: 0.2,
+  childIsItem: child => child.classList.contains('sortableItem'),
   longPressCondition: (event, manager, context) => {
     if (event.wasScrolling === true) {
       return false;
@@ -23,7 +23,8 @@ const sortable = new Sortable({
   }
 });
 
-sortable.config.items = items;
-sortable.config.group = container;
+sortable.config.groups = containers as NodeListOf<HTMLElement>;
 
 sortable.initialize();
+
+console.log(sortable);

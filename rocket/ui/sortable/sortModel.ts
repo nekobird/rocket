@@ -42,11 +42,11 @@ export class SortModel {
 
   // 1) Create model and populate it's data.
   public activate() {
-    const { itemManager, isActive, dummy, activeItem } = this.sortable;
+    const { elementManager, isActive, dummy, activeItem } = this.sortable;
     if (
       isActive === true
-      && typeof itemManager.items !== 'undefined'
-      && Array.isArray(itemManager.items) === true
+      && typeof elementManager.items !== 'undefined'
+      && Array.isArray(elementManager.items) === true
       && DOMUtil.isHTMLElement(activeItem)
       && DOMUtil.isHTMLElement(dummy)
     ) {
@@ -54,7 +54,7 @@ export class SortModel {
       this.activeItem = activeItem;
 
       this.items = [];
-      itemManager.items.forEach(item => {
+      elementManager.items.forEach(item => {
         if (item !== activeItem) {
           (this.items as ItemModel[]).push(
             this.createModelFromItem(item)
@@ -109,7 +109,7 @@ export class SortModel {
   }
 
   public bake() {
-    const { group } = this.sortable.itemManager;
+    const { group } = this.sortable.elementManager;
     // @ts-ignore
     this.items.forEach(item => {
       // @ts-ignore
@@ -156,10 +156,10 @@ export class SortModel {
   }
 
   public prepare() {
-    const { itemManager } = this.sortable;
+    const { elementManager } = this.sortable;
     // Prepare Group.
     // @ts-ignore
-    itemManager.group.style.position = 'relative';
+    elementManager.group.style.position = 'relative';
     // Prepare Items.
     // @ts-ignore
     this.items.forEach(item => {

@@ -41,8 +41,8 @@ export interface SortableConfig {
   afterActivate: (context: Sortable) => void;
   afterDeactivate: (context: Sortable) => void;
 
-  popItem: (item: HTMLElement, group: HTMLElement, context: Sortable) => void;
-  unpopItem: (item: HTMLElement, group: HTMLElement, context: Sortable) => void;
+  popItem: (item: HTMLElement, context: Sortable) => void;
+  unpopItem: (item: HTMLElement, context: Sortable) => void;
 
   moveItem: (item: HTMLElement, to: Point, context: Sortable) => void;
 
@@ -108,8 +108,6 @@ export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
     item.classList.remove('sortableItem--active');
   },
   popItem: (item, group) => {
-    group.style.position = 'relative';
-
     const width = item.offsetWidth;
     const height = item.offsetHeight;
 

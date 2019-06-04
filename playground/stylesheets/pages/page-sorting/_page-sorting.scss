@@ -2,22 +2,25 @@
   padding: space('large');
 
   .sortableContainer {
-    background-color: color('white');
+    background-color: color('extra-light');
     border-radius: border-radius('large');
     padding: space('medium');
     position: relative;
+    width: 100%;
+    max-width: px-to-rem(400);
+    display: inline-block;
   }
 
   .sortableItem {
     border-radius: px-to-rem(8);
     background-color: color('light');
     box-sizing: border-box;
-    display: block;
     margin-bottom: space('medium');
     padding: space('medium');
     cursor: pointer;
     user-select: none !important;
     z-index: 1;
+    width: 100%;
 
     -webkit-touch-callout: none;
     -webkit-user-select: none;

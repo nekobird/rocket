@@ -72,11 +72,10 @@ export class ElementManager {
     ) {
       this.items = [];
       this.groups.forEach(group => {
-        (this.items as HTMLElement[]).concat(
-          Array.from(group.children).filter(
-            child => config.childIsItem(child as HTMLElement)
-          ) as HTMLElement[]
-        );
+        const children = Array.from(group.children).filter(
+          child => config.childIsItem(child as HTMLElement)
+        ) as HTMLElement[];
+        this.items = (this.items as HTMLElement[]).concat(children);
       });
     }
     return this;
@@ -91,28 +90,6 @@ export class ElementManager {
         if (this.groups[i] === item.parentElement) {
           return this.groups[i];
         }
-      }
-    }
-    return false;
-  }
-
-  public getGroupFromActiveItem(): HTMLElement | false {
-    const { isActive, activeItem } = this.sortable;
-    if (
-      isActive === true
-      && DOMUtil.isHTMLElement(activeItem) === true
-      && typeof this.groups === 'object'
-      && Array.isArray(this.groups) === true
-    ) {
-      const areas: number[] = [];
-      this.groups.forEach(group => {
-        areas.push(
-          DOMRect.getOverlappingAreaFromElements(activeItem as HTMLElement, group)
-        );
-      });
-      const index = areas.indexOf(Math.max(...areas))
-      if (DOMUtil.isHTMLElement(this.groups[index]) == true) {
-        return this.groups[index];
       }
     }
     return false;

@@ -23,21 +23,31 @@ import {
   SortModel,
 } from './sortModel';
 
+import {
+  Dummy,
+} from './dummy';
+
+import {
+  ActiveItem,
+} from './activeItem';
+
 export class Sortable {
   public config: SortableConfig;
 
   public elementManager: ElementManager;
   public eventManager: EventManager;
+  public dummy: Dummy;
+  public activeItem: ActiveItem;
+
   public sortModel: SortModel;
 
   public isActive: boolean = false;
   public hasMoved: boolean = false;
 
   public targetItem?: HTMLElement;
-  public activeItem?: HTMLElement;
+  
   public activeIdentifier?: string;
   public activeItemPointOffset?: Point;
-  public dummy?: HTMLElement;
 
   constructor(config?: Partial<SortableConfig>) {
     this.config = Object.assign({}, SORTABLE_DEFAULT_CONFIG);
@@ -46,6 +56,8 @@ export class Sortable {
     }
     this.elementManager = new ElementManager(this);
     this.eventManager = new EventManager(this);
+    this.dummy = new Dummy(this);
+    this.activeItem = new ActiveItem(this);
     this.sortModel = new SortModel(this);
   }
 
@@ -124,78 +136,68 @@ export class Sortable {
 
       this.disableEventsOnActivate();
       this.isActive = true;
-      this.activeItem = this.targetItem;
+      this.activeItem.create(this.targetItem);
       this.activeIdentifier = identifier.toString();
 
-      this.config.activateItem(this.activeItem as HTMLElement, this);
-      this.updateInitialActiveItemOffset(downData);
-
+      this.config.activateItem(this.activeItem.element as HTMLElement, this);
+      this.activeItem.setInitialPointToItemOffset(
+        PointHelper.newPoint(downData.clientX, downData.clientY)
+      );
       this.config.afterActivate(this);
     }
   }
 
-  public updateInitialActiveItemOffset(downData) {
-    if (typeof this.activeItem !== 'undefined') {
-      this.activeItemPointOffset = DOMPoint.getElementOffsetFromPoint(
-        this.activeItem,
-        PointHelper.newPoint(
-          downData.clientX,
-          downData.clientY,
-        )
-      );
-    }
-  }
+  public prepareMove() {
+    const group = this.activeItem.activeGroup;
+    if (
+      this.hasMoved === false
+      && group !== false
+    ) {
+      this.dummy.create();
+      this.dummy.prepare();
 
-  public prepareDummy() {
-    if (typeof this.activeItem === 'object') {
-      if (typeof this.dummy === 'undefined') {
-        this.dummy = this.config.createDummyFromItem(this.activeItem, this);
-      }
-      this.config.setDummyElementPropertiesFromItem(this.dummy, this.activeItem, this);
+      group.insertBefore(
+        this.dummy.element as HTMLElement,
+        this.activeItem.element as HTMLElement
+      );
+
+      this.config.popItem(
+        this.activeItem.element as HTMLElement,
+        this,
+      );
+
+      this.hasMoved = true;
     }
   }
 
   public move({ clientX: x, clientY: y }) {
+    const group = this.activeItem.activeGroup;
     if (
       this.isActive === true
-      && typeof this.activeItem === 'object'
-      && this.groupElements !== false
+      && DOMUtil.isHTMLElement(this.activeItem.element)
+      && group !== false
     ) {
-      if (this.hasMoved === false) {
-        this.prepareDummy();
-        this.groupElement.insertBefore(
-          this.dummy as HTMLElement,
-          this.activeItem
-        );
-        this.config.popItem(this.activeItem, this.groupElement, this);
-        this.hasMoved = true;
-      }
-
-      const pointer = { x, y };
-      const groupPointerOffset = DOMPoint.getElementOffsetFromPoint(this.groupElement, pointer);
-      const to = PointHelper.subtract(
-        groupPointerOffset,
-        this.activeItemPointOffset as Point
-      );
-      this.config.moveItem(this.activeItem, to, this);
+      this.prepareMove();
+      this.activeItem.move({ x, y });
       this.prepareAndInsertDummy();
     }
   }
 
   public prepareAndInsertDummy() {
+    const group = this.activeItem.activeGroup;
     if (
-      typeof this.activeItem === 'object'
-      && this.groupElement !== false
+      group !== false
       && this.itemElements !== false
-      && DOMUtil.isHTMLElement(this.dummy as HTMLElement) === true
+      && this.dummy.isActive == true
+      && this.activeItem.isActive == true
     ) {
-      const corners = DOMPoint.getElementCornerPoints(this.activeItem);
+      const corners = DOMPoint.getElementCornerPoints(this.activeItem.element as HTMLElement);
       const closestChild = DOMPoint.getClosestChildFromPoints(
-        this.groupElement,
+        group,
         corners,
         item => {
           return (
-            item !== this.activeItem
+            item !== this.activeItem.element
             && (this.itemElements as HTMLElement[]).indexOf(item) !== -1
           );
         },
@@ -203,18 +205,18 @@ export class Sortable {
 
       // We need to defer inserting element until deactivation.
       if (typeof closestChild === 'object') {
-        const topPoints = DOMPoint.getElementTopPoints(this.activeItem);
+        const topPoints = DOMPoint.getElementTopPoints(this.activeItem.element as HTMLElement);
         if (DOMPoint.elementCenterIsAbovePoints(closestChild, topPoints) === true) {
-          this.groupElement.insertBefore(
-            this.dummy as HTMLElement,
+          group.insertBefore(
+            this.dummy.element as HTMLElement,
             closestChild
           );
         }
 
-        const bottomPoints = DOMPoint.getElementBottomPoints(this.activeItem);
+        const bottomPoints = DOMPoint.getElementBottomPoints(this.activeItem.element as HTMLElement);
         if (DOMPoint.elementCenterIsBelowPoints(closestChild, bottomPoints) === true) {
-          this.groupElement.insertBefore(
-            this.dummy as HTMLElement,
+          group.insertBefore(
+            this.dummy.element as HTMLElement,
             closestChild.nextElementSibling
           );
         }
@@ -226,27 +228,18 @@ export class Sortable {
     if (
       this.isActive === true
       && typeof this.activeItem === 'object'
-      && this.groupElement !== false
     ) {
       this.config.beforeDeactivate(this);
-      this.config.deactivateItem(this.activeItem, this);
-      this.config.unpopItem(this.activeItem, this.groupElement, this);
+      this.config.deactivateItem(this.activeItem.element as HTMLElement, this);
+      this.config.unpopItem(this.activeItem.element as HTMLElement, this);
 
-      if (DOMUtil.isHTMLElement(<HTMLElement>this.dummy) === true) {
-        this.groupElement.replaceChild(
-          this.activeItem,
-          <HTMLElement>this.dummy,
-        );
-        if (this.groupElement.contains(<HTMLElement>this.dummy) === true) {
-          this.groupElement.removeChild(<HTMLElement>this.dummy);
-        }
-      }
+      this.dummy.replaceWithActiveItem();
+      this.dummy.destroy();
 
       this.isActive = false;
       this.hasMoved = false;
 
-      this.activeItem = undefined;
-      this.dummy = undefined;
+      this.activeItem.destroy();
       this.activeIdentifier = undefined;
       this.activeItemPointOffset = undefined;
 
@@ -266,8 +259,8 @@ export class Sortable {
       && typeof this.activeItem !== 'undefined'
       && this.config.autoScroll === true
     ) {
-      const bottomPoint = DOMPoint.getElementBottomPoints(this.activeItem)[0].y;
-      const topPoint = DOMPoint.getElementTopPoints(this.activeItem)[0].y;
+      const bottomPoint = DOMPoint.getElementBottomPoints(this.activeItem.element as HTMLElement)[0].y;
+      const topPoint = DOMPoint.getElementTopPoints(this.activeItem.element as HTMLElement)[0].y;
       if (bottomPoint >= ViewportModel.height) {
         window.scrollBy(0, 1);
       } else if (topPoint <= 0) {
