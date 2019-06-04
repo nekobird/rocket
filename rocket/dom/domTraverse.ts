@@ -40,7 +40,7 @@ export class DOMTraverse {
       currentEl === null
       || currentEl.nodeName !== 'HTML'
     ) {
-      currentEl = <HTMLElement>currentEl;
+      currentEl = currentEl as HTMLElement;
 
       if (identifyElement(currentEl) === true) {
         results.push(currentEl);
@@ -86,9 +86,9 @@ export class DOMTraverse {
   public static hasAncestor(parent: HTMLElement, options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>): DOMTraverseResult {
     const identifyElement = element => {
       if (Array.isArray(options) === true) {
-        return (<HTMLElement[]>options).indexOf(element) !== -1;
+        return (options as HTMLElement[]).indexOf(element) !== -1;
       } else if (typeof options[Symbol.iterator] === 'function') {
-        return Array.from(<NodeListOf<HTMLElement>>options).indexOf(element) !== -1;
+        return Array.from(options as NodeListOf<HTMLElement>).indexOf(element) !== -1;
       } else {
         return element === options;
       }
@@ -162,9 +162,9 @@ export class DOMTraverse {
   public static hasDescendant(element: HTMLElement, options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>): DOMTraverseResult {
     const identifyElement: IdentifyElementFn = _element => {
       if (Array.isArray(options) === true) {
-        return (<HTMLElement[]>options).indexOf(_element) !== -1;
+        return (options as HTMLElement[]).indexOf(_element) !== -1;
       } else if (typeof options[Symbol.iterator] === 'function') {
-        return Array.from(<NodeListOf<HTMLElement>>options).indexOf(_element) !== -1;
+        return Array.from(options as NodeListOf<HTMLElement>).indexOf(_element) !== -1;
       } else {
         return _element === options;
       }
@@ -177,7 +177,7 @@ export class DOMTraverse {
 
   public static getSiblings(element: HTMLElement, isExclusive:boolean = false): HTMLElement[] | false {
     if (element.parentElement !== null) {
-      const siblings: HTMLElement[] = <HTMLElement[]>Array.from(element.parentElement.children);
+      const siblings = Array.from(element.parentElement.children) as HTMLElement[];
       if (isExclusive === true) {
         siblings.splice(siblings.indexOf(element), 1);
       }
@@ -240,7 +240,7 @@ export class DOMTraverse {
       ) {
         return element;
       } else {
-        nextSibling = <HTMLElement | null>element.nextElementSibling;
+        nextSibling = element.nextElementSibling as HTMLElement | null;
       }
     }
     return false;
@@ -253,7 +253,7 @@ export class DOMTraverse {
       const children: HTMLCollection = parent.children;
       if (children.length > 0) {
         for (let i = 0; i < children.length; i++) {
-          if (identifyElement(<HTMLElement>children[i]) === true) {
+          if (identifyElement(children[i] as HTMLElement) === true) {
             parent.removeChild(children[i]);
             deleteCount++;
           } else if (children[i].children.length > 0) {
@@ -268,13 +268,13 @@ export class DOMTraverse {
   }
 
   public static getChildren(parent: HTMLElement, identifyElement?: IdentifyElementFn): HTMLElement[] {
-    const children = <HTMLElement[]>Array.from(parent.children);
+    const children = Array.from(parent.children) as HTMLElement[];
 
     if (typeof identifyElement === 'undefined') {
       return children;
     }
 
-    return children.filter(element => identifyElement(<HTMLElement>element));
+    return children.filter(element => identifyElement(element as HTMLElement));
   }
 
   // @helper
@@ -292,7 +292,7 @@ export class DOMTraverse {
       identifyElement = element => true;
     }
 
-    const children: HTMLElement[] = <HTMLElement[]>Array.from(parent.children);
+    const children = Array.from(parent.children) as HTMLElement[];
     const selectedChildren: HTMLElement[] = children.filter(identifyElement);
 
     let result: HTMLElement;
@@ -310,7 +310,7 @@ export class DOMTraverse {
       identifyElement = element => true;
     }
 
-    const children: HTMLElement[] = <HTMLElement[]>Array.from(parent.children);
+    const children = Array.from(parent.children) as HTMLElement[];
     const selectedChildren: HTMLElement[] = children.filter(identifyElement);
 
     if (selectedChildren.length === 0) {

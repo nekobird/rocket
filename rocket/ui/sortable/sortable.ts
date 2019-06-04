@@ -163,7 +163,6 @@ export class Sortable {
           this.activeItem
         );
         this.config.popItem(this.activeItem, this.groupElement, this);
-        this.sortModel.
         this.hasMoved = true;
       }
 

@@ -20,9 +20,9 @@ export class DOMRect {
     let targets: HTMLElement[];
 
     if (Array.isArray(elements) === false) {
-      targets = <HTMLElement[]>[elements];
+      targets = [elements] as HTMLElement[];
     } else {
-      targets = <HTMLElement[]>elements;
+      targets = elements as HTMLElement[];
     }
 
     if (targets.length === 0) {
