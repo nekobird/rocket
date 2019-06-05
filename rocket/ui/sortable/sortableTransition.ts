@@ -19,14 +19,12 @@ export interface ItemModel {
 export class SortableTransition {
   public sortable: Sortable;
 
-  public model?: ItemModel[];
+  public baseModel?: ItemModel[];
 
   public isActive: boolean = false;
   public isAnimating: boolean = false;
 
-  public isMoving: boolean = false;
-  public timeoutId
-  public moveTarget;
+  public timeoutId?: number;
 
   public group?: HTMLElement;
 
@@ -39,33 +37,18 @@ export class SortableTransition {
     if (this.isActive === false) {
       const { elementManager, dummy } = this.sortable;
       const items = elementManager.getItemsFromGroup(group);
-      this.model = [];
+      this.baseModel = [];
       items.forEach(item => {
-        (this.model as ItemModel[]).push(
+        (this.baseModel as ItemModel[]).push(
           this.createModelFromElement(item)
         );
       });
       const dummyElement = dummy.element;
-      this.model.push(
+      this.baseModel.push(
         this.createModelFromElement(dummyElement as HTMLElement)
       );
-      this.model.sort((a, b) => a.top - b.top);
+      this.baseModel.sort((a, b) => a.top - b.top);
       this.isActive = true;
-    }
-  }
-
-  // 2) Everthing starts from here.
-  public go(group: HTMLElement, target: HTMLElement, callback: Function) {
-    this.group = group;
-    if (this.isActive === false) {
-      this.create(group);
-      this.prepare(group);
-    }
-    if (this.isAnimating === false) {
-      clearTimeout(this.timeoutId);
-      const targetModel = this.createTargetModelFromTarget(target);
-      this.prepareTargetModel(targetModel);
-      this.animate(group, targetModel, callback);
     }
   }
 
@@ -79,14 +62,37 @@ export class SortableTransition {
     };
   }
 
-  // 3) Create targetModel
+  // 2) Everything starts from here.
+  public go(group: HTMLElement, target: HTMLElement, callback: Function) {
+    if (
+      this.isActive === false
+      || (
+        this.group !== group
+        && this.isActive === true
+      )
+    ) {
+      this.group = group;
+      this.create(group);
+      this.prepare(group);
+    }
+
+    if (this.isAnimating === false) {
+      clearTimeout(this.timeoutId);
+      const targetModel = this.createTargetModelFromTarget(target);
+      this.prepareTargetModel(targetModel);
+      this.animate(group, targetModel, callback);
+    }
+  }
+
+  // 3) Create targetModel.
   public createTargetModelFromTarget(target: HTMLElement | 'last') {
     const { dummy } = this.sortable;
-    if (typeof this.model !== 'undefined') {
-      const targetModel = this.model.map(item => Object.assign({}, item));
 
-      let targetIndex
-      let dummyIndex
+    if (typeof this.baseModel !== 'undefined') {
+      const targetModel = this.baseModel.map(item => Object.assign({}, item));
+      let targetIndex;
+      let dummyIndex;
+
       targetModel.forEach((model, index) => {
         if (model.item === dummy.element) {
           dummyIndex = index;
@@ -116,10 +122,10 @@ export class SortableTransition {
   public prepareTargetModel(targetModel) {
     if (
       this.isActive === true
-      && typeof this.model !== 'undefined'
+      && typeof this.baseModel !== 'undefined'
     ) {
-      let left = this.model[0].left;
-      let top  = this.model[0].top;
+      let left = this.baseModel[0].left;
+      let top  = this.baseModel[0].top;
       let previousVertical = 0;
       targetModel.forEach(model => {
         const vertical = DOMStyle.getTotalVerticalDimension(model.item);
@@ -132,29 +138,21 @@ export class SortableTransition {
     }
   }
 
-  // 2.5) Bake
-  public bake(targetModel, group, callback) {
-    targetModel.forEach(model => {
-      if (group === model.item.parentElement) {
-        group.removeChild(model.item);
-      }
-      group.appendChild(model.item);
-    });
-    // callback();
-  }
-
   // 3) Prepare
   public prepare(group) {
     if (
       this.isActive === true
-      && typeof this.model !== 'undefined'
+      && typeof this.baseModel !== 'undefined'
     ) {
       const width  = group.offsetWidth;
       const height = group.offsetHeight;
-      group.style.width  = `${width}px`;
+      group.style.boxSizing = 'border-box';
+      group.style.width = `100%`;
+      group.style.maxWidth = `${width}px`;
       group.style.height = `${height}px`;
 
-      this.model.forEach(item => {
+      this.baseModel.forEach(item => {
+        group.style.boxSizing = 'border-box';
         item.item.style.left = `${item.left}px`;
         item.item.style.top  = `${item.top}px`;
         item.item.style.width  = `${item.width}px`;
@@ -166,16 +164,17 @@ export class SortableTransition {
   }
 
   public animate(group, targetModel, callback) {
+    const { config } = this.sortable;
     if (
       this.isActive === true
       && typeof targetModel !== 'undefined'
     ) {
       this.isAnimating = true;
       targetModel.forEach(model => {
-        model.item.style.transitionDuration = '150ms';
-        model.item.style.transitionTimingFunction = 'ease-out';
+        model.item.style.transitionDuration = `${config.transitionDuration}ms`;
+        model.item.style.transitionTimingFunction = config.transitionTimingFunction;
         model.item.style.left = `${model.left}px`;
-        model.item.style.top  = `${model.top}px`;
+        model.item.style.top = `${model.top}px`;
       });
       callback();
       this.timeoutId = setTimeout(() => {
@@ -185,18 +184,18 @@ export class SortableTransition {
   }
 
   public cleanup() {
-    if (typeof this.model !== 'undefined') {
+    if (typeof this.baseModel !== 'undefined') {
       if (typeof this.group !== 'undefined') {
         DOMStyle.clearStyles(this.group);
       }
-      this.model.forEach(item => {
+      this.baseModel.forEach(item => {
         DOMStyle.clearStyles(item.item);
       });
     }
   }
 
   public destroy() {
-    this.model = undefined;
+    this.baseModel = undefined;
     this.group = undefined;
     this.isActive = false;
   }

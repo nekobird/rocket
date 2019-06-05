@@ -9,6 +9,10 @@ import {
 } from './sortable';
 
 export interface SortableConfig {
+  useTransition: boolean;
+  transitionDuration: number;
+  transitionTimingFunction: string;
+
   leftMouseButtonOnly: boolean,
 
   disableTouchEventsWhileActive: boolean;
@@ -56,6 +60,11 @@ export interface SortableConfig {
 }
 
 export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
+  useTransition: false,
+  transitionDuration: 150,
+  transitionTimingFunction: 'ease-out',
+
+
   leftMouseButtonOnly: true,
 
   disableTouchEventsWhileActive: true,

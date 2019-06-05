@@ -226,21 +226,14 @@ export class Sortable {
           }
         }
       } else {
-        // Add to the end
-        alert('aaa');
         target = 'last';
+        // Animate dummy out.
       }
 
       if (
         typeof target !== 'undefined'
         && target !== this.activeItem.element
       ) {
-        if (
-          target !== 'last'
-          && target !== null
-        ) {
-          target.style.backgroundColor = 'red';
-        }
         this.transition.go(group, target, () => {
           if (this.dummy.isActive === true) {
             if (target === 'last') {
