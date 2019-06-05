@@ -20,6 +20,7 @@ export interface TargetModel extends ItemModel {
 
 }
 
+// TODO: Add support 
 export class SortableTransition {
   public sortable: Sortable;
 
