@@ -1,4 +1,6 @@
 .page-sorting {
+  display: flex;
+  align-items: flex-start;
   padding: space('large');
 
   .sortableContainer {
@@ -8,8 +10,7 @@
     position: relative;
     width: 100%;
     max-width: px-to-rem(400);
-    display: inline-block;
-    min-height: 400px;
+    min-height: px-to-rem(400);
   }
 
   .sortableItem {

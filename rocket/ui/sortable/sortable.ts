@@ -190,6 +190,7 @@ export class Sortable {
       && this.dummy.isActive == true
       && this.activeItem.isActive == true
     ) {
+      let target
 
       if (this.elementManager.groupHasItem(group) === true) {
         const corners = DOMPoint.getElementCornerPoints(this.activeItem.element as HTMLElement);
@@ -206,35 +207,52 @@ export class Sortable {
 
         // We need to defer inserting element until deactivation.
         if (typeof closestChild === 'object') {
-          let target
+          
           const topPoints = DOMPoint.getElementTopPoints(this.activeItem.element as HTMLElement);
+          const bottomPoints = DOMPoint.getElementBottomPoints(this.activeItem.element as HTMLElement);
           if (
             closestChild !== (this.dummy.element as HTMLElement).nextElementSibling
             && DOMPoint.elementCenterIsAbovePoints(closestChild, topPoints) === true
           ) {
             target = closestChild;
-          }
-          const bottomPoints = DOMPoint.getElementBottomPoints(this.activeItem.element as HTMLElement);
-          if (
+          } else if (
             closestChild.nextElementSibling !== this.dummy.element
             && DOMPoint.elementCenterIsBelowPoints(closestChild, bottomPoints) === true
           ) {
             target = closestChild.nextElementSibling;
-          }
-          if (typeof target !== 'undefined') {
-            this.transition.go(group, target, () => {
-              if (this.dummy.isActive === true) {
-                group.insertBefore(
-                  this.dummy.element as HTMLElement,
-                  target,
-                );
-              }
-            });
+            if (target === null) {
+              target = 'last';
+            }
           }
         }
       } else {
         // Add to the end
-        group.appendChild(this.dummy.element as HTMLElement);
+        alert('aaa');
+        target = 'last';
+      }
+
+      if (
+        typeof target !== 'undefined'
+        && target !== this.activeItem.element
+      ) {
+        if (
+          target !== 'last'
+          && target !== null
+        ) {
+          target.style.backgroundColor = 'red';
+        }
+        this.transition.go(group, target, () => {
+          if (this.dummy.isActive === true) {
+            if (target === 'last') {
+              group.appendChild(this.dummy.element as HTMLElement);
+            } else {
+              group.insertBefore(
+                this.dummy.element as HTMLElement,
+                target,
+              );
+            }
+          }
+        });
       }
     }
   }
