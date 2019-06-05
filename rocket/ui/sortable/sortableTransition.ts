@@ -16,100 +16,136 @@ export interface ItemModel {
   height: number;
 }
 
+export interface TargetModel extends ItemModel {
+
+}
+
 export class SortableTransition {
   public sortable: Sortable;
 
+  public group?: HTMLElement;
   public baseModel?: ItemModel[];
 
   public isActive: boolean = false;
   public isAnimating: boolean = false;
 
-  public timeoutId?: number;
-
-  public group?: HTMLElement;
+  public transitionTimeout?: number;
 
   constructor(sortable: Sortable) {
     this.sortable = sortable;
   }
 
-  // 1) Create initial model.
-  public create(group: HTMLElement) {
-    if (this.isActive === false) {
+  // 1) Everything starts from here.
+  public go(group: HTMLElement, target: HTMLElement, callback: Function) {
+    if (
+      this.isActive === false
+      || (
+        this.isActive === true
+        && this.group !== group
+      )
+    ) {
+      this.group = group;
+      this.create();
+      this.prepare();
+    }
+
+    if (this.isAnimating === false) {
+      clearTimeout(this.transitionTimeout);
+      const targetModel = this.createTargetModel(target);
+      if (targetModel !== false) {
+        this.prepareTargetModel(targetModel);
+        this.transition(targetModel, callback);
+      }
+    }
+  }
+
+  // 2) Create initial base model.
+  public create() {
+    if (
+      this.isActive === false
+      && typeof this.group === 'object'
+    ) {
       const { elementManager, dummy } = this.sortable;
-      const items = elementManager.getItemsFromGroup(group);
       this.baseModel = [];
+      const items = elementManager.getItemsFromGroup(this.group);
       items.forEach(item => {
         (this.baseModel as ItemModel[]).push(
           this.createModelFromElement(item)
         );
       });
-      const dummyElement = dummy.element;
+      // Add dummy element to base model.
       this.baseModel.push(
-        this.createModelFromElement(dummyElement as HTMLElement)
+        this.createModelFromElement(dummy.element as HTMLElement)
       );
       this.baseModel.sort((a, b) => a.top - b.top);
       this.isActive = true;
     }
   }
 
-  public createModelFromElement(element: HTMLElement) {
+  public createModelFromElement(element: HTMLElement): ItemModel {
     return {
       item: element,
       left: element.offsetLeft,
-      top:  element.offsetTop,
-      width:  element.offsetWidth,
+      top: element.offsetTop,
+      width: element.offsetWidth,
       height: element.offsetHeight,
     };
   }
 
-  // 2) Everything starts from here.
-  public go(group: HTMLElement, target: HTMLElement, callback: Function) {
+  // 3) Prepare group and items for transition.
+  public prepare() {
     if (
-      this.isActive === false
-      || (
-        this.group !== group
-        && this.isActive === true
-      )
+      this.isActive === true
+      && typeof this.baseModel === 'object'
+      && typeof this.group === 'object'
     ) {
-      this.group = group;
-      this.create(group);
-      this.prepare(group);
-    }
+      const width  = this.group.offsetWidth;
+      const height = this.group.offsetHeight;
+      this.group.style.boxSizing = 'border-box';
+      this.group.style.width = `100%`;
+      this.group.style.maxWidth = `${width}px`;
+      this.group.style.height = `${height}px`;
 
-    if (this.isAnimating === false) {
-      clearTimeout(this.timeoutId);
-      const targetModel = this.createTargetModelFromTarget(target);
-      this.prepareTargetModel(targetModel);
-      this.animate(group, targetModel, callback);
+      this.baseModel.forEach(({ item, left, top, width, height }) => {
+        item.style.boxSizing = 'border-box';
+        item.style.left = `${left}px`;
+        item.style.top  = `${top}px`;
+        item.style.width  = `${width}px`;
+        item.style.height = `${height}px`;
+        item.style.zIndex = '0';
+        item.style.position = 'absolute';
+      });
     }
   }
 
-  // 3) Create targetModel.
-  public createTargetModelFromTarget(target: HTMLElement | 'last') {
+
+  // 4) Create targetModel.
+  public createTargetModel(target: HTMLElement | 'last'): TargetModel[] | false {
     const { dummy } = this.sortable;
 
-    if (typeof this.baseModel !== 'undefined') {
+    if (
+      this.isActive === true
+      && typeof this.baseModel !== 'undefined'
+    ) {
+      // Make a copy from base model.
       const targetModel = this.baseModel.map(item => Object.assign({}, item));
-      let targetIndex;
-      let dummyIndex;
 
-      targetModel.forEach((model, index) => {
-        if (model.item === dummy.element) {
-          dummyIndex = index;
-        } else if (model.item === target) {
-          targetIndex = index;
-        }
-      });
-
+      const targetIndex = targetModel.findIndex(model => model.item === target);
+      const dummyIndex = targetModel.findIndex(model => model.item === dummy.element);
       const dummyModel = targetModel[dummyIndex];
+
+      // Remove dummy from target model.
       targetModel.splice(dummyIndex, 1);
 
       if (target === 'last') {
+        // Append dummy model to the end.
         targetModel.push(dummyModel);
       } else {
         if (dummyIndex < targetIndex) {
+          // Append dummy model before target with missing dummy index into account.
           targetModel.splice(targetIndex - 1, 0, dummyModel);
         } else {
+          // Append dummy model before target.
           targetModel.splice(targetIndex, 0, dummyModel);
         }
       }
@@ -119,7 +155,8 @@ export class SortableTransition {
     return false;
   }
 
-  public prepareTargetModel(targetModel) {
+  // 5) Set correct values and sort targetModel.
+  public prepareTargetModel(targetModel: TargetModel[]) {
     if (
       this.isActive === true
       && typeof this.baseModel !== 'undefined'
@@ -138,32 +175,8 @@ export class SortableTransition {
     }
   }
 
-  // 3) Prepare
-  public prepare(group) {
-    if (
-      this.isActive === true
-      && typeof this.baseModel !== 'undefined'
-    ) {
-      const width  = group.offsetWidth;
-      const height = group.offsetHeight;
-      group.style.boxSizing = 'border-box';
-      group.style.width = `100%`;
-      group.style.maxWidth = `${width}px`;
-      group.style.height = `${height}px`;
-
-      this.baseModel.forEach(item => {
-        group.style.boxSizing = 'border-box';
-        item.item.style.left = `${item.left}px`;
-        item.item.style.top  = `${item.top}px`;
-        item.item.style.width  = `${item.width}px`;
-        item.item.style.height = `${item.height}px`;
-        item.item.style.zIndex = '0';
-        item.item.style.position = 'absolute';
-      });
-    }
-  }
-
-  public animate(group, targetModel, callback) {
+  // 6) Begin transition.
+  public transition(targetModel, callback) {
     const { config } = this.sortable;
     if (
       this.isActive === true
@@ -176,7 +189,7 @@ export class SortableTransition {
         model.item.style.left = `${model.left}px`;
         model.item.style.top = `${model.top}px`;
       });
-      this.timeoutId = setTimeout(() => {
+      this.transitionTimeout = setTimeout(() => {
         callback();
         this.isAnimating = false;
         
@@ -185,10 +198,10 @@ export class SortableTransition {
   }
 
   public cleanup() {
+    if (typeof this.group !== 'undefined') {
+      DOMStyle.clearStyles(this.group);
+    }
     if (typeof this.baseModel !== 'undefined') {
-      if (typeof this.group !== 'undefined') {
-        DOMStyle.clearStyles(this.group);
-      }
       this.baseModel.forEach(item => {
         DOMStyle.clearStyles(item.item);
       });
@@ -196,8 +209,8 @@ export class SortableTransition {
   }
 
   public destroy() {
-    this.baseModel = undefined;
     this.group = undefined;
+    this.baseModel = undefined;
     this.isActive = false;
   }
 }
