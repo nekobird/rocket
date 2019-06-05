@@ -176,9 +176,10 @@ export class SortableTransition {
         model.item.style.left = `${model.left}px`;
         model.item.style.top = `${model.top}px`;
       });
-      callback();
       this.timeoutId = setTimeout(() => {
+        callback();
         this.isAnimating = false;
+        
       }, 150);
     }
   }
