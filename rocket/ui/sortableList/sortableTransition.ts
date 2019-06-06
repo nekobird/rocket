@@ -3,8 +3,8 @@ import {
 } from '../../rocket';
 
 import {
-  Sortable,
-} from './sortable';
+  SortableList,
+} from './sortableList';
 
 export interface ItemModel {
   item: HTMLElement;
@@ -21,8 +21,8 @@ export interface TargetModel extends ItemModel {
 }
 
 // TODO: Add support 
-export class SortableTransition {
-  public sortable: Sortable;
+export class SortableListTransition {
+  public sortable: SortableList;
 
   public group?: HTMLElement;
   public baseModel?: ItemModel[];
@@ -32,7 +32,7 @@ export class SortableTransition {
 
   public transitionTimeout?: number;
 
-  constructor(sortable: Sortable) {
+  constructor(sortable: SortableList) {
     this.sortable = sortable;
   }
 

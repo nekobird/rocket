@@ -1,11 +1,11 @@
 import {
-  Sortable,
+  SortableList,
 } from '../../rocket/rocket';
 
 const containers = document.querySelectorAll('.sortableContainer');
 
 // document.addEventListener('contextmenu', event => event.preventDefault());
-const sortable = new Sortable({
+const sortable = new SortableList({
   activateOnLongPress: true,
   autoScroll: true,
   longPressWait: 0.2,

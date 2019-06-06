@@ -8,7 +8,7 @@ import {
 
 import {
   SORTABLE_DEFAULT_CONFIG,
-  SortableConfig,
+  SortableListConfig,
 } from './config';
 
 import {
@@ -20,7 +20,7 @@ import {
 } from './eventManager';
 
 import {
-  SortableTransition,
+  SortableListTransition,
 } from './sortableTransition';
 
 import {
@@ -31,14 +31,14 @@ import {
   ActiveItem,
 } from './activeItem';
 
-export class Sortable {
-  public config: SortableConfig;
+export class SortableList {
+  public config: SortableListConfig;
 
   public elementManager: ElementManager;
   public eventManager: EventManager;
   public dummy: Dummy;
   public activeItem: ActiveItem;
-  public transition: SortableTransition;
+  public transition: SortableListTransition;
 
   public isActive: boolean = false;
   public hasMoved: boolean = false;
@@ -48,7 +48,7 @@ export class Sortable {
   public activeIdentifier?: string;
   public activeItemPointOffset?: Point;
 
-  constructor(config?: Partial<SortableConfig>) {
+  constructor(config?: Partial<SortableListConfig>) {
     this.config = Object.assign({}, SORTABLE_DEFAULT_CONFIG);
     if (typeof config === 'object') {
       this.setConfig(config);
@@ -57,10 +57,10 @@ export class Sortable {
     this.eventManager = new EventManager(this);
     this.dummy = new Dummy(this);
     this.activeItem = new ActiveItem(this);
-    this.transition = new SortableTransition(this);
+    this.transition = new SortableListTransition(this);
   }
 
-  public setConfig(config: Partial<SortableConfig>) {
+  public setConfig(config: Partial<SortableListConfig>) {
     Object.assign(this.config, config);
   }
 
@@ -215,12 +215,16 @@ export class Sortable {
             && DOMPoint.elementCenterIsAbovePoints(closestChild, topPoints) === true
           ) {
             target = closestChild;
-          } else if (
+          }
+          if (
             closestChild.nextElementSibling !== this.dummy.element
             && DOMPoint.elementCenterIsBelowPoints(closestChild, bottomPoints) === true
           ) {
             target = closestChild.nextElementSibling;
-            if (target === null) {
+            if (
+              target === null
+              || target === this.activeItem.element
+            ) {
               target = 'last';
             }
           }

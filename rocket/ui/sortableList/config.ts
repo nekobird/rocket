@@ -5,10 +5,10 @@ import {
 } from '../../rocket';
 
 import {
-  Sortable,
-} from './sortable';
+  SortableList,
+} from './sortableList';
 
-export interface SortableConfig {
+export interface SortableListConfig {
   useTransition: boolean;
   transitionDuration: number;
   transitionTimingFunction: string;
@@ -26,40 +26,40 @@ export interface SortableConfig {
   prepareGroup: (group: HTMLElement) => void;
   prepareItems: (item: HTMLElement) => void;
 
-  createDummyFromItem: (item: HTMLElement, context: Sortable) => HTMLElement;
-  setDummyElementPropertiesFromItem: (dummyElement: HTMLElement, item: HTMLElement, context: Sortable) => void;
+  createDummyFromItem: (item: HTMLElement, context: SortableList) => HTMLElement;
+  setDummyElementPropertiesFromItem: (dummyElement: HTMLElement, item: HTMLElement, context: SortableList) => void;
 
   activateOnLongPress: boolean;
   listenToLongPress: boolean;
   longPressWait: number;
-  longPressCondition: (event, manager: DragEventManager, context: Sortable) => boolean,
+  longPressCondition: (event, manager: DragEventManager, context: SortableList) => boolean,
 
-  condition: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => boolean;
+  condition: (item: HTMLElement, event, manager: DragEventManager, context: SortableList) => boolean;
 
-  beforeActivate: (context: Sortable) => void;
-  beforeDeactivate: (context: Sortable) => void;
+  beforeActivate: (context: SortableList) => void;
+  beforeDeactivate: (context: SortableList) => void;
 
-  activateItem: (item: HTMLElement, context: Sortable) => void;
-  deactivateItem: (item: HTMLElement, context: Sortable) => void;
+  activateItem: (item: HTMLElement, context: SortableList) => void;
+  deactivateItem: (item: HTMLElement, context: SortableList) => void;
 
-  afterActivate: (context: Sortable) => void;
-  afterDeactivate: (context: Sortable) => void;
+  afterActivate: (context: SortableList) => void;
+  afterDeactivate: (context: SortableList) => void;
 
-  popItem: (item: HTMLElement, context: Sortable) => void;
-  unpopItem: (item: HTMLElement, context: Sortable) => void;
+  popItem: (item: HTMLElement, context: SortableList) => void;
+  unpopItem: (item: HTMLElement, context: SortableList) => void;
 
-  moveItem: (item: HTMLElement, to: Point, context: Sortable) => void;
+  moveItem: (item: HTMLElement, to: Point, context: SortableList) => void;
 
-  onComplete: (context: Sortable) => void;
+  onComplete: (context: SortableList) => void;
 
-  onDown: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void;
-  onDrag: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void;
-  onUp: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void;
-  onCancel: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void;
-  onLongPress: (item: HTMLElement, event, manager: DragEventManager, context: Sortable) => void;
+  onDown: (item: HTMLElement, event, manager: DragEventManager, context: SortableList) => void;
+  onDrag: (item: HTMLElement, event, manager: DragEventManager, context: SortableList) => void;
+  onUp: (item: HTMLElement, event, manager: DragEventManager, context: SortableList) => void;
+  onCancel: (item: HTMLElement, event, manager: DragEventManager, context: SortableList) => void;
+  onLongPress: (item: HTMLElement, event, manager: DragEventManager, context: SortableList) => void;
 }
 
-export const SORTABLE_DEFAULT_CONFIG: SortableConfig = {
+export const SORTABLE_DEFAULT_CONFIG: SortableListConfig = {
   useTransition: false,
   transitionDuration: 150,
   transitionTimingFunction: 'ease-out',

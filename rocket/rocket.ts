@@ -52,7 +52,7 @@ export * from './text/textBoxModel';
 export * from './text/textScaleModel';
 
 // @ui
-export * from './ui/sortable/sortable';
+export * from './ui/sortableList/sortableList';
 export * from './ui/textAreaField';
 export * from './ui/inputActiveManager';
 

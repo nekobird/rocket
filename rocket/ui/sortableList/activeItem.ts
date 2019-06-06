@@ -7,11 +7,11 @@ import {
 } from '../../rocket';
 
 import {
-  Sortable
-} from './sortable';
+  SortableList
+} from './sortableList';
 
 export class ActiveItem {
-  public sortable: Sortable;
+  public sortable: SortableList;
 
   public element?: HTMLElement;
   public pointToItemOffset?: Point;
@@ -19,7 +19,7 @@ export class ActiveItem {
   public currentGroup?: HTMLElement;
   public isActive: boolean = false;
 
-  constructor(sortable: Sortable) {
+  constructor(sortable: SortableList) {
     this.sortable = sortable;
   }
 

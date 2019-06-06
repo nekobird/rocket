@@ -1,16 +1,16 @@
 import {
-  Sortable,
-} from './sortable';
+  SortableList,
+} from './sortableList';
 
 export class ElementManager {
-  public sortable: Sortable;
+  public sortable: SortableList;
 
   public groups?: HTMLElement[];
   public items?: HTMLElement[];
 
   public isReady: boolean = false;
 
-  constructor(sortable: Sortable) {
+  constructor(sortable: SortableList) {
     this.sortable = sortable;
   }
 
@@ -32,7 +32,7 @@ export class ElementManager {
         this.isReady = true;
         return this;
       }
-      throw new Error('Sortable: Fail to get groups.');
+      throw new Error('SortableList: Fail to get groups.');
     }
 
     // Get groups from NodeList or HTMLCollection.
@@ -56,7 +56,7 @@ export class ElementManager {
       return this;
     }
 
-    throw new Error('Sortable: Groups are not defined.');
+    throw new Error('SortableList: Groups are not defined.');
   }
 
   public updateItems(): this {

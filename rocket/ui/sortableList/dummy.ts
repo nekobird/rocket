@@ -3,16 +3,16 @@ import {
 } from '../../rocket';
 
 import {
-  Sortable
-} from './sortable';
+  SortableList
+} from './sortableList';
 
 export class Dummy {
-  public sortable: Sortable;
+  public sortable: SortableList;
 
   public element?: HTMLElement;
   public isActive: boolean = false;
 
-  constructor(sortable: Sortable) {
+  constructor(sortable: SortableList) {
     this.sortable = sortable;
   }
 

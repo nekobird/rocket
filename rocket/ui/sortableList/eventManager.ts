@@ -5,17 +5,17 @@ import {
 } from '../../rocket';
 
 import {
-  Sortable,
-} from './sortable';
+  SortableList,
+} from './sortableList';
 
 export class EventManager {
-  public sortable: Sortable;
+  public sortable: SortableList;
   public dragEventManager: DragEventManager;
 
   public isActive: boolean = false;
   public activeIdentifier?: string;
 
-  constructor(sortable: Sortable) {
+  constructor(sortable: SortableList) {
     this.dragEventManager = new DragEventManager();
     this.sortable = sortable;
   }
