@@ -48,6 +48,8 @@ export class SortableList {
   public activeIdentifier?: string;
   public activeItemPointOffset?: Point;
 
+  public group;
+
   constructor(config?: Partial<SortableListConfig>) {
     this.config = Object.assign({}, SORTABLE_DEFAULT_CONFIG);
     if (typeof config === 'object') {
@@ -190,10 +192,13 @@ export class SortableList {
       && this.dummy.isActive == true
       && this.activeItem.isActive == true
     ) {
-      let target
+      let target;
 
       if (this.elementManager.groupHasItem(group) === true) {
-        const corners = DOMPoint.getElementCornerPoints(this.activeItem.element as HTMLElement);
+        const corners = DOMPoint.getElementCornerPoints(
+          this.activeItem.element as HTMLElement
+        );
+
         const closestChild = DOMPoint.getClosestChildFromPoints(
           group,
           corners,
@@ -241,7 +246,9 @@ export class SortableList {
         this.transition.go(group, target, () => {
           if (this.dummy.isActive === true) {
             if (target === 'last') {
-              group.appendChild(this.dummy.element as HTMLElement);
+              group.appendChild(
+                this.dummy.element as HTMLElement
+              );
             } else {
               group.insertBefore(
                 this.dummy.element as HTMLElement,

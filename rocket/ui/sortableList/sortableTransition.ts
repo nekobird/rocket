@@ -5,6 +5,7 @@ import {
 import {
   SortableList,
 } from './sortableList';
+import { DOMUtil } from '../../dom/domUtil';
 
 export interface ItemModel {
   item: HTMLElement;
@@ -52,6 +53,7 @@ export class SortableListTransition {
 
     if (this.isAnimating === false) {
       clearTimeout(this.transitionTimeout);
+      this.resizeGroup();
       const targetModel = this.createTargetModel(target);
       if (targetModel !== false) {
         this.prepareTargetModel(targetModel);
@@ -93,20 +95,31 @@ export class SortableListTransition {
     };
   }
 
+  public resizeGroup() {
+    if (typeof this.group === 'object') {
+      const { dummy, elementManager } = this.sortable;
+      const items = elementManager.getItemsFromGroup(this.group);
+      let height = DOMStyle.getTotalVerticalInnerSpace(this.group);
+      items.forEach(item => {
+        height += DOMStyle.getTotalVerticalDimension(item);
+      });
+      if (typeof dummy.element === 'object') {
+        height += DOMStyle.getTotalVerticalDimension(dummy.element as HTMLElement);
+      }
+      const width  = this.group.offsetWidth;
+      this.group.style.boxSizing = 'border-box';
+      this.group.style.width = `100%`;
+      this.group.style.maxWidth = `${width}px`;
+      this.group.style.height = `${height}px`;
+    }
+  }
+
   // 3) Prepare group and items for transition.
   public prepare() {
     if (
       this.isActive === true
       && typeof this.baseModel === 'object'
-      && typeof this.group === 'object'
     ) {
-      const width  = this.group.offsetWidth;
-      const height = this.group.offsetHeight;
-      this.group.style.boxSizing = 'border-box';
-      this.group.style.width = `100%`;
-      this.group.style.maxWidth = `${width}px`;
-      this.group.style.height = `${height}px`;
-
       this.baseModel.forEach(({ item, left, top, width, height }) => {
         item.style.boxSizing = 'border-box';
         item.style.left = `${left}px`;
@@ -118,7 +131,6 @@ export class SortableListTransition {
       });
     }
   }
-
 
   // 4) Create targetModel.
   public createTargetModel(target: HTMLElement | 'last'): TargetModel[] | false {
@@ -177,7 +189,7 @@ export class SortableListTransition {
   }
 
   // 6) Begin transition.
-  public transition(targetModel, callback) {
+  public transition(targetModel: TargetModel[], callback: Function) {
     const { config } = this.sortable;
     if (
       this.isActive === true
@@ -190,17 +202,19 @@ export class SortableListTransition {
         model.item.style.left = `${model.left}px`;
         model.item.style.top = `${model.top}px`;
       });
-      this.transitionTimeout = setTimeout(() => {
-        callback();
-        this.isAnimating = false;
-        
-      }, 150);
+      this.transitionTimeout = setTimeout(
+        () => {
+          callback();
+          this.isAnimating = false;
+        },
+        config.transitionDuration
+      );
     }
   }
 
   public cleanup() {
-    if (typeof this.group !== 'undefined') {
-      DOMStyle.clearStyles(this.group);
+    if (DOMUtil.isHTMLElement(this.group) === true) {
+      DOMStyle.clearStyles(this.group as HTMLElement);
     }
     if (typeof this.baseModel !== 'undefined') {
       this.baseModel.forEach(item => {
