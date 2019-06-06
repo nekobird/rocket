@@ -221,10 +221,10 @@ export class SortableList {
             && DOMPoint.elementCenterIsBelowPoints(closestChild, bottomPoints) === true
           ) {
             target = closestChild.nextElementSibling;
-            if (
-              target === null
-              || target === this.activeItem.element
-            ) {
+            if (target === this.activeItem.element) {
+              target = target.nextElementSibling;
+            }
+            if (target === null) {
               target = 'last';
             }
           }
