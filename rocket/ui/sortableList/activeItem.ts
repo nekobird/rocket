@@ -1,8 +1,8 @@
 import {
-  Point,
-  DOMUtil,
-  DOMRect,
   DOMPoint,
+  DOMRect,
+  DOMUtil,
+  Point,
   PointHelper,
 } from '../../rocket';
 
@@ -88,7 +88,7 @@ export class ActiveItem {
 
   public get activeGroup(): HTMLElement | false {
     const { isActive, elementManager } = this.sortable;
-    const groups = elementManager.groups;
+    const { groups } = elementManager;
     if (
       isActive === true
       && this.isActive === true
@@ -98,7 +98,8 @@ export class ActiveItem {
       const areas: number[] = [];
       groups.forEach(group => {
         const area = DOMRect.getOverlappingAreaFromElements(
-          this.element as HTMLElement, group
+          this.element as HTMLElement,
+          group
         );
         areas.push(area);
       });

@@ -67,9 +67,10 @@ export class ElementManager {
     ) {
       this.items = [];
       this.groups.forEach(group => {
-        const children = Array.from(group.children).filter(
-          child => config.childIsItem(child as HTMLElement)
-        ) as HTMLElement[];
+        const children = Array.from(group.children)
+          .filter(
+            child => config.childIsItem(child as HTMLElement)
+          ) as HTMLElement[];
         this.items = (this.items as HTMLElement[]).concat(children);
       });
     }
