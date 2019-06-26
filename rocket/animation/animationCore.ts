@@ -113,9 +113,9 @@ export class AnimationCore {
 
   public pause(): this {
     if (
-      this.isActive === true &&
-      this.isAnimating === true &&
-      this.isPaused === false
+      this.isActive === true
+      && this.isAnimating === true
+      && this.isPaused === false
     ) {
       this.clearSessions();
       this.isAnimating = false;
@@ -162,9 +162,9 @@ export class AnimationCore {
       this.tick();
 
       if (
-        this.isActive === true &&
-        this.isAnimating === true &&
-        this.isPaused === false
+        this.isActive === true
+        && this.isAnimating === true
+        && this.isPaused === false
       ) {
         if (this.progress < 1) {
           this.loop();
@@ -176,8 +176,8 @@ export class AnimationCore {
 
           // End animation if exceeds config.numberOfIterations
           if (
-            typeof config.numberOfIterations === 'number' &&
-            this.iterationCount >= config.numberOfIterations
+            typeof config.numberOfIterations === 'number'
+            && this.iterationCount >= config.numberOfIterations
           ) {
             this.end();
             return;

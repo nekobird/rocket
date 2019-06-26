@@ -56,20 +56,20 @@ export const DEFAULT_ANIMATION_CONFIG: AnimationConfig = {
 
   dataExport: {},
 
-  timingFunction: (t) => t,
+  timingFunction: t => t,
 
   beforeStart: () => Promise.resolve(),
   beforeStartWithDelay: () => Promise.resolve(),
   beforeIterationStart: () => Promise.resolve(),
   beforeSubsequentIteration: () => Promise.resolve(),
 
-  onStart   : () => { },
+  onStart: () => { },
   onComplete: () => { },
 
-  onIterationStart   : () => { },
+  onIterationStart: () => { },
   onIterationComplete: () => { },
 
   callback: () => { },
 
-  onTick  : (n, fn, data) => { },
+  onTick: (n, fn, data) => { },
 };
