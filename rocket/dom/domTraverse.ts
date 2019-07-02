@@ -9,7 +9,6 @@ export interface DataExtractFunction<T> {
 export type DOMTraverseResult = HTMLElement | HTMLElement[] | false;
 
 export class DOMTraverse {
-
   // @ancestor
 
   // Find ancestor element that match identifyElement.
@@ -36,14 +35,22 @@ export class DOMTraverse {
 
     let currentEl: HTMLElement | null = element;
 
+    if (element === null) {
+      return false;
+    }
+
     while (
-      currentEl === null
-      || currentEl.nodeName !== 'HTML'
+      currentEl !== null
+      && currentEl.nodeName !== 'HTML'
     ) {
       currentEl = currentEl as HTMLElement;
 
-      if (identifyElement(currentEl) === true) {
-        results.push(currentEl);
+      if (currentEl !== null) {
+        if (identifyElement(currentEl) === true) {
+          results.push(currentEl);
+        }
+      } else {
+        break;
       }
 
       currentEl = currentEl.parentElement;
