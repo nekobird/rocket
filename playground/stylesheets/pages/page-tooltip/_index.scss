@@ -1,0 +1,45 @@
+.site-content {
+  height: 400vh;
+  position: relative;
+}
+
+
+.tooltip {
+  background-color: gray;
+  height: 100px;
+  width: 100px;
+  position: fixed;
+  top: 400px;
+  left: 200px;
+}
+
+.tooltip-inner {
+  background-color: blue;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 60px;
+  width: 120px;
+  line-height: 60px;
+}
+
+.tooltip-document {
+  background-color: green;
+  position: absolute;
+  top: 1500px;
+  left: 200px;
+  height: 60px;
+  width: 120px;
+  line-height: 60px;
+}
+
+.box {
+  background: hsl(200, 75, 75);
+  height: 100px;
+  left: 500px;
+  line-height: 100px;
+  position: fixed;
+  text-align: center;
+  top: 500px;
+  width: 200px;
+}

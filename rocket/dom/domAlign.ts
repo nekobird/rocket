@@ -1,6 +1,6 @@
 import {
+  DOMUtil,
   Num,
-  PointHelper,
 } from '../rocket';
 
 const validReferenceCornerNames = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
@@ -17,13 +17,13 @@ export interface AlignmentOffset {
 }
 
 export class DOMAlign {
-
+  // This returns AlignmentOffset relative to viewport.
   public static getElementOffset(element: HTMLElement, referencePoint: referencePointNames): AlignmentOffset {
     const rect = element.getBoundingClientRect();
     let left = 0;
     let top  = 0;
     const leftCenter = rect.left + Num.getNumberLineDistance(rect.left, rect.right) / 2;
-    const topCenter  = rect.top  + Num.getNumberLineDistance(rect.top, rect.bottom) / 2; 
+    const topCenter  = rect.top  + Num.getNumberLineDistance(rect.top, rect.bottom) / 2;
     switch(referencePoint) {
       case 'center': {
         left = leftCenter;
@@ -74,10 +74,30 @@ export class DOMAlign {
     return { left, top };
   }
 
-  public static getOffsetFromTargeReferencePointToOrigin(
+  public static getTargetAlignmentOffset(
+    target: HTMLElement,
+    targetReferencePoint: referencePointNames,
+    anchor: HTMLElement,
+    anchorReferencePoint: referencePointNames,
+    relativeTo: 'viewport' | 'document' | HTMLElement = 'viewport',
+    spacing: number = 0,
+  ) {
+    const targetRect = target.getBoundingClientRect();
+    const targetOffset = this.getElementOffset(target, targetReferencePoint);
+    const anchorOffset = this.getElementOffset(anchor, anchorReferencePoint);
+    const targetOriginOffset = this.getDeltaFromTargeReferencePointToOrigin(target, targetReferencePoint);
+    let left = targetRect.left + anchorOffset.left - targetOffset.left;
+    let top  = targetRect.top + anchorOffset.top - targetOffset.top;
+    let offset = { left, top };
+    offset = this.transformOffsetRelativeTo(offset, relativeTo);
+    offset = this.applySpacingToOffset(offset, anchorReferencePoint, spacing);
+    return offset;
+  }
+
+  public static getDeltaFromTargeReferencePointToOrigin(
     target: HTMLElement,
     referencePoint: referencePointNames
-  ) {
+  ): AlignmentOffset {
     const rect = target.getBoundingClientRect();
     const offset = this.getElementOffset(target, referencePoint);
     return {
@@ -86,30 +106,87 @@ export class DOMAlign {
     }
   }
 
-  public static getTargetAlignmentOffset(
-    target: HTMLElement,
-    targetReferencePoint: referencePointNames,
-    anchor: HTMLElement,
-    anchorReferencePoint: referencePointNames,
-    relativeTo: 'viewport' | 'document' | HTMLElement | Window,
-    offset: number = 0,
-  ) {
-    const targetOffset = this.getElementOffset(target, targetReferencePoint);
-    const anchorOffset = this.getElementOffset(anchor, anchorReferencePoint);
-    const targetOriginOffset = this.getOffsetFromTargeReferencePointToOrigin(target, targetReferencePoint);
-    let left = targetOffset.left - anchorOffset.left + targetOriginOffset.left;
-    let top  = targetOffset.top  - anchorOffset.top  + targetOriginOffset.top;
+  public static transformOffsetRelativeTo(
+    offset: AlignmentOffset,
+    to: 'viewport' | 'document' | HTMLElement
+  ): AlignmentOffset {
+    let left = offset.left;
+    let top = offset.top;
+    if (to === 'document') {
+      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+      const scrollTop  = window.pageYOffset || document.documentElement.scrollTop;
+      left = left + scrollLeft;
+      top = top  + scrollTop;
+    } else if (to === 'viewport') {
+      left = left;
+      top = top;
+    } else if (DOMUtil.isHTMLElement(to) === true) {
+      const target = to as HTMLElement;
+      const rect = target.getBoundingClientRect();
+      left = left - rect.left;
+      top = top - rect.top;
+    }
+    return { left, top };
   }
 
-  public static applyOffsetToAlignment(offset: number) {
-
+  public static applySpacingToOffset(
+    offset: AlignmentOffset,
+    referencePoint: referencePointNames,
+    spacing: number
+  ): AlignmentOffset {
+    let left = offset.left;
+    let top = offset.top;
+    if (referencePoint === 'center') {
+      return { left, top };
+    } else if (validReferenceCornerNames.indexOf(referencePoint) !== -1) {
+      let cornerSpacing = this.calculateCornerSpacing(spacing);
+      switch(referencePoint) {
+        case 'top-left': {
+          left = left - cornerSpacing;
+          top = top - cornerSpacing;
+          break;
+        }
+        case 'top-right': {
+          left = left + cornerSpacing;
+          top = top - cornerSpacing;
+          break;
+        }
+        case 'bottom-left': {
+          left = left - cornerSpacing;
+          top = top + cornerSpacing;
+          break;
+        }
+        case 'bottom-right': {
+          left = left + cornerSpacing;
+          top = top + cornerSpacing;
+          break;
+        }
+      }
+      return { left, top };
+    } else {
+      switch(referencePoint) {
+        case 'top': {
+          top = top - spacing;
+          break;
+        }
+        case 'bottom': {
+          top = top + spacing;
+          break;
+        }
+        case 'left': {
+          left = left - spacing;
+          break;
+        }
+        case 'right': {
+          left = left + spacing;
+          break;
+        }
+      }
+      return { left, top };
+    }
   }
 
-  public static transformOffsetRelativeTo(to: 'viewport' | 'document' | HTMLElement | Window) {
-    
-  }
-
-  public static calculateCornerOffset(offset: number): number {
-    return Math.cos(Math.PI/4) * offset;
+  public static calculateCornerSpacing(spacing: number): number {
+    return Math.cos(Math.PI/4) * spacing;
   }
 }
