@@ -53,7 +53,7 @@ export class Num {
   }
 
   // Get number-line distance between two numbers
-  // For example (-4, -2) = 2, (-4, 5) = 9
+  // For example (-4, -2) = 6, (-4, 5) = 9
   static getNumberLineDistance(a: number, b: number): number {
     if (a === b) {
       return 0;
