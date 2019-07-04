@@ -11,14 +11,14 @@ export type referencePointCornerNames = 'top-left' | 'top-right' | 'bottom-left'
 export type referencePointEdgesNames = 'top' | 'left' | 'right' | 'bottom';
 export type referencePointNames = 'center' | referencePointCornerNames | referencePointEdgesNames;
 
-export interface AlignmentOffset {
+export interface AlignmentPosition {
   left: number;
   top: number;
 }
 
 export class DOMAlign {
-  // This returns AlignmentOffset relative to viewport.
-  public static getElementOffset(element: HTMLElement, referencePoint: referencePointNames): AlignmentOffset {
+  // This returns AlignmentPosition relative to viewport.
+  public static getElementOffset(element: HTMLElement, referencePoint: referencePointNames): AlignmentPosition {
     const rect = element.getBoundingClientRect();
     let left = 0;
     let top  = 0;
@@ -74,7 +74,7 @@ export class DOMAlign {
     return { left, top };
   }
 
-  public static getTargetAlignmentOffset(
+  public static getTargetAlignmentPosition(
     target: HTMLElement,
     targetReferencePoint: referencePointNames,
     anchor: HTMLElement,
@@ -97,7 +97,7 @@ export class DOMAlign {
   public static getDeltaFromTargeReferencePointToOrigin(
     target: HTMLElement,
     referencePoint: referencePointNames
-  ): AlignmentOffset {
+  ): AlignmentPosition {
     const rect = target.getBoundingClientRect();
     const offset = this.getElementOffset(target, referencePoint);
     return {
@@ -107,9 +107,9 @@ export class DOMAlign {
   }
 
   public static transformOffsetRelativeTo(
-    offset: AlignmentOffset,
+    offset: AlignmentPosition,
     to: 'viewport' | 'document' | HTMLElement
-  ): AlignmentOffset {
+  ): AlignmentPosition {
     let left = offset.left;
     let top = offset.top;
     if (to === 'document') {
@@ -130,10 +130,10 @@ export class DOMAlign {
   }
 
   public static applySpacingToOffset(
-    offset: AlignmentOffset,
+    offset: AlignmentPosition,
     referencePoint: referencePointNames,
     spacing: number
-  ): AlignmentOffset {
+  ): AlignmentPosition {
     let left = offset.left;
     let top = offset.top;
     if (referencePoint === 'center') {
