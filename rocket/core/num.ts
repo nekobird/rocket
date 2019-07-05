@@ -8,11 +8,11 @@ export class Num {
   }
 
   static constrain(number: number, range: number | [number, number]): number {
-    if (typeof range === 'number') {
-      range = [0, range];
-    }
+    if (typeof range === 'number') range = [0, range];
+
     const max = Math.max(range[0], range[1]);
     const min = Math.min(range[0], range[1]);
+
     if (number >= max) {
       return max;
     } else if (number <= min) {
@@ -22,19 +22,12 @@ export class Num {
   }
 
   static cycle(number: number, range: number | [number, number]): number {
-    if (typeof range === 'number') {
-      range = [0, range];
-    }
+    if (typeof range === 'number') range = [0, range];
 
     const max = Math.max(range[0], range[1]);
     const min = Math.min(range[0], range[1]);
 
-    if (
-      max === 0
-      && min === 0
-    ) {
-      return 0;
-    }
+    if (max === 0 && min === 0) return 0;
 
     const da = this.getEuclideanDistance(min, max);
     let db: number;
@@ -56,9 +49,7 @@ export class Num {
   // For example (-4, -2) = 6, (-4, 5) = 9
   // https://en.wikipedia.org/wiki/Euclidean_distance
   static getEuclideanDistance(a: number, b: number): number {
-    if (a === b) {
-      return 0;
-    }
+    if (a === b) return 0;
     return Math.sqrt(Math.abs((a - b) * (b - a)));
   }
 
@@ -66,14 +57,10 @@ export class Num {
   static hypotenuse(x: number, y: number): number {
     // http://www.johndcook.com/blog/2010/06/02/whats-so-hard-about-finding-a-hypotenuse/
     let max = Math.max(Math.abs(x), Math.abs(y));
-    const min = Math.min(Math.abs(x), Math.abs(y));
+    if (max === 0) max = 1;
 
-    if (max === 0) {
-      max = 1;
-    }
-
+    const min = Math.min(Math.abs(x), Math.abs(y));    
     const n = min / max;
-
     return max * Math.sqrt(1 + n * n);
   }
 
@@ -93,12 +80,8 @@ export class Num {
   }
 
   static modulate(number: number, from: number | [number, number], to: number | [number, number], constrain: boolean): number {
-    if (typeof from === 'number') {
-      from = [0, from];
-    }
-    if (typeof to === 'number') {
-      to = [0, to];
-    }
+    if (typeof from === 'number') from = [0, from];
+    if (typeof to === 'number') to = [0, to];
     const percent = (number - from[0]) / (from[1] - from[0]);
     let result: number;
     if (to[1] > to[0]) {
@@ -110,10 +93,7 @@ export class Num {
   }
 
   static random(range: number | [number, number], whole: boolean = false, fixed: number = 2): number {
-    if (typeof range === 'number') {
-      range = [0, range];
-    }
-
+    if (typeof range === 'number') range = [0, range];
     if (
       range[0] === 0
       && range[1] === 1
@@ -134,9 +114,8 @@ export class Num {
   }
 
   static within(number: number, range: number | [number, number]): boolean {
-    if (typeof range === 'number') {
-      range = [0, range];
-    }
+    if (typeof range === 'number') range = [0, range];
+
     return (
       number >= range[0]
       && number <= range[1]

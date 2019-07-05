@@ -15,12 +15,12 @@ export class DOMOffset {
 
   public static getElementOffsetFrom(target: HTMLElement, from: HTMLElement): Offset {
     const targetRect = target.getBoundingClientRect();
-    const fromRect   = from.getBoundingClientRect();
+    const fromRect = from.getBoundingClientRect();
 
-    const top    = Num.getEuclideanDistance(targetRect.top,    fromRect.top);
+    const top = Num.getEuclideanDistance(targetRect.top, fromRect.top);
     const bottom = Num.getEuclideanDistance(targetRect.bottom, fromRect.bottom);
-    const left   = Num.getEuclideanDistance(targetRect.left,  fromRect.left);
-    const right  = Num.getEuclideanDistance(targetRect.right, fromRect.right);
+    const left = Num.getEuclideanDistance(targetRect.left, fromRect.left);
+    const right = Num.getEuclideanDistance(targetRect.right, fromRect.right);
 
     return {
       top, bottom,
@@ -30,22 +30,22 @@ export class DOMOffset {
     };
   }
 
-  // Get element offset relative to the document.
+  // Get element offset relative to document.
   public static getElementOffsetFromDocument(element: HTMLElement): Offset {
     const rect = element.getBoundingClientRect();
 
     const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-    const scrollTop  = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
+    const top = rect.top + scrollTop;
+    const bottom = rect.bottom + scrollTop;
     const left = rect.left + scrollLeft;
-    const top  = rect.top + scrollTop;
+    const right = rect.right + scrollLeft;
 
     return {
-      left, top,
-      right : rect.right  + scrollLeft,
-      bottom: rect.bottom + scrollTop,
-      x: left,
-      y: top,
+      top, bottom,
+      left, right,
+      x: left, y: top,
     };
   }
 }

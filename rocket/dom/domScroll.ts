@@ -54,8 +54,8 @@ export class DOMScroll {
   }
 
   public static getScrollTopToElementsCenterFrame(elements: HTMLElement | HTMLElement[]): number {
-    let top = 0;
-    let height = 0;
+    let top, height;
+    top = height = 0;
     if (Array.isArray(elements) === true) {
       const rect = DOMRect.getRectFromElements(elements);
       if (rect !== false) {

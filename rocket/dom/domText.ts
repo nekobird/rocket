@@ -39,14 +39,12 @@ export class DOMText {
     
       let textCopy = text;
       while (true) {
-        if (typeof words[index] === 'undefined') { break; }
+        if (typeof words[index] === 'undefined') break;
         const wordLength = words[index].length + 1;
         textCopy = textCopy.substring(0, textCopy.length - wordLength);
         temp.textContent = textCopy;
         lastLine.unshift(words[index]);
-        if (temp.clientHeight < startingHeight) {
-          break;
-        }
+        if (temp.clientHeight < startingHeight) break;
         index--;
       }
       if (element.parentNode !== null) {
