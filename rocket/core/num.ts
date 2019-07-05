@@ -59,9 +59,7 @@ export class Num {
     if (a === b) {
       return 0;
     }
-    return Math.sqrt(
-      Math.abs((a - b) * (b - a))
-    );
+    return Math.sqrt(Math.abs((a - b) * (b - a)));
   }
 
   // A more efficient way to calculate hypotenuse.
