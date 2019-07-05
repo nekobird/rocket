@@ -10,6 +10,8 @@ export interface ScrollTo {
 
 export class DOMScroll {
 
+  // const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+  // const scrollTop  = window.pageYOffset || document.documentElement.scrollTop;
   public static getScrollLeftToElements(elements: HTMLElement | HTMLElement[]): number {
     let left = 0;
     if (Array.isArray(elements) === true) {

@@ -17,7 +17,6 @@ describe('DOMStyle.getFontSize', () => {
   });
 });
 
-
 describe('DOMStyle.getHorizontalMargins', () => {
   test('should return 0 when margin left and right is null', () => {
     document.body.innerHTML =
