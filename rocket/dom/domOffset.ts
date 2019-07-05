@@ -17,10 +17,10 @@ export class DOMOffset {
     const targetRect = target.getBoundingClientRect();
     const fromRect   = from.getBoundingClientRect();
 
-    const top    = Num.getNumberLineDistance(targetRect.top,    fromRect.top);
-    const bottom = Num.getNumberLineDistance(targetRect.bottom, fromRect.bottom);
-    const left   = Num.getNumberLineDistance(targetRect.left,  fromRect.left);
-    const right  = Num.getNumberLineDistance(targetRect.right, fromRect.right);
+    const top    = Num.getEuclideanDistance(targetRect.top,    fromRect.top);
+    const bottom = Num.getEuclideanDistance(targetRect.bottom, fromRect.bottom);
+    const left   = Num.getEuclideanDistance(targetRect.left,  fromRect.left);
+    const right  = Num.getEuclideanDistance(targetRect.right, fromRect.right);
 
     return {
       top, bottom,

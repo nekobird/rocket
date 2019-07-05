@@ -62,8 +62,8 @@ export class DOMRect {
       }
     }
 
-    result.width  = Num.getNumberLineDistance(result.left, result.right);
-    result.height = Num.getNumberLineDistance(result.top,  result.bottom);
+    result.width  = Num.getEuclideanDistance(result.left, result.right);
+    result.height = Num.getEuclideanDistance(result.top,  result.bottom);
 
     result.center = PointHelper.newPoint(
       result.left + result.width / 2,
@@ -94,8 +94,8 @@ export class DOMRect {
       const bottom = Math.min(rect1.bottom, rect2.bottom);
       const left  = Math.max(rect1.left,  rect2.left);
       const right = Math.min(rect1.right, rect2.right);
-      const width  = Num.getNumberLineDistance(left, right);
-      const height = Num.getNumberLineDistance(top, bottom);
+      const width  = Num.getEuclideanDistance(left, right);
+      const height = Num.getEuclideanDistance(top, bottom);
       return width * height;
     }
     return 0;

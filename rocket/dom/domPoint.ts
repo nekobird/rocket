@@ -14,8 +14,8 @@ export class DOMPoint {
   public static getElementOffsetFromPoint(element: HTMLElement, { x, y }: Point): Point {
     const { left, top } = element.getBoundingClientRect();
     return {
-      x: Num.getNumberLineDistance(left, x),
-      y: Num.getNumberLineDistance(top, y),
+      x: Num.getEuclideanDistance(left, x),
+      y: Num.getEuclideanDistance(top, y),
     };
   }
 

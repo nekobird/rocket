@@ -36,16 +36,16 @@ export class Num {
       return 0;
     }
 
-    const da = this.getNumberLineDistance(min, max);
+    const da = this.getEuclideanDistance(min, max);
     let db: number;
     let c: number;
 
     if (number > max) {
-      db = this.getNumberLineDistance(number, max);
+      db = this.getEuclideanDistance(number, max);
       c = db % da + min;
       return c === min ? max : c;
     } else if (number < min) {
-      db = this.getNumberLineDistance(number, min);
+      db = this.getEuclideanDistance(number, min);
       c = max - db % da;
       return c === max ? min : c;
     }
@@ -54,20 +54,14 @@ export class Num {
 
   // Get number-line distance between two numbers
   // For example (-4, -2) = 6, (-4, 5) = 9
-  static getNumberLineDistance(a: number, b: number): number {
+  // https://en.wikipedia.org/wiki/Euclidean_distance
+  static getEuclideanDistance(a: number, b: number): number {
     if (a === b) {
       return 0;
     }
-    const min = Math.min(a, b);
-    const max = Math.max(a, b);
-    if (min >= 0 && max > 0) {
-      return max - min;
-    } else if (min < 0 && max > 0) {
-      return Math.abs(min) + max;
-    } else if (min < 0 && max <= 0) {
-      return Math.abs(min) - Math.abs(max);
-    }
-    return 0;
+    return Math.sqrt(
+      Math.abs((a - b) * (b - a))
+    );
   }
 
   // A more efficient way to calculate hypotenuse.

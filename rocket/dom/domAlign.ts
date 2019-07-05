@@ -22,8 +22,8 @@ export class DOMAlign {
     const rect = element.getBoundingClientRect();
     let left = 0;
     let top  = 0;
-    const leftCenter = rect.left + Num.getNumberLineDistance(rect.left, rect.right) / 2;
-    const topCenter  = rect.top  + Num.getNumberLineDistance(rect.top, rect.bottom) / 2;
+    const leftCenter = rect.left + Num.getEuclideanDistance(rect.left, rect.right) / 2;
+    const topCenter  = rect.top  + Num.getEuclideanDistance(rect.top, rect.bottom) / 2;
     switch(referencePoint) {
       case 'center': {
         left = leftCenter;
