@@ -62,8 +62,8 @@ export class DOMRect {
       }
     }
 
-    result.width  = Num.getEuclideanDistance(result.left, result.right);
-    result.height = Num.getEuclideanDistance(result.top,  result.bottom);
+    result.width = Num.getEuclideanDistance(result.left, result.right);
+    result.height = Num.getEuclideanDistance(result.top, result.bottom);
 
     result.center = PointHelper.newPoint(
       result.left + result.width / 2,

@@ -85,7 +85,6 @@ export class DOMAlign {
     const targetRect = target.getBoundingClientRect();
     const targetOffset = this.getElementOffset(target, targetReferencePoint);
     const anchorOffset = this.getElementOffset(anchor, anchorReferencePoint);
-    const targetOriginOffset = this.getDeltaFromTargeReferencePointToOrigin(target, targetReferencePoint);
     let left = targetRect.left + anchorOffset.left - targetOffset.left;
     let top  = targetRect.top + anchorOffset.top - targetOffset.top;
     let offset = { left, top };

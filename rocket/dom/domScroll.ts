@@ -46,7 +46,7 @@ export class DOMScroll {
         width = (elements as HTMLElement).offsetWidth;
       }
     } else {
-      let rect = (elements as HTMLElement).getBoundingClientRect();
+      const rect = (elements as HTMLElement).getBoundingClientRect();
       left = rect.left;
       width = rect.width;
     }
@@ -63,7 +63,7 @@ export class DOMScroll {
         height = (elements as HTMLElement).offsetHeight
       }
     } else {
-      let rect = (elements as HTMLElement).getBoundingClientRect();
+      const rect = (elements as HTMLElement).getBoundingClientRect();
       top = rect.top;
       height = rect.height;
     }
