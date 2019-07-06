@@ -35,17 +35,17 @@ export class DOMRect {
     };
 
     for (let i = 0; i < targets.length; i++) {
-      const rect = targets[i].getBoundingClientRect();
+      const { top, bottom, left, right } = targets[i].getBoundingClientRect();
       if (i === 0) {
-        result.top    = rect.top;
-        result.bottom = rect.bottom;
-        result.left   = rect.left;
-        result.right  = rect.right;
+        result.top    = top;
+        result.bottom = bottom;
+        result.left   = left;
+        result.right  = right;
       } else {
-        if (rect.left   < result.left  ) result.left   = rect.left;
-        if (rect.right  > result.right ) result.right  = rect.right;
-        if (rect.top    < result.top   ) result.top    = rect.top;
-        if (rect.bottom > result.bottom) result.bottom = rect.bottom;
+        if (top    < result.top   ) result.top    = top;
+        if (bottom > result.bottom) result.bottom = bottom;
+        if (left   < result.left  ) result.left   = left;
+        if (right  > result.right ) result.right  = right;
       }
     }
 
@@ -63,10 +63,10 @@ export class DOMRect {
     const rect1 = element1.getBoundingClientRect();
     const rect2 = element2.getBoundingClientRect();
     if (
-      rect1.left > rect2.right
+         rect1.left > rect2.right
       || rect2.left > rect1.right
-      || rect1.top > rect2.bottom
-      || rect2.top > rect1.bottom
+      || rect1.top  > rect2.bottom
+      || rect2.top  > rect1.bottom
     )
       return false;
     return true;
@@ -76,11 +76,11 @@ export class DOMRect {
     const rect1 = element1.getBoundingClientRect();
     const rect2 = element2.getBoundingClientRect();
     if (this.elementsAreOverlapping(element1, element2) === true) {
-      const top = Math.max(rect1.top, rect2.top);
+      const top    = Math.max(rect1.top,    rect2.top);
       const bottom = Math.min(rect1.bottom, rect2.bottom);
-      const left = Math.max(rect1.left, rect2.left);
-      const right = Math.min(rect1.right, rect2.right);
-      const width = Num.getEuclideanDistance(left, right);
+      const left   = Math.max(rect1.left,   rect2.left);
+      const right  = Math.min(rect1.right,  rect2.right);
+      const width  = Num.getEuclideanDistance(left, right);
       const height = Num.getEuclideanDistance(top, bottom);
       return width * height;
     }

@@ -38,16 +38,14 @@ export class DOMTraverse {
     ) {
       currentEl = currentEl as HTMLElement;
       if (currentEl !== null) {
-        if (identifyElement(currentEl) === true) {
+        if (identifyElement(currentEl) === true)
           results.push(currentEl);
-        }
         currentEl = currentEl.parentElement;
       }
     }
 
-    if (results.length > 0) {
+    if (results.length > 0)
       return getAll === true ? results : results[0];
-    }
 
     return false;
   }
@@ -62,9 +60,8 @@ export class DOMTraverse {
         let containsClassName: boolean = false;
 
         classNames.forEach(className => {
-          if (element.classList.contains(className) === true) {
+          if (element.classList.contains(className) === true)
             containsClassName = true;
-          }
         });
         return containsClassName;
       };
@@ -118,9 +115,8 @@ export class DOMTraverse {
 
     inspectDescendant(element);
 
-    if (results.length > 0) {
+    if (results.length > 0)
       return getAll === true ? results : results[0];
-    }
 
     return false;
   }
@@ -140,9 +136,8 @@ export class DOMTraverse {
         let containsClassName: boolean = false;
 
         classNames.forEach(className => {
-          if (element.classList.contains(className) === true) {
+          if (element.classList.contains(className) === true)
             containsClassName = true;
-          }
         });
         return containsClassName;
       };

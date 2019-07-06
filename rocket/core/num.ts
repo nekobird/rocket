@@ -47,7 +47,7 @@ export class Num {
     return number;
   }
 
-  // Get number-line distance between two numbers
+  // Get number-line distance between two integers.
   // For example (-4, -2) = 6, (-4, 5) = 9
   // https://en.wikipedia.org/wiki/Euclidean_distance
   // @pure
