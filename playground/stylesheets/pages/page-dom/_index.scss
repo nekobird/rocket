@@ -1,0 +1,19 @@
+.page-dom {
+  height: 500vh;
+  max-width: 100%;
+  position: relative;
+  width: 100vw;
+
+  .box {
+    background-color: color('black');
+    box-sizing: border-box;
+    color: color('white');
+    height: 150px;
+    left: 200px;
+    padding: space('medium');
+    position: absolute;
+    text-align: center;
+    top: 500px;
+    width: 200px;
+  }
+}

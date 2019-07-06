@@ -4,11 +4,11 @@ import {
   PointHelper,
 } from '../rocket';
 
-export interface Rectangle {
-  left: number;
-  right: number;
+export interface DOMRectangle {
   top: number;
   bottom: number;
+  left: number;
+  right: number;
   center: Point;
   width: number;
   height: number;
@@ -16,7 +16,7 @@ export interface Rectangle {
 
 export class DOMRect {
 
-  public static getRectFromElements(elements: HTMLElement | HTMLElement[]): Rectangle | false {
+  public static getRectFromElements(elements: HTMLElement | HTMLElement[]): DOMRectangle | false {
     let targets: HTMLElement[];
 
     if (Array.isArray(elements) === false) {

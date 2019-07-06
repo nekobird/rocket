@@ -3,76 +3,86 @@ import {
   ViewportModel,
 } from '../rocket';
 
-export interface ScrollTo {
+export interface DOMScrollTo {
   left: number;
   top: number;
 }
 
 export class DOMScroll {
 
+  public static get scrollLeft(): number {
+    return window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || window.scrollX || 0;
+  }
+
+  public static get scrollTop(): number {
+    return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || window.scrollY || 0;
+  }
+
   // const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
   // const scrollTop  = window.pageYOffset || document.documentElement.scrollTop;
   public static getScrollLeftToElements(elements: HTMLElement | HTMLElement[]): number {
-    let left = 0;
+    let rect, left = 0;
+
     if (Array.isArray(elements) === true) {
-      const rect = DOMRect.getRectFromElements(elements);
-      if (rect !== false) {
-        left = rect.left;
-      }
+      rect = DOMRect.getRectFromElements(elements);
     } else {
-      left = (elements as HTMLElement).getBoundingClientRect().left;
+      rect = (elements as HTMLElement).getBoundingClientRect();
     }
-    return window.scrollX + left;
+
+    if (rect !== false) left = rect.left;
+
+    return left + this.scrollLeft;
   }
 
   public static getScrollTopToElements(elements: HTMLElement | HTMLElement[]): number {
-    let top = 0;
+    let rect, top = 0;
+
     if (Array.isArray(elements) === true) {
-      const rect = DOMRect.getRectFromElements(elements);
-      if (rect !== false) {
-        top = rect.top;
-      }
+      rect = DOMRect.getRectFromElements(elements);
     } else {
-      top = (elements as HTMLElement).getBoundingClientRect().top;
+      rect = (elements as HTMLElement).getBoundingClientRect();
     }
-    return window.scrollX + top;
+
+    if (rect !== false) top = rect.top;
+
+    return top + this.scrollTop;
   }
 
   public static getScrollLeftToElementsCenterFrame(elements: HTMLElement | HTMLElement[]): number {
-    let left = 0;
-    let width = 0;
+    let rect, left = 0, width = 0;
+
     if (Array.isArray(elements) === true) {
-      const rect = DOMRect.getRectFromElements(elements);
-      if (rect !== false) {
-        left = rect.left;
-        width = (elements as HTMLElement).offsetWidth;
-      }
+      rect = DOMRect.getRectFromElements(elements);
     } else {
-      const rect = (elements as HTMLElement).getBoundingClientRect();
+      rect = (elements as HTMLElement).getBoundingClientRect();
+    }
+
+    if (rect !== false) {
       left = rect.left;
       width = rect.width;
     }
-    return left - ((ViewportModel.width - width) / 2);
+
+    return left - ((ViewportModel.width - width) / 2) + this.scrollLeft;
   }
 
   public static getScrollTopToElementsCenterFrame(elements: HTMLElement | HTMLElement[]): number {
-    let top, height;
-    top = height = 0;
+    let rect, top = 0, height = 0;
+
     if (Array.isArray(elements) === true) {
-      const rect = DOMRect.getRectFromElements(elements);
-      if (rect !== false) {
-        top = rect.top
-        height = (elements as HTMLElement).offsetHeight
-      }
+      rect = DOMRect.getRectFromElements(elements);
     } else {
-      const rect = (elements as HTMLElement).getBoundingClientRect();
+      rect = (elements as HTMLElement).getBoundingClientRect();
+    }
+
+    if (rect !== false) {
       top = rect.top;
       height = rect.height;
     }
-    return top - ((ViewportModel.height - height) / 2);
+
+    return top - ((ViewportModel.height - height) / 2) + this.scrollTop;
   }
 
-  public static getScrollToElementsCenterFrame(elements: HTMLElement): ScrollTo {
+  public static getScrollToElementsCenterFrame(elements: HTMLElement): DOMScrollTo {
     return {
       left: this.getScrollLeftToElementsCenterFrame(elements),
       top: this.getScrollTopToElementsCenterFrame(elements),

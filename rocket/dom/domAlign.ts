@@ -1,4 +1,5 @@
 import {
+  DOMScroll,
   DOMUtil,
   Num,
 } from '../rocket';
@@ -20,8 +21,7 @@ export class DOMAlign {
   // This returns AlignmentPosition relative to viewport.
   public static getElementOffset(element: HTMLElement, referencePoint: referencePointNames): AlignmentPosition {
     const rect = element.getBoundingClientRect();
-    let left = 0;
-    let top  = 0;
+    let left = 0, top  = 0;
     const leftCenter = rect.left + Num.getEuclideanDistance(rect.left, rect.right) / 2;
     const topCenter  = rect.top  + Num.getEuclideanDistance(rect.top, rect.bottom) / 2;
     switch(referencePoint) {
@@ -112,10 +112,8 @@ export class DOMAlign {
     let left = offset.left;
     let top = offset.top;
     if (to === 'document') {
-      const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-      const scrollTop  = window.pageYOffset || document.documentElement.scrollTop;
-      left = left + scrollLeft;
-      top = top  + scrollTop;
+      left = left + DOMScroll.scrollLeft;
+      top = top  + DOMScroll.scrollTop;
     } else if (to === 'viewport') {
       left = left;
       top = top;
