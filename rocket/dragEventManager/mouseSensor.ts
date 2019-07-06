@@ -19,9 +19,8 @@ export class MouseSensor {
 
   public dispatch(data: SensorData) {
     const { config, sensorHub } = this.manager;
-    if (config.listenTo.indexOf('MOUSE') !== -1) {
+    if (config.listenTo.indexOf('MOUSE') !== -1)
       sensorHub.receive(data);
-    }
   }
 
   public composeData(name: EventName, event: MouseEvent): SensorData {
@@ -57,11 +56,10 @@ export class MouseSensor {
   }
 
   public eventHandlerMouseMove = (event: Event): void => {
-    if (this.isDown === true) {
+    if (this.isDown === true)
       this.dispatch(
         this.composeData('drag', <MouseEvent>event)
       );
-    }
   }
 
   public eventHandlerMouseUp = (event: Event): void => {

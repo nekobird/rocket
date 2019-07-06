@@ -15,9 +15,8 @@ export class Animation {
   constructor(config?: Partial<AnimationConfig>) {
     this.config = Object.assign({}, DEFAULT_ANIMATION_CONFIG);
     this.config.dataExport = {};
-    if (typeof config === 'object') {
+    if (typeof config === 'object')
       this.setConfig(config);
-    }
     this.core = new AnimationCore(this);
     return this;
   }
@@ -57,9 +56,8 @@ export class Animation {
 
   public goToEnd(): this {
     let iterationCount = this.core.iterationCount;
-    if (typeof this.config.numberOfIterations === 'number') {
+    if (typeof this.config.numberOfIterations === 'number')
       iterationCount = this.config.numberOfIterations;
-    }
     if (typeof this.config.onTick === 'function') {
       this.config.onTick(1, iterationCount, this, undefined);
     } else if (Array.isArray(this.config.onTick)) {

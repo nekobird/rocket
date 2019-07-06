@@ -39,9 +39,8 @@ export class StackUpLayout {
   }
 
   public loop() {
-    for (let i = 0; i < this.stackUp.items.length; i++) {
+    for (let i = 0; i < this.stackUp.items.length; i++)
       this.plot(i);
-    }
   }
 
   public plot(itemIndex: number) {
@@ -61,15 +60,13 @@ export class StackUpLayout {
 
     this.stack[this.columnPointer] += item.height + config.gutter;
 
-    if (this.stack[this.columnPointer] > this.stackUp.containerHeight) {
+    if (this.stack[this.columnPointer] > this.stackUp.containerHeight)
       this.stackUp.containerHeight = this.stack[this.columnPointer];
-    }
 
     this.columnPointer++;
 
-    if (this.columnPointer >= this.stackUp.numberOfColumns) {
+    if (this.columnPointer >= this.stackUp.numberOfColumns)
       this.columnPointer = 0;
-    }
   }
 
   private plotOptimized(itemIndex: number) {
@@ -85,16 +82,14 @@ export class StackUpLayout {
 
     this.stack[0][1] += item.height + config.gutter;
 
-    if (this.stack[0][1] > this.stackUp.containerHeight) {
+    if (this.stack[0][1] > this.stackUp.containerHeight)
       this.stackUp.containerHeight = this.stack[0][1];
-    }
 
     this.stack.sort((a: number[], b: number[]) => a[1] - b[1]);
 
     this.columnPointer++;
 
-    if (this.columnPointer >= this.stackUp.numberOfColumns) {
+    if (this.columnPointer >= this.stackUp.numberOfColumns)
       this.columnPointer = 0;
-    }
   }
 }

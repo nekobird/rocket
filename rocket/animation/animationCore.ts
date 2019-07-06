@@ -43,9 +43,8 @@ export class AnimationCore {
     if (
       typeof delay !== 'number'
       || typeof delay === 'undefined'
-    ) {
+    )
       delay = <number>config.delay;
-    }
 
     if (delay > 0) {
       try {
@@ -84,13 +83,12 @@ export class AnimationCore {
     this.isActive = true;
 
     // Set starting direction.
-    if (this.isReversed === true) {
+    if (this.isReversed === true)
       this.direction = false;
-    }
 
     if (this.isPaused === true) {
       const startTimeDelta = this.pauseTime - this.startTime;
-      const endTimeDelta = this.endTime   - this.pauseTime;
+      const endTimeDelta = this.endTime - this.pauseTime;
 
       const now = Date.now();
 
@@ -128,18 +126,10 @@ export class AnimationCore {
   public reset(): this {
     this.clearSessions();
 
-    this.isActive = false;
-    this.isAnimating = false;
-    this.isPaused = false;
-
+    this.isActive = this.isAnimating = this.isPaused = false;
     this.direction = true;
-
-    this.iterationCount = 0;
-
-    this.startTime = 0;
-    this.endTime = 0;
-    this.pauseTime = 0;
-    this.progress = 0;
+    this.iterationCount = this.startTime = this.endTime =
+    this.pauseTime = this.progress = 0;
     return this;
   }
 
@@ -189,9 +179,8 @@ export class AnimationCore {
               this.animation, config.dataExport
             );
             // Toggle direction if it's alternating.
-            if (config.alternate === true) {
+            if (config.alternate === true)
               this.toggleDirection();
-            }
             await this.startWithDelay(config.iterationDelay);
           } catch {
             this.end();
@@ -216,9 +205,7 @@ export class AnimationCore {
     let n = config.timingFunction(this.progress);
 
     // Reverse N depending on current direction.
-    if (this.direction === false) {
-      n = 1 - n;
-    }
+    if (this.direction === false) n = 1 - n;
 
     // Tick.
     if (typeof config.onTick === 'function') {

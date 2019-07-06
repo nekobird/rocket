@@ -120,12 +120,9 @@ export class ActionManager {
   }
 
   public async actionHub(action: MonoAction, isNestedAction: boolean = false, callback?: Function): Promise<void> {
-    if (
-      this.isRunning === true
-      && isNestedAction === true
-    ) {
+    if (this.isRunning === true && isNestedAction === true)
       this.isNested = true;
-    }
+
     this.isRunning = true;
 
     const { config } = this.controller;
@@ -153,12 +150,10 @@ export class ActionManager {
       if (
         isNestedAction === true
         && this.isNested === true
-      ) {
+      )
         this.isNested = false;
-      }
-      if (this.isNested === false) {
+      if (this.isNested === false)
         config.afterAction(action, this.controller);
-      }
     } catch {
       await this.endAction(callback);
       return Promise.reject();
@@ -166,7 +161,7 @@ export class ActionManager {
   }
 
   public endAction(callback?: Function): Promise<void> {
-    if (this.isNested === false) {
+    if (this.isNested === false)
       return new Promise(resolve => {
         setTimeout(
           () => {
@@ -175,16 +170,13 @@ export class ActionManager {
           }, this.controller.config.cooldown
         );
       });
-    }
+
     if (
       this.isRunning === false
       && this.isNested === true
-    ) {
-      this.isNested = false;
-    }
-    if (typeof callback === 'function') {
-      callback();
-    }
+    ) this.isNested = false;
+
+    if (typeof callback === 'function') callback();
     return Promise.resolve();
   }
 }

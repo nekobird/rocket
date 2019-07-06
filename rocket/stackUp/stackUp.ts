@@ -50,9 +50,7 @@ export class StackUp {
 
   constructor(config?: Partial<StackUpConfig>) {
     this.config = Object.assign({}, STACKUP_DEFAULT_CONFIG);
-    if (typeof config === 'object') {
-      this.setConfig(config);
-    }
+    if (typeof config === 'object') this.setConfig(config);
     this.layout = new StackUpLayout(this, this.config.layout);
     return this;
   }
@@ -94,9 +92,7 @@ export class StackUp {
       }
       throw new Error('StackUp: Fail to get container.');
     }
-    if (typeof this.config.container === 'object') {
-      return this;
-    }
+    if (typeof this.config.container === 'object') return this;
     throw new Error('StackUp: Container not defined.');
   }
 
@@ -112,9 +108,7 @@ export class StackUp {
       }
       throw new Error('StackUp: Fail to get items.');
     }
-    if (typeof this.config.items === 'object') {
-      return this;
-    }
+    if (typeof this.config.items === 'object') return this;
     throw new Error('StackUp: items not defined.');
   }
 
@@ -125,8 +119,7 @@ export class StackUp {
       && this.config.boundary !== null
     ) {
       const boundary = <HTMLElement>this.config.boundary;
-      let horizontal = 0;
-      let vertical = 0;
+      let horizontal = 0, vertical = 0;
       if (DOMStyle.getStyleValue(boundary, 'boxSizing') === 'border-box') {
         const horizontalBorderWidths = DOMStyle.getHorizontalBorderWidths(boundary);
         const horizontalPaddings = DOMStyle.getHorizontalPaddings(boundary);
@@ -153,9 +146,8 @@ export class StackUp {
     if (
       this.calculateNumberOfColumns() !== this.numberOfColumns
       && this.config.isFluid === true
-    ) {
+    )
       this.restack();
-    }
   }
 
   private eventHandlerResize = (event: Event): void => {
@@ -200,12 +192,8 @@ export class StackUp {
   private populateItems(): this {
     // Clear items before populating
     this.items = [];
-
-    if (typeof this.config.items !== 'undefined') {
-      this.config.items.forEach(item => {
-        this.appendItem(item)
-      });
-    }
+    if (typeof this.config.items !== 'undefined')
+      this.config.items.forEach(item => this.appendItem(item));
     return this;
   }
 
@@ -221,17 +209,15 @@ export class StackUp {
       numberOfColumns = this.config.numberOfColumns;
     }
 
-    if (numberOfColumns > this.items.length) {
+    if (numberOfColumns > this.items.length)
       numberOfColumns = this.items.length;
-    }
 
     if (
       this.items.length === 0
       || numberOfColumns <= 0
-    ) {
+    ) 
       numberOfColumns = 1;
-    }
-
+    
     return numberOfColumns;
   }
 
@@ -345,9 +331,8 @@ export class StackUp {
 
   private applyLayout(): this {
     this.layout.setup();
-    if (this.items.length) {
+    if (this.items.length)
       this.layout.loop();
-    }
     return this;
   }
 

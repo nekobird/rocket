@@ -119,9 +119,8 @@ export class Color {
     const numbers = input.match(/([\d]+(\.[\d]+)?)/g);
     if (numbers !== null) {
       const rgba: number[] = numbers.map((v, index) => {
-        if (index === 3) {
+        if (index === 3)
           return Num.cycle(parseFloat(v), 1);
-        }
         return Num.cycle(parseFloat(v) / 255, 1);
       });
       this.r = rgba[0];

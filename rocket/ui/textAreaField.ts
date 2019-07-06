@@ -47,9 +47,8 @@ export class TextAreaField {
     this.element = element;
 
     this.config = Object.assign({}, TEXTAREAFIELD_DEFAULT_CONFIG);
-    if (typeof config === 'object') {
+    if (typeof config === 'object')
       this.setConfig(config);
-    }
   }
 
   public setConfig(config: Partial<TextAreaFieldConfig>) {
@@ -98,9 +97,8 @@ export class TextAreaField {
   }
 
   public getHeight(text?: string): number {
-    if (typeof text === 'string') {
+    if (typeof text === 'string')
       return this.textBoxModel.getTextBoxHeightFromElement(this.element, text);
-    } 
     return this.textBoxModel.getTextBoxHeightFromElement(this.element);
   }
 
@@ -120,27 +118,22 @@ export class TextAreaField {
 
   public filterInput(): this {
     // Remove new lines.
-    if (this.config.disableLineBreaks === true) {
+    if (this.config.disableLineBreaks === true)
       this.element.value = this.element.value.replace(/[\r\n]+/g, '');
-    }
     // Remove tabs.
-    if (this.config.disableTabs === true) {
+    if (this.config.disableTabs === true)
       this.element.value = this.element.value.replace(/[\t]+/g, '');
-    }
     // Remove multiple whitespaces to one.
-    if (this.config.removeMultipleWhitespaces === true) {
+    if (this.config.removeMultipleWhitespaces === true)
       this.element.value = this.element.value.replace(/[\s]+/g, ' ');
-    }
     // Remove leading whitespaces.
-    if (this.config.removeLeadingWhitespaces === true) {
+    if (this.config.removeLeadingWhitespaces === true)
       this.element.value = this.element.value.replace(/^[\s]+/g, '');
-    }
     // Trim element value if limit number of characters is a number.
-    if (typeof this.config.limitNumberOfCharacters === 'number') {
+    if (typeof this.config.limitNumberOfCharacters === 'number')
       this.element.value = this.element.value.substring(
         0, this.config.limitNumberOfCharacters
       );
-    }
     // Replace tabs with spaces.
     // TODO: Fix this because it's not working as intended.
     // this.element.value = this.element.value.replace(/[\t]+/g, '    ')
@@ -173,9 +166,8 @@ export class TextAreaField {
     if (
       keyCode === 13
       && this.config.disableLineBreaks === true
-    ) {
+    )
       event.preventDefault();
-    }
     this.previousKeyCode = keyCode;
   }
 

@@ -135,13 +135,12 @@ export class TextBoxModel {
       wordBreak: 'normal',
       wordWrap: 'normal',
     };
-    if (typeof modelStyleOverride !== 'undefined') {
+    if (typeof modelStyleOverride !== 'undefined')
       this.style = modelStyleOverride;
-    }
 
-    if (typeof text === 'undefined') {
+    if (typeof text === 'undefined')
       text = DOMUtil.getTextFromElement(element);
-    }
+
     this.modelText = text;
 
     const result = (<HTMLElement>this.modelElement).scrollWidth;
@@ -152,9 +151,8 @@ export class TextBoxModel {
   // @model
 
   set modelFontSize(fontSize: number) {
-    if (typeof this.modelElement === 'object') {
+    if (typeof this.modelElement === 'object')
       this.modelElement.style.fontSize = `${fontSize}px`;
-    }
   }
 
   set modelText(text: string) {
@@ -176,24 +174,21 @@ export class TextBoxModel {
   }
 
   set style(style: object) {
-    if (typeof this.modelElement === 'object') {
+    if (typeof this.modelElement === 'object')
       Object.assign(this.modelElement.style, style);
-    }
   }
 
   public applyModelAttributes(): this {
-    if (typeof this.modelElement === 'object') {
+    if (typeof this.modelElement === 'object')
       Object.assign(this.modelElement.style, MODEL_ATTRIBUTES);
-    }
     return this;
   }
 
   public applyBoxModelPropertiesFromElement(element: HTMLElement): this {
     const style = window.getComputedStyle(element);
     STYLE_PROPERTIES.forEach(name => {
-      if (typeof this.modelElement === 'object') {
+      if (typeof this.modelElement === 'object')
         this.modelElement.style[name] = style[name];
-      }
     });
     return this;
   }
@@ -201,9 +196,8 @@ export class TextBoxModel {
   public applyFontPropertiesFromElement(element: HTMLElement): this {
     const style = window.getComputedStyle(element);
     FONT_STYLE_PROPERTIES.forEach(name => {
-      if (typeof this.modelElement === 'object') {
+      if (typeof this.modelElement === 'object')
         this.modelElement.style[name] = style[name];
-      }
     });
     return this;
   }

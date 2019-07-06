@@ -18,22 +18,12 @@ export class Angle {
 
     if (range < 0) {
       let offset = Num.cycle(range, Math.PI * 2);
-      if (
-        to < from
-        || to >= offset
-      ) {
-        sign = -1;
-      }
-    } else if (
-      to < from
-      && to >= range
-    ) {
+      if (to < from || to >= offset) sign = -1;
+    } else if (to < from && to >= range ) {
       sign = -1;
     }
 
-    if (direction === false) {
-      sign = 1;
-    }
+    if (direction === false) sign = 1;
 
     let result = 0;
 
@@ -52,23 +42,12 @@ export class Angle {
 
     if (range > Math.PI * 2) {
       let offset = Num.cycle(range, Math.PI * 2);
-
-      if (
-        to > from
-        || to <= offset
-      ) {
-        sign = -1;
-      }
-    } else if (
-      to > from
-      && to <= range
-    ) {
+      if (to > from || to <= offset) sign = -1;
+    } else if (to > from && to <= range) {
       sign = -1;
     }
 
-    if (direction === false) {
-      sign = 1;
-    }
+    if (direction === false) sign = 1;
 
     let result = 0;
 

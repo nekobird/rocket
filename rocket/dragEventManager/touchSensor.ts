@@ -18,9 +18,8 @@ export class TouchSensor {
 
   public dispatch(data: SensorData) {
     const { config, sensorHub } = this.manager;
-    if (config.listenTo.indexOf('TOUCH') !== -1) {
+    if (config.listenTo.indexOf('TOUCH') !== -1)
       sensorHub.receive(data);
-    }
   }
 
   public composeData(name: EventName, event: TouchEvent, touch: Touch): SensorData {

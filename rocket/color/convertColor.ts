@@ -38,9 +38,7 @@ export class ConvertColor {
   // RGB 1, 1, 1
   static HEXToRGB(hex: string): ColorArray3 {
     let rgb: ColorArray3 = [0, 0, 0];
-    let r: string = '';
-    let g: string = '';
-    let b: string = '';
+    let r = '', g = '', b = '';
     if (hex.length === 7) {
       r = hex.substr(1, 2);
       g = hex.substr(3, 2);
@@ -101,9 +99,9 @@ export class ConvertColor {
     rgb[1] = Num.cycle(rgb[1], 1);
     rgb[2] = Num.cycle(rgb[2], 1);
 
-    let cMax: number = Math.max.apply(this, rgb);
-    let cMin: number = Math.min.apply(this, rgb);
-    let delta: number = cMax - cMin;
+    let cMax = Math.max.apply(this, rgb);
+    let cMin = Math.min.apply(this, rgb);
+    let delta = cMax - cMin;
     let hsl: ColorArray3 = [0, 0, 0];
 
     if (delta === 0) {

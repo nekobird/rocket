@@ -16,12 +16,8 @@ export class PointHelper {
   public static isEqual(point: Point, ...points: Point[]): boolean {
     let isEqual = true;
     points.forEach(_point => {
-      if (
-        point.x !== _point.x
-        || point.y !== _point.y
-      ) {
+      if (point.x !== _point.x || point.y !== _point.y)
         isEqual = false;
-      }
     });
     return isEqual;
   }

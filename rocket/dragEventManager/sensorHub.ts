@@ -67,14 +67,12 @@ export class SensorHub {
 
   public get activeEvents(): DragEvent[] {
     const identifiers = Object.keys(this.events);
-    if (identifiers.length === 0) {
+    if (identifiers.length === 0)
       return [];
-    }
     const activeEvents: DragEvent[] = [];
     identifiers.forEach(identifier => {
-      if (this.events[identifier].isActive === true) {
+      if (this.events[identifier].isActive === true)
         activeEvents.push(this.events[identifier]);
-      }
     });
     return activeEvents;
   }

@@ -67,32 +67,29 @@ export class DragEvent {
   }
 
   public get downPoint(): Point | false {
-    if (typeof this.downData === 'object') {
+    if (typeof this.downData === 'object')
       return PointHelper.newPoint(
         this.downData.clientX,
         this.downData.clientY,
       );
-    }
     return false;
   }
 
   public get dragPoint(): Point | false {
-    if (typeof this.dragData === 'object') {
+    if (typeof this.dragData === 'object')
       return PointHelper.newPoint(
         this.dragData.clientX,
         this.dragData.clientY,
       );
-    }
     return false;
   }
 
   public get upPoint(): Point | false {
-    if (typeof this.upData === 'object') {
+    if (typeof this.upData === 'object')
       return PointHelper.newPoint(
         this.upData.clientX,
         this.upData.clientY,
       );
-    }
     return false;
   }
 
@@ -105,28 +102,24 @@ export class DragEvent {
       if (
         this.isActive === true
         && typeof this.dragData === 'object'
-      ) {
+      )
         return (this.dragData.time - this.downData.time) / 1000;
-      }
 
       if (
         this.isCancelled === true
         && typeof this.cancelData === 'object'
-      ) {
+      )
         return (this.cancelData.time - this.downData.time) / 1000;
-      }
 
-      if (typeof this.upData === 'object') {
+      if (typeof this.upData === 'object')
         return (this.upData.time - this.downData.time) / 1000;
-      }
     }
     return undefined;
   }
 
   public get currentTargetElement(): HTMLElement | false {
-    if (typeof this.currentEvent === 'string') {
+    if (typeof this.currentEvent === 'string')
       return this.getTargetElementFromData(this[`${this.currentEvent}Data`]);
-    }
     return false;
   }
 
@@ -135,16 +128,14 @@ export class DragEvent {
   }
 
   public get previousEventData(): SensorData | false {
-    if (typeof this.previousEvent === 'string') {
+    if (typeof this.previousEvent === 'string')
       return this[`${this.previousEvent}Data`];
-    }
     return false;
   }
 
   public get currentEventData(): SensorData | false {
-    if (typeof this.currentEvent === 'string') {
+    if (typeof this.currentEvent === 'string')
       return this[`${this.currentEvent}Data`];
-    }
     return false;
   }
 
@@ -236,9 +227,8 @@ export class DragEvent {
         this.checkWasScrolling();
         this.longPressTimeout = setTimeout(
           () => {
-            if (config.longPressCondition(this, this.manager) === true) {
+            if (config.longPressCondition(this, this.manager) === true)
               this.onLongPress(data);
-            }
           },
           config.longPressWait * 1000
         );
@@ -250,12 +240,11 @@ export class DragEvent {
 
   public onDrag(data: SensorData) {
     if (this.isActive  === true) {
-      if (this.firstDragPoint === false) {
+      if (this.firstDragPoint === false)
         this.firstDragPoint = PointHelper.newPoint(
           data.clientX,
           data.clientY,
         );
-      }
       this.checkWasScrolling();
 
       this.dragData = data;
@@ -324,8 +313,7 @@ export class DragEvent {
   }
 
   private checkWasScrolling() {
-    if (this.isScrolling === true) {
+    if (this.isScrolling === true)
       this.wasScrolling = true;
-    }
   }
 }

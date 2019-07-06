@@ -43,9 +43,8 @@ export class TextScaleModel {
       && this.config.fontSizeRange[0] < this.config.fontSizeRange[1]
       && typeof this.config.increment === 'number'
       && this.config.increment > 0
-    ) {
+    )
       return true;
-    }
     return false;
   }
 
@@ -54,9 +53,8 @@ export class TextScaleModel {
       typeof this.config.fontSizeSet === 'object'
       && Array.isArray(this.config.fontSizeSet) === true
       && this.config.fontSizeSet.length > 0
-    ) {
+    )
       return true;
-    }
     return false;
   }
     
@@ -71,9 +69,8 @@ export class TextScaleModel {
   }
 
   public optimize(): number | false {
-    if (typeof this.config.fontSizeSet !== 'undefined') {
+    if (typeof this.config.fontSizeSet !== 'undefined')
       return this.optimizeFromSet();
-    }
     return this.optimizeFromRange();
   }
 
@@ -129,9 +126,8 @@ export class TextScaleModel {
               break;
             }
             modelWidth = this.getModelWidth(text, finalFontSize);
-            if (modelWidth <= originalWidth) {
+            if (modelWidth <= originalWidth)
               break;
-            }
           }
           break;
         }
