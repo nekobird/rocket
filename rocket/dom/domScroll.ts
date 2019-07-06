@@ -18,8 +18,6 @@ export class DOMScroll {
     return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || window.scrollY || 0;
   }
 
-  // const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-  // const scrollTop  = window.pageYOffset || document.documentElement.scrollTop;
   public static getScrollLeftToElements(elements: HTMLElement | HTMLElement[]): number {
     let rect, left = 0;
 
