@@ -24,7 +24,7 @@ export class AnimationCore {
   private endTime: number = 0;
   private pauseTime: number = 0;
 
-  private animationFrameId?: number;
+  private animationFrameID?: number;
   private timeoutID?: number;
 
   public callback?: Function;
@@ -137,9 +137,7 @@ export class AnimationCore {
     this.reset();
     this.runCallback('onComplete');
     this.animation.config.callback();
-    if (typeof this.callback === 'function') {
-      this.callback();
-    }
+    if (typeof this.callback === 'function') this.callback();
     return this;
   }
 
@@ -148,7 +146,7 @@ export class AnimationCore {
     const frame = async () => {
       const { config } = this.animation;
 
-      // Tick, this also moves progress forward!
+      // Move progress forward and call onTick.
       this.tick();
 
       if (
@@ -156,15 +154,16 @@ export class AnimationCore {
         && this.isAnimating === true
         && this.isPaused === false
       ) {
+        // Continue loop if progress is not done.
         if (this.progress < 1) {
           this.loop();
           return;
+        // Complete iteration.
         } else {
-          // END ITERATION
           this.iterationCount++;
           this.runCallback('onIterationComplete');
 
-          // End animation if exceeds config.numberOfIterations
+          // End animation if iterationCount exceeds config.numberOfIterations.
           if (
             typeof config.numberOfIterations === 'number'
             && this.iterationCount >= config.numberOfIterations
@@ -174,13 +173,12 @@ export class AnimationCore {
           }
 
           try {
-            // Continue animation.
             await config.beforeSubsequentIteration(
               this.animation, config.dataExport
             );
             // Toggle direction if it's alternating.
-            if (config.alternate === true)
-              this.toggleDirection();
+            if (config.alternate === true) this.toggleDirection();
+            // Start again!
             await this.startWithDelay(config.iterationDelay);
           } catch {
             this.end();
@@ -190,7 +188,9 @@ export class AnimationCore {
     }; // End frame.
 
     // Go!
-    this.animationFrameId = window.requestAnimationFrame(frame);
+    if (typeof this.animationFrameID === 'string')
+      window.cancelAnimationFrame(this.animationFrameID);
+    this.animationFrameID = window.requestAnimationFrame(frame);
     return this;
   }
 
@@ -237,9 +237,8 @@ export class AnimationCore {
 
   private clearSessions(): this {
     clearTimeout(this.timeoutID);
-    if (typeof this.animationFrameId === 'number') {
-      window.cancelAnimationFrame(this.animationFrameId);
-    }
+    if (typeof this.animationFrameID === 'number')
+      window.cancelAnimationFrame(this.animationFrameID);
     return this;
   }
 
