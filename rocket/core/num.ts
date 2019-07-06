@@ -1,11 +1,13 @@
 export class Num {
 
+  // @pure
   static average(numbers: number[]): number {
     if (numbers.length < 2)
       throw new Error('Num.average expects at least 2 numbers');
     return this.sum(numbers) / numbers.length;
   }
 
+  // @pure
   static constrain(number: number, range: number | [number, number]): number {
     if (typeof range === 'number') range = [0, range];
 
@@ -20,6 +22,7 @@ export class Num {
     return number;
   }
 
+  // @pure
   static cycle(number: number, range: number | [number, number]): number {
     if (typeof range === 'number') range = [0, range];
 
@@ -47,12 +50,14 @@ export class Num {
   // Get number-line distance between two numbers
   // For example (-4, -2) = 6, (-4, 5) = 9
   // https://en.wikipedia.org/wiki/Euclidean_distance
+  // @pure
   static getEuclideanDistance(a: number, b: number): number {
     if (a === b) return 0;
     return Math.sqrt(Math.abs((a - b) * (b - a)));
   }
 
   // A more efficient way to calculate hypotenuse.
+  // @pure
   static hypotenuse(x: number, y: number): number {
     // http://www.johndcook.com/blog/2010/06/02/whats-so-hard-about-finding-a-hypotenuse/
     let max = Math.max(Math.abs(x), Math.abs(y));
@@ -64,20 +69,24 @@ export class Num {
   }
 
   // Get reciprocal of a number.
+  // @pure
   static reciprocal(number: number): number | undefined {
     return number != 0 ? 1 / number : undefined;
   }
 
+  // @pure
   static round(number: number, to?: number): number {
     to = typeof to === 'undefined' ? 0 : to;
     return parseFloat(number.toFixed(to));
   }
 
   // Simple linear interpolation
+  // @pure
   static lerp(from: number, to: number, t: number): number {
     return (1 - t) * from + t * to;
   }
 
+  // @pure
   static modulate(number: number, from: number | [number, number], to: number | [number, number], constrain: boolean): number {
     if (typeof from === 'number') from = [0, from];
     if (typeof to === 'number') to = [0, to];
@@ -91,6 +100,7 @@ export class Num {
     return constrain === true ? Num.constrain(result, to) : result;
   }
 
+  // @pure
   static random(range: number | [number, number], whole: boolean = false, fixed: number = 2): number {
     if (typeof range === 'number') range = [0, range];
     if (
@@ -108,10 +118,12 @@ export class Num {
     }
   }
 
+  // @pure
   static sum(numbers: number[]): number {
     return numbers.reduce((previous, current) => previous + current);
   }
 
+  // @pure
   static within(number: number, range: number | [number, number]): boolean {
     if (typeof range === 'number') range = [0, range];
 

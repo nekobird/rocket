@@ -68,9 +68,8 @@ export class ScrollTriggerManager {
         if (
           trigger.enabled === true
           && typeof this.currentScrollLocation !== 'undefined'
-        ) {
+        )
           trigger.prepare(this.currentScrollLocation, trigger, this);
-        }
       });
       this.isReady = true;
     }
@@ -98,9 +97,8 @@ export class ScrollTriggerManager {
 
   public removeTrigger(trigger: ScrollTrigger) {
     const index = this.triggers.indexOf(trigger);
-    if (index !== -1) {
+    if (index !== -1)
       this.triggers.splice(index, 1);
-    }
   }
 
   public update() {
@@ -119,9 +117,8 @@ export class ScrollTriggerManager {
           trigger
             .action(this.currentScrollLocation, trigger, this)
             .then(() => {
-              if (trigger.removeOnceTriggered === true) {
+              if (trigger.removeOnceTriggered === true)
                 this.removeTrigger(trigger);
-              }
               trigger.isTriggered = true;
               trigger.previousTriggeredTime = Date.now();
               trigger.isActive = false;
@@ -144,16 +141,14 @@ export class ScrollTriggerManager {
   public eventHandlerResize = event => {
     this.isResizing = true;
     this.updateScrollLocation();
-    if (this.triggerOnlyOnResizeEnd === false) {
+    if (this.triggerOnlyOnResizeEnd === false)
       this.update();
-    }
   }
 
   public eventHandlerResizeEnd = event => {
     this.isResizing = false;
-    if (this.triggerOnlyOnResizeEnd === true) {
+    if (this.triggerOnlyOnResizeEnd === true)
       this.update();
-    }
   }
 
   public listen() {
