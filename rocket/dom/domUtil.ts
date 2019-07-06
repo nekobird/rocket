@@ -4,9 +4,9 @@ import {
 
 export class DOMUtil {
 
-  public static isHTMLElement(element?: HTMLElement): boolean {
+  public static isHTMLElement(element?: HTMLElement | any): boolean {
     if (
-      typeof element === 'object'
+         typeof element === 'object'
       && typeof element.nodeType === 'number'
       && element.nodeType === 1
       && element instanceof HTMLElement === true
@@ -19,7 +19,7 @@ export class DOMUtil {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onerror = () => reject();
-      img.onload = () => resolve(src);
+      img.onload  = () => resolve(src);
       img.src = src;
     });
   }
@@ -33,7 +33,7 @@ export class DOMUtil {
         if (typeof img.naturalWidth === 'number') {
           clearInterval(intervalId);
           resolve({
-            width: img.naturalWidth,
+            width:  img.naturalWidth,
             height: img.naturalHeight
           });
         }
@@ -43,15 +43,13 @@ export class DOMUtil {
 
   public static getTextFromElement(element: HTMLElement): string {
     if (
-      element instanceof HTMLTextAreaElement
+         element instanceof HTMLTextAreaElement
       || element instanceof HTMLInputElement
       || element.nodeName === 'INPUT'
       || element.nodeName === 'TEXTAREA'
-    ) {
+    )
       return (element as HTMLTextAreaElement | HTMLInputElement).value;
-    }
-    if (element.textContent !== null)
-      return element.textContent;
+    if (element.textContent !== null) return element.textContent;
     return '';
   }
 }
