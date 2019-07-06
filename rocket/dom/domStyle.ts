@@ -40,9 +40,8 @@ export class DOMStyle {
   }
 
   public static copyStylesFrom(from: HTMLElement, propertyNames: string | string[], ...to: HTMLElement[]): void {
-    if (typeof propertyNames === 'string') {
+    if (typeof propertyNames === 'string')
       propertyNames = [propertyNames];
-    }
     const style = window.getComputedStyle(from);
     propertyNames.forEach(property => {
       to.forEach(element => element.style[property] = style[property])
@@ -54,9 +53,8 @@ export class DOMStyle {
   }
 
   public static removeStyles(element: HTMLElement, propertyNames: string | string[]) {
-    if (typeof propertyNames === 'string') {
+    if (typeof propertyNames === 'string')
       propertyNames = [propertyNames];
-    }
     propertyNames.forEach(propertyName => {
       element.style.removeProperty(propertyName);
     });
@@ -69,9 +67,8 @@ export class DOMStyle {
   }
 
   public static getStyleValues(element: HTMLElement, propertyNames: string | string[]): StyleValue {
-    if (typeof propertyNames === 'string') {
+    if (typeof propertyNames === 'string')
       propertyNames = [propertyNames]
-    }
     const style = window.getComputedStyle(element);
     const result = {};
     propertyNames.forEach(propertyName => {
@@ -142,31 +139,27 @@ export class DOMStyle {
 
   // @inner_area
   public static getTotalHorizontalInnerSpace(element: HTMLElement): number {
-    if (this.getStyleValue(element, 'box-sizing') === 'border-box') {
+    if (this.getStyleValue(element, 'box-sizing') === 'border-box')
       return this.getHorizontalPaddings(element) + this.getHorizontalBorderWidths(element);
-    }
     return this.getHorizontalPaddings(element);
   }
 
   public static getTotalVerticalInnerSpace(element: HTMLElement): number {
-    if (this.getStyleValue(element, 'box-sizing') === 'border-box') {
+    if (this.getStyleValue(element, 'box-sizing') === 'border-box')
       return this.getVerticalPaddings(element) + this.getVerticalBorderWidths(element);
-    }
     return this.getVerticalPaddings(element);
   }
 
   // @outer_area
   public static getTotalHorizontalOuterSpace(element: HTMLElement): number {
-    if (this.getStyleValue(element, 'box-sizing') !== 'border-box') {
+    if (this.getStyleValue(element, 'box-sizing') !== 'border-box')
       return this.getHorizontalMargins(element) + this.getHorizontalBorderWidths(element);
-    }
     return this.getHorizontalMargins(element);
   }
 
   public static getTotalVerticalOuterSpace(element: HTMLElement): number {
-    if (this.getStyleValue(element, 'box-sizing') !== 'border-box') {
+    if (this.getStyleValue(element, 'box-sizing') !== 'border-box')
       return this.getVerticalMargins(element) + this.getVerticalBorderWidths(element);
-    }
     return this.getVerticalMargins(element);
   }
 

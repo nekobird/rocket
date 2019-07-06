@@ -60,9 +60,8 @@ export class InputActiveManager {
 
   constructor(config?: Partial<InputActiveManagerConfig>) {
     this.config = Object.assign({}, INPUT_FOCUS_MANAGER_CONFIG);
-    if (typeof config === 'object') {
+    if (typeof config === 'object')
       this.setConfig(config);
-    }
 
     this.inputElements = [];
 
@@ -108,13 +107,11 @@ export class InputActiveManager {
       );
       if (containerElement !== false) {
         if (this.config.conditionActivate(<HTMLElement>containerElement, input) === true) {
-          if (this.isActive(<HTMLElement>containerElement) === false) {
+          if (this.isActive(<HTMLElement>containerElement) === false)
             this.activate(<HTMLElement>containerElement, input);
-          }
         } else {
-          if (this.isActive(<HTMLElement>containerElement) === true) {
+          if (this.isActive(<HTMLElement>containerElement) === true)
             this.deactivate(<HTMLElement>containerElement, input);
-          }
         }
       }
     });
@@ -146,9 +143,8 @@ export class InputActiveManager {
     if (containerElement !== false) {
       this.config.onFocus(containerElement, event.target, this);
       if (this.config.activateOnFocus === true) {
-        if (this.isActive(<HTMLElement>containerElement) === false) {
+        if (this.isActive(<HTMLElement>containerElement) === false)
           this.activate(containerElement, event.target);
-        }
       }
     }
   }
@@ -163,9 +159,8 @@ export class InputActiveManager {
             <HTMLElement>containerElement, event.target
           ) === false
           && this.isActive(<HTMLElement>containerElement) === true
-        ) {
+        )
           this.deactivate(containerElement, event.target);
-        }
       }
     } // If container element is valid.
   }
@@ -183,9 +178,8 @@ export class InputActiveManager {
         ) {
           this.activate(containerElement, event.target);
         } else {
-          if (this.isActive(<HTMLElement>containerElement) === true) {
+          if (this.isActive(<HTMLElement>containerElement) === true)
             this.deactivate(containerElement, event.target);
-          }
         }
       }
     } // if containerElement is valid

@@ -170,9 +170,8 @@ export class DOMTraverse {
   public static getSiblings(element: HTMLElement, isExclusive:boolean = false): HTMLElement[] | false {
     if (element.parentElement !== null) {
       const siblings = Array.from(element.parentElement.children) as HTMLElement[];
-      if (isExclusive === true) {
+      if (isExclusive === true)
         siblings.splice(siblings.indexOf(element), 1);
-      }
       return siblings.length > 0 ? siblings : false;
     }
     return false;
@@ -185,14 +184,11 @@ export class DOMTraverse {
 
     if (siblings.length > 0) {
       const results: HTMLElement[] = [];
-      for (let i = 0; i < siblings.length; i++) {
-        if (identifyElement(siblings[i]) === true) {
+      for (let i = 0; i < siblings.length; i++)
+        if (identifyElement(siblings[i]) === true)
           results.push(siblings[i]);
-        }
-      }
-      if (results.length > 0) {
+      if (results.length > 0)
         return getAll === true ? results : results[0];
-      }
     }
     return false;
   }
@@ -209,6 +205,9 @@ export class DOMTraverse {
   public static removeElement(element: HTMLElement): void {
     if (element.parentNode !== null) {
       element.parentNode.removeChild(element);
+      element.remove();
+    } else {
+      element.remove();
     }
   }
 
@@ -278,9 +277,8 @@ export class DOMTraverse {
   }
 
   public static getNthChild(n: number | 'last', parent: HTMLElement, identifyElement?: IdentifyElementFn): HTMLElement | false {
-    if (typeof identifyElement === 'undefined') {
+    if (typeof identifyElement === 'undefined')
       identifyElement = element => true;
-    }
 
     const children = Array.from(parent.children) as HTMLElement[];
     const selectedChildren: HTMLElement[] = children.filter(identifyElement);

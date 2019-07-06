@@ -10,9 +10,8 @@ export class DOMUtil {
       && typeof element.nodeType === 'number'
       && element.nodeType === 1
       && element instanceof HTMLElement === true
-    ) {
+    )
       return true;
-    }
     return false;
   }
 
@@ -51,9 +50,8 @@ export class DOMUtil {
     ) {
       return (element as HTMLTextAreaElement | HTMLInputElement).value;
     }
-    if (element.textContent !== null) {
+    if (element.textContent !== null)
       return element.textContent;
-    }
     return '';
   }
 }

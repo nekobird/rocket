@@ -4,7 +4,6 @@ import {
   Num,
   Point,
 } from '../rocket';
-import { ViewportModel } from '../viewport/viewportModel';
 
 const validReferenceCornerNames = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
 const validReferenceEdgeNames = ['top', 'bottom', 'left', 'right'];
