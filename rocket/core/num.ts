@@ -1,9 +1,8 @@
 export class Num {
 
   static average(numbers: number[]): number {
-    if (numbers.length < 2) {
+    if (numbers.length < 2)
       throw new Error('Num.average expects at least 2 numbers');
-    }
     return this.sum(numbers) / numbers.length;
   }
 

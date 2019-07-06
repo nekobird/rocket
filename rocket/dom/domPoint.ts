@@ -83,9 +83,8 @@ export class DOMPoint {
       let isAbovePoints: boolean = true;
 
       points.forEach(({ y }) => {
-        if (bottom + offset < y === false) {
+        if (bottom + offset < y === false)
           isAbovePoints = false;
-        }
       })
 
       return isAbovePoints;
@@ -99,9 +98,8 @@ export class DOMPoint {
       let isBelowPoints: boolean = true;
 
       points.forEach(({ y }) => {
-        if (top + offset > y === false) {
+        if (top + offset > y === false)
           isBelowPoints = false;
-        }
       });
       return isBelowPoints;
     }
@@ -114,9 +112,8 @@ export class DOMPoint {
       let isAbovePoint: boolean = true;
 
       points.forEach(({ y }) => {
-        if (centerPoint.y + offset > y === false) {
+        if (centerPoint.y + offset > y === false)
           isAbovePoint = false;
-        }
       });
 
       return isAbovePoint;
@@ -131,9 +128,8 @@ export class DOMPoint {
       let isBelowPoint: boolean = true;
 
       points.forEach(({ y }) => {
-        if (centerPoint.y + offset < y === false) {
+        if (centerPoint.y + offset < y === false)
           isBelowPoint = false;
-        }
       });
 
       return isBelowPoint;
@@ -166,17 +162,14 @@ export class DOMPoint {
   public static findElementFromPoint({ x, y }: Point, identifyElementFn?: IdentifyElementFn, getAll: boolean = true): HTMLElement | HTMLElement[] | false {
     const elements = document.elementsFromPoint(x, y);
 
-    if (elements.length === 0) {
-      return false;
-    }
+    if (elements.length === 0) return false;
 
     const identifyElement = typeof identifyElementFn === 'undefined' ? () => true : identifyElementFn;
 
     let results: HTMLElement[] = [];
     elements.forEach(element => {
-      if (identifyElement(element as HTMLElement) === true) {
+      if (identifyElement(element as HTMLElement) === true)
         results.push(element as HTMLElement);
-      }
     });
 
     if (results.length === 0) {
@@ -185,23 +178,18 @@ export class DOMPoint {
       return results[0];
     }
 
-    if (getAll === true) {
-      return results;
-    }
+    if (getAll === true) return results;
     return results[0];
   }
 
   public static getClosestChildFromPoints(parent: HTMLElement, points: Point | Point[], identifyElementFn?: IdentifyElementFn): HTMLElement | false {
-    if (typeof identifyElementFn === 'undefined') {
+    if (typeof identifyElementFn === 'undefined')
       identifyElementFn = element => true;
-    }
 
     const children: HTMLElement[] = <HTMLElement[]>Array.from(parent.children);
     const selectedChildren: HTMLElement[] = children.filter(identifyElementFn);
 
-    if (selectedChildren.length === 0)  {
-      return false;
-    }
+    if (selectedChildren.length === 0) return false;
 
     const distances: number[] = selectedChildren.map(item => {
       if (Array.isArray(points) === true) {

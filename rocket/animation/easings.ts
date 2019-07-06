@@ -10,9 +10,7 @@ export class Easings {
 
   static QuadEaseInEaseOut(t: number): number {
     t /= 0.5;
-    if (t < 1) {
-      return 0.5 * t * t;
-    }
+    if (t < 1) return 0.5 * t * t;
     t--;
     return -0.5 * (t * (t - 2) - 1);
   }
@@ -28,9 +26,7 @@ export class Easings {
 
   static CubicEaseInEaseOut(t: number): number {
     t /= 0.5;
-    if (t < 1) {
-      return 0.5 * t * t * t;
-    }
+    if (t < 1) return 0.5 * t * t * t;
     t -= 2;
     return 0.5 * (t * t * t + 2);
   }
@@ -46,9 +42,7 @@ export class Easings {
 
   static QuarticEaseInEaseOut(t: number): number {
     t /= 0.5;
-    if (t < 1) {
-      return 0.5 * t * t * t * t;
-    }
+    if (t < 1) return 0.5 * t * t * t * t;
     t -= 2;
     return -0.5 * (t * t * t * t - 2);
   }

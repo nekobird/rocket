@@ -36,9 +36,8 @@ export class Repeater {
 
   constructor(config?: Partial<RepeaterConfig>) {
     this.config = Object.assign({}, REPEATER_DEFAULT_CONFIG);
-    if (typeof config === 'object') {
+    if (typeof config === 'object')
       this.setConfig(config);
-    }
   }
 
   public setConfig(config?: Partial<RepeaterConfig>) {
@@ -69,9 +68,7 @@ export class Repeater {
   }
 
   public forceStart() {
-    if (this.isActive === true) {
-      this.stop();
-    }
+    if (this.isActive === true) this.stop();
     this.start();
   }
 
@@ -104,9 +101,8 @@ export class Repeater {
       clearTimeout(this.timeoutId);
       clearInterval(this.intervalId);
       this.endTime = Date.now();
-      if (typeof this.startTime === 'number') {
+      if (typeof this.startTime === 'number')
         this.duration = this.endTime - this.startTime;
-      }
       this.isActive = false;
       this.config.onEnd(this);
     }

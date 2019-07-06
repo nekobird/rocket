@@ -9,9 +9,8 @@ interface UtilPromiseEachFn<A> {
 export class Util {
 
   static promiseEach<A>(array: A[], fn: UtilPromiseEachFn<A>): Promise<void> {
-    if (array.length === 0) {
+    if (array.length === 0)
       return Promise.resolve();
-    }
     return array.reduce(
       (previous: Promise<void>, current: A) => { 
         return previous.then(() => fn(current));
@@ -24,9 +23,7 @@ export class Util {
     let index = -1;
     return () => {
       index++;
-      if (index > array.length - 1) {
-        index = 0;
-      }
+      if (index > array.length - 1) index = 0;
       return array[index];
     };
   }
