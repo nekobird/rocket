@@ -82,9 +82,7 @@ export class PointHelper {
   }
 
   public divide(point: Point, by: Point, mutate: boolean = false): Point | undefined {
-    if (by.x === 0 || by.y === 0) {
-      return undefined;
-    }
+    if (by.x === 0 || by.y === 0) return undefined;
     const x = point.x / by.x;
     const y = point.y / by.y;
     if (mutate === true) {

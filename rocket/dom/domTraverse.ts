@@ -25,35 +25,24 @@ export class DOMTraverse {
   public static findAncestor(element: HTMLElement, identifyElement: IdentifyElementFn, getAll: boolean = true): DOMTraverseResult {
     const results: HTMLElement[] = [];
 
-    if (element === null) {
-      return false;
-    }
+    if (element === null) return false;
 
-    if (identifyElement(element)) {
-      results.push(element);
-    }
+    if (identifyElement(element)) results.push(element);
 
     let currentEl: HTMLElement | null = element;
-
-    if (element === null) {
-      return false;
-    }
+    if (element === null) return false;
 
     while (
       currentEl !== null
       && currentEl.nodeName !== 'HTML'
     ) {
       currentEl = currentEl as HTMLElement;
-
       if (currentEl !== null) {
         if (identifyElement(currentEl) === true) {
           results.push(currentEl);
         }
-      } else {
-        break;
+        currentEl = currentEl.parentElement;
       }
-
-      currentEl = currentEl.parentElement;
     }
 
     if (results.length > 0) {
@@ -109,9 +98,7 @@ export class DOMTraverse {
   public static findDescendant(element: HTMLElement, identifyElement: IdentifyElementFn, getAll: boolean = true): DOMTraverseResult {
     const results: HTMLElement[] = [];
 
-    if (identifyElement(element) === true) {
-      results.push(element);
-    }
+    if (identifyElement(element) === true) results.push(element);
 
     const inspectDescendant: Function = (inspectEl: HTMLElement) => {
       const children = inspectEl.children;
@@ -120,9 +107,7 @@ export class DOMTraverse {
         for (let i = 0; i < children.length; i++) {
           if (identifyElement(children[i] as HTMLElement) === true) {
             results.push(children[i] as HTMLElement);
-            if (getAll === false) {
-              break;
-            }
+            if (getAll === false) break;
           }
           if (children[i].children.length > 0) {
             inspectDescendant(children[i]);
@@ -195,9 +180,9 @@ export class DOMTraverse {
 
   public static findSibling(element: HTMLElement, identifyElement: Function, getAll = true): DOMTraverseResult {
     const siblings: HTMLElement[] | false = this.getSiblings(element);
-    if (siblings === false) {
-      return false;
-    }
+
+    if (siblings === false) return false;
+
     if (siblings.length > 0) {
       const results: HTMLElement[] = [];
       for (let i = 0; i < siblings.length; i++) {
@@ -277,9 +262,7 @@ export class DOMTraverse {
   public static getChildren(parent: HTMLElement, identifyElement?: IdentifyElementFn): HTMLElement[] {
     const children = Array.from(parent.children) as HTMLElement[];
 
-    if (typeof identifyElement === 'undefined') {
-      return children;
-    }
+    if (typeof identifyElement === 'undefined') return children;
 
     return children.filter(element => identifyElement(element as HTMLElement));
   }
@@ -320,9 +303,7 @@ export class DOMTraverse {
     const children = Array.from(parent.children) as HTMLElement[];
     const selectedChildren: HTMLElement[] = children.filter(identifyElement);
 
-    if (selectedChildren.length === 0) {
-      return [];
-    }
+    if (selectedChildren.length === 0) return [];
 
     if (selectedChildren.length === 1) {
       const datum: T = <T>dataExtractFn(selectedChildren[0]);
@@ -332,10 +313,7 @@ export class DOMTraverse {
     const results: T[] = [];
     selectedChildren.forEach(child => {
       const datum: T = <T>dataExtractFn(child);
-
-      if (typeof datum !== 'undefined') {
-        results.push(datum);
-      }
+      if (typeof datum !== 'undefined') results.push(datum);
     });
 
     return results;

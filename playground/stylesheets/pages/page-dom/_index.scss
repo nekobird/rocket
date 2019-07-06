@@ -16,4 +16,16 @@
     top: 500px;
     width: 200px;
   }
+
+  .box__another {
+    background-color: color('primary');
+    box-sizing: border-box;
+    color: color('white');
+    height: 200px;
+    left: 250px;
+    padding: space('medium');
+    position: absolute;
+    top: 550px;
+    width: 100px;
+  }
 }
