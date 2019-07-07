@@ -25,7 +25,7 @@ export class Vector2 {
       this.x = 0;
       this.y = 0;
     } else {
-      this.equals(<Point>x);
+      this.equals(x as Point);
     }
     return this;
   }
@@ -46,11 +46,8 @@ export class Vector2 {
     return this;
   }
 
-  public isEqualTo(point: Point): boolean {
-    return (
-      this.x === point.x
-      && this.y === point.y
-    );
+  public isEqualTo(to: Point): boolean {
+    return (this.x === to.x && this.y === to.y);
   }
 
   public round(to: number = 0): this {
@@ -203,39 +200,26 @@ export class Vector2 {
   // @angle
 
   get angle() {
-    let m = Math.abs(
-      Math.sqrt(this.x * this.x + this.y * this.y)
-    );
-    let angle = Math.acos(this.x / m);
-    if (this.y < 0) {
-      angle = Math.PI + (Math.PI - angle);
-    }
-    return Num.cycle(angle, Math.PI * 2);
+    let angle = Math.acos(this.x / this.magnitude);
+    if (this.y < 0) angle = Math.PI + (Math.PI - angle);
+    return angle;
   }
 
   public getAngleFrom(from: Point): number {
     const x = (this.x - from.x);
     const y = (this.y - from.y);
-    const m = Math.abs(
-      Math.sqrt(x * x + y * y)
-    );
+    const m = Num.hypotenuse(x, y);
     let angle = Math.acos(x / m);
-    if (y < 0) {
-      angle = Math.PI + (Math.PI - angle);
-    }
+    if (y < 0) angle = Math.PI + (Math.PI - angle);
     return angle;
   }
 
   public getAngleTo(to: Point): number {
     const x = (to.x - this.x);
     const y = (to.y - this.y);
-    const m = Math.abs(
-      Math.sqrt(x * x + y * y)
-    );
+    const m = Num.hypotenuse(x, y);
     let angle = Math.acos(x / m);
-    if (y < 0) {
-      angle = Math.PI + (Math.PI - angle);
-    }
+    if (y < 0) angle = Math.PI + (Math.PI - angle);
     return angle;
   }
 
@@ -243,21 +227,15 @@ export class Vector2 {
 
   public rotateBy(by: number): this {
     const angle = this.angle + by;
-    const m = Math.abs(
-      Math.sqrt(this.x * this.x + this.y * this.y)
-    );
-    this.x = Math.cos(angle) * m;
-    this.y = Math.sin(angle) * m;
+    this.x = Math.cos(angle) * this.magnitude;
+    this.y = Math.sin(angle) * this.magnitude;
     return this;
   }
 
   public rotateTo(angle: number): this {
     angle = Num.cycle(angle, Math.PI * 2);
-    const m = Math.abs(
-      Math.sqrt(this.x * this.x + this.y * this.y)
-    );
-    this.x = Math.cos(angle) * m;
-    this.y = Math.sin(angle) * m;
+    this.x = Math.cos(angle) * this.magnitude;
+    this.y = Math.sin(angle) * this.magnitude;
     return this;
   }
 
@@ -265,13 +243,9 @@ export class Vector2 {
     by = Num.cycle(by, Math.PI * 2);
     const x = this.x - from.x;
     const y = this.y - from.y;
-    const m = Math.abs(
-      Math.sqrt(x * x + y * y)
-    );
+    const m = Num.hypotenuse(x, y);
     let a = Math.acos(x / m);
-    if (y < 0) {
-      a = Math.PI + (Math.PI - a);
-    }
+    if (y < 0) a = Math.PI + (Math.PI - a);
     const finalAngle = Num.cycle(a + by, Math.PI * 2);
     this.x = from.x + Math.cos(finalAngle) * m;
     this.y = from.y + Math.sin(finalAngle) * m;
@@ -282,9 +256,7 @@ export class Vector2 {
     to = Num.cycle(to, Math.PI * 2);
     const x = this.x - from.x;
     const y = this.y - from.y;
-    const m = Math.abs(
-      Math.sqrt(x * x + y * y)
-    );
+    const m = Num.hypotenuse(x, y);
     this.x = from.x + Math.cos(to) * m;
     this.y = from.y + Math.sin(to) * m;
     return this;
@@ -303,7 +275,7 @@ export class Vector2 {
       typeof x === 'object'
       && typeof y === 'undefined'
     ) {
-      this.add(<Point>x);
+      this.add(x as Point);
     }
     return this;
   }
@@ -319,7 +291,7 @@ export class Vector2 {
       typeof x === 'object'
       && typeof y === 'undefined'
     ) {
-      this.equals(<Point>x);
+      this.equals(x as Point);
     }
     return this;
   }
@@ -339,9 +311,7 @@ export class Vector2 {
   }
 
   public scaleBy(by: number): this {
-    let magnitude: number = Math.abs(
-      Math.sqrt(this.x * this.x + this.y * this.y)
-    );
+    let magnitude = this.magnitude;
     magnitude = magnitude === 0 ? 1 : magnitude;
     this.x /= magnitude;
     this.y /= magnitude;
@@ -351,8 +321,8 @@ export class Vector2 {
   }
 
   public scaleByFrom(by: number, from: Point): this {
-    const sub: Vector2 = Vector2.subtract(this, from);
-    const m: number = sub.magnitude;
+    const sub = Vector2.subtract(this, from);
+    const m = sub.magnitude;
     sub
       .normalize()
       .multiply(m * by)
@@ -362,12 +332,9 @@ export class Vector2 {
   }
 
   public limit(by: number): this {
-    const mag: number = this.magnitude;
-    if (mag > by) {
-      this
-        .normalize()
-        .multiply(by);
-    }
+    const mag = this.magnitude;
+    if (mag > by)
+      this.normalize().multiply(by);
     return this;
   }
 
@@ -380,8 +347,7 @@ export class Vector2 {
   // @zero
 
   public zero(): this {
-    this.x = 0;
-    this.y = 0;
+    this.x = this.y = 0;
     return this;
   }
 
@@ -432,8 +398,8 @@ export class Vector2 {
   }
 
   static getMidPointBetween(a: Point, b: Point): Vector2 {
-    let x: number = a.x - b.x;
-    let y: number = a.y - b.y;
+    let x = a.x - b.x;
+    let y = a.y - b.y;
     x /= 2;
     y /= 2;
     x += b.x;
@@ -442,9 +408,7 @@ export class Vector2 {
   }
 
   static getDistanceBetween(a: Point, b: Point): number {
-    return Vector2
-      .subtract(a, b)
-      .magnitude;
+    return Vector2.subtract(a, b).magnitude;
   }
 
   static splitAtAngle(target: Point, angle: number, by: number): Vector2[] {
@@ -459,7 +423,7 @@ export class Vector2 {
   }
 
   static scaleByFrom(vector: Point, to: number, from: Point): Vector2 {
-    let result: Vector2 = Vector2.equals(vector);
+    let result = Vector2.equals(vector);
     return result.scaleByFrom(to, from);
   }
 
