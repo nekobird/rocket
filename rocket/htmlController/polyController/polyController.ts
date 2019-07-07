@@ -27,9 +27,8 @@ export class PolyController {
 
   constructor(config?: Partial<PolyConfig>) {
     this.config = Object.assign({}, DEFAULT_CONFIG);
-    if (typeof config === 'object') {
+    if (typeof config === 'object')
       this.setConfig(config);
-    }
     
     this.itemManager = new ItemManager(this);
     this.eventManager = new EventManager(this);
@@ -54,9 +53,8 @@ export class PolyController {
   public isItemActive(id: string): boolean {
     let isActive: boolean = false;
     this.itemManager.activeItems.forEach(item => {
-      if (this.config.getItemId(item) === id) {
+      if (this.config.getItemId(item) === id)
         isActive = true;
-      }
     });
     return isActive;
   }

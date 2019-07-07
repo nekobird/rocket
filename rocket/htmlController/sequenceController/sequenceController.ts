@@ -27,9 +27,8 @@ export class SequenceController {
 
   constructor(config?: Partial<SequenceConfig>) {
     this.config = Object.assign({}, DEFAULT_CONFIG);
-    if (typeof config === 'object') {
+    if (typeof config === 'object')
       this.setConfig(config);
-    }
 
     this.itemManager = new ItemManager(this);
     this.eventManager = new EventManager(this);
@@ -53,9 +52,8 @@ export class SequenceController {
 
   public isItemActive(id: string): boolean {
     const { activeItem } = this.itemManager;
-    if (typeof activeItem == 'object') {
+    if (typeof activeItem == 'object')
       return this.config.getItemId(activeItem) === id;
-    }
     return false;
   }
 

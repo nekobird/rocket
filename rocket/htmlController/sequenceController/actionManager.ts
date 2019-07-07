@@ -120,9 +120,8 @@ export class ActionManager {
 
   public composeAction(actionName: SequenceActionName, id?: string): SequenceAction {
     const action = this.createAction(actionName);
-    if (typeof id === 'string') {
+    if (typeof id === 'string')
       action.nextItemId = id;
-    }
     return action;
   }
 
@@ -134,12 +133,9 @@ export class ActionManager {
   }
 
   public async actionHub(action: SequenceAction, isNestedAction: boolean = false): Promise<void> {
-    if (
-      this.isRunning === true
-      && isNestedAction === true
-    ) {
+    if (this.isRunning === true && isNestedAction === true)
       this.isNested = true;
-    }
+
     this.isRunning = true;
 
     const actionNameString: string = StringUtil.upperCaseFirstLetter(action.name);
@@ -166,15 +162,10 @@ export class ActionManager {
       await preAction;
       await this.completeAction(action);
       await this.endAction();
-      if (
-        isNestedAction === true
-        && this.isNested === true
-      ) {
+      if (isNestedAction === true && this.isNested === true)
         this.isNested = false;
-      }
-      if (this.isNested === false) {
+      if (this.isNested === false)
         config.afterAction(action, this.controller);
-      }
     } catch {
       await this.endAction();
       return Promise.reject();
@@ -192,12 +183,8 @@ export class ActionManager {
         );
       });
     }
-    if (
-      this.isRunning === false
-      && this.isNested === true
-    ) {
+    if (this.isRunning === false && this.isNested === true)
       this.isNested = false;
-    }
     return Promise.resolve();
   }
 }
