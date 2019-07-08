@@ -215,8 +215,7 @@ export class StackUp {
     if (
       this.items.length === 0
       || numberOfColumns <= 0
-    ) 
-      numberOfColumns = 1;
+    ) numberOfColumns = 1;
     
     return numberOfColumns;
   }

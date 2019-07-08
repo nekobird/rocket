@@ -45,10 +45,7 @@ export class SensorHub {
     this.manager.isActive = true;
     if (
       this.hasEvent(data.identifier) === false
-      || (
-        data.identifier === 'mouse-event'
-        && data.name === 'down'
-      )
+      || (data.identifier === 'mouse-event' && data.name === 'down')
     ) {
       this.events[data.identifier] = new DragEvent(this.manager).update(data);
     } else {

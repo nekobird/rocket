@@ -102,14 +102,12 @@ export class DragEvent {
       if (
         this.isActive === true
         && typeof this.dragData === 'object'
-      )
-        return (this.dragData.time - this.downData.time) / 1000;
+      ) return (this.dragData.time - this.downData.time) / 1000;
 
       if (
         this.isCancelled === true
         && typeof this.cancelData === 'object'
-      )
-        return (this.cancelData.time - this.downData.time) / 1000;
+      ) return (this.cancelData.time - this.downData.time) / 1000;
 
       if (typeof this.upData === 'object')
         return (this.upData.time - this.downData.time) / 1000;
@@ -141,22 +139,18 @@ export class DragEvent {
 
   public update(data: SensorData): this {
     switch (data.name) {
-      case 'down': {
+      case 'down':
         this.onDown(data);
         break;
-      }
-      case 'drag': {
+      case 'drag':
         this.onDrag(data);
         break;
-      }
-      case 'up': {
+      case 'up':
         this.onUp(data);
         break;
-      }
-      case 'cancel': {
+      case 'cancel':
         this.onCancel(data);
         break;
-      }
     }
     return this;
   }
