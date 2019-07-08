@@ -16,13 +16,18 @@ export class Util {
     );
   }
 
-  static cycle<A>(array: A[]): Function {
+  static cycleArrayNext<A>(array: A[]): Function {
     let index = -1;
     return () => {
       index++;
       if (index > array.length - 1) index = 0;
       return array[index];
     };
+  }
+
+  static cycleArray<A>(array: A[], offset: number): A {
+    const index = offset % (array.length);
+    return array[index];
   }
 
   // Returns a debouncer function that no matter the frequency of calls
