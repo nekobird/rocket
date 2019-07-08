@@ -56,9 +56,7 @@ export class MonoController {
     if (
       isActive === true
       && typeof activeItem !== 'undefined'
-    ) {
-      return this.config.getItemId(activeItem) === id;
-    }
+    ) return this.config.getItemId(activeItem) === id;
     return false;
   }
 
