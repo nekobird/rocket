@@ -109,10 +109,7 @@ export class Num {
   // @pure
   static random(range: number | [number, number], whole: boolean = false, fixed: number = 2): number {
     if (typeof range === 'number') range = [0, range];
-    if (
-      range[0] === 0
-      && range[1] === 1
-    ) {
+    if (range[0] === 0 && range[1] === 1) {
       if (whole === true) {
         return Math.random() > 0.5 ? 1 : 0;
       } else {
@@ -129,13 +126,10 @@ export class Num {
     return numbers.reduce((previous, current) => previous + current);
   }
 
+  // Check to see if given number is within given range.
   // @pure
   static within(number: number, range: number | [number, number]): boolean {
     if (typeof range === 'number') range = [0, range];
-
-    return (
-      number >= range[0]
-      && number <= range[1]
-    );
+    return (number >= range[0] && number <= range[1]);
   }
 }

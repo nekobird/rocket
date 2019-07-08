@@ -90,17 +90,14 @@ export class DragEventManager {
 
   constructor(config?: Partial<DragEventManagerConfig>) {
     this.config = Object.assign({}, DRAG_EVENT_MANAGER_DEFAULT_CONFIG);
-    if (typeof config === 'object') {
-      this.setConfig(config);
-    }
-
+    if (typeof config === 'object') this.setConfig(config);
     this.mouseSensor = new MouseSensor(this);
     this.touchSensor = new TouchSensor(this);
     this.sensorHub = new SensorHub(this);
   }
 
   public setConfig(config: Partial<DragEventManagerConfig>): this {
-    Object.assign(this.config, config);
+    if (typeof config === 'object') Object.assign(this.config, config);
     return this;
   }
 
@@ -126,9 +123,9 @@ export class DragEventManager {
         this.eventHandlerScrollEnd,
       );
       document.body.addEventListener('touchmove', this.eventHandlerScroll);
-      document.body.addEventListener('touchmove', <EventListener>this.scrollDebounce);
+      document.body.addEventListener('touchmove', this.scrollDebounce as EventListener);
       window.addEventListener('scroll', this.eventHandlerScroll);
-      window.addEventListener('scroll', <EventListener>this.scrollDebounce);
+      window.addEventListener('scroll', this.scrollDebounce as EventListener);
       this.isListeningToScroll = true;
     }
   }
@@ -136,9 +133,9 @@ export class DragEventManager {
   public stopListenToScroll() {
     if (this.isListeningToScroll === true) {
       document.body.addEventListener('touchmove', this.eventHandlerScroll);
-      document.body.addEventListener('touchmove', <EventListener>this.eventHandlerScrollEnd);
+      document.body.addEventListener('touchmove', this.eventHandlerScrollEnd as EventListener);
       window.removeEventListener('scroll', this.eventHandlerScroll);
-      window.removeEventListener('scroll', <EventListener>this.eventHandlerScrollEnd);
+      window.removeEventListener('scroll', this.eventHandlerScrollEnd as EventListener);
       this.isListeningToScroll = false;
     }
   }

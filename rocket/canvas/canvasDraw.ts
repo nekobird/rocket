@@ -261,7 +261,7 @@ export class CanvasDraw {
   public translate(to: Point): this {
     const m: number = this.resolutionMultiplier
     this.context.translate(to.x * m, to.y * m)
-    this.previousTranslation.equals(to)
+    this.previousTranslation.copy(to)
     return this
   }
 

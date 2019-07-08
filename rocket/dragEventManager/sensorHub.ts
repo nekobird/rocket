@@ -67,8 +67,7 @@ export class SensorHub {
 
   public get activeEvents(): DragEvent[] {
     const identifiers = Object.keys(this.events);
-    if (identifiers.length === 0)
-      return [];
+    if (identifiers.length === 0) return [];
     const activeEvents: DragEvent[] = [];
     identifiers.forEach(identifier => {
       if (this.events[identifier].isActive === true)

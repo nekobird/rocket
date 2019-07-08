@@ -177,19 +177,19 @@ export class DragEvent {
       x: data.clientX,
       y: data.clientY,
     };
-    this.position.equals(point);
-    this.velocity.equals(
+    this.position.copy(point);
+    this.velocity.copy(
       Vector2.subtract(this.position, this.lastPosition)
     );
-    this.acceleration.equals(
+    this.acceleration.copy(
       Vector2.subtract(this.velocity, this.lastVelocity)
     );
   }
 
   public updateLastVectors() {
-    this.lastPosition.equals(this.position);
-    this.lastVelocity.equals(this.velocity);
-    this.lastAcceleration.equals(this.acceleration);
+    this.lastPosition.copy(this.position);
+    this.lastVelocity.copy(this.velocity);
+    this.lastAcceleration.copy(this.acceleration);
   }
 
   public onDown(data: SensorData) {

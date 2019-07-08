@@ -19,8 +19,7 @@ export class MouseSensor {
 
   public dispatch(data: SensorData) {
     const { config, sensorHub } = this.manager;
-    if (config.listenTo.indexOf('MOUSE') !== -1)
-      sensorHub.receive(data);
+    if (config.listenTo.indexOf('MOUSE') !== -1) sensorHub.receive(data);
   }
 
   public composeData(name: EventName, event: MouseEvent): SensorData {
@@ -30,7 +29,7 @@ export class MouseSensor {
       type: 'MOUSE',
       name,
       time: Date.now(),
-      target: <HTMLElement>target,
+      target: target as HTMLElement,
       screenX, screenY,
       pageX, pageY,
       clientX, clientY,
@@ -45,12 +44,12 @@ export class MouseSensor {
       leftMouseButtonOnly === false
       || (
         leftMouseButtonOnly === true
-        && (<MouseEvent>event).button === 0
+        && (event as MouseEvent).button === 0
       )
     ) {
       this.isDown = true;
       this.dispatch(
-        this.composeData('down', <MouseEvent>event)
+        this.composeData('down', event as MouseEvent)
       );
     }
   }
@@ -58,14 +57,14 @@ export class MouseSensor {
   public eventHandlerMouseMove = (event: Event): void => {
     if (this.isDown === true)
       this.dispatch(
-        this.composeData('drag', <MouseEvent>event)
+        this.composeData('drag', event as MouseEvent)
       );
   }
 
   public eventHandlerMouseUp = (event: Event): void => {
     this.isDown = false;
     this.dispatch(
-      this.composeData('up', <MouseEvent>event)
+      this.composeData('up', event as MouseEvent)
     );
   }
 

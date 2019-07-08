@@ -9,12 +9,9 @@ interface UtilPromiseEachFn<A> {
 export class Util {
 
   static promiseEach<A>(array: A[], fn: UtilPromiseEachFn<A>): Promise<void> {
-    if (array.length === 0)
-      return Promise.resolve();
+    if (array.length === 0) return Promise.resolve();
     return array.reduce(
-      (previous: Promise<void>, current: A) => { 
-        return previous.then(() => fn(current));
-      },
+      (previous: Promise<void>, current: A) => previous.then(() => fn(current)),
       Promise.resolve()
     );
   }

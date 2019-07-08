@@ -56,7 +56,7 @@ export class StackUp {
   }
 
   public setConfig(config: Partial<StackUpConfig>): this {
-    Object.assign(this.config, config);
+    if (typeof config === 'object') Object.assign(this.config, config);
     return this;
   }
 
