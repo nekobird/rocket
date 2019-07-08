@@ -25,7 +25,7 @@ export class Vector2 {
       this.x = 0;
       this.y = 0;
     } else {
-      this.equals(x as Point);
+      this.copy(x as Point);
     }
     return this;
   }
@@ -40,7 +40,7 @@ export class Vector2 {
     return Num.hypotenuse(this.x, this.y);
   }
 
-  public equals(point: Point): this {
+  public copy(point: Point): this {
     this.x = point.x;
     this.y = point.y;
     return this;
@@ -61,7 +61,7 @@ export class Vector2 {
   }
 
   get clone(): Vector2 {
-    return Vector2.equals(this);
+    return Vector2.copy(this);
   }
 
   get array(): [number, number] {
@@ -265,33 +265,21 @@ export class Vector2 {
   // @move
 
   public moveBy(x: number | Point, y?: number): this {
-    if (
-      typeof x === 'number'
-      && typeof y === 'number'
-    ) {
+    if (typeof x === 'number' && typeof y === 'number') {
       this.x += x;
       this.y += y;
-    } else if (
-      typeof x === 'object'
-      && typeof y === 'undefined'
-    ) {
+    } else if (typeof x === 'object' && typeof y === 'undefined') {
       this.add(x as Point);
     }
     return this;
   }
 
   public moveTo(x: number | Point, y?: number) {
-    if (
-      typeof x === 'number'
-      && typeof y === 'number'
-    ) {
+    if (typeof x === 'number' && typeof y === 'number') {
       this.x = x;
       this.y = y;
-    } else if (
-      typeof x === 'object'
-      && typeof y === 'undefined'
-    ) {
-      this.equals(x as Point);
+    } else if (typeof x === 'object' && typeof y === 'undefined') {
+      this.copy(x as Point);
     }
     return this;
   }
@@ -327,20 +315,25 @@ export class Vector2 {
       .normalize()
       .multiply(m * by)
       .add(from);
-    this.equals(sub);
+    this.copy(sub);
     return this;
   }
 
   public limit(by: number): this {
     const mag = this.magnitude;
-    if (mag > by)
-      this.normalize().multiply(by);
+    if (mag > by) this.normalize().multiply(by);
     return this;
   }
 
-  public lerp(point: Point, time: number): this {
-    this.x = Num.modulate(time, 1, [this.x, point.x], false);
-    this.y = Num.modulate(time, 1, [this.y, point.y], false);
+  public applyLerp(t: number, point: Point): this {
+    this.x = Num.modulate(t, 1, [this.x, point.x], false);
+    this.y = Num.modulate(t, 1, [this.y, point.y], false);
+    return this;
+  }
+
+  public applyCubicBezier(t: number, p1: Point, cp1: Point, cp2: Point, p2: Point): this {
+    this.x = Num.cubicBezier(t, p1.x, cp1.x, cp2.x, p2.x);
+    this.y = Num.cubicBezier(t, p1.y, cp1.y, cp2.y, p2.y);
     return this;
   }
 
@@ -359,7 +352,7 @@ export class Vector2 {
 
   static projectFrom(from: Point, direction: Point, by: number): Vector2 {
     const to: Vector2 = Vector2
-      .equals(direction)
+      .copy(direction)
       .normalize()
       .multiply(by);
     return Vector2.add(from, to);
@@ -373,7 +366,7 @@ export class Vector2 {
     return new Vector2(Math.random(), Math.random());
   }
 
-  static equals(point: Point): Vector2 {
+  static copy(point: Point): Vector2 {
     return new Vector2(point.x, point.y);
   }
 
@@ -414,16 +407,16 @@ export class Vector2 {
   static splitAtAngle(target: Point, angle: number, by: number): Vector2[] {
     let results: Vector2[] = [];
     results[0] = Vector2
-      .equals(target)
+      .copy(target)
       .moveRadiallyBy(angle, -by);
     results[1] = Vector2
-      .equals(target)
+      .copy(target)
       .moveRadiallyBy(angle, by);
     return results;
   }
 
   static scaleByFrom(vector: Point, to: number, from: Point): Vector2 {
-    let result = Vector2.equals(vector);
+    let result = Vector2.copy(vector);
     return result.scaleByFrom(to, from);
   }
 
@@ -447,17 +440,17 @@ export class Vector2 {
   }
 
   static getAngleBetween2Points(a: Point, b: Point): number {
-    const a1 = Vector2.equals(a).angle;
-    const a2 = Vector2.equals(b).angle;
+    const a1 = Vector2.copy(a).angle;
+    const a2 = Vector2.copy(b).angle;
     const b1 = Angle.differenceClockwise(a1, a2);
     const b2 = Angle.differenceCounterclockwise(a1, a2);
     return Math.min(b1, b2);
   }
 
   static getAngleBetween3Points(a: Point, b: Point, c: Point): number {
-    const va = Vector2.equals(a);
-    const vb = Vector2.equals(b);
-    const vc = Vector2.equals(c);
+    const va = Vector2.copy(a);
+    const vb = Vector2.copy(b);
+    const vc = Vector2.copy(c);
     const a1 = vb.getAngleTo(va);
     const a2 = vb.getAngleTo(vc);
     const b1 = Angle.differenceClockwise(a1, a2);
@@ -474,7 +467,7 @@ export class Vector2 {
     const h = v1.getDistanceTo(v2);
     const bh = Math.sin(a) * h;
     const ml = Math.atan(a) / bh;
-    const fv = Vector2.equals(v1);
+    const fv = Vector2.copy(v1);
     return fv.moveRadiallyBy(a1, ml);
   }
 }
