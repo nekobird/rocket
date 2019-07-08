@@ -28,4 +28,33 @@
     top: 550px;
     width: 100px;
   }
+
+  .box3 {
+    position: absolute;
+    top: 1200px;
+    left: 500px;
+    width: 200px;
+    height: 500px;
+    background-color: color('black');
+  }
+
+  .box4 {
+    position: absolute;
+    top: 1500px;
+    left: 600px;
+    width: 200px;
+    height: 300px;
+    background-color: color('primary');
+  }
+
+  .scrollTrigger {
+    background-color: color('primary');
+    color: color('white');
+    cursor: pointer;
+    height: 40px;
+    left: 50%;
+    position: fixed;
+    top: 50vh;
+    width: 200px;
+  }
 }

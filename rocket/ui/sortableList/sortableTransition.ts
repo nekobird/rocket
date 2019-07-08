@@ -103,9 +103,8 @@ export class SortableListTransition {
       items.forEach(item => {
         height += DOMStyle.getTotalVerticalDimension(item);
       });
-      if (typeof dummy.element === 'object') {
+      if (typeof dummy.element === 'object')
         height += DOMStyle.getTotalVerticalDimension(dummy.element as HTMLElement);
-      }
       const width  = this.group.offsetWidth;
       this.group.style.boxSizing = 'border-box';
       this.group.style.width = `100%`;
@@ -213,14 +212,12 @@ export class SortableListTransition {
   }
 
   public cleanup() {
-    if (DOMUtil.isHTMLElement(this.group) === true) {
+    if (DOMUtil.isHTMLElement(this.group) === true)
       DOMStyle.clearStyles(this.group as HTMLElement);
-    }
-    if (typeof this.baseModel !== 'undefined') {
+    if (typeof this.baseModel !== 'undefined')
       this.baseModel.forEach(item => {
         DOMStyle.clearStyles(item.item);
       });
-    }
   }
 
   public destroy() {

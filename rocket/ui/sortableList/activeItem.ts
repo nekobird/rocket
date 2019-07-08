@@ -98,15 +98,13 @@ export class ActiveItem {
       const areas: number[] = [];
       groups.forEach(group => {
         const area = DOMRect.getOverlappingAreaFromElements(
-          this.element as HTMLElement,
-          group
+          this.element as HTMLElement, group
         );
         areas.push(area);
       });
-      const index = areas.indexOf(Math.max(...areas))
-      if (DOMUtil.isHTMLElement(groups[index]) == true) {
+      const index = areas.indexOf(Math.max(...areas));
+      if (DOMUtil.isHTMLElement(groups[index]) == true)
         return groups[index];
-      }
     }
     return false;
   }

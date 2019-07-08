@@ -83,8 +83,7 @@ export class DOMPoint {
       let isAbovePoints: boolean = true;
 
       points.forEach(({ y }) => {
-        if (bottom + offset < y === false)
-          isAbovePoints = false;
+        if (bottom + offset < y === false) isAbovePoints = false;
       })
 
       return isAbovePoints;
@@ -98,8 +97,7 @@ export class DOMPoint {
       let isBelowPoints: boolean = true;
 
       points.forEach(({ y }) => {
-        if (top + offset > y === false)
-          isBelowPoints = false;
+        if (top + offset > y === false) isBelowPoints = false;
       });
       return isBelowPoints;
     }
@@ -112,8 +110,7 @@ export class DOMPoint {
       let isAbovePoint: boolean = true;
 
       points.forEach(({ y }) => {
-        if (centerPoint.y + offset > y === false)
-          isAbovePoint = false;
+        if (centerPoint.y + offset > y === false) isAbovePoint = false;
       });
 
       return isAbovePoint;
@@ -128,8 +125,7 @@ export class DOMPoint {
       let isBelowPoint: boolean = true;
 
       points.forEach(({ y }) => {
-        if (centerPoint.y + offset < y === false)
-          isBelowPoint = false;
+        if (centerPoint.y + offset < y === false) isBelowPoint = false;
       });
 
       return isBelowPoint;
