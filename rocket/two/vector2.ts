@@ -30,16 +30,6 @@ export class Vector2 {
     return this;
   }
 
-  set magnitude(mag: number) {
-    this
-      .normalize()
-      .multiply(mag);
-  }
-
-  get magnitude(): number {
-    return Num.hypotenuse(this.x, this.y);
-  }
-
   public equals(point: Point): this {
     this.x = point.x;
     this.y = point.y;
@@ -48,6 +38,17 @@ export class Vector2 {
 
   public isEqualTo(to: Point): boolean {
     return (this.x === to.x && this.y === to.y);
+  }
+
+  // @magnitude
+  get magnitude(): number {
+    return Num.hypotenuse(this.x, this.y);
+  }
+
+  set magnitude(mag: number) {
+    this
+      .normalize()
+      .multiply(mag);
   }
 
   public round(to: number = 0): this {

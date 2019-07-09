@@ -90,9 +90,7 @@ export class DragEventManager {
 
   constructor(config?: Partial<DragEventManagerConfig>) {
     this.config = Object.assign({}, DRAG_EVENT_MANAGER_DEFAULT_CONFIG);
-    if (typeof config === 'object') {
-      this.setConfig(config);
-    }
+    if (typeof config === 'object') this.setConfig(config);
 
     this.mouseSensor = new MouseSensor(this);
     this.touchSensor = new TouchSensor(this);
@@ -100,7 +98,7 @@ export class DragEventManager {
   }
 
   public setConfig(config: Partial<DragEventManagerConfig>): this {
-    Object.assign(this.config, config);
+    if (typeof config === 'object') Object.assign(this.config, config);
     return this;
   }
 

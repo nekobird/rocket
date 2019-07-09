@@ -89,9 +89,7 @@ export class Repeater {
         this.config.timeout === true
         && typeof this.config.timeoutDelay === 'number'
         && this.config.timeoutDelay > 0
-      ) {
-        this.startTimeout();
-      }
+      ) this.startTimeout();
     }
   }
 

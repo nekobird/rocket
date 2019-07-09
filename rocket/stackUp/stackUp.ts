@@ -146,8 +146,7 @@ export class StackUp {
     if (
       this.calculateNumberOfColumns() !== this.numberOfColumns
       && this.config.isFluid === true
-    )
-      this.restack();
+    ) this.restack();
   }
 
   private eventHandlerResize = (event: Event): void => {
@@ -215,8 +214,7 @@ export class StackUp {
     if (
       this.items.length === 0
       || numberOfColumns <= 0
-    ) 
-      numberOfColumns = 1;
+    ) numberOfColumns = 1;
     
     return numberOfColumns;
   }

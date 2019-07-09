@@ -68,8 +68,7 @@ export class ScrollTriggerManager {
         if (
           trigger.enabled === true
           && typeof this.currentScrollLocation !== 'undefined'
-        )
-          trigger.prepare(this.currentScrollLocation, trigger, this);
+        ) trigger.prepare(this.currentScrollLocation, trigger, this);
       });
       this.isReady = true;
     }

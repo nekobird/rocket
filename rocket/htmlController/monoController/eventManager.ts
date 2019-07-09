@@ -34,30 +34,25 @@ export class EventManager {
 
   public initialize() {
     this.dragEventManager.initialize()
-    if (this.controller.config.listenToKeydown === true) {
+    if (this.controller.config.listenToKeydown === true)
       window.addEventListener('keydown', this.eventHandlerKeydown);
-    }
   }
 
   private onUp = event => {
     this.handleOutsideAction(event);
-    if (typeof event.downData !== 'object') {
-      return;
-    }
+    if (typeof event.downData !== 'object') return;
+
     const targetDownElement = event.getTargetElementFromData(event.downData);
-    if (targetDownElement === false) {
-      return;
-    }
+    if (targetDownElement === false) return;
+
     const { config } = this.controller;
     const trigger = DOMTraverse.findAncestor(targetDownElement, config.isTrigger, false);
-    if (trigger === false) {
-      return;
-    }
-    const triggerMap = config.mapTriggerToAction(<HTMLElement>trigger);
-    if (triggerMap === false) {
-      return;
-    }
-    this.eventHub(<HTMLElement>trigger, triggerMap);
+    if (trigger === false) return;
+
+    const triggerMap = config.mapTriggerToAction(trigger as HTMLElement);
+    if (triggerMap === false) return;
+
+    this.eventHub(trigger as HTMLElement, triggerMap);
   };
 
   private eventHub(trigger: HTMLElement, triggerMap: MonoTriggerMap): this {
@@ -101,8 +96,6 @@ export class EventManager {
     if (
       config.listenToKeydown  === true
       && actionManager.isRunning === false
-    ) {
-      config.onKeydown(event, this.controller);
-    }
+    ) config.onKeydown(event, this.controller);
   }
 }

@@ -126,10 +126,6 @@ export class Num {
   // @pure
   static within(number: number, range: number | [number, number]): boolean {
     if (typeof range === 'number') range = [0, range];
-
-    return (
-      number >= range[0]
-      && number <= range[1]
-    );
+    return (number >= range[0] && number <= range[1]);
   }
 }

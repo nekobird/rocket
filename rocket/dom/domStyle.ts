@@ -14,9 +14,7 @@ export class DOMStyle {
     temp.style.visibility = 'none';
     temp.textContent      = 'abcd';
     this.copyStylesFrom(
-      element,
-      ['fontSize', 'fontFamily', 'lineHeight'],
-      temp,
+      element, ['fontSize', 'fontFamily', 'lineHeight'], temp,
     );
     let result: number;
     if (element.parentNode !== null) {

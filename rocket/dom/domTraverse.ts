@@ -106,9 +106,8 @@ export class DOMTraverse {
             results.push(children[i] as HTMLElement);
             if (getAll === false) break;
           }
-          if (children[i].children.length > 0) {
+          if (children[i].children.length > 0)
             inspectDescendant(children[i]);
-          }
         }
       }
     }

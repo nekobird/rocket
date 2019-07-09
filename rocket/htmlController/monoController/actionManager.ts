@@ -45,16 +45,15 @@ export class ActionManager {
 
   private async deactivate(action: MonoAction): Promise<void> {
     const { config, itemManager } = this.controller;
-    if (itemManager.isActive === false) {
+    if (itemManager.isActive === false)
       return Promise.resolve();
-    }
+
     if (
       action.name === 'deactivate'
       && typeof action.targetId === 'string'
       && itemManager.activeItemId !== action.targetId
-    ) {
-      return Promise.resolve();
-    }
+    ) return Promise.resolve();
+
     if (config.conditionDeactivate(action, this.controller) === true) {
       await config.beforeDeactivate(action, this.controller);
       itemManager.deactivate();
@@ -150,8 +149,7 @@ export class ActionManager {
       if (
         isNestedAction === true
         && this.isNested === true
-      )
-        this.isNested = false;
+      ) this.isNested = false;
       if (this.isNested === false)
         config.afterAction(action, this.controller);
     } catch {

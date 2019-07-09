@@ -46,9 +46,8 @@ export class ItemManager {
   public setItems(items: HTMLElement[] | NodeListOf<HTMLElement> | string): this {
     if (typeof items === 'string') {
       const results: NodeListOf<HTMLElement> = document.querySelectorAll(items);
-      if (results !== null) {
+      if (results !== null)
         this.items = Array.from(results);
-      }
       return this;
     }
 
@@ -57,9 +56,8 @@ export class ItemManager {
       return this;
     }
 
-    if (Array.isArray(items) === true) {
-      this.items = <HTMLElement[]>items;
-    }
+    if (Array.isArray(items) === true)
+      this.items = items as HTMLElement[];
     return this;
   }
 
@@ -93,9 +91,8 @@ export class ItemManager {
   public itemIsValid(item: HTMLElement): boolean {
     const { config } = this.controller;
     let valid: boolean = true;
-    if (config.getItemId(item) === false) {
+    if (config.getItemId(item) === false)
       valid = false;
-    }
     return valid;
   }
 
@@ -104,14 +101,12 @@ export class ItemManager {
     const matchedItems: HTMLElement[] = [];
 
     this.items.forEach(item => {
-      if (config.getItemId(item) === id) {
+      if (config.getItemId(item) === id)
         matchedItems.push(item);
-      }
     });
 
-    if (matchedItems.length > 0) {
+    if (matchedItems.length > 0)
       return matchedItems[0];
-    }
     return false;
   }
 
