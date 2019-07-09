@@ -53,6 +53,15 @@ export class DOMAlign {
     return this.transformOffsetRelation({ left, top }, relativeTo);
   }
 
+  public static getTargetAlignmentToView(
+    target: HTMLElement,
+    targetReferencePoint: ReferencePointNames,
+    viewReferencePoint: ReferencePointNames,
+    relativeTo: OffsetRelation = 'viewport',
+  ) {
+    const targetRect = target.getBoundingClientRect();
+  }
+
   public static getComplementaryReferencePoint(
     referencePoint: ReferencePointNames
   ): ReferencePointNames {
