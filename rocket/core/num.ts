@@ -32,8 +32,7 @@ export class Num {
     if (max === 0 && min === 0) return 0;
 
     const da = this.getEuclideanDistance(min, max);
-    let db: number;
-    let c: number;
+    let db: number, c: number;
 
     if (number > max) {
       db = this.getEuclideanDistance(number, max);

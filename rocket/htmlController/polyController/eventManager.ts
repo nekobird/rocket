@@ -40,15 +40,21 @@ export class EventManager {
 
   private onUp = event => {
     this.handleOutsideAction(event);
+
     if (typeof event.downData !== 'object') return;
+
     const targetDownElement = event.getTargetElementFromData(event.downData);
     if (targetDownElement === false) return;
+
     const { config } = this.controller;
+
     const trigger = DOMTraverse.findAncestor(targetDownElement, config.isTrigger, false);
     if (trigger === false) return;
-    const triggerMap = config.mapTriggerToAction(<HTMLElement>trigger);
+
+    const triggerMap = config.mapTriggerToAction(trigger as HTMLElement);
     if (triggerMap === false) return;
-    this.eventHub(<HTMLElement>trigger, triggerMap);
+
+    this.eventHub(trigger as HTMLElement, triggerMap);
   };
 
   private eventHub(trigger: HTMLElement, triggerMap: PolyTriggerMap): this {
@@ -70,8 +76,8 @@ export class EventManager {
       config.deactivateAllOnOutsideAction === true
       && actionManager.isRunning === false
     ) {
-      const targetDownElement: HTMLElement | false = event.getTargetElementFromData(event.downData);
-      const targetUpElement: HTMLElement | false = event.getTargetElementFromData(event.upData);
+      const targetDownElement = event.getTargetElementFromData(event.downData);
+      const targetUpElement = event.getTargetElementFromData(event.upData);
       if (
         itemManager.isActive === true
         && targetDownElement !== false
@@ -91,7 +97,6 @@ export class EventManager {
     if (
       config.listenToKeydown  === true
       && actionManager.isRunning === false
-    )
-      config.onKeydown(event, this.controller);
+    ) config.onKeydown(event, this.controller);
   }
 }

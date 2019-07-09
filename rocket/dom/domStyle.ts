@@ -6,15 +6,19 @@ export interface StyleValue {
   [key: string]: string;
 }
 
+// NOTE:
+// You can remove style by setting it to null
+// For example element.style.backgroundColor = null;
+
 export class DOMStyle {
 
   public static getLineHeight(element: HTMLElement): number {
-    const temp = document.createElement('div')
+    const temp = document.createElement('div');
     temp.style.padding    = '0';
     temp.style.visibility = 'none';
     temp.textContent      = 'abcd';
     this.copyStylesFrom(
-      element, ['fontSize', 'fontFamily', 'lineHeight'], temp,
+      element, ['fontSize', 'fontFamily', 'lineHeight'], temp
     );
     let result: number;
     if (element.parentNode !== null) {
@@ -26,22 +30,22 @@ export class DOMStyle {
       result = temp.clientHeight;
       document.removeChild(temp);
     }
+    temp.remove();
     return result;
   }
 
   // @style
   public static applyStyle(element: HTMLElement, styles: StyleList) {
-    Object.keys(styles).forEach(key => {
-      const value = (typeof styles[key] === 'number') ? styles[key].toString() : styles[key] as string;
-      element.style[key] = value;
+    Object.keys(styles).forEach(property => {
+      const value = (typeof styles[property] === 'number') ? styles[property].toString() : styles[property] as string;
+      element.style[property] = value;
     });
   }
 
-  public static copyStylesFrom(from: HTMLElement, propertyNames: string | string[], ...to: HTMLElement[]): void {
-    if (typeof propertyNames === 'string')
-      propertyNames = [propertyNames];
+  public static copyStylesFrom(from: HTMLElement, styleProperties: string | string[], ...to: HTMLElement[]): void {
+    if (typeof styleProperties === 'string') styleProperties = [styleProperties];
     const style = window.getComputedStyle(from);
-    propertyNames.forEach(property => {
+    styleProperties.forEach(property => {
       to.forEach(element => element.style[property] = style[property])
     });
   }
@@ -50,28 +54,22 @@ export class DOMStyle {
     element.removeAttribute('style');
   }
 
-  public static removeStyles(element: HTMLElement, propertyNames: string | string[]) {
-    if (typeof propertyNames === 'string')
-      propertyNames = [propertyNames];
-    propertyNames.forEach(propertyName => {
-      element.style.removeProperty(propertyName);
-    });
+  public static removeStyles(element: HTMLElement, styleProperties: string | string[]) {
+    if (typeof styleProperties === 'string') styleProperties = [styleProperties];
+    styleProperties.forEach(property => element.style.removeProperty(property));
   }
 
-  public static getStyleValue(element: HTMLElement, propertyName: string, isNumber: boolean = false): string | number {
+  public static getStyleValue(element: HTMLElement, styleProperty: string, isNumber: boolean = false): string | number {
     const style = window.getComputedStyle(element);
-    const value = style[propertyName];
+    const value = style[styleProperty];
     return isNumber === true ? parseFloat(value) : value;
   }
 
-  public static getStyleValues(element: HTMLElement, propertyNames: string | string[]): StyleValue {
-    if (typeof propertyNames === 'string')
-      propertyNames = [propertyNames]
+  public static getStyleValues(element: HTMLElement, styleProperties: string | string[]): StyleValue {
+    if (typeof styleProperties === 'string') styleProperties = [styleProperties]
     const style = window.getComputedStyle(element);
     const result = {};
-    propertyNames.forEach(propertyName => {
-      result[propertyName] = style[propertyName];
-    });
+    styleProperties.forEach(property => result[property] = style[property]);
     return result;
   }
 

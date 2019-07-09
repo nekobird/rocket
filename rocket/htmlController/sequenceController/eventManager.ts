@@ -41,14 +41,19 @@ export class EventManager {
 
   private onUp = event => {
     if (typeof event.downData !== 'object') return;
+
     const targetDownElement = event.getTargetElementFromData(event.downData);
     if (targetDownElement === false) return;
+
     const { config } = this.controller;
+
     const trigger = DOMTraverse.findAncestor(targetDownElement, config.isTrigger, false);
     if (trigger === false) return;
-    const triggerMap = config.mapTriggerToAction(<HTMLElement>trigger);
+
+    const triggerMap = config.mapTriggerToAction(trigger as HTMLElement);
     if (triggerMap === false) return;
-    this.eventHub(<HTMLElement>trigger, triggerMap);
+
+    this.eventHub(trigger as HTMLElement, triggerMap);
   }
 
   private eventHub(trigger: HTMLElement, triggerMap: SequenceTriggerMap): this {

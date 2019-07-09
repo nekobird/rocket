@@ -40,12 +40,14 @@ export class EventManager {
 
   private onUp = event => {
     this.handleOutsideAction(event);
+
     if (typeof event.downData !== 'object') return;
 
     const targetDownElement = event.getTargetElementFromData(event.downData);
     if (targetDownElement === false) return;
 
     const { config } = this.controller;
+
     const trigger = DOMTraverse.findAncestor(targetDownElement, config.isTrigger, false);
     if (trigger === false) return;
 

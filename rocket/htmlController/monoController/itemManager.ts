@@ -27,6 +27,7 @@ export class ItemManager {
 
   public loadItemsFromConfig(): this {
     const { config } = this.controller;
+
     if (
       Array.isArray(config.items) === false
       && NodeList.prototype.isPrototypeOf(config.items as NodeListOf<HTMLElement>)
@@ -45,8 +46,8 @@ export class ItemManager {
 
   public setItems(items: HTMLElement[] | NodeListOf<HTMLElement> | string): this {
     if (typeof items === 'string') {
-      const results: NodeListOf<HTMLElement> = document.querySelectorAll(items);
-      if (results !== null) this.items = Array.from(results);
+      const results = document.querySelectorAll(items);
+      if (results !== null) this.items = Array.from(results as NodeListOf<HTMLElement>);
       return this;
     }
 
@@ -69,10 +70,12 @@ export class ItemManager {
 
   public filterActiveItems(): this {
     const { config } = this.controller;
+
     if (this.items.length > 0) {
       this.items.forEach(item => {
         if (config.itemIsActive(item, this.controller) === true) {
           const id = config.getItemId(item);
+
           if (this.isActive === true) {
             config.deactivateItem(item, this.controller);
           } else if (id !== false) {
@@ -82,6 +85,7 @@ export class ItemManager {
           }
         }
       });
+
       this.controller.isReady = true;
     }
     return this;
@@ -89,26 +93,31 @@ export class ItemManager {
 
   public itemIsValid(item: HTMLElement): boolean {
     const { config } = this.controller;
+
     let valid: boolean = true;
+
     if (config.getItemId(item) === false) valid = false;
+
     return valid;
   }
 
   public getItemFromId(id: string): HTMLElement | false {
     const { config } = this.controller;
+
     const matchedItems: HTMLElement[] = [];
 
     this.items.forEach(item => {
-      if (config.getItemId(item) === id)
-        matchedItems.push(item);
+      if (config.getItemId(item) === id) matchedItems.push(item);
     });
 
     if (matchedItems.length > 0) return matchedItems[0];
+
     return false;
   }
 
   public activate(item: HTMLElement) {
     const { config } = this.controller;
+
     if (this.itemIsValid(item) === true) {
       config.activateItem(item, this.controller);
       this.activeItem = item;
@@ -119,6 +128,7 @@ export class ItemManager {
 
   public deactivate() {
     const { config } = this.controller;
+
     if (typeof this.activeItem !== 'undefined') {
       config.deactivateItem(this.activeItem, this.controller);
       this.activeItem = undefined;

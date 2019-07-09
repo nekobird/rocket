@@ -97,7 +97,9 @@ export class ActionManager {
 
   public composeAction(actionName: MonoActionName, id?: string): MonoAction {
     const { itemManager } = this.controller;
+
     const action = this.createAction(actionName);
+
     if (typeof id === 'string') {
       const nextItem = itemManager.getItemFromId(id);
       if (typeof nextItem === 'object') {
@@ -166,12 +168,11 @@ export class ActionManager {
         );
       });
 
-    if (
-      this.isRunning === false
-      && this.isNested === true
-    ) this.isNested = false;
+    if (this.isRunning === false && this.isNested === true)
+      this.isNested = false;
 
     if (typeof callback === 'function') callback();
+
     return Promise.resolve();
   }
 }

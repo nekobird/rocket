@@ -88,7 +88,7 @@ export class DOMPoint {
 
       return isAbovePoints;
     }
-    return bottom + offset < (<Point>points).y;
+    return bottom + offset < (points as Point).y;
   }
 
   public static elementIsBelowPoints(element: HTMLElement, points: Point | Point[], offset: number = 0) {
@@ -101,7 +101,7 @@ export class DOMPoint {
       });
       return isBelowPoints;
     }
-    return top + offset > (<Point>points).y;
+    return top + offset > (points as Point).y;
   }
 
   public static elementCenterIsAbovePoints(element: HTMLElement, points: Point | Point[], offset: number = 0) {
@@ -116,7 +116,7 @@ export class DOMPoint {
       return isAbovePoint;
     }
 
-    return centerPoint.y + offset > (<Point>points).y;
+    return centerPoint.y + offset > (points as Point).y;
   }
 
   public static elementCenterIsBelowPoints(element: HTMLElement, points: Point | Point[], offset: number = 0) {
@@ -182,7 +182,7 @@ export class DOMPoint {
     if (typeof identifyElementFn === 'undefined')
       identifyElementFn = element => true;
 
-    const children: HTMLElement[] = <HTMLElement[]>Array.from(parent.children);
+    const children: HTMLElement[] = Array.from(parent.children) as HTMLElement[];
     const selectedChildren: HTMLElement[] = children.filter(identifyElementFn);
 
     if (selectedChildren.length === 0) return false;
