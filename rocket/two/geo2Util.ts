@@ -50,8 +50,7 @@ export class Geo2Util {
     if (Geo2Util.checkIfTwoLineSegmentsAreParallel(ls1, le1, ls2, le2) === true)
       return false;
 
-    let ix = 0;
-    let iy = 0;
+    let ix = 0, iy = 0;
 
     // Get slope.
     let m1 = Geo2Util.getSlopeOfLine(ls1, le1);

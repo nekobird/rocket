@@ -82,11 +82,9 @@ export class ElementManager {
       typeof this.groups === 'object'
       && Array.isArray(this.groups) === true
     ) {
-      for (let i = 0; i < this.groups.length; i++) {
-        if (this.groups[i] === item.parentElement) {
+      for (let i = 0; i < this.groups.length; i++)
+        if (this.groups[i] === item.parentElement)
           return this.groups[i];
-        }
-      }
     }
     return false;
   }
@@ -97,9 +95,8 @@ export class ElementManager {
       if (
         config.childIsItem(child as HTMLElement)
         && child !== activeItem.element
-      ) {
+      )
         return true;
-      }
       return false;
     }) as HTMLElement[];
   }

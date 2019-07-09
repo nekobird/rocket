@@ -52,9 +52,8 @@ export class SortableList {
 
   constructor(config?: Partial<SortableListConfig>) {
     this.config = Object.assign({}, SORTABLE_DEFAULT_CONFIG);
-    if (typeof config === 'object') {
+    if (typeof config === 'object')
       this.setConfig(config);
-    }
     this.elementManager = new ElementManager(this);
     this.eventManager = new EventManager(this);
     this.dummy = new Dummy(this);
@@ -76,9 +75,8 @@ export class SortableList {
     if (
       typeof groups === 'object'
       && Array.isArray(groups) === true
-    ) {
+    )
       return groups;
-    }
     return false;
   }
 
@@ -87,9 +85,8 @@ export class SortableList {
     if (
       typeof items === 'object'
       && Array.isArray(items) === true
-    ) {
+    )
       return items;
-    }
     return false;
   }
 
@@ -105,9 +102,8 @@ export class SortableList {
           if (
             typeof touch.identifier !== 'undefined'
             && this.eventManager.activeIdentifier === touch.identifier.toString()
-          ) {
+          )
             event.preventDefault();
-          }
         });
     }
   }
@@ -218,20 +214,15 @@ export class SortableList {
           if (
             closestChild !== (this.dummy.element as HTMLElement).nextElementSibling
             && DOMPoint.elementCenterIsAbovePoints(closestChild, topPoints) === true
-          ) {
+          )
             target = closestChild;
-          }
           if (
             closestChild.nextElementSibling !== this.dummy.element
             && DOMPoint.elementCenterIsBelowPoints(closestChild, bottomPoints) === true
           ) {
             target = closestChild.nextElementSibling;
-            if (target === this.activeItem.element) {
-              target = target.nextElementSibling;
-            }
-            if (target === null) {
-              target = 'last';
-            }
+            if (target === this.activeItem.element) target = target.nextElementSibling;
+            if (target === null) target = 'last';
           }
         }
       } else {
@@ -239,21 +230,13 @@ export class SortableList {
         // Animate dummy out.
       }
 
-      if (
-        typeof target !== 'undefined'
-        && target !== this.activeItem.element
-      ) {
+      if (typeof target !== 'undefined' && target !== this.activeItem.element) {
         this.transition.go(group, target, () => {
           if (this.dummy.isActive === true) {
             if (target === 'last') {
-              group.appendChild(
-                this.dummy.element as HTMLElement
-              );
+              group.appendChild(this.dummy.element as HTMLElement);
             } else {
-              group.insertBefore(
-                this.dummy.element as HTMLElement,
-                target,
-              );
+              group.insertBefore(this.dummy.element as HTMLElement, target);
             }
           }
         });

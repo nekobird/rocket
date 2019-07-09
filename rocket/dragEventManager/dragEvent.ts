@@ -102,14 +102,12 @@ export class DragEvent {
       if (
         this.isActive === true
         && typeof this.dragData === 'object'
-      )
-        return (this.dragData.time - this.downData.time) / 1000;
+      ) return (this.dragData.time - this.downData.time) / 1000;
 
       if (
         this.isCancelled === true
         && typeof this.cancelData === 'object'
-      )
-        return (this.cancelData.time - this.downData.time) / 1000;
+      ) return (this.cancelData.time - this.downData.time) / 1000;
 
       if (typeof this.upData === 'object')
         return (this.upData.time - this.downData.time) / 1000;
@@ -141,22 +139,18 @@ export class DragEvent {
 
   public update(data: SensorData): this {
     switch (data.name) {
-      case 'down': {
+      case 'down':
         this.onDown(data);
         break;
-      }
-      case 'drag': {
+      case 'drag':
         this.onDrag(data);
         break;
-      }
-      case 'up': {
+      case 'up':
         this.onUp(data);
         break;
-      }
-      case 'cancel': {
+      case 'cancel':
         this.onCancel(data);
         break;
-      }
     }
     return this;
   }
@@ -177,19 +171,19 @@ export class DragEvent {
       x: data.clientX,
       y: data.clientY,
     };
-    this.position.equals(point);
-    this.velocity.equals(
+    this.position.copy(point);
+    this.velocity.copy(
       Vector2.subtract(this.position, this.lastPosition)
     );
-    this.acceleration.equals(
+    this.acceleration.copy(
       Vector2.subtract(this.velocity, this.lastVelocity)
     );
   }
 
   public updateLastVectors() {
-    this.lastPosition.equals(this.position);
-    this.lastVelocity.equals(this.velocity);
-    this.lastAcceleration.equals(this.acceleration);
+    this.lastPosition.copy(this.position);
+    this.lastVelocity.copy(this.velocity);
+    this.lastAcceleration.copy(this.acceleration);
   }
 
   public onDown(data: SensorData) {

@@ -29,14 +29,14 @@ export class ItemManager {
     const { config } = this.controller;
     if (
       Array.isArray(config.items) === false
-      && NodeList.prototype.isPrototypeOf(<NodeListOf<HTMLElement>>config.items)
+      && NodeList.prototype.isPrototypeOf(config.items as NodeListOf<HTMLElement>)
     ) {
-      this.items = Array.from(<NodeListOf<HTMLElement>>config.items);
+      this.items = Array.from(config.items as NodeListOf<HTMLElement>);
       return this;
     }
     
     if (Array.isArray(config.items) === true) {
-      this.items = <HTMLElement[]>config.items;
+      this.items = config.items as HTMLElement[];
       return this;
     }
 
@@ -46,13 +46,12 @@ export class ItemManager {
   public setItems(items: HTMLElement[] | NodeListOf<HTMLElement> | string): this {
     if (typeof items === 'string') {
       const results: NodeListOf<HTMLElement> = document.querySelectorAll(items);
-      if (results !== null)
-        this.items = Array.from(results);
+      if (results !== null) this.items = Array.from(results);
       return this;
     }
 
     if (NodeList.prototype.isPrototypeOf(items)) {
-      this.items = Array.from(<NodeListOf<HTMLElement>>items);
+      this.items = Array.from(items as NodeListOf<HTMLElement>);
       return this;
     }
 
@@ -91,8 +90,7 @@ export class ItemManager {
   public itemIsValid(item: HTMLElement): boolean {
     const { config } = this.controller;
     let valid: boolean = true;
-    if (config.getItemId(item) === false)
-      valid = false;
+    if (config.getItemId(item) === false) valid = false;
     return valid;
   }
 
@@ -105,8 +103,7 @@ export class ItemManager {
         matchedItems.push(item);
     });
 
-    if (matchedItems.length > 0)
-      return matchedItems[0];
+    if (matchedItems.length > 0) return matchedItems[0];
     return false;
   }
 
@@ -115,7 +112,7 @@ export class ItemManager {
     if (this.itemIsValid(item) === true) {
       config.activateItem(item, this.controller);
       this.activeItem = item;
-      this.activeItemId = <string>config.getItemId(item);
+      this.activeItemId = config.getItemId(item) as string;
       this.isActive = true;
     }
   }

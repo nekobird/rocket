@@ -29,7 +29,7 @@ export class TouchSensor {
       type: 'TOUCH',
       name,
       time: Date.now(),
-      target: <HTMLElement>target,
+      target: target as HTMLElement,
       screenX, screenY,
       pageX, pageY,
       clientX, clientY,
@@ -38,7 +38,7 @@ export class TouchSensor {
   }
 
   public eventHandlerTouchStart = (event: Event): void => {
-    const touchEvent = <TouchEvent>event;
+    const touchEvent = event as TouchEvent;
     Array.from(touchEvent.changedTouches).forEach(touch => {
       this.dispatch(
         this.composeData('down', touchEvent, touch)
@@ -47,7 +47,7 @@ export class TouchSensor {
   }
 
   public eventHandlerTouchMove = (event: Event): void => {
-    const touchEvent = <TouchEvent>event;
+    const touchEvent = event as TouchEvent;
     Array.from(touchEvent.changedTouches).forEach(touch => {
       this.dispatch(
         this.composeData('drag', touchEvent, touch)
@@ -56,7 +56,7 @@ export class TouchSensor {
   }
 
   public eventHandlerTouchEnd = (event: Event): void => {
-    const touchEvent = <TouchEvent>event;
+    const touchEvent = event as TouchEvent;
     Array.from(touchEvent.changedTouches).forEach(touch => {
       this.dispatch(
         this.composeData('up', touchEvent, touch)
@@ -65,7 +65,7 @@ export class TouchSensor {
   }
 
   public eventHandlerTouchCancel = (event: Event): void => {
-    const touchEvent = <TouchEvent>event;
+    const touchEvent = event as TouchEvent;
     Array.from(touchEvent.changedTouches).forEach(touch => {
       this.dispatch(
         this.composeData('cancel', touchEvent, touch)

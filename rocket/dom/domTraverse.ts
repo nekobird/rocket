@@ -38,8 +38,7 @@ export class DOMTraverse {
     ) {
       currentEl = currentEl as HTMLElement;
       if (currentEl !== null) {
-        if (identifyElement(currentEl) === true)
-          results.push(currentEl);
+        if (identifyElement(currentEl) === true) results.push(currentEl);
         currentEl = currentEl.parentElement;
       }
     }
@@ -60,8 +59,7 @@ export class DOMTraverse {
         let containsClassName: boolean = false;
 
         classNames.forEach(className => {
-          if (element.classList.contains(className) === true)
-            containsClassName = true;
+          if (element.classList.contains(className) === true) containsClassName = true;
         });
         return containsClassName;
       };

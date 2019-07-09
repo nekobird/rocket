@@ -25,8 +25,7 @@ export class DOMOffset {
     return {
       top, bottom,
       left, right,
-      x: left,
-      y: top,
+      x: left, y: top,
     };
   }
 

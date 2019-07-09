@@ -85,33 +85,28 @@ export class InputActiveManager {
       this.containerElements.forEach(container => {
         const input = DOMTraverse.findDescendant(
           container,
-          element => {
-            return (
-              element.nodeName === 'INPUT'
-              || element.nodeName === 'TEXTAREA'
-            );
-          },
+          element => (element.nodeName === 'INPUT' || element.nodeName === 'TEXTAREA'),
           false
         );
-        if (input !== false) {
-          this.inputElements.push(<HTMLInputElement | HTMLTextAreaElement>input);
-        }
+        if (input !== false)
+          this.inputElements.push(input as HTMLInputElement | HTMLTextAreaElement);
       });
     }
   }
 
   public initialize() {
     this.inputElements.forEach(input => {
-      const containerElement = DOMTraverse.findAncestorWithClass(
+      let containerElement = DOMTraverse.findAncestorWithClass(
         input, this.config.containerClassName, false
       );
       if (containerElement !== false) {
-        if (this.config.conditionActivate(<HTMLElement>containerElement, input) === true) {
-          if (this.isActive(<HTMLElement>containerElement) === false)
-            this.activate(<HTMLElement>containerElement, input);
+        containerElement = containerElement as HTMLElement;
+        if (this.config.conditionActivate(containerElement, input) === true) {
+          if (this.isActive(containerElement) === false)
+            this.activate(containerElement, input);
         } else {
-          if (this.isActive(<HTMLElement>containerElement) === true)
-            this.deactivate(<HTMLElement>containerElement, input);
+          if (this.isActive(containerElement) === true)
+            this.deactivate(containerElement, input);
         }
       }
     });
@@ -130,35 +125,32 @@ export class InputActiveManager {
   }
 
   private getInputActiveManagerElement(input: HTMLInputElement | HTMLTextAreaElement): HTMLElement | false {
+    const { containerClassName } = this.config;
     const result = DOMTraverse.findAncestorWithClass(
-      input,
-      this.config.containerClassName,
-      false,
+      input, containerClassName, false,
     );
-    return (result !== false) ? <HTMLElement>result : false;
+    return (result !== false) ? result as HTMLElement : false;
   }
 
   private eventHandlerFocus = event => {
     const containerElement = this.getInputActiveManagerElement(event.target);
     if (containerElement !== false) {
       this.config.onFocus(containerElement, event.target, this);
-      if (this.config.activateOnFocus === true) {
-        if (this.isActive(<HTMLElement>containerElement) === false)
+      if (this.config.activateOnFocus === true)
+        if (this.isActive(containerElement as HTMLElement) === false)
           this.activate(containerElement, event.target);
-      }
     }
   }
 
   private eventHandlerBlur = event => {
-    const containerElement = this.getInputActiveManagerElement(event.target);
+    let containerElement = this.getInputActiveManagerElement(event.target);
     if (containerElement !== false) {
+      containerElement = containerElement as HTMLElement;
       this.config.onBlur(containerElement, event.target, this);
       if (this.config.activateOnFocus === true) {   
         if (
-          this.config.conditionActivate(
-            <HTMLElement>containerElement, event.target
-          ) === false
-          && this.isActive(<HTMLElement>containerElement) === true
+          this.config.conditionActivate(containerElement, event.target) === false
+          && this.isActive(containerElement) === true
         )
           this.deactivate(containerElement, event.target);
       }
@@ -166,19 +158,18 @@ export class InputActiveManager {
   }
 
   private eventHandlerInput = event => {
-    const containerElement = this.getInputActiveManagerElement(event.target);
+    let containerElement = this.getInputActiveManagerElement(event.target);
     if (containerElement !== false) {
+      containerElement = containerElement as HTMLElement;
       this.config.onInput(containerElement, event.target, this);
       if (this.config.activateOnFocus === false) {
         if (
-          this.config.conditionActivate(
-            <HTMLElement>containerElement, event.target
-          ) === true
-          && this.isActive(<HTMLElement>containerElement) === false
+          this.config.conditionActivate(containerElement, event.target) === true
+          && this.isActive(containerElement) === false
         ) {
           this.activate(containerElement, event.target);
         } else {
-          if (this.isActive(<HTMLElement>containerElement) === true)
+          if (this.isActive(containerElement) === true)
             this.deactivate(containerElement, event.target);
         }
       }

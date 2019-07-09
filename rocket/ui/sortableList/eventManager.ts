@@ -48,9 +48,8 @@ export class EventManager {
       typeof event.downData === 'object'
       && typeof event.downData.target === 'object'
       && DOMUtil.isHTMLElement(event.downData.target)
-    ) {
+    )
       return event.downData.target;
-    }
     return false;
   }
 
@@ -114,9 +113,8 @@ export class EventManager {
       isActive === true
       && activeIdentifier === event.identifier.toString()
       && typeof event.dragData === 'object'
-    ) {
+    )
       this.sortable.move(event.dragData);
-    }
   }
 
   public handleOnUp = (event, manager) => {
@@ -154,9 +152,8 @@ export class EventManager {
       isActive === true
       && activeIdentifier === event.identifier.toString()
       && config.autoScroll === true
-    ) {
-      this.sortable.scrollCheck();
-    } 
+    )
+      this.sortable.scrollCheck(); 
   }
 
   private activate(event) {

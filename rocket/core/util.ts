@@ -9,23 +9,25 @@ interface UtilPromiseEachFn<A> {
 export class Util {
 
   static promiseEach<A>(array: A[], fn: UtilPromiseEachFn<A>): Promise<void> {
-    if (array.length === 0)
-      return Promise.resolve();
+    if (array.length === 0) return Promise.resolve();
     return array.reduce(
-      (previous: Promise<void>, current: A) => { 
-        return previous.then(() => fn(current));
-      },
+      (previous: Promise<void>, current: A) => previous.then(() => fn(current)),
       Promise.resolve()
     );
   }
 
-  static cycle<A>(array: A[]): Function {
+  static cycleArrayNext<A>(array: A[]): Function {
     let index = -1;
     return () => {
       index++;
       if (index > array.length - 1) index = 0;
       return array[index];
     };
+  }
+
+  static cycleArray<A>(array: A[], offset: number): A {
+    const index = offset % (array.length);
+    return array[index];
   }
 
   // Returns a debouncer function that no matter the frequency of calls

@@ -45,9 +45,7 @@ export class ActionManager {
 
   private async deactivate(action: MonoAction): Promise<void> {
     const { config, itemManager } = this.controller;
-    if (itemManager.isActive === false)
-      return Promise.resolve();
-
+    if (itemManager.isActive === false) return Promise.resolve();
     if (
       action.name === 'deactivate'
       && typeof action.targetId === 'string'
@@ -60,7 +58,6 @@ export class ActionManager {
       config.afterDeactivate(action, this.controller);
       return Promise.resolve();
     }
-
     return Promise.reject();
   }
 

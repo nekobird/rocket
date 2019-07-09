@@ -26,13 +26,11 @@ export class TextScaleModel {
     this.model = new TextBoxModel();
     this.element = element;
     this.config = Object.assign({}, TEXTSCALEMODEL_DEFAULT_CONFIG);
-    if (typeof config === 'object') {
-      this.setConfig(config);
-    }
+    if (typeof config === 'object') this.setConfig(config);
   }
 
   public setConfig(config: Partial<TextScaleModelConfig>) {
-    Object.assign(this.config, config);
+    if (typeof config === 'object') Object.assign(this.config, config);
   }
 
   public configRangeIsValid(): boolean {

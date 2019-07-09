@@ -80,10 +80,16 @@ export class Num {
     return parseFloat(number.toFixed(to));
   }
 
-  // Simple linear interpolation
+  // Simple linear interpolation.
   // @pure
-  static lerp(from: number, to: number, t: number): number {
+  static lerp(t: number, from: number, to: number): number {
     return (1 - t) * from + t * to;
+  }
+
+  // Cubic Bezier interpolation.
+  // @pure
+  static cubicBezier(t: number, p1: number, cp1: number, cp2: number, p2: number): number {
+    return Math.pow(1 - t, 3) * p1 + 3 * t * Math.pow(1 - t, 2) * cp1 + 3 * t * t * (1 - t) * cp2 + t * t * t * p2;
   }
 
   // @pure
@@ -103,10 +109,7 @@ export class Num {
   // @pure
   static random(range: number | [number, number], whole: boolean = false, fixed: number = 2): number {
     if (typeof range === 'number') range = [0, range];
-    if (
-      range[0] === 0
-      && range[1] === 1
-    ) {
+    if (range[0] === 0 && range[1] === 1) {
       if (whole === true) {
         return Math.random() > 0.5 ? 1 : 0;
       } else {
@@ -123,6 +126,7 @@ export class Num {
     return numbers.reduce((previous, current) => previous + current);
   }
 
+  // Check to see if given number is within given range.
   // @pure
   static within(number: number, range: number | [number, number]): boolean {
     if (typeof range === 'number') range = [0, range];

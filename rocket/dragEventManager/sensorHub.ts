@@ -45,10 +45,7 @@ export class SensorHub {
     this.manager.isActive = true;
     if (
       this.hasEvent(data.identifier) === false
-      || (
-        data.identifier === 'mouse-event'
-        && data.name === 'down'
-      )
+      || (data.identifier === 'mouse-event' && data.name === 'down')
     ) {
       this.events[data.identifier] = new DragEvent(this.manager).update(data);
     } else {
@@ -67,8 +64,7 @@ export class SensorHub {
 
   public get activeEvents(): DragEvent[] {
     const identifiers = Object.keys(this.events);
-    if (identifiers.length === 0)
-      return [];
+    if (identifiers.length === 0) return [];
     const activeEvents: DragEvent[] = [];
     identifiers.forEach(identifier => {
       if (this.events[identifier].isActive === true)

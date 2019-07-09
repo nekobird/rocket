@@ -58,7 +58,7 @@ export class Color {
     return this;
   }
 
-  public equals(color: Color): this {
+  public copy(color: Color): this {
     this.r = color.r;
     this.g = color.g;
     this.b = color.b;
@@ -67,12 +67,12 @@ export class Color {
   }
 
   get clone(): Color {
-    return Color.equals(this);
+    return Color.copy(this);
   }
 
   public set(input) {
     if (Color.isColor(input)) {
-      this.equals(input);
+      this.copy(input);
     } else if (typeof input === 'string') {
       this.colorString = input;
     } else {
@@ -511,7 +511,7 @@ export class Color {
     return color instanceof Color;
   }
 
-  static equals(color: Color): Color {
+  static copy(color: Color): Color {
     return new Color(color);
   }
 
@@ -538,7 +538,7 @@ export class Color {
   }
 
   static lerp(color_a: Color, color_b: Color, t: number): Color {
-    let color: Color = Color.equals(color_a);
+    let color: Color = Color.copy(color_a);
     color.r = Num.lerp(color_a.r, color_b.r, t);
     color.g = Num.lerp(color_a.g, color_b.g, t);
     color.b = Num.lerp(color_a.b, color_b.b, t);
