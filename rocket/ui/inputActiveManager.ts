@@ -60,8 +60,7 @@ export class InputActiveManager {
 
   constructor(config?: Partial<InputActiveManagerConfig>) {
     this.config = Object.assign({}, INPUT_FOCUS_MANAGER_CONFIG);
-    if (typeof config === 'object')
-      this.setConfig(config);
+    this.setConfig(config);
 
     this.inputElements = [];
 
@@ -70,8 +69,8 @@ export class InputActiveManager {
     this.initialize();
   }
 
-  private setConfig(config: Partial<InputActiveManagerConfig>) {
-    Object.assign(this.config, config);
+  private setConfig(config?: Partial<InputActiveManagerConfig>) {
+    if (typeof config === 'object') Object.assign(this.config, config);
   }
 
   private getElements() {

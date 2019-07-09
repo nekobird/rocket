@@ -40,10 +40,8 @@ export class AnimationCore {
     // This is only called when not animating.
     this.isActive = true;
 
-    if (
-      typeof delay !== 'number'
-      || typeof delay === 'undefined'
-    ) delay = config.delay as number;
+    if (typeof delay !== 'number' || typeof delay === 'undefined')
+      delay = config.delay as number;
 
     if (delay > 0) {
       try {

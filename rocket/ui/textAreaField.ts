@@ -42,17 +42,16 @@ export class TextAreaField {
   public previousKeyCode?: number;
 
   constructor(element: HTMLTextAreaElement, config?: Partial<TextAreaFieldConfig>) {
-    this.textBoxModel = new TextBoxModel;
-
-    this.element = element;
-
     this.config = Object.assign({}, TEXTAREAFIELD_DEFAULT_CONFIG);
-    if (typeof config === 'object')
-      this.setConfig(config);
+    this.setConfig(config);
+
+    this.textBoxModel = new TextBoxModel;
+    this.element = element;
   }
 
-  public setConfig(config: Partial<TextAreaFieldConfig>) {
-    Object.assign(this.config, config);
+  public setConfig(config?: Partial<TextAreaFieldConfig>): this {
+    if (typeof config === 'object') Object.assign(this.config, config);
+    return this;
   }
 
   public initialize(): this {
@@ -166,8 +165,7 @@ export class TextAreaField {
     if (
       keyCode === 13
       && this.config.disableLineBreaks === true
-    )
-      event.preventDefault();
+    ) event.preventDefault();
     this.previousKeyCode = keyCode;
   }
 

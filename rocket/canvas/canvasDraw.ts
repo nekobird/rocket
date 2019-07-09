@@ -87,13 +87,11 @@ export class CanvasDraw {
     this.context.strokeStyle = computedStyle.strokeColor;
     this.context.lineWidth   = computedStyle.strokeWidth;
 
-    if (computedStyle.noFill === false) {
+    if (computedStyle.noFill === false)
       this.context.fill();
-    }
 
-    if (computedStyle.noStroke === false) {
+    if (computedStyle.noStroke === false)
       this.context.stroke();
-    }
 
     return this;
   }

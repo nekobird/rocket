@@ -27,13 +27,13 @@ export class MonoController {
 
   constructor(config?: Partial<MonoConfig>) {
     this.config = Object.assign({}, DEFAULT_CONFIG);
-    if (typeof config === 'object') this.setConfig(config);
+    this.setConfig(config);
     this.itemManager = new ItemManager(this);
     this.eventManager = new EventManager(this);
     this.actionManager = new ActionManager(this);
   }
 
-  public setConfig(config: Partial<MonoConfig>): this {
+  public setConfig(config?: Partial<MonoConfig>): this {
     if (typeof config === 'object') Object.assign(this.config, config);
     return this;
   }

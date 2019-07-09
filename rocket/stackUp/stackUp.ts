@@ -50,12 +50,12 @@ export class StackUp {
 
   constructor(config?: Partial<StackUpConfig>) {
     this.config = Object.assign({}, STACKUP_DEFAULT_CONFIG);
-    if (typeof config === 'object') this.setConfig(config);
+    this.setConfig(config);
     this.layout = new StackUpLayout(this, this.config.layout);
     return this;
   }
 
-  public setConfig(config: Partial<StackUpConfig>): this {
+  public setConfig(config?: Partial<StackUpConfig>): this {
     if (typeof config === 'object') Object.assign(this.config, config);
     return this;
   }

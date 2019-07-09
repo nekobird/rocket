@@ -52,8 +52,7 @@ export class SortableList {
 
   constructor(config?: Partial<SortableListConfig>) {
     this.config = Object.assign({}, SORTABLE_DEFAULT_CONFIG);
-    if (typeof config === 'object')
-      this.setConfig(config);
+    this.setConfig(config);
     this.elementManager = new ElementManager(this);
     this.eventManager = new EventManager(this);
     this.dummy = new Dummy(this);
@@ -61,8 +60,8 @@ export class SortableList {
     this.transition = new SortableListTransition(this);
   }
 
-  public setConfig(config: Partial<SortableListConfig>) {
-    Object.assign(this.config, config);
+  public setConfig(config?: Partial<SortableListConfig>) {
+    if (typeof config === 'object') Object.assign(this.config, config);
   }
 
   public initialize() {
@@ -75,8 +74,7 @@ export class SortableList {
     if (
       typeof groups === 'object'
       && Array.isArray(groups) === true
-    )
-      return groups;
+    ) return groups;
     return false;
   }
 
@@ -85,8 +83,7 @@ export class SortableList {
     if (
       typeof items === 'object'
       && Array.isArray(items) === true
-    )
-      return items;
+    ) return items;
     return false;
   }
 
@@ -102,8 +99,7 @@ export class SortableList {
           if (
             typeof touch.identifier !== 'undefined'
             && this.eventManager.activeIdentifier === touch.identifier.toString()
-          )
-            event.preventDefault();
+          ) event.preventDefault();
         });
     }
   }
@@ -214,8 +210,7 @@ export class SortableList {
           if (
             closestChild !== (this.dummy.element as HTMLElement).nextElementSibling
             && DOMPoint.elementCenterIsAbovePoints(closestChild, topPoints) === true
-          )
-            target = closestChild;
+          ) target = closestChild;
           if (
             closestChild.nextElementSibling !== this.dummy.element
             && DOMPoint.elementCenterIsBelowPoints(closestChild, bottomPoints) === true

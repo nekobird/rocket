@@ -15,13 +15,13 @@ export class Animation {
   constructor(config?: Partial<AnimationConfig>) {
     this.config = Object.assign({}, DEFAULT_ANIMATION_CONFIG);
     this.config.dataExport = {};
-    if (typeof config === 'object') this.setConfig(config);
+    this.setConfig(config);
     this.core = new AnimationCore(this);
     return this;
   }
 
-  public setConfig(config: Partial<AnimationConfig>): this {
-    Object.assign(this.config, config);
+  public setConfig(config?: Partial<AnimationConfig>): this {
+    if (typeof config === 'object') Object.assign(this.config, config);
     return this;
   }
 
