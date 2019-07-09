@@ -69,7 +69,6 @@ export class EventManager {
     if (
       config.listenToKeydown === true
       && actionManager.isRunning === false
-    )
-      config.onKeydown(event, this.controller);
+    ) config.onKeydown(event, this.controller);
   }
 }

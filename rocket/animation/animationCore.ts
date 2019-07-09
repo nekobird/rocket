@@ -43,8 +43,7 @@ export class AnimationCore {
     if (
       typeof delay !== 'number'
       || typeof delay === 'undefined'
-    )
-      delay = <number>config.delay;
+    ) delay = config.delay as number;
 
     if (delay > 0) {
       try {

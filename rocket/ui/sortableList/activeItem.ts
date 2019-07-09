@@ -38,11 +38,10 @@ export class ActiveItem {
     if (
       this.isActive === true
       && DOMUtil.isHTMLElement(this.element) === true
-    ) {
+    )
       this.pointToItemOffset = DOMPoint.getElementOffsetFromPoint(
         this.element as HTMLElement, { x, y }
       );
-    }
   }
 
   public move(pointer: Point) {

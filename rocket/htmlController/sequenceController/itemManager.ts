@@ -28,14 +28,14 @@ export class ItemManager {
     const { config } = this.controller;
     if (
       Array.isArray(config.items) === false
-      && NodeList.prototype.isPrototypeOf(<NodeListOf<HTMLElement>>config.items)
+      && NodeList.prototype.isPrototypeOf(config.items as NodeListOf<HTMLElement>)
     ) {
-      this.items = Array.from(<NodeListOf<HTMLElement>>config.items);
+      this.items = Array.from(config.items as NodeListOf<HTMLElement>);
       return this;
     }
     
     if (Array.isArray(config.items) === true) {
-      this.items = <HTMLElement[]>config.items;
+      this.items = config.items as HTMLElement[];
       return this;
     }
     throw new Error('SequenceController: Items not defined.');

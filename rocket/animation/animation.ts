@@ -15,8 +15,7 @@ export class Animation {
   constructor(config?: Partial<AnimationConfig>) {
     this.config = Object.assign({}, DEFAULT_ANIMATION_CONFIG);
     this.config.dataExport = {};
-    if (typeof config === 'object')
-      this.setConfig(config);
+    if (typeof config === 'object') this.setConfig(config);
     this.core = new AnimationCore(this);
     return this;
   }

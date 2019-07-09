@@ -27,8 +27,7 @@ export class SequenceController {
 
   constructor(config?: Partial<SequenceConfig>) {
     this.config = Object.assign({}, DEFAULT_CONFIG);
-    if (typeof config === 'object')
-      this.setConfig(config);
+    if (typeof config === 'object') this.setConfig(config);
 
     this.itemManager = new ItemManager(this);
     this.eventManager = new EventManager(this);
