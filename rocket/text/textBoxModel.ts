@@ -88,14 +88,14 @@ export class TextBoxModel {
       maxHeight: '0',
       whiteSpace: 'pre-wrap',
     };
-    if (typeof modelStyleOverride !== 'undefined') {
+
+    if (typeof modelStyleOverride !== 'undefined')
       this.style = modelStyleOverride;
-    }
 
     // If text is undefined, get text from target element instead.
-    if (typeof text === 'undefined') {
+    if (typeof text === 'undefined')
       text = DOMUtil.getTextFromElement(element);
-    }
+
     this.modelText = text;
 
     // Set offset for when boxSizing is set to border-box.
@@ -108,7 +108,7 @@ export class TextBoxModel {
       offset -= DOMStyle.getVerticalPaddings(element);
     }
 
-    const result = (<HTMLElement>this.modelElement).scrollHeight + offset;
+    const result = (this.modelElement as HTMLElement).scrollHeight + offset;
     this.destroy();
     return result;
   }
@@ -135,6 +135,7 @@ export class TextBoxModel {
       wordBreak: 'normal',
       wordWrap: 'normal',
     };
+
     if (typeof modelStyleOverride !== 'undefined')
       this.style = modelStyleOverride;
 
@@ -143,7 +144,7 @@ export class TextBoxModel {
 
     this.modelText = text;
 
-    const result = (<HTMLElement>this.modelElement).scrollWidth;
+    const result = (this.modelElement as HTMLElement).scrollWidth;
     this.destroy();
     return result;
   }
@@ -163,7 +164,7 @@ export class TextBoxModel {
         || this.modelElement.nodeName === 'TEXTAREA'
         || this.modelElement.nodeName === 'INPUT'
       ) {
-        (<HTMLTextAreaElement | HTMLInputElement>this.modelElement).value = text;
+        (this.modelElement as HTMLTextAreaElement | HTMLInputElement).value = text;
       } else {
         text = text.replace(/[\n\r]/g, '<br>');
         text = text.replace(/[\t]/g, '&#9');

@@ -29,14 +29,14 @@ export class ItemManager {
     const { config } = this.controller;      
     if (
       Array.isArray(config.items) === false
-      && NodeList.prototype.isPrototypeOf(<NodeListOf<HTMLElement>>config.items)
+      && NodeList.prototype.isPrototypeOf(config.items as NodeListOf<HTMLElement>)
     ) {
-      this.items = Array.from(<NodeListOf<HTMLElement>>config.items);
+      this.items = Array.from(config.items as NodeListOf<HTMLElement>);
       return this;
     }
     
     if (Array.isArray(config.items) === true) {
-      this.items = <HTMLElement[]>config.items;
+      this.items = config.items as HTMLElement[];
       return this;
     }
 
@@ -45,9 +45,8 @@ export class ItemManager {
 
   public setItems(items: HTMLElement[] | NodeListOf<HTMLElement> | string): this {
     if (typeof items === 'string') {
-      const results: NodeListOf<HTMLElement> = document.querySelectorAll(items);
-      if (results !== null)
-        this.items = Array.from(results);
+      const results = document.querySelectorAll(items) as NodeListOf<HTMLElement>;
+      if (results !== null) this.items = Array.from(results);
       return this;
     }
 

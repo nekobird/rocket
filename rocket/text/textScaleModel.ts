@@ -41,8 +41,7 @@ export class TextScaleModel {
       && this.config.fontSizeRange[0] < this.config.fontSizeRange[1]
       && typeof this.config.increment === 'number'
       && this.config.increment > 0
-    )
-      return true;
+    ) return true;
     return false;
   }
 
@@ -51,8 +50,7 @@ export class TextScaleModel {
       typeof this.config.fontSizeSet === 'object'
       && Array.isArray(this.config.fontSizeSet) === true
       && this.config.fontSizeSet.length > 0
-    )
-      return true;
+    ) return true;
     return false;
   }
     
@@ -114,6 +112,7 @@ export class TextScaleModel {
 
       let modelWidth = 0;
       let finalFontSize = minFontSize;
+
       while (true) {
         modelWidth = this.getModelWidth(text, finalFontSize);
         if (modelWidth >= originalWidth) {
@@ -124,8 +123,7 @@ export class TextScaleModel {
               break;
             }
             modelWidth = this.getModelWidth(text, finalFontSize);
-            if (modelWidth <= originalWidth)
-              break;
+            if (modelWidth <= originalWidth) break;
           }
           break;
         }
