@@ -1,4 +1,5 @@
 import {
+  DOMScroll,
   Num,
   Point,
   PointHelper,
@@ -21,10 +22,53 @@ const MODEL_ATTRIBUTES = {
 let modelElement: HTMLElement;
 let modelIsReady: boolean = false;
 
+let scrollingIsDisabled: boolean = false;
+let scrollingIsLocked: boolean = false;
+let scrollY: number;
+
 export class ViewportModel {
 
   constructor() {
     ViewportModel.createModel();
+  }
+
+  public static get scrollingIsEnabled() {
+    return !scrollingIsDisabled;
+  }
+
+  public static get scrollingIsLocked() {
+    return scrollingIsLocked;
+  }
+
+  public static disableScrolling(isLocked: boolean = false, forceHideScrollbar: boolean = false) {
+    if (scrollingIsDisabled === false) {
+      let hasVerticalScrollBar = this.hasVerticalScrollbar;
+      scrollingIsLocked = isLocked;
+      scrollY = DOMScroll.scrollTop;
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.top      = `-${scrollY}px`;
+      scrollingIsDisabled = true;
+      if (hasVerticalScrollBar === true && forceHideScrollbar === false) {
+        document.documentElement.style.overflowY = 'scroll';
+      }
+    }
+  }
+
+  public static enableScrolling(unlock: boolean = false) {
+    if (scrollingIsDisabled === true) {
+      if (
+        scrollingIsLocked === false
+        || (scrollingIsLocked === true && unlock === true)
+      ) {
+        document.documentElement.style.removeProperty('overflow-y');
+        document.body.style.removeProperty('overflow');
+        document.body.style.removeProperty('position');
+        document.body.style.removeProperty('top');
+        window.scrollTo(0, scrollY);
+        scrollingIsDisabled = false;
+      }
+    }
   }
 
   // @model_properties

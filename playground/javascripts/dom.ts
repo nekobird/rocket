@@ -1,6 +1,7 @@
 import {
   DOMRect,
   DOMScroll,
+  ViewportModel,
 } from '../../rocket/rocket';
 
 const boxElement = document.querySelector('.box');
@@ -19,3 +20,10 @@ window.addEventListener('scroll', () => {
     [boxElement as HTMLElement, box2Element as HTMLElement]
   ));
 });
+
+setTimeout(() => {
+  ViewportModel.disableScrolling();
+  setTimeout(() => {
+    ViewportModel.enableScrolling();
+  }, 2000);
+}, 4000);
