@@ -15,15 +15,11 @@ export class Vector2 {
   }
 
   public setPoint(x: number | Point | undefined, y?: number): this {
-    if (
-      typeof x === 'number'
-      && typeof y === 'number'
-    ) {
+    if (typeof x === 'number' && typeof y === 'number') {
       this.x = x;
       this.y = y;
     } else if (typeof x === 'undefined') {
-      this.x = 0;
-      this.y = 0;
+      this.x = this.y = 0;
     } else {
       this.copy(x as Point);
     }
@@ -45,10 +41,28 @@ export class Vector2 {
     return Num.hypotenuse(this.x, this.y);
   }
 
-  set magnitude(mag: number) {
+  set magnitude(magnitude: number) {
     this
       .normalize()
-      .multiply(mag);
+      .multiply(magnitude);
+  }
+
+  public normalize(): this {
+    let magnitude = Math.abs(this.magnitude);
+    magnitude = (magnitude === 0) ? 1 : magnitude;
+    this.x /= magnitude;
+    this.y /= magnitude;
+    return this;
+  }
+
+  public constrain(constrain: number): this {
+    this.x = Num.constrain(this.x, constrain);
+    this.y = Num.constrain(this.y, constrain);
+    return this;
+  }
+
+  public dot(point: Point): number {
+    return this.x * point.x + this.y * point.y;
   }
 
   public round(to: number = 0): this {
@@ -174,24 +188,6 @@ export class Vector2 {
     return this;
   }
 
-  public constrain(constrain: number): this {
-    this.x = Num.constrain(this.x, constrain);
-    this.y = Num.constrain(this.y, constrain);
-    return this;
-  }
-
-  public dot(point: Point): number {
-    return this.x * point.x + this.y * point.y;
-  }
-
-  public normalize(): this {
-    let mag = Math.abs(this.magnitude);
-    mag = mag === 0 ? 1 : mag;
-    this.x /= mag;
-    this.y /= mag;
-    return this;
-  }
-
   public getDistanceTo(to: Point): number {
     return Vector2
       .subtract(this, to)
@@ -310,19 +306,18 @@ export class Vector2 {
   }
 
   public scaleByFrom(by: number, from: Point): this {
-    const sub = Vector2.subtract(this, from);
-    const m = sub.magnitude;
-    sub
+    const difference = Vector2.subtract(this, from);
+    const magnitude = difference.magnitude;
+    difference
       .normalize()
-      .multiply(m * by)
+      .multiply(magnitude * by)
       .add(from);
-    this.copy(sub);
+    this.copy(difference);
     return this;
   }
 
   public limit(by: number): this {
-    const mag = this.magnitude;
-    if (mag > by) this.normalize().multiply(by);
+    if (this.magnitude > by) this.normalize().multiply(by);
     return this;
   }
 
@@ -352,7 +347,7 @@ export class Vector2 {
   // STATIC
 
   static projectFrom(from: Point, direction: Point, by: number): Vector2 {
-    const to: Vector2 = Vector2
+    const to = Vector2
       .copy(direction)
       .normalize()
       .multiply(by);
