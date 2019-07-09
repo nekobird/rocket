@@ -24,6 +24,8 @@ let modelIsReady: boolean = false;
 
 let scrollingIsDisabled: boolean = false;
 let scrollingIsLocked: boolean = false;
+
+let scrollX: number;
 let scrollY: number;
 
 export class ViewportModel {
@@ -42,16 +44,24 @@ export class ViewportModel {
 
   public static disableScrolling(isLocked: boolean = false, forceHideScrollbar: boolean = false) {
     if (scrollingIsDisabled === false) {
-      let hasVerticalScrollBar = this.hasVerticalScrollbar;
-      scrollingIsLocked = isLocked;
+      let hasHorizontalScrollBar = this.hasHorizontalScrollBar;
+      let hasVerticalScrollBar   = this.hasVerticalScrollbar;
+
+      scrollX = DOMScroll.scrollLeft;
       scrollY = DOMScroll.scrollTop;
+
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';
-      document.body.style.top      = `-${scrollY}px`;
-      scrollingIsDisabled = true;
-      if (hasVerticalScrollBar === true && forceHideScrollbar === false) {
+      document.body.style.left = `-${scrollX}px`;
+      document.body.style.top  = `-${scrollY}px`;
+
+      if (hasHorizontalScrollBar === true && forceHideScrollbar === false)
+        document.documentElement.style.overflowX = 'scroll';
+      if (hasVerticalScrollBar === true && forceHideScrollbar === false)
         document.documentElement.style.overflowY = 'scroll';
-      }
+
+      scrollingIsLocked = isLocked;
+      scrollingIsDisabled = true;
     }
   }
 
@@ -61,17 +71,23 @@ export class ViewportModel {
         scrollingIsLocked === false
         || (scrollingIsLocked === true && unlock === true)
       ) {
+        document.documentElement.style.removeProperty('overflow-x');
         document.documentElement.style.removeProperty('overflow-y');
         document.body.style.removeProperty('overflow');
         document.body.style.removeProperty('position');
+        document.body.style.removeProperty('left');
         document.body.style.removeProperty('top');
-        window.scrollTo(0, scrollY);
+        window.scrollTo(scrollX, scrollY);
+        scrollingIsLocked   = false;
         scrollingIsDisabled = false;
       }
     }
   }
 
   // @model_properties
+  public static get hasHorizontalScrollBar(): boolean {
+    return window.innerHeight > document.documentElement.scrollHeight;
+  }
 
   public static get hasVerticalScrollbar(): boolean {
     return window.innerWidth > document.documentElement.scrollWidth;
