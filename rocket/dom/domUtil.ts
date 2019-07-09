@@ -14,6 +14,15 @@ export class DOMUtil {
     return false;
   }
 
+  public static removeElement(element: HTMLElement): void {
+    if (element.parentNode !== null) {
+      element.parentNode.removeChild(element);
+      element.remove();
+    } else {
+      element.remove();
+    }
+  }
+
   public static onImageLoad(src: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const img = new Image();
