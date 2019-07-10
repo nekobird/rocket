@@ -7,13 +7,13 @@ import {
   ViewportModel,
 } from '../rocket';
 
-const DOMAlignReferenceCornerNames = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
-const DOMAlignReferenceEdgeNames = ['top', 'bottom', 'left', 'right'];
-const DOMAlignReferencePointNames = ['center', ...DOMAlignReferenceCornerNames, ...DOMAlignReferenceEdgeNames];
-
 export type DOMAlignReferenceCornerNames = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 export type DOMAlignReferenceEdgeNames = 'top' | 'left' | 'right' | 'bottom';
 export type DOMAlignReferencePointNames = 'center' | DOMAlignReferenceCornerNames | DOMAlignReferenceEdgeNames;
+
+const DOMAlignReferenceCornerNames: DOMAlignReferenceCornerNames[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+const DOMAlignReferenceEdgeNames: DOMAlignReferenceEdgeNames[] = ['top', 'bottom', 'left', 'right'];
+const DOMAlignReferencePointNames: DOMAlignReferencePointNames[] = ['center', ...DOMAlignReferenceCornerNames, ...DOMAlignReferenceEdgeNames];
 
 const DOMAlignReferencePointRotation: DOMAlignReferencePointNames[] = ['top-left', 'top', 'top-right', 'right', 'bottom-right', 'bottom', 'bottom-left'];
 
@@ -231,7 +231,11 @@ export class DOMAlign {
     let left = offset.left, top = offset.top;
     if (referencePoint === 'center') {
       return { left, top };
-    } else if (DOMAlignReferenceCornerNames.indexOf(referencePoint) !== -1) {
+    } else if (
+      DOMAlignReferenceCornerNames.indexOf(
+        referencePoint as DOMAlignReferenceCornerNames
+      ) !== -1
+    ) {
       let cornerSpacing = this.calculateCornerSpacing(spacing);
       switch(referencePoint) {
         case 'top-left':

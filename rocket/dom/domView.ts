@@ -2,13 +2,13 @@ import {
   ViewportModel,
 } from '../rocket';
 
-export const DOMViewCornerNames = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
-export const DOMViewEdgeNames = ['top', 'bottom', 'left', 'right'];
-export const DOMViewEdgeAndCornerNames = [...DOMViewCornerNames, ...DOMViewEdgeNames];
-
 export type DOMViewCornerNames = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 export type DOMViewEdgeNames = 'top' | 'bottom' | 'left' | 'right';
 export type DOMViewEdgeAndCornerNames = DOMViewCornerNames | DOMViewEdgeNames;
+
+export const DOMViewCornerNames: DOMViewCornerNames[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+export const DOMViewEdgeNames: DOMViewEdgeNames[] = ['top', 'bottom', 'left', 'right'];
+export const DOMViewEdgeAndCornerNames: DOMViewEdgeAndCornerNames[] = [...DOMViewCornerNames, ...DOMViewEdgeNames];
 
 export class DOMView {
 
@@ -23,8 +23,9 @@ export class DOMView {
 
   public static elementIsClipping(
     element: HTMLElement,
-    cornersOrEdges: DOMViewEdgeAndCornerNames | DOMViewEdgeAndCornerNames[]
+    cornersOrEdges?: DOMViewEdgeAndCornerNames | DOMViewEdgeAndCornerNames[]
   ): DOMViewEdgeAndCornerNames | false {
+    if (typeof cornersOrEdges === 'undefined') cornersOrEdges = [...DOMViewEdgeAndCornerNames];
     if (Array.isArray(cornersOrEdges) === false) cornersOrEdges = [cornersOrEdges as DOMViewEdgeAndCornerNames];
     cornersOrEdges = cornersOrEdges as DOMViewEdgeAndCornerNames[];
     const result = this.elementIsClippingCornerOrEdge(element);
