@@ -21,6 +21,7 @@
     "prepare": "npm run build",
     "documentation": "parcel ./documentation/index.html",
     "playground": "parcel ./playground/index.html",
+    "cleanup": "rm -rf dist; rm -rf build; rm -rf .cache",
     "test": "jest"
   },
   "devDependencies": {
