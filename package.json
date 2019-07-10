@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "build": "tsc -t es6",
-    "buildDocumentation": "parcel build ./documentation/index.html --public-url ./",
+    "buildDocumentation": "parcel build ./documentation/index.html --out-dir docs --public-url ./",
     "buildPlayground": "parcel build ./playground/index.html --public-url ./",
     "prepare": "npm run build",
     "documentation": "parcel ./documentation/index.html",
