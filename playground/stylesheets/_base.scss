@@ -1,8 +1,0 @@
-$base: (
-  'width'    : 1366px,
-  'font-size': 16px,
-);
-
-@function base($key) {
-  @return map-get($base, $key);
-}

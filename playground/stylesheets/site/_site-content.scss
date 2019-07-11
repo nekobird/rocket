@@ -3,9 +3,4 @@
   max-width: 100%;
   position: relative;
   width: 100vw;
-
-  &.site-content--disable-scrolling {
-    overflow: hidden;
-    position: fixed;
-  }
 }

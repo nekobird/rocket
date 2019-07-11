@@ -9,14 +9,14 @@
   @return strip-unit($px) / strip-unit($base) + 0rem;
 }
 
-@function column-width($col: 12, $nOfCol: 12) {
-  @return ((px-to-rem(base('width')) / $nOfCol) * $col) + 0rem;
+@function rem-to-px($rem) {
+  @return strip-unit($rem) * config('font-size');
 }
 
 @function width-percentage($number, $base: 12) {
   @return (strip-unit($number) / strip-unit($base)) * 100 + 0%;
 }
 
-@function rem-to-px($rem) {
-  @return strip-unit($rem) * base('font-size');
+@function column-width($col: 12, $nOfCol: 12) {
+  @return ((px-to-rem(config('width')) / $nOfCol) * $col) + 0rem;
 }
