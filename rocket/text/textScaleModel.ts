@@ -77,7 +77,7 @@ export class TextScaleModel {
     ) {
       this.config.fontSizeSet.sort((a, b) => a - b);
 
-      const text = DOMUtil.getTextFromElement(this.element);
+      const text = DOMText.getTextFromElement(this.element);
       const originalWidth = this.getTextBoxWidth();
 
       let modelWidth = 0;
@@ -107,7 +107,7 @@ export class TextScaleModel {
       && typeof this.config.increment !== 'undefined'
     ) {
       const [ minFontSize, maxFontSize ] = this.config.fontSizeRange;
-      const text = DOMUtil.getTextFromElement(this.element);
+      const text = DOMText.getTextFromElement(this.element);
       const originalWidth = this.getTextBoxWidth();
 
       let modelWidth = 0;

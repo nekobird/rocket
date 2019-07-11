@@ -1,6 +1,6 @@
 import {
   DOMStyle,
-  DOMUtil,
+  DOMText,
 } from '../rocket';
 
 const MODEL_ATTRIBUTES = {
@@ -94,7 +94,7 @@ export class TextBoxModel {
 
     // If text is undefined, get text from target element instead.
     if (typeof text === 'undefined')
-      text = DOMUtil.getTextFromElement(element);
+      text = DOMText.getTextFromElement(element);
 
     this.modelText = text;
 
@@ -140,7 +140,7 @@ export class TextBoxModel {
       this.style = modelStyleOverride;
 
     if (typeof text === 'undefined')
-      text = DOMUtil.getTextFromElement(element);
+      text = DOMText.getTextFromElement(element);
 
     this.modelText = text;
 

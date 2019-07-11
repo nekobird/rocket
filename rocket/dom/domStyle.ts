@@ -1,3 +1,7 @@
+import {
+  DOMTraverse,
+} from '../rocket';
+
 export interface StyleList {
   [key: string]: string | number;
 }
@@ -173,6 +177,22 @@ export class DOMStyle {
     const computedStyle = getComputedStyle(element);
     const duration = computedStyle.animationDuration;
     return (duration === null || duration === '') ? 0 : parseFloat(duration) * 1000;
+  }
+
+  public static getParentsMaxAnimationDuration(from: HTMLElement): number {
+    let durations: number[] = [];
+    DOMTraverse.ascendFrom(from, element => {
+      durations.push(this.getAnimationDuration(element))
+    });
+    return Math.max(...durations);
+  }
+
+  public static getChildrenMaxAnimationDuration(from: HTMLElement): number {
+    let durations: number[] = [];
+    DOMTraverse.descendFrom(from, element => {
+      durations.push(this.getAnimationDuration(element))
+    });
+    return Math.max(...durations);
   }
 
   public static getTransitionDuration(element: HTMLElement): number {

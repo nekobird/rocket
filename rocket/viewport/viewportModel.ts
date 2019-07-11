@@ -30,10 +30,6 @@ let scrollY: number;
 
 export class ViewportModel {
 
-  constructor() {
-    ViewportModel.createModel();
-  }
-
   public static get scrollingIsEnabled() {
     return !scrollingIsDisabled;
   }
@@ -81,6 +77,17 @@ export class ViewportModel {
         scrollingIsLocked   = false;
         scrollingIsDisabled = false;
       }
+    }
+  }
+
+  public static scrollTo(left: number, top: number) {
+    if (scrollingIsDisabled === true) {
+      scrollX = left;
+      scrollY = top;
+      document.body.style.left = `-${left}px`;
+      document.body.style.top = `-${top}px`;
+    } else {
+      window.scrollTo(left, top);
     }
   }
 

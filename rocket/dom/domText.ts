@@ -4,6 +4,19 @@ import {
 
 export class DOMText {
 
+  public static getTextFromElement(element: HTMLElement): string {
+    if (
+         element instanceof HTMLTextAreaElement
+      || element instanceof HTMLInputElement
+      || element.nodeName === 'INPUT'
+      || element.nodeName === 'TEXTAREA'
+    ) return (element as HTMLTextAreaElement | HTMLInputElement).value;
+
+    if (element.textContent !== null) return element.textContent;
+
+    return '';
+  }
+
   public static getElementTextBoxWidth(element: HTMLElement): number {
     return element.offsetWidth - DOMStyle.getTotalHorizontalInnerSpace(element);
   }

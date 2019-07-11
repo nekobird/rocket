@@ -3,7 +3,6 @@ import {
 } from '../rocket';
 
 export class DOMUtil {
-
   public static isHTMLElement(element?): boolean {
     if (
          typeof element === 'object'
@@ -49,16 +48,11 @@ export class DOMUtil {
     });
   }
 
-  public static getTextFromElement(element: HTMLElement): string {
-    if (
-         element instanceof HTMLTextAreaElement
-      || element instanceof HTMLInputElement
-      || element.nodeName === 'INPUT'
-      || element.nodeName === 'TEXTAREA'
-    ) return (element as HTMLTextAreaElement | HTMLInputElement).value;
-
-    if (element.textContent !== null) return element.textContent;
-
-    return '';
+  public static prependChild(parent: HTMLElement, child: HTMLElement) {
+    if (parent.childElementCount > 0) {
+      parent.insertBefore(child, parent.childNodes[0]);
+    } else {
+      parent.appendChild(child);
+    }
   }
 }
