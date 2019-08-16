@@ -12,25 +12,25 @@ export type DOMAlignOffsetReferenceCornerNames = 'top-left' | 'top-right' | 'bot
 export type DOMAlignOffsetReferenceEdgeNames = 'top' | 'left' | 'right' | 'bottom';
 export type DOMAlignOffsetReferencePointNames = 'center' | DOMAlignOffsetReferenceCornerNames | DOMAlignOffsetReferenceEdgeNames;
 
-const DOMAlignOffsetReferenceCornerNames: DOMAlignOffsetReferenceCornerNames[] = [
+export const DOMAlignOffsetReferenceCornerNames: DOMAlignOffsetReferenceCornerNames[] = [
   'top-left',
   'top-right',
   'bottom-left',
   'bottom-right',
 ];
-const DOMAlignOffsetReferenceEdgeNames: DOMAlignOffsetReferenceEdgeNames[] = [
+export const DOMAlignOffsetReferenceEdgeNames: DOMAlignOffsetReferenceEdgeNames[] = [
   'top',
   'bottom',
   'left',
   'right',
 ];
-const DOMAlignOffsetReferencePointNames: DOMAlignOffsetReferencePointNames[] = [
+export const DOMAlignOffsetReferencePointNames: DOMAlignOffsetReferencePointNames[] = [
   'center',
   ...DOMAlignOffsetReferenceCornerNames,
   ...DOMAlignOffsetReferenceEdgeNames,
 ];
 
-const DOMAlignOffsetReferencePointRotation: DOMAlignOffsetReferencePointNames[] = [
+export const DOMAlignOffsetReferencePointRotation: DOMAlignOffsetReferencePointNames[] = [
   'top-left',
   'top',
   'top-right',
