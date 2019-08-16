@@ -6,22 +6,22 @@ import {
 } from '../rocket';
 
 import {
-  TEXT_FILL_DEFAULT_CONFIG,
-  TextFillConfig,
+  TEXT_AUTO_SCALER_DEFAULT_CONFIG,
+  TextAutoScalerConfig,
 } from './config';
 
-export class TextFill {
-  public config: TextFillConfig;
+export class TextAutoScaler {
+  public config: TextAutoScalerConfig;
 
   public originalWidth: number = 0;
 
-  constructor(config: Partial<TextFillConfig>) {
-    this.config = {...TEXT_FILL_DEFAULT_CONFIG};
+  constructor(config: Partial<TextAutoScalerConfig>) {
+    this.config = {...TEXT_AUTO_SCALER_DEFAULT_CONFIG};
 
     this.setConfig(config);
   }
 
-  public setConfig(config: Partial<TextFillConfig>) {
+  public setConfig(config: Partial<TextAutoScalerConfig>) {
     if (typeof config === 'object') {
       Object.assign(this.config, config);
     }
@@ -88,17 +88,17 @@ export class TextFill {
     );
   }
 
-  public optimize(): number | false {
+  public fill(): number | false {
     let { validFontSizes } = this.config;
     
     if (typeof validFontSizes !== 'undefined') {
-      return this.optimizeFromSet();
+      return this.fillFromValidFontSizes();
     }
 
-    return this.optimizeFromRange();
+    return this.fillFromFontSizeRange();
   }
 
-  public optimizeFromSet(): number | false {
+  public fillFromValidFontSizes(): number | false {
     let { element, validFontSizes } = this.config;
 
     if (this.configSetIsvalid() === true) {
@@ -139,7 +139,7 @@ export class TextFill {
     return false;
   }
 
-  public optimizeFromRange(): number | false {
+  public fillFromFontSizeRange(): number | false {
     let { element, fontSizeRange, fontSizeIncrement } = this.config;
 
     if (this.configRangeIsValid() === true) {

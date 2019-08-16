@@ -53,8 +53,8 @@ export * from './mono-drag/mono-drag';
 // @pointer-move
 export * from './pointer-move/pointer-move';
 
-// @text-fill
-export * from './text-fill/text-fill';
+// @text-auto-scaler
+export * from './text-auto-scaler/text-auto-scaler';
 
 // @repeater
 export * from './repeater/repeater';

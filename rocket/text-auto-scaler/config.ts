@@ -1,8 +1,8 @@
 import {
-  TextFill,
-} from './text-fill';
+  TextAutoScaler,
+} from './text-auto-scaler';
 
-export interface TextFillConfig {
+export interface TextAutoScalerConfig {
   element?: HTMLElement,
 
   validFontSizes?: number[];
@@ -13,11 +13,11 @@ export interface TextFillConfig {
   setFontSize: (
     element: HTMLElement,
     fontSize: number,
-    textFill: TextFill,
+    textAutoScaler: TextAutoScaler,
   ) => void;
 }
 
-export const TEXT_FILL_DEFAULT_CONFIG: TextFillConfig = {
+export const TEXT_AUTO_SCALER_DEFAULT_CONFIG: TextAutoScalerConfig = {
   fontSizeIncrement: 1,
 
   setFontSize: (element, fontSize) => {
