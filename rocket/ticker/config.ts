@@ -9,23 +9,21 @@ export interface TickerConfig {
 
   timingFunction: (t: number) => number;
 
-  onStart: (ticker: Ticker) => void;
-
   onTick: (n: number, c: number, ticker: Ticker) => void;
 
+  onStart: (ticker: Ticker) => void;
   onComplete: (ticker: Ticker) => void;
 }
 
 export const TICKER_DEFAULT_CONFIG: TickerConfig = {
   durationInSeconds: 1,
 
-  isForever: true,
+  isForever: false,
 
   timingFunction: t => t,
 
-  onStart: () => {},
-
   onTick: () => {},
 
+  onStart: () => {},
   onComplete: () => {},
 }
