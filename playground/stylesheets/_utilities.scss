@@ -1,0 +1,22 @@
+@function strip-unit($_number) {
+  @if type-of($_number) == 'number' and not unitless($_number) {
+    @return $_number / ($_number * 0 + 1);
+  }
+  @return $_number;
+}
+
+@function px-to-rem($_px, $_base: map-get($config, 'font-size')) {
+  @return strip-unit($_px) / strip-unit($_base) + 0rem;
+}
+
+@function rem-to-px($_rem) {
+  @return strip-unit($_rem) * config('font-size');
+}
+
+@function width-percentage($_number, $_base: 12) {
+  @return (strip-unit($_number) / strip-unit($_base)) * 100 + 0%;
+}
+
+@function column-width($_column: 12, $_numberOfColumns: 12) {
+  @return ((px-to-rem(config('width')) / $_numberOfColumns) * $_column) + 0rem;
+}

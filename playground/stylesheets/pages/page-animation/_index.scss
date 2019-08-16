@@ -1,0 +1,43 @@
+.page-animation {
+  padding: space('medium');
+
+  .demoOne {
+    margin-bottom: space('medium');
+
+    .demoOne__label {
+      margin-bottom: space('small');
+    }
+
+    .demoOne__track {
+      background-color: color('base', 'extra-light');
+      border-radius: px-to-rem(20);
+      height: px-to-rem(20);
+      position: relative;
+      width: 100%;
+    }
+
+    .demoOne__circle {
+      $_size: px-to-rem(20);
+
+      background-color: color('primary');
+      border-radius: $_size;
+      height: $_size;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: $_size;
+    }
+  }
+
+  .button {
+    background-color: hsl(240, 100%, 50%);
+    color: white;
+    font-size: 1rem;
+    height: px-to-rem(40);
+    line-height: px-to-rem(40);
+
+    &:hover {
+      background-color: hsl(240, 100%, 40%);
+    }
+  }
+}

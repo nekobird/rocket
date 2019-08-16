@@ -1,0 +1,49 @@
+{
+  "name": "@nekobird/rocket",
+  "version": "0.0.121",
+  "description": " A foundational library for creating interactive web experiences.",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/nekobird/rocket.git"
+  },
+  "license": "MIT",
+  "author": "Andrew Prasetya",
+  "files": [
+    "build/**/*"
+  ],
+  "main": "build/rocket.js",
+  "types": "build/rocket.d.ts",
+  "scripts": {
+    "build": "rm -r build; tsc -t es6 --emitDeclarationOnly; parcel build ./rocket/rocket.ts --out-dir build",
+    "build-playground": "parcel build ./playground/index.html --public-url ./",
+    "build-ts": "rm -r build; tsc -t es6",
+    "clean": "rm -r dist; rm -r build; rm -r .cache",
+    "prepare": "npm run build",
+    "start-playground": "parcel ./playground/index.html",
+    "test": "jest"
+  },
+  "browserslist": "> 1%, not dead",
+  "dependencies": {
+    "@babel/runtime": "^7.4.4",
+    "@nekobird/controls": "0.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/plugin-transform-typescript": "^7.4.4",
+    "@babel/polyfill": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/chai": "^4.2.0",
+    "@types/jest": "^24.0.17",
+    "@types/mocha": "^5.2.7",
+    "autoprefixer": "^9.6.1",
+    "cssnano": "^4.1.10",
+    "jest": "^24.8.0",
+    "parcel-bundler": "^1.12.3",
+    "sass": "^1.22.9",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.3"
+  }
+}

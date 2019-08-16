@@ -1,0 +1,49 @@
+$colors: (
+  'base': (
+    'extra-light': hsl(0, 0, 96),
+    'light': hsl(0, 0, 90),
+    'base': hsl(0, 0, 40),
+    'dark': hsl(0, 0, 10),
+  ),
+  'primary': (
+    'base': hsl(220, 100, 50),
+    'hover': hsl(220, 100, 40),
+    'active': hsl(220, 100, 20),
+    'disabled': hsl(220, 100, 20),
+    'light': hsl(220, 100, 60),
+    'dark': hsl(220, 100, 20),
+  ),
+  'error': (
+    'base': hsl(340, 50, 50),
+    'light': hsl(340, 50, 96),
+  ),
+  'success': (
+    'base': hsl(180, 50, 40),
+    'light': hsl(180, 50, 90),
+  ),
+  'white': (
+    'base': white,
+  ),
+  'black': (
+    'base': black,
+  ),
+);
+
+@function color($_color: 'primary', $_variant: 'base') {
+  @if
+    variable-exists(colors) == true
+    and type-of($colors) == 'map'
+    and type-of($_color) == 'string'
+    and type-of($_variant) == 'string'
+  {
+    @if map-has-key($colors, $_color) == true {
+      @if map-has-key(map-get($colors, $_color), $_variant) == true {
+        @return map-get(map-get($colors, $_color), $_variant);
+      } @else {
+        @return map-get(map-get($colors, $_color), 'base');
+      }
+    } @else {
+      @return map-get(map-get($colors, 'primary'), 'base');
+    }
+  }
+}

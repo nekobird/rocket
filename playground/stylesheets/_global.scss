@@ -1,0 +1,122 @@
+html {
+  @extend %style-text-body;
+
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  text-rendering: optimizeLegibility;
+}
+
+.display1,
+.display2,
+.display3,
+.display4,
+.display5,
+.display6 {
+  @extend %style-text-display;
+
+  margin-bottom: space('medium');
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @extend %style-text-heading;
+
+  margin-bottom: space('medium');
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.display1 {
+  @include apply-font-size('large', 'display');
+}
+.display2 {
+  @include apply-font-size('large', 'display');
+}
+.display3 {
+  @include apply-font-size('medium', 'display');
+}
+.display4 {
+  @include apply-font-size('base', 'display');
+}
+
+h1 {
+  @include apply-font-size('large', 'heading');
+}
+h2 {
+  @include apply-font-size('large', 'heading');
+}
+h3 {
+  @include apply-font-size('medium', 'heading');
+}
+h4 {
+  @include apply-font-size('base', 'heading');
+}
+h5 {
+  @include apply-font-size('small', 'heading');
+}
+h6 {
+  @include apply-font-size('x-small', 'heading');
+}
+
+p {
+  @extend %style-text-body;
+
+  margin-bottom: space('medium');
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Inline
+
+strong {
+  font-weight: font-weight('bold');
+}
+
+em {
+  font-style: italic;
+}
+
+u {
+  text-decoration: underline;
+}
+
+small {
+  @include apply-font-size('small');
+}
+
+del,
+s {
+  text-decoration: line-through;
+}
+
+ul,
+ol {
+  margin-bottom: space('medium');
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+a:link,
+a:visited {
+  color: color('primary');
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,42 @@
+@mixin button-apply-style-helper($style, $state, $outline: false) {
+  $_color: button-style($style, $state, 'color');
+
+  border-color: $_color;
+  color: button-style($style, $state, 'text-color');
+
+  @if $outline == true {
+    background-color: transparent;
+  } @else {
+    background-color: $_color;
+  }
+}
+
+@mixin button-apply-style($style, $outline: false) {
+  @include button-apply-style-helper($style, 'base', $outline);
+  &:hover {
+    @include button-apply-style-helper($style, 'hover', $outline);
+    text-decoration: none;
+  }
+  &:active {
+    @include button-apply-style-helper($style, 'active', $outline);
+  }
+  &[disabled=disabled],
+  &:disabled,
+  &.button--disabled {
+    @include button-apply-style-helper($style, 'disabled', $outline);
+  }
+}
+
+@mixin button-apply-size($size) {
+  $_text-size   : button-size($size, 'text-size');
+  $_border-width: border-width(button-size($size, 'border-width'));
+  $_height      : button-size($size, 'height');
+
+  @include apply-font-size($_text-size);
+
+  border-width: $_border-width;
+  height: $_height;
+  padding: button-vertical-padding(
+    $_height, $_border-width, $_text-size
+  ) button-size($size, 'padding');
+}

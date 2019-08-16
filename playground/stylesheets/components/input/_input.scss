@@ -1,0 +1,47 @@
+%input-normalize {
+  @extend %style-text-body;
+
+  appearance: none;
+  border-style: solid;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+
+  transition-duration: 0.2s;
+  transition-property: background-color, border-color, opacity;
+  transition-timing-function: ease-out;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+$sizes : 'small', 'large';
+$styles: 'primary', 'transparent';
+
+// Compose Input
+
+.input {
+  @extend %input-normalize;
+
+  border-radius: border-radius(input-config('border-radius'));
+
+  @include input-apply-size('base');
+  @include input-apply-style('base');
+
+  @each $size in $sizes {
+    &.input--#{$size} {
+      @include input-apply-size($size);
+    }
+  }
+
+  @each $style in $styles {
+    &.input--#{$style} {
+      @include input-apply-style($style);
+    }
+  }
+
+  &.input-round {
+    border-radius: 100%;
+  }
+}

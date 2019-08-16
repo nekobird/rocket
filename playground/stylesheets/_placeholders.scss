@@ -1,0 +1,32 @@
+%style-normalize-anchor {
+  color: color('black');
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+%style-text-display {
+  @include apply-font-size('base', 'display');
+
+  color: color('black');
+  font-family: font-family('primary');
+  font-weight: font-weight('medium');
+}
+
+%style-text-heading {
+  @include apply-font-size('base', 'heading');
+
+  color: color('black');
+  font-family: font-family('primary');
+  font-weight: font-weight('bold');
+}
+
+%style-text-body {
+  @include apply-font-size('base');
+
+  color: color('black');
+  font-family: font-family('primary');
+  font-weight: font-weight('medium');
+}

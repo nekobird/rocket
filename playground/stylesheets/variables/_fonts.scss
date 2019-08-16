@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,700,800&display=swap');
+
+$font-families: (
+  'primary': ('Open Sans', 'Avenir Next', 'Helvetica Neue', Arial, sans-serif),
+);
+
+// font-size should be in rem
+// line-height should be unitless
+
+$font-sizes: (
+  'x-small': (
+    'font-size': px-to-rem(12),
+    'line-height': 2,
+  ),
+  'small': (
+    'font-size': px-to-rem(14),
+    'line-height': 1.8,
+  ),
+  'base': (
+    'font-size': px-to-rem(18),
+    'line-height': 1.5,
+  ),
+  'medium': (
+    'font-size': px-to-rem(20),
+    'line-height': 1.5,
+  ),
+  'large': (
+    'font-size': px-to-rem(22),
+    'line-height': 1.5,
+  ),
+);
+
+$font-sizes-heading: (
+  'x-small': (
+    'font-size': px-to-rem(24),
+    'line-height': 1.3,
+  ),
+  'small': (
+    'font-size': px-to-rem(26),
+    'line-height': 1.3,
+  ),
+  'base': (
+    'font-size': px-to-rem(28),
+    'line-height': 1.3,
+  ),
+  'medium': (
+    'font-size': px-to-rem(36),
+    'line-height': 1.3,
+  ),
+  'large': (
+    'font-size': px-to-rem(42),
+    'line-height': 1.2,
+  ),
+  'x-large': (
+    'font-size': px-to-rem(56),
+    'line-height': 1,
+  ),
+);
+
+$font-sizes-display: (
+  'base': (
+    'font-size': px-to-rem(64),
+    'line-height': 1.2,
+  ),
+  'medium': (
+    'font-size': px-to-rem(72),
+    'line-height': 1.2,
+  ),
+  'large': (
+    'font-size': px-to-rem(84),
+    'line-height': 1.2,
+  ),
+  'x-large': (
+    'font-size': px-to-rem(96),
+    'line-height': 1,
+  ),
+);
+
+$font-weights: (
+  'normal': 400,
+  'medium': 500,
+  'semi-bold': 600,
+  'bold': 700,
+  'extra-bold': 900,
+);
+
+@function font-family($_family: 'primary') {
+  @if map-has-key($font-families, $_family) == true {
+    @return map-get($font-families, $_family);
+  } @else {
+    @return map-get($font-families, 'primary');
+  }
+}
+
+@function font-size($_size: 'base', $_set: null) {
+  @if $_set == 'heading' {
+    @if map-has-key($font-sizes-heading, $_size) == true {
+      @return map-get(map-get($font-sizes-heading, $_size), 'font-size');
+    } @else {
+      @return map-get(map-get($font-sizes-heading, 'base'), 'font-size');
+    }
+  } @else if $_set == 'display' {
+    @if map-has-key($font-sizes-display, $_size) == true {
+      @return map-get(map-get($font-sizes-display, $_size), 'font-size');
+    } @else {
+      @return map-get(map-get($font-sizes-display, 'base'), 'font-size');
+    }
+  } @else {
+    @if map-has-key($font-sizes, $_size) == true {
+      @return map-get(map-get($font-sizes, $_size), 'font-size');
+    } @else {
+      @return map-get(map-get($font-sizes, 'base'), 'font-size');
+    }
+  }
+}
+
+@function line-height($_key: 'base', $_set: null) {
+  @if $_set == 'heading' {
+    @if map-has-key($font-sizes-heading, $_key) == true {
+      @return map-get(map-get($font-sizes-heading, $_key), 'line-height');
+    } @else {
+      @return map-get(map-get($font-sizes-heading, 'base'), 'line-height');
+    }
+  } @else if $_set == 'display' {
+    @if map-has-key($font-sizes-display, $_key) == true {
+      @return map-get(map-get($font-sizes-display, $_key), 'line-height');
+    } @else {
+      @return map-get(map-get($font-sizes-display, 'base'), 'line-height');
+    }
+  } @else {
+    @if map-has-key($font-sizes, $_key) == true {
+      @return map-get(map-get($font-sizes, $_key), 'line-height');
+    } @else {
+      @return map-get(map-get($font-sizes, 'base'), 'line-height');
+    }
+  }
+}
+
+@function font-weight($_weight: 'normal') {
+  @if map-has-key($font-weights, $_weight) == true {
+    @return map-get($font-weights, $_weight);
+  } @else {
+    @return 400;
+  }
+}
+
+@function font-size-px($_size: 'base') {
+  @return (
+    strip-unit(config('font-size')) *
+    strip-unit(font-size($_size))
+  ) + 0px;
+}
+
+@function line-height-px($_font-size: 'base') {
+  @return (
+    line-height($_font-size) *
+    strip-unit(font-size-px($_font-size))
+  ) + 0px;
+}
+
+@function line-height-rem($_text-size: 'base') {
+  @return (
+    (
+      line-height($_text-size) *
+      strip-unit(font-size-px($_text-size))
+    ) / strip-unit(config('font-size'))
+  ) + 0rem;
+}
+
+// @apply
+
+@mixin apply-font-size($_key: 'base', $_set: null) {
+  font-size: font-size($_key, $_set);
+  line-height: line-height($_key, $_set);
+}

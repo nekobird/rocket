@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Rocket | Animation</title>
+  <meta
+    charset="utf-8">
+  <meta
+    http-equiv="X-UA-Compatible"
+    content="IE=edge">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link
+    rel="stylesheet"
+    href="stylesheets/styles.scss">
+</head>
+
+<body>
+  <header class="site-header">
+    <a
+      class="goBack"
+      href="index.html">Go Back</a>
+  </header><!-- site-header -->
+
+  <div class="site-content">
+    <div class="page-animation">
+
+      <div class="demoOne">
+        <div class="demoOne__label">Track One</div>
+        <div class="demoOne__track">
+          <div class="demoOne__circle"></div>
+        </div>
+      </div><!-- demoOne -->
+
+      <div class="button js-demoOne-play">Play</div>
+      <div class="button js-demoOne-pause">Pause</div>
+      <div class="button js-demoOne-stop">Stop</div>
+
+      <div
+        class="button js-demoOne-jumpTo"
+        data-jump="0.4">0.4</div>
+      <div
+        class="button js-demoOne-jumpTo"
+        data-jump="0">0</div>
+      <div
+        class="button js-demoOne-jumpTo"
+        data-jump="1">1</div>
+
+
+      <div class="demoOne__log"></div>
+
+    </div>
+  </div><!-- site-content -->
+
+  <script src="javascripts/animation.ts"></script>
+</body>
+
+</html>

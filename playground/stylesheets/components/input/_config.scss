@@ -1,0 +1,117 @@
+$input-config: (
+  'border-width' : 'thin',
+  'border-radius': 'base',
+);
+
+// Padding and height
+// must be in rem.
+
+// border-width is implied, if not set it
+// will use default input-config.
+$input-sizes: (
+  'small': (
+    'height'   : px-to-rem(40),
+    'text-size': 'small',
+    'padding'  : 2rem,
+  ),
+  'base' : (
+    'height'   : px-to-rem(44),
+    'text-size': 'base',
+    'padding'  : 1rem,
+  ),
+  'large': (
+    'height'   : px-to-rem(60),
+    'text-size': 'medium',
+    'padding'  : 2rem,
+  ),
+);
+
+
+$input-styles: (
+  'base': (
+    'base': (
+      'background-color': color('light'),
+      'border-color'    : color('medium'),
+      'label-color'     : color('black'),
+      'text-color'      : color('black'),
+    ),
+    'hover': (
+      'background-color': color('light'),
+      'border-color'    : color('gray'),
+      'label-color'     : color('black'),
+      'text-color'      : color('black'),
+    ),
+    'active': (
+      'background-color': color('light'),
+      'border-color'    : color('gray'),
+      'label-color'     : color('black'),
+      'text-color'      : color('black'),
+    ),
+    'focus': (
+      'background-color': color('light'),
+      'border-color'    : color('gray'),
+      'label-color'     : color('black'),
+      'text-color'      : color('black'),
+    ),
+    'disabled': (
+      'background-color': color('light'),
+      'border-color'    : color('gray'),
+      'label-color'     : color('black'),
+      'text-color'      : color('black'),
+    ),
+  ),
+);
+
+
+// Getter
+
+@function input-config($_key) {
+  @return map-get($input-config, $_key);
+}
+
+@function input-style($style: 'base', $state: 'base', $property: 'background-color') {
+  $__style: map-get($input-styles, 'base');
+  @if map-has-key($input-styles, $style) == true {
+    $__style: map-get($input-styles, $style);
+  }
+  $__state: map-get($__style, 'base');
+  @if map-has-key($__style, $state) == true {
+    $__state: map-get($__style, $state);
+  }
+  $__result: map-get($__state, 'background-color');
+  @if map-has-key($__state, $property) == true {
+    $__result: map-get($__state, $property);
+  }
+  @return $__result;
+}
+
+@function input-size($size: 'base', $property: 'base') {
+  $__size: map-get($input-sizes, 'base');
+  @if map-has-key($input-sizes, $size) {
+    $__size: map-get($input-sizes, $size);
+  }
+  $__result: map-get($__size, 'height');
+  @if map-has-key($__size, $property) == true {
+    $__result: map-get($__size, $property);
+  } @else {
+    @if $property == 'border-width' {
+      $__result: border-width(input-config('border-width'))
+    }
+  }
+  @return $__result;
+}
+
+@function input-vertical-padding($height, $border-width: 0, $text-size: 'base') {
+  $height: $height - ($border-width * 2);
+  @return ($height - line-height-rem($text-size)) / 2;
+}
+
+@function textarea-get-min-height($size) {
+  $_text-size: input-size($size, 'text-size');
+  $_border-width: border-width(input-size($size, 'border-width'));
+  @return (
+    line-height-rem($_text-size) * 3 +
+    (input-size($size, 'padding') * 2) +
+    ($_border-width * 2)
+  );
+}

@@ -1,0 +1,21 @@
+$spaces: (
+  'x-small': px-to-rem(8),
+  'small'  : px-to-rem(12),
+  'medium' : px-to-rem(20),
+  'large'  : px-to-rem(40),
+  'x-large': px-to-rem(80),
+);
+
+@function space($_key: 'base') {
+  @if
+    variable-exists(spaces) == true
+    and type-of($spaces) == 'map'
+    and type-of($_key) == 'string'
+  {
+    @if map-has-key($spaces, $_key) == true {
+      @return map-get($spaces, $_key);
+    } @else {
+      @return map-get($spaces, 'base');
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "module": "commonjs",
+    "noImplicitAny": false,
+    "noImplicitThis": false,
+    "outDir": "build/",
+    "preserveConstEnums": true,
+    "removeComments": true,
+    "resolveJsonModule": true,
+    "sourceMap": false,
+    "strict": true,
+    "target": "ES2015",
+  },
+  "include": [
+    "rocket/*", "rocket/repeater/repeater.ts",
+  ],
+  "exclude": [
+    "node_modules",
+    "src/**"
+  ]
+}

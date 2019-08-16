@@ -1,0 +1,73 @@
+@import 'config';
+@import 'mixins';
+
+%button-normalize {
+  @extend %style-text-body;
+
+  appearance: none;
+  border-radius: border-radius(button-config('border-radius'));
+  border-style: solid;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: font-weight('semi-bold');
+  text-align: center;
+
+  transition-duration: 0.2s;
+  transition-property: background-color, border-color, opacity;
+  transition-timing-function: ease-out;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+$sizes : 'small', 'large';
+$styles: 'primary', 'transparent';
+
+// Compose button
+
+.button,
+a.button {
+  @extend %button-normalize;
+
+  @include button-apply-size('base');
+  @include button-apply-style('base');
+
+  @each $size in $sizes {
+    &.button--#{$size} {
+      @include button-apply-size($size);
+    }
+  }
+
+  @each $style in $styles {
+    &.button--#{$style} {
+      @include button-apply-style($style, false);
+      &.button--outline {
+        @include button-apply-style($style, true);
+      }
+    }
+  }
+
+  &.button--round {
+    border-radius: 16em;
+  }
+
+  &.button--text-white {
+    color: color('white');
+
+    &:hover {
+      color: color('white');
+    }
+  }
+
+  &.button--link {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

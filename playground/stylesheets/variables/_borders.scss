@@ -1,0 +1,28 @@
+$border-radii: (
+  'x-small': px-to-rem(4),
+  'small'  : px-to-rem(8),
+  'medium' : px-to-rem(12),
+  'large'  : px-to-rem(24),
+);
+
+$border-widths: (
+  'thin'  : px-to-rem(1),
+  'medium': px-to-rem(2),
+  'thick' : px-to-rem(4),
+);
+
+@function border-radius($_radius: 'small') {
+  @if map-has-key($border-radii, $_radius) == true {
+    @return map-get($border-radii, $_radius);
+  } @else {
+    @return map-get($border-radii, 'small');
+  }
+}
+
+@function border-width($_width: 'thin') {
+  @if map-has-key($border-widths, $_width) == true {
+    @return map-get($border-widths, $_width);
+  } @else {
+    @return map-get($border-widths, 'thin');
+  }
+}

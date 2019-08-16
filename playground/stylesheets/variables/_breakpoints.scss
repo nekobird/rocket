@@ -1,0 +1,15 @@
+$breakpoints: (
+  'x-small': 320px,
+  'small'  : 576px,
+  'normal' : 768px,
+  'medium' : 992px,
+  'large'  : 1200px,
+);
+
+@function breakpoint($_breakpoint: 'small') {
+  @if map-has-key($breakpoints, $_breakpoint) == true {
+    @return map-get($breakpoints, $_breakpoint);
+  } @else {
+    @return map-get($breakpoints, 'small');
+  }
+}
