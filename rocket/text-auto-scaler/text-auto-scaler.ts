@@ -88,17 +88,17 @@ export class TextAutoScaler {
     );
   }
 
-  public fill(): number | false {
+  public scaleText(): number | false {
     let { validFontSizes } = this.config;
     
     if (typeof validFontSizes !== 'undefined') {
-      return this.fillFromValidFontSizes();
+      return this.scaleTextFromValidFontSizes();
     }
 
-    return this.fillFromFontSizeRange();
+    return this.scaleTextFromFontSizeRange();
   }
 
-  public fillFromValidFontSizes(): number | false {
+  public scaleTextFromValidFontSizes(): number | false {
     let { element, validFontSizes } = this.config;
 
     if (this.configSetIsvalid() === true) {
@@ -139,7 +139,7 @@ export class TextAutoScaler {
     return false;
   }
 
-  public fillFromFontSizeRange(): number | false {
+  public scaleTextFromFontSizeRange(): number | false {
     let { element, fontSizeRange, fontSizeIncrement } = this.config;
 
     if (this.configRangeIsValid() === true) {
