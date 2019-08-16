@@ -135,7 +135,7 @@ export class MonoDrag {
 
       this.startingDragEvent = pointerEvent;
 
-      this.config.onStart(pointerEvent, this);
+      this.config.onDragStart(pointerEvent, this);
 
       this.previousDragEvent = pointerEvent;
     }
@@ -157,7 +157,7 @@ export class MonoDrag {
     }
   }
 
-  public dragEnd(pointerEvent: DragEvent) {
+  public dragStop(pointerEvent: DragEvent) {
     const { event } = pointerEvent;
 
     if (this.isActive === true) {
@@ -167,7 +167,7 @@ export class MonoDrag {
 
       this.updateHistory(pointerEvent);
 
-      this.config.onEnd(pointerEvent, this);
+      this.config.onDragStop(pointerEvent, this);
 
       this.end();
 
@@ -185,7 +185,7 @@ export class MonoDrag {
 
       this.updateHistory(pointerEvent);
 
-      this.config.onCancel(pointerEvent, this);
+      this.config.onDragCancel(pointerEvent, this);
 
       this.end();
 

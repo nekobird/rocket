@@ -43,10 +43,12 @@ Really useful DOM helper methods.
 
 ## Two
 
-- [Angles](./angles.md)
-- [Geo2Util](./geo-2-util.md)
-- [Point](./point.md)
-- [Vector2](./vector-2.md)
+| Name | Description |
+| --- | --- |
+| [Angles](./angles.md) | Utility for calculating angles. |
+| [Geo2Util](./geo-2-util.md) | Utility for calculating 2D Geometric stuff. |
+| [Point](./point.md) | Point Class |
+| [Vector2](./vector-2.md) | 2D Vector Class |
 
 ## Repeater
 

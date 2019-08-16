@@ -59,7 +59,7 @@ export class MouseSensor {
     let velocity = new Vector2();
     let acceleration = new Vector2();
 
-    if (type !== 'down') {
+    if (type !== 'start') {
       velocity = Vector2.subtract(position, this.monoDrag.previousPosition);
       acceleration = Vector2.subtract(velocity, this.monoDrag.previousVelocity);
     }
@@ -89,7 +89,7 @@ export class MouseSensor {
       isActive === false
       && config.condition(event, this.monoDrag) === true
     ) {
-      const pointerEvent = this.createDragEvent('down', event);
+      const pointerEvent = this.createDragEvent('start', event);
 
       this.monoDrag.dragStart(pointerEvent);
     }
@@ -109,9 +109,9 @@ export class MouseSensor {
     const { isActive } = this.monoDrag;
 
     if (isActive === true) {
-      const pointerEvent = this.createDragEvent('up', event);
+      const pointerEvent = this.createDragEvent('stop', event);
 
-      this.monoDrag.dragEnd(pointerEvent);
+      this.monoDrag.dragStop(pointerEvent);
     }
   }
 

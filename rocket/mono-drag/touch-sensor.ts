@@ -59,7 +59,7 @@ export class TouchSensor {
     let velocity = new Vector2();
     let acceleration = new Vector2();
 
-    if (type !== 'down') {
+    if (type !== 'start') {
       velocity = Vector2.subtract(position, this.monoDrag.previousPosition);
       acceleration = Vector2.subtract(velocity, this.monoDrag.previousVelocity);
     }
@@ -91,7 +91,7 @@ export class TouchSensor {
       isActive === false
       && config.condition(event, this.monoDrag) === true
     ) {
-      const pointerEvent = this.createDragEvent('down', event, event.changedTouches[0]);
+      const pointerEvent = this.createDragEvent('start', event, event.changedTouches[0]);
 
       this.monoDrag.dragStart(pointerEvent, true);
     }
@@ -117,9 +117,9 @@ export class TouchSensor {
     if (isActive === true) {
       [...event.changedTouches].forEach(touch => {
         if (touch.identifier === this.monoDrag.touchIdentifier) {
-          const pointerEvent = this.createDragEvent('up', event, touch);
+          const pointerEvent = this.createDragEvent('stop', event, touch);
 
-          this.monoDrag.dragEnd(pointerEvent);
+          this.monoDrag.dragStop(pointerEvent);
         }
       });
     }

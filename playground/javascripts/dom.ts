@@ -4,7 +4,7 @@ import {
   DOMTraverse,
   DOMUtil,
   Num,
-  TextAutoScale,
+  TextAutoScaler,
   Util,
   Repeater,
   Ticker,
@@ -16,11 +16,11 @@ import * as Rocket from '../../rocket/rocket';
 window.Rocket = Rocket;
 
 const element = document.querySelector('.autoScale') as HTMLElement;
-const textAutoScale = new TextAutoScale({
+const textAutoScale = new TextAutoScaler({
   element,
-  fontSizeSet: [10, 14, 20, 32],
+  validFontSizes: [10, 14, 20, 32],
   fontSizeRange: [10, 32],
-  increment: 1,
+  fontSizeIncrement: 1,
   setFontSize: (element, fontSize) => {
     console.log(element)
     console.log('aa');
@@ -28,4 +28,4 @@ const textAutoScale = new TextAutoScale({
   },
 });
 
-textAutoScale.optimizeFromRange();
+textAutoScale.scaleText();

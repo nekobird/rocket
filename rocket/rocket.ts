@@ -47,10 +47,8 @@ export * from './canvas/canvas-layer-manager';
 export * from './color/convert-color';
 export * from './color/color';
 
-// @mono-drag
+// @events
 export * from './mono-drag/mono-drag';
-
-// @pointer-move
 export * from './pointer-move/pointer-move';
 
 // @text-auto-scaler

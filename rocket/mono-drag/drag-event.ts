@@ -2,7 +2,7 @@ import {
   Vector2,
 } from '../rocket';
 
-export type DragEventType = 'down' | 'drag' | 'up' | 'cancel';
+export type DragEventType = 'start' | 'drag' | 'stop' | 'cancel';
 
 export interface DragEvent {
   type: DragEventType;
