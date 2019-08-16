@@ -65,7 +65,7 @@ export const DEFAULT_SCROLL_TRIGGER: ScrollTrigger = {
 export class ScrollTriggerManager {
   public triggerOnlyOnResizeEnd: boolean = false;
 
-  public resizeDebounceDelay: number = 0.5;
+  public resizeDebounceDelayInSeconds: number = 0.5;
 
   private resizeDebounce?: Function;
 
@@ -217,10 +217,9 @@ export class ScrollTriggerManager {
   };
 
   public listen() {
-    this.resizeDebounce = Util.debounce(this.eventHandlerResizeEnd, this.resizeDebounceDelay);
-
     window.addEventListener('resize', this.resizeDebounce as EventListener);
 
+    this.resizeDebounce = Util.debounce(this.eventHandlerResizeEnd, this.resizeDebounceDelayInSeconds);
     window.addEventListener('resize', this.eventHandlerResize as EventListener);
 
     window.addEventListener('scroll', this.eventHandlerScroll as EventListener);
@@ -228,7 +227,6 @@ export class ScrollTriggerManager {
 
   public stop() {
     window.removeEventListener('resize', this.resizeDebounce as EventListener);
-
     window.removeEventListener('resize', this.eventHandlerResize as EventListener);
 
     window.removeEventListener('scroll', this.eventHandlerScroll as EventListener);

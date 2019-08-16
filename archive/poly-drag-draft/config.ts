@@ -3,7 +3,7 @@ import {
 } from '../rocket';
 
 import {
-  DragEventManager,
+  PolyDrag,
 } from './poly-drag';
 
 import {
@@ -25,31 +25,31 @@ export interface PolyDragEventConfig {
 
   downRepeaterFrequency: number;
 
-  beforeDownRepeatStart: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
+  beforeDownRepeatStart: (repeater: Repeater, event: DragEvent, manager: PolyDrag) => void;
 
-  onDownRepeatStart: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
+  onDownRepeatStart: (repeater: Repeater, event: DragEvent, manager: PolyDrag) => void;
 
-  onDownRepeat: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
+  onDownRepeat: (repeater: Repeater, event: DragEvent, manager: PolyDrag) => void;
 
-  onDownRepeatEnd: (repeater: Repeater, event: DragEvent, manager: DragEventManager) => void;
+  onDownRepeatEnd: (repeater: Repeater, event: DragEvent, manager: PolyDrag) => void;
 
   enableLongPress: boolean;
 
   longPressWait: number; // In seconds.
 
-  longPressCondition: (event: DragEvent, manager: DragEventManager) => boolean;
+  longPressCondition: (event: DragEvent, manager: PolyDrag) => boolean;
 
-  onLongPress: (event: DragEvent, manager: DragEventManager) => void;
+  onLongPress: (event: DragEvent, manager: PolyDrag) => void;
 
-  condition: (event: DragEvent, manager: DragEventManager) => boolean;
+  condition: (event: DragEvent, manager: PolyDrag) => boolean;
 
-  onDown: (event: DragEvent, manager: DragEventManager) => void;
+  onDown: (event: DragEvent, manager: PolyDrag) => void;
 
-  onDrag: (event: DragEvent, manager: DragEventManager) => void;
+  onDrag: (event: DragEvent, manager: PolyDrag) => void;
 
-  onUp: (event: DragEvent, manager: DragEventManager) => void;
+  onUp: (event: DragEvent, manager: PolyDrag) => void;
 
-  onCancel: (event: DragEvent, manager: DragEventManager) => void;
+  onCancel: (event: DragEvent, manager: PolyDrag) => void;
 }
 
 export const DRAG_EVENT_MANAGER_DEFAULT_CONFIG: PolyDragEventConfig = {

@@ -12,12 +12,10 @@ export interface DragEvent {
   target: EventTarget | null;
 
   isTouch: boolean;
-
   touch?: Touch;
-
   identifier?: number;
 
-  targetOffset: Vector2;
+  offset: Vector2;
 
   position: Vector2;
   velocity: Vector2;

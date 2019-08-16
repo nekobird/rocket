@@ -11,19 +11,16 @@ export interface PointerMoveConfig {
 
   debounceDelayInSeconds: number;
 
-  onEvent: (mouseEvent: MouseEvent, context: PointerMove) => void;
+  onEvent: (mouseEvent: MouseEvent, pointerMove: PointerMove) => void;
 
-  onEnter: (moveEvent: MoveEvent, context: PointerMove) => void;
+  onEnter: (moveEvent: MoveEvent, pointerMove: PointerMove) => void;
+  onLeave: (moveEvent: MoveEvent, pointerMove: PointerMove) => void;
 
-  onLeave: (moveEvent: MoveEvent, context: PointerMove) => void;
+  onMoveStart: (moveEvent: MoveEvent, pointerMove: PointerMove) => void;
+  onMove: (moveEvent: MoveEvent, pointerMove: PointerMove) => void;
+  onMoveEnd: (moveEvent: MoveEvent, pointerMove: PointerMove) => void;
 
-  onMoveStart: (moveEvent: MoveEvent, context: PointerMove) => void;
-
-  onMove: (moveEvent: MoveEvent, context: PointerMove) => void;
-
-  onMoveEnd: (moveEvent: MoveEvent, context: PointerMove) => void;
-
-  onMoveInside: (moveEvent: MoveEvent, context: PointerMove) => void;
+  onMoveInside: (moveEvent: MoveEvent, pointerMove: PointerMove) => void;
 }
 
 export const POINTER_MOVE_DEFAULT_CONFIG: PointerMoveConfig = {
@@ -33,15 +30,12 @@ export const POINTER_MOVE_DEFAULT_CONFIG: PointerMoveConfig = {
 
   onEvent: () => {},
 
+  onEnter: () => {},
+  onLeave: () => {},
+
   onMoveStart: () => {},
-
   onMove: () => {},
-
-  onMoveInside: () => {},
-
   onMoveEnd: () => {},
 
-  onEnter: () => {},
-
-  onLeave: () => {},
+  onMoveInside: () => {},
 };

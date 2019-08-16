@@ -15,17 +15,14 @@ export interface MonoDragConfig {
 
   preventDefault: boolean;
 
-  condition: (event: MouseEvent | TouchEvent, manager: MonoDrag) => boolean;
+  condition: (event: MouseEvent | TouchEvent, monoDrag: MonoDrag) => boolean;
 
-  onEvent: (event: MouseEvent | TouchEvent, manager: MonoDrag) => void;
+  onEvent: (event: MouseEvent | TouchEvent, monoDrag: MonoDrag) => void;
 
-  onStart: (dragEvent: DragEvent, manager: MonoDrag) => void;
-
-  onDrag: (dragEvent: DragEvent, manager: MonoDrag) => void;
-
-  onEnd: (dragEvent: DragEvent, manager: MonoDrag) => void;
-
-  onCancel: (dragEvent: DragEvent, manager: MonoDrag) => void;
+  onStart: (dragEvent: DragEvent, monoDrag: MonoDrag) => void;
+  onDrag: (dragEvent: DragEvent, monoDrag: MonoDrag) => void;
+  onEnd: (dragEvent: DragEvent, monoDrag: MonoDrag) => void;
+  onCancel: (dragEvent: DragEvent, monoDrag: MonoDrag) => void;
 }
 
 export const MONO_DRAG_DEFAULT_CONFIG: MonoDragConfig = {
@@ -42,10 +39,7 @@ export const MONO_DRAG_DEFAULT_CONFIG: MonoDragConfig = {
   onEvent: () => {},
 
   onStart: () => {},
-
   onDrag: () => {},
-
   onEnd: () => {},
-
   onCancel: () => {},
 };

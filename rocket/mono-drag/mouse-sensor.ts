@@ -13,16 +13,16 @@ import {
 } from './drag-event';
 
 export class MouseSensor {
-  private manager: MonoDrag;
+  private monoDrag: MonoDrag;
 
   public isActive: boolean = false;
 
-  constructor(manager: MonoDrag) {
-    this.manager = manager;
+  constructor(monoDrag: MonoDrag) {
+    this.monoDrag = monoDrag;
   }
 
   public attach() {
-    let { target } = this.manager.config;
+    let { target } = this.monoDrag.config;
 
     if (DOMUtil.isHTMLElement(target) === true) {
       target = target as HTMLElement;
@@ -37,7 +37,7 @@ export class MouseSensor {
   }
 
   public detach() {
-    let { target } = this.manager.config;
+    let { target } = this.monoDrag.config;
 
     if (DOMUtil.isHTMLElement(target) === true) {
       target = target as HTMLElement;
@@ -60,74 +60,68 @@ export class MouseSensor {
     let acceleration = new Vector2();
 
     if (type !== 'down') {
-      velocity = Vector2.subtract(position, this.manager.previousPosition);
-      acceleration = Vector2.subtract(velocity, this.manager.previousVelocity);
+      velocity = Vector2.subtract(position, this.monoDrag.previousPosition);
+      acceleration = Vector2.subtract(velocity, this.monoDrag.previousVelocity);
     }
 
-    const targetOffset = Vector2.clone(this.manager.targetOffset);
+    const offset = Vector2.clone(this.monoDrag.offset);
 
-    this.manager.previousPosition.equals(position);
-    this.manager.previousVelocity.equals(velocity);
+    this.monoDrag.previousPosition.equals(position);
+    this.monoDrag.previousVelocity.equals(velocity);
 
     return {
       type,
-
       event,
-
-      isTouch: false,
-
       target,
-
-      targetOffset,
-
+      isTouch: false,
+      offset,
       position,
       velocity,
       acceleration,
-
       time: Date.now(),
     };
   }
 
   private eventHandlerMouseDown = (event: MouseEvent) => {
-    const { isActive, config } = this.manager;
+    const { isActive, config } = this.monoDrag;
 
     if (
       isActive === false
-      && config.condition(event, this.manager) === true
+      && config.condition(event, this.monoDrag) === true
     ) {
       const pointerEvent = this.createDragEvent('down', event);
 
-      this.manager.dragStart(pointerEvent);
+      this.monoDrag.dragStart(pointerEvent);
     }
   }
 
   private eventHandlerMouseMove = (event: MouseEvent) => {
-    const { isActive } = this.manager;
+    const { isActive } = this.monoDrag;
 
     if (isActive === true) {
       const pointerEvent = this.createDragEvent('drag', event);
 
-      this.manager.drag(pointerEvent);
+      this.monoDrag.drag(pointerEvent);
     }
   }
 
   private eventHandlerMouseUp = (event: MouseEvent) => {
-    const { isActive } = this.manager;
+    const { isActive } = this.monoDrag;
 
     if (isActive === true) {
       const pointerEvent = this.createDragEvent('up', event);
 
-      this.manager.dragEnd(pointerEvent);
+      this.monoDrag.dragEnd(pointerEvent);
     }
   }
 
   private eventHandlerMouseLeave = (event: MouseEvent) => {
-    const { isActive } = this.manager;
+    const { isActive } = this.monoDrag;
 
     if (isActive === true) {
       const pointerEvent = this.createDragEvent('cancel', event);
 
-      this.manager.dragCancel(pointerEvent);
+      this.monoDrag.dragCancel(pointerEvent);
     }
   }
 }

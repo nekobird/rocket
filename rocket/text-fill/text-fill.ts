@@ -6,29 +6,29 @@ import {
 } from '../rocket';
 
 import {
-  TEXT_AUTO_SCALE_DEFAULT_CONFIG,
-  TextAutoScaleConfig,
+  TEXT_FILL_DEFAULT_CONFIG,
+  TextFillConfig,
 } from './config';
 
-export class TextAutoScale {
-  public config: TextAutoScaleConfig;
+export class TextFill {
+  public config: TextFillConfig;
 
   public originalWidth: number = 0;
 
-  constructor(config: Partial<TextAutoScaleConfig>) {
-    this.config = {...TEXT_AUTO_SCALE_DEFAULT_CONFIG};
+  constructor(config: Partial<TextFillConfig>) {
+    this.config = {...TEXT_FILL_DEFAULT_CONFIG};
 
     this.setConfig(config);
   }
 
-  public setConfig(config: Partial<TextAutoScaleConfig>) {
+  public setConfig(config: Partial<TextFillConfig>) {
     if (typeof config === 'object') {
       Object.assign(this.config, config);
     }
   }
 
   public configRangeIsValid(): boolean {
-    const { element, fontSizeRange, increment } = this.config;
+    const { element, fontSizeRange, fontSizeIncrement } = this.config;
 
     if (
       DOMUtil.isHTMLElement(element) === true
@@ -39,8 +39,8 @@ export class TextAutoScale {
       && fontSizeRange.length === 2
       && fontSizeRange[0] < fontSizeRange[1]
 
-      && typeof increment === 'number'
-      && increment > 0
+      && typeof fontSizeIncrement === 'number'
+      && fontSizeIncrement > 0
     ) {
       return true;
     }
@@ -49,12 +49,12 @@ export class TextAutoScale {
   }
 
   public configSetIsvalid(): boolean {
-    const { fontSizeSet } = this.config;
+    const { validFontSizes } = this.config;
 
     if (
-      typeof fontSizeSet === 'object'
-      && Array.isArray(fontSizeSet) === true
-      && fontSizeSet.length > 0
+      typeof validFontSizes === 'object'
+      && Array.isArray(validFontSizes) === true
+      && validFontSizes.length > 0
     ) {
       return true;
     }
@@ -89,9 +89,9 @@ export class TextAutoScale {
   }
 
   public optimize(): number | false {
-    let { fontSizeSet } = this.config;
+    let { validFontSizes } = this.config;
     
-    if (typeof fontSizeSet !== 'undefined') {
+    if (typeof validFontSizes !== 'undefined') {
       return this.optimizeFromSet();
     }
 
@@ -99,13 +99,13 @@ export class TextAutoScale {
   }
 
   public optimizeFromSet(): number | false {
-    let { element, fontSizeSet } = this.config;
+    let { element, validFontSizes } = this.config;
 
     if (this.configSetIsvalid() === true) {
       element = element as HTMLElement;
-      fontSizeSet = fontSizeSet as number[];
+      validFontSizes = validFontSizes as number[];
 
-      fontSizeSet.sort((a, b) => a - b);
+      validFontSizes.sort((a, b) => a - b);
 
       const text = DOMText.getTextFromElement(element).trim();
       
@@ -113,19 +113,19 @@ export class TextAutoScale {
 
       let modelWidth = 0;
 
-      let finalFontSize = fontSizeSet[fontSizeSet.length - 1];
+      let finalFontSize = validFontSizes[validFontSizes.length - 1];
 
-      for (let i = 0; i < fontSizeSet.length; i++) {
-        modelWidth = this.getModelWidth(text, fontSizeSet[i]);
+      for (let i = 0; i < validFontSizes.length; i++) {
+        modelWidth = this.getModelWidth(text, validFontSizes[i]);
 
         if (modelWidth >= originalWidth) {
           if (i === 0) {
-            finalFontSize = fontSizeSet[0];
+            finalFontSize = validFontSizes[0];
 
             break;
           }
 
-          finalFontSize = fontSizeSet[i - 1];
+          finalFontSize = validFontSizes[i - 1];
 
           break;
         }
@@ -140,12 +140,12 @@ export class TextAutoScale {
   }
 
   public optimizeFromRange(): number | false {
-    let { element, fontSizeRange, increment } = this.config;
+    let { element, fontSizeRange, fontSizeIncrement } = this.config;
 
     if (this.configRangeIsValid() === true) {
       element = element as HTMLElement;
       fontSizeRange = fontSizeRange as RangeArray;
-      increment = increment as number;
+      fontSizeIncrement = fontSizeIncrement as number;
 
       const [minFontSize, maxFontSize] = fontSizeRange;
 
@@ -162,7 +162,7 @@ export class TextAutoScale {
 
         if (modelWidth >= originalWidth) {
           while (true) {
-            finalFontSize -= increment;
+            finalFontSize -= fontSizeIncrement;
 
             if (finalFontSize <= minFontSize) {
               finalFontSize = minFontSize;
@@ -180,7 +180,7 @@ export class TextAutoScale {
           break;
         }
 
-        finalFontSize += increment;
+        finalFontSize += fontSizeIncrement;
 
         if (finalFontSize >= maxFontSize) {
           finalFontSize = maxFontSize;

@@ -1,24 +1,24 @@
 import {
-  TextAutoScale,
-} from './text-auto-scale';
+  TextFill,
+} from './text-fill';
 
-export interface TextAutoScaleConfig {
+export interface TextFillConfig {
   element?: HTMLElement,
 
-  fontSizeSet?: number[];
+  validFontSizes?: number[];
 
   fontSizeRange?: [number, number];
-  increment?: number;
+  fontSizeIncrement?: number;
 
   setFontSize: (
     element: HTMLElement,
     fontSize: number,
-    context: TextAutoScale,
+    textFill: TextFill,
   ) => void;
 }
 
-export const TEXT_AUTO_SCALE_DEFAULT_CONFIG: TextAutoScaleConfig = {
-  increment: 1,
+export const TEXT_FILL_DEFAULT_CONFIG: TextFillConfig = {
+  fontSizeIncrement: 1,
 
   setFontSize: (element, fontSize) => {
     element.style.fontSize = `${fontSize}px`

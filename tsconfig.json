@@ -13,7 +13,7 @@
     "target": "ES2015",
   },
   "include": [
-    "rocket/*", "rocket/repeater/repeater.ts",
+    "rocket/*",
   ],
   "exclude": [
     "node_modules",

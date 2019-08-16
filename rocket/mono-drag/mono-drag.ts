@@ -35,10 +35,10 @@ export class MonoDrag {
 
   public history: DragEvent[];
 
-  public startingPointerDragEvent?: DragEvent;
-  public previousPointerDragEvent?: DragEvent;
+  public offset: Vector2;
 
-  public targetOffset: Vector2;
+  public startingDragEvent?: DragEvent;
+  public previousDragEvent?: DragEvent;
 
   public previousPosition: Vector2;
   public previousVelocity: Vector2;
@@ -51,7 +51,7 @@ export class MonoDrag {
     this.mouseSensor = new MouseSensor(this);
     this.touchSensor = new TouchSensor(this);
 
-    this.targetOffset = new Vector2();
+    this.offset = new Vector2();
 
     this.previousPosition = new Vector2();
     this.previousVelocity = new Vector2();
@@ -75,7 +75,7 @@ export class MonoDrag {
     }
   }
 
-  private updatetargetOffset(x: number, y: number) {
+  private updateOffset(x: number, y: number) {
     const { target, offsetFrom } = this.config;
 
     if (DOMUtil.isHTMLElement(target) === true) {
@@ -87,7 +87,7 @@ export class MonoDrag {
         
       const { left, top } = element.getBoundingClientRect();
 
-      this.targetOffset.equals(
+      this.offset.equals(
         x - left,
         y - top,
       );
@@ -127,17 +127,17 @@ export class MonoDrag {
 
       this.config.onEvent(event, this);
 
-      this.updatetargetOffset(position.x, position.y);
+      this.updateOffset(position.x, position.y);
 
       this.history = [];
 
       this.updateHistory(pointerEvent);
 
-      this.startingPointerDragEvent = pointerEvent;
+      this.startingDragEvent = pointerEvent;
 
       this.config.onStart(pointerEvent, this);
 
-      this.previousPointerDragEvent = pointerEvent;
+      this.previousDragEvent = pointerEvent;
     }
   }
 
@@ -153,7 +153,7 @@ export class MonoDrag {
 
       this.config.onDrag(pointerEvent, this);
 
-      this.previousPointerDragEvent = pointerEvent;
+      this.previousDragEvent = pointerEvent;
     }
   }
 
@@ -171,7 +171,7 @@ export class MonoDrag {
 
       this.end();
 
-      this.previousPointerDragEvent = pointerEvent;
+      this.previousDragEvent = pointerEvent;
     }
   }
 
@@ -189,7 +189,7 @@ export class MonoDrag {
 
       this.end();
 
-      this.previousPointerDragEvent = pointerEvent;
+      this.previousDragEvent = pointerEvent;
     }
   }
 

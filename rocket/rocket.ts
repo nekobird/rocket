@@ -53,15 +53,14 @@ export * from './mono-drag/mono-drag';
 // @pointer-move
 export * from './pointer-move/pointer-move';
 
-// @scroll
-export * from './scroll-trigger-manager/scroll-trigger-manager';
-
-// @text
-export * from '../archive/text-box-model';
-export * from './text-auto-scaler/text-auto-scale';
+// @text-fill
+export * from './text-fill/text-fill';
 
 // @repeater
 export * from './repeater/repeater';
 
 // @ticker
 export * from './ticker/ticker';
+
+// @scroll
+export * from './scroll-trigger-manager/scroll-trigger-manager';

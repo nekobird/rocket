@@ -2,7 +2,7 @@ import {
   Point,
   Repeater,
   Vector2,
-} from '../rocket';
+} from '../../rocket/rocket';
 
 import {
   DragEventManager,

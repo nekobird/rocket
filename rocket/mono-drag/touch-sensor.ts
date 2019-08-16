@@ -13,16 +13,16 @@ import {
 } from './drag-event';
 
 export class TouchSensor {
-  private manager: MonoDrag;
+  private monoDrag: MonoDrag;
 
   public isActive: boolean = false;
 
-  constructor(manager: MonoDrag) {
-    this.manager = manager;
+  constructor(monoDrag: MonoDrag) {
+    this.monoDrag = monoDrag;
   }
 
   public attach() {
-    let { target } = this.manager.config;
+    let { target } = this.monoDrag.config;
 
     if (DOMUtil.isHTMLElement(target) === true) {
       target = target as HTMLElement;
@@ -37,7 +37,7 @@ export class TouchSensor {
   }
 
   public detach() {
-    let { target } = this.manager.config;
+    let { target } = this.monoDrag.config;
 
     if (DOMUtil.isHTMLElement(target) === true) {
       target = target as HTMLElement;
@@ -60,87 +60,80 @@ export class TouchSensor {
     let acceleration = new Vector2();
 
     if (type !== 'down') {
-      velocity = Vector2.subtract(position, this.manager.previousPosition);
-      acceleration = Vector2.subtract(velocity, this.manager.previousVelocity);
+      velocity = Vector2.subtract(position, this.monoDrag.previousPosition);
+      acceleration = Vector2.subtract(velocity, this.monoDrag.previousVelocity);
     }
 
-    const targetOffset = Vector2.clone(this.manager.targetOffset);
+    const offset = Vector2.clone(this.monoDrag.offset);
 
-    this.manager.previousPosition.equals(position);
-    this.manager.previousVelocity.equals(velocity);
+    this.monoDrag.previousPosition.equals(position);
+    this.monoDrag.previousVelocity.equals(velocity);
 
     return {
       type,
-
-      isTouch: true,
-
       event,
+      target,
+      isTouch: true,
       touch,
-      
       identifier,
-
-      target,      
-
-      targetOffset,
-
+      offset,
       position,
       velocity,
       acceleration,
-
       time: Date.now(),
     };
   }
 
   private eventHandlerTouchStart = (event: TouchEvent) => {
-    const { isActive, config } = this.manager;
+    const { isActive, config } = this.monoDrag;
 
     if (
       isActive === false
-      && config.condition(event, this.manager) === true
+      && config.condition(event, this.monoDrag) === true
     ) {
       const pointerEvent = this.createDragEvent('down', event, event.changedTouches[0]);
 
-      this.manager.dragStart(pointerEvent, true);
+      this.monoDrag.dragStart(pointerEvent, true);
     }
   }
 
   private eventHandlerTouchMove = (event: TouchEvent) => {
-    const { isActive } = this.manager;
+    const { isActive } = this.monoDrag;
 
     if (isActive === true) {
       [...event.changedTouches].forEach(touch => {
-        if (touch.identifier === this.manager.touchIdentifier) {
+        if (touch.identifier === this.monoDrag.touchIdentifier) {
           const pointerEvent = this.createDragEvent('drag', event, touch);
 
-          this.manager.drag(pointerEvent);
+          this.monoDrag.drag(pointerEvent);
         }
       });
     }
   }
 
   private eventHandlerTouchEnd = (event: TouchEvent) => {
-    const { isActive } = this.manager;
+    const { isActive } = this.monoDrag;
 
     if (isActive === true) {
       [...event.changedTouches].forEach(touch => {
-        if (touch.identifier === this.manager.touchIdentifier) {
+        if (touch.identifier === this.monoDrag.touchIdentifier) {
           const pointerEvent = this.createDragEvent('up', event, touch);
 
-          this.manager.dragEnd(pointerEvent);
+          this.monoDrag.dragEnd(pointerEvent);
         }
       });
     }
   }
 
   private eventHandlerTouchCancel = (event: TouchEvent) => {
-    const { isActive } = this.manager;
+    const { isActive } = this.monoDrag;
 
     if (isActive === true) {
       [...event.changedTouches].forEach(touch => {
-        if (touch.identifier === this.manager.touchIdentifier) {
+        if (touch.identifier === this.monoDrag.touchIdentifier) {
           const pointerEvent = this.createDragEvent('cancel', event, touch);
 
-          this.manager.dragCancel(pointerEvent);
+          this.monoDrag.dragCancel(pointerEvent);
         }
       });
     }
