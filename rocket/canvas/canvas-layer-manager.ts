@@ -1,25 +1,39 @@
-import { CanvasLayer, Viewport } from '../rocket';
+import {
+  CanvasLayer,
+  Viewport,
+} from '../rocket';
 
 export class CanvasLayerManager {
   public count: number = 0;
+
   public isFullScreen: boolean = false;
 
   public layerStackElement: HTMLElement;
+
   public layers: CanvasLayer[];
 
   constructor(layerStackElement: HTMLElement) {
     this.layerStackElement = layerStackElement;
+
     this.layers = [];
-    this.startListening().resize();
+
+    this.startListening();
+    this.resize();
+
     return this;
   }
 
   public create(name: string): CanvasLayer {
-    let element: HTMLCanvasElement = <HTMLCanvasElement>document.createElement(`CANVAS`);
+    let element = document.createElement(`CANVAS`);
+
     element = this.layerStackElement.appendChild(element);
+
     this.layers[name] = new CanvasLayer(element);
+
     this.count++;
+
     this.resize();
+
     return this.layers[name];
   }
 
@@ -71,15 +85,15 @@ export class CanvasLayerManager {
     });
   };
 
-  // LISTEN
-
   public startListening(): this {
     window.addEventListener('resize', this.resize);
+
     return this;
   }
 
   public stopListening(): this {
     window.removeEventListener('resize', this.resize);
+
     return this;
   }
 }

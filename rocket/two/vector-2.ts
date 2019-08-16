@@ -501,11 +501,11 @@ export class Vector2 {
     return this;
   }
 
-  public moveRadiallyTo(angle: number, by: number): this {
+  public moveRadiallyTo(angle: number, to: number): this {
     angle = Num.cycle(angle, Math.PI * 2);
 
-    this.x = Math.cos(angle) * by;
-    this.y = Math.sin(angle) * by;
+    this.x = Math.cos(angle) * to;
+    this.y = Math.sin(angle) * to;
 
     return this;
   }

@@ -1,4 +1,5 @@
 import {
+  DOMUtil,
   Color,
   Point,
   Vector2,
@@ -25,25 +26,35 @@ const DEFAULT_STYLE: CanvasDrawStyle = {
 };
 
 export class CanvasDraw {
-  public element: HTMLCanvasElement;
+  public element?: HTMLCanvasElement;
 
-  public context;
+  public context?: CanvasRenderingContext2D;
+
+  public isReady: boolean = false;
+
   public resolutionMultiplier: number;
   public previousTranslation: Vector2;
 
-  private _defaultStyle: object;
+  private _defaultStyle;
 
   constructor(element: HTMLCanvasElement) {
-    this.element = element;
+    if (DOMUtil.isHTMLElement(element) === true) {
+      this.element = element as HTMLCanvasElement;
 
-    this.context = this.element.getContext('2d');
+      let context = this.element.getContext('2d');
+      if (context !== null) {
+        this.context = context;
+      }
+
+      this.isReady = true;
+      // this.resize()
+    }
 
     this.resolutionMultiplier = window.devicePixelRatio;
+
+    this._defaultStyle = {...DEFAULT_STYLE};
+
     this.previousTranslation = new Vector2();
-
-    this._defaultStyle = Object.assign({}, DEFAULT_STYLE);
-
-    // this.resize()
   }
 
   get defaultStyle(): CanvasDrawStyle {
@@ -59,6 +70,7 @@ export class CanvasDraw {
   // https://www.w3schools.com/tags/canvas_arcto.asp
   public createLinearGradient(from: Vector2, to: Vector2): CanvasGradient {
     const m: number = this.resolutionMultiplier;
+
     return this.context.createLinearGradient(from.x * m, from.y * m, to.x * m, to.y * m);
   }
 
@@ -241,6 +253,7 @@ export class CanvasDraw {
 
   public rotate(angle: number): this {
     this.context.rotate(angle);
+
     return this;
   }
 
@@ -248,7 +261,9 @@ export class CanvasDraw {
     if (typeof h !== 'number') {
       h = w;
     }
+
     this.context.scale(w, h);
+
     return this;
   }
 
@@ -256,6 +271,7 @@ export class CanvasDraw {
 
   public reset(): this {
     this.context.setTransform(1, 0, 0, 1, 0, 0);
+
     return this;
   }
 

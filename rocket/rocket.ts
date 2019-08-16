@@ -39,9 +39,9 @@ export * from './animation-timeline';
 export * from './easings';
 
 // @canvas
-export * from './canvas/canvas-draw';
-export * from './canvas/canvas-layer';
-export * from './canvas/canvas-layer-manager';
+// export * from './canvas/canvas-draw';
+// export * from './canvas/canvas-layer';
+// export * from './canvas/canvas-layer-manager';
 
 // @color
 export * from './color/convert-color';
