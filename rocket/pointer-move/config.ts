@@ -9,6 +9,8 @@ import {
 export interface PointerMoveConfig {
   target?: HTMLElement | Window;
 
+  preventDefault: boolean;
+
   debounceDelayInSeconds: number;
 
   onEvent: (mouseEvent: MouseEvent, pointerMove: PointerMove) => void;
@@ -25,6 +27,8 @@ export interface PointerMoveConfig {
 
 export const POINTER_MOVE_DEFAULT_CONFIG: PointerMoveConfig = {
   target: window,
+
+  preventDefault: true,
 
   debounceDelayInSeconds: 0.2,
 

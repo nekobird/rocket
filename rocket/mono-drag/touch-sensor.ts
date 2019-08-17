@@ -27,10 +27,10 @@ export class TouchSensor {
     if (DOMUtil.isHTMLElement(target) === true) {
       target = target as HTMLElement;
 
-      target.addEventListener('touchstart', this.eventHandlerTouchStart);
-      window.addEventListener('touchmove', this.eventHandlerTouchMove);
-      window.addEventListener('touchend', this.eventHandlerTouchEnd);
-      window.addEventListener('touchcancel', this.eventHandlerTouchCancel);
+      target.addEventListener('touchstart', this.onTouchStart);
+      window.addEventListener('touchmove', this.onTouchMove);
+      window.addEventListener('touchend', this.onTouchEnd);
+      window.addEventListener('touchcancel', this.onTouchCancel);
 
       this.isActive = true;
     }
@@ -42,10 +42,10 @@ export class TouchSensor {
     if (DOMUtil.isHTMLElement(target) === true) {
       target = target as HTMLElement;
 
-      target.removeEventListener('touchstart', this.eventHandlerTouchStart);
-      window.removeEventListener('touchmove', this.eventHandlerTouchMove);
-      window.removeEventListener('touchend', this.eventHandlerTouchEnd);
-      window.removeEventListener('touchcancel', this.eventHandlerTouchCancel);
+      target.removeEventListener('touchstart', this.onTouchStart);
+      window.removeEventListener('touchmove', this.onTouchMove);
+      window.removeEventListener('touchend', this.onTouchEnd);
+      window.removeEventListener('touchcancel', this.onTouchCancel);
 
       this.isActive = false;
     }
@@ -84,7 +84,7 @@ export class TouchSensor {
     };
   }
 
-  private eventHandlerTouchStart = (event: TouchEvent) => {
+  private onTouchStart = (event: TouchEvent) => {
     const { isActive, config } = this.monoDrag;
 
     const dragEvent = this.createDragEvent('start', event, event.changedTouches[0]);
@@ -97,7 +97,7 @@ export class TouchSensor {
     }
   }
 
-  private eventHandlerTouchMove = (event: TouchEvent) => {
+  private onTouchMove = (event: TouchEvent) => {
     const { isActive } = this.monoDrag;
 
     if (isActive === true) {
@@ -111,7 +111,7 @@ export class TouchSensor {
     }
   }
 
-  private eventHandlerTouchEnd = (event: TouchEvent) => {
+  private onTouchEnd = (event: TouchEvent) => {
     const { isActive } = this.monoDrag;
 
     if (isActive === true) {
@@ -125,7 +125,7 @@ export class TouchSensor {
     }
   }
 
-  private eventHandlerTouchCancel = (event: TouchEvent) => {
+  private onTouchCancel = (event: TouchEvent) => {
     const { isActive } = this.monoDrag;
 
     if (isActive === true) {

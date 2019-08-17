@@ -27,10 +27,10 @@ export class MouseSensor {
     if (DOMUtil.isHTMLElement(target) === true) {
       target = target as HTMLElement;
 
-      target.addEventListener('mousedown', this.eventHandlerMouseDown);
-      window.addEventListener('mousemove', this.eventHandlerMouseMove);
-      window.addEventListener('mouseup', this.eventHandlerMouseUp);
-      document.documentElement.addEventListener('mouseleave', this.eventHandlerMouseLeave);
+      target.addEventListener('mousedown', this.onMouseDown);
+      window.addEventListener('mousemove', this.onMouseMove);
+      window.addEventListener('mouseup', this.onMouseUp);
+      document.documentElement.addEventListener('mouseleave', this.onMouseLeave);
 
       this.isActive = true;
     }
@@ -42,10 +42,10 @@ export class MouseSensor {
     if (DOMUtil.isHTMLElement(target) === true) {
       target = target as HTMLElement;
 
-      target.removeEventListener('mousedown', this.eventHandlerMouseDown);
-      window.removeEventListener('mousemove', this.eventHandlerMouseMove);
-      window.removeEventListener('mouseup', this.eventHandlerMouseUp);
-      document.documentElement.removeEventListener('mouseleave', this.eventHandlerMouseLeave);
+      target.removeEventListener('mousedown', this.onMouseDown);
+      window.removeEventListener('mousemove', this.onMouseMove);
+      window.removeEventListener('mouseup', this.onMouseUp);
+      document.documentElement.removeEventListener('mouseleave', this.onMouseLeave);
 
       this.isActive = false;
     }
@@ -82,7 +82,7 @@ export class MouseSensor {
     };
   }
 
-  private eventHandlerMouseDown = (event: MouseEvent) => {
+  private onMouseDown = (event: MouseEvent) => {
     const { isActive, config } = this.monoDrag;
 
     const dragEvent = this.createDragEvent('start', event);
@@ -95,7 +95,7 @@ export class MouseSensor {
     }
   }
 
-  private eventHandlerMouseMove = (event: MouseEvent) => {
+  private onMouseMove = (event: MouseEvent) => {
     const { isActive } = this.monoDrag;
 
     if (isActive === true) {
@@ -105,7 +105,7 @@ export class MouseSensor {
     }
   }
 
-  private eventHandlerMouseUp = (event: MouseEvent) => {
+  private onMouseUp = (event: MouseEvent) => {
     const { isActive } = this.monoDrag;
 
     if (isActive === true) {
@@ -115,7 +115,7 @@ export class MouseSensor {
     }
   }
 
-  private eventHandlerMouseLeave = (event: MouseEvent) => {
+  private onMouseLeave = (event: MouseEvent) => {
     const { isActive } = this.monoDrag;
     console.log('leaving');
     if (isActive === true) {

@@ -28,6 +28,7 @@ export class MonoDrag {
 
   public isActive: boolean = false;
   public isTouch: boolean = false;
+  public isListening: boolean = false;
 
   public touchIdentifier: number = 0;
 
@@ -58,7 +59,7 @@ export class MonoDrag {
 
     this.history = [];
 
-    this.attachSensors();
+    this.listen();
   }
 
   public setConfig(config?: Partial<MonoDragConfig>): this {
@@ -67,6 +68,24 @@ export class MonoDrag {
     }
 
     return this;
+  }
+
+  public listen() {
+    if (this.isListening === false) {
+      this.mouseSensor.attach();
+      this.touchSensor.attach();
+
+      this.isListening = true;
+    }
+  }
+
+  public stopListening() {
+    if (this.isListening === true) {
+      this.mouseSensor.detach();
+      this.touchSensor.detach();
+
+      this.isListening = false;
+    }
   }
 
   private preventDefault(event: MouseEvent | TouchEvent) {
@@ -86,7 +105,7 @@ export class MonoDrag {
       if (DOMUtil.isHTMLElement(offsetFrom) === true) {
         element = offsetFrom as HTMLElement;
       }
-        
+
       const { left, top } = element.getBoundingClientRect();
 
       this.offset.equals(
@@ -109,6 +128,12 @@ export class MonoDrag {
 
       this.history.push(pointerEvent);
     }
+  }
+
+  private end() {
+    this.touchIdentifier = 0;
+
+    this.isActive = false;
   }
 
   public dragStart(pointerEvent: DragEvent, isTouch: boolean = false) {
@@ -193,21 +218,5 @@ export class MonoDrag {
 
       this.previousDragEvent = pointerEvent;
     }
-  }
-
-  private end() {
-    this.touchIdentifier = 0;
-
-    this.isActive = false;
-  }
-
-  public attachSensors() {
-    this.mouseSensor.attach();
-    this.touchSensor.attach(); 
-  }
-
-  public detachSensors() {
-    this.mouseSensor.detach();
-    this.touchSensor.detach(); 
   }
 }

@@ -20,14 +20,6 @@ export class Num {
     return [min, max];
   }
 
-  public static average(...numbers): number {
-    if (numbers.length < 2) {
-      throw new Error ('Num.average: Expects at least two numbers.');
-    }
-
-    return this.sum(...numbers) / numbers.length;
-  }
-
   public static constrain(value: number, range: NumberOrRange): number {
     range = this.getRangeFromNumberOrRange(range);
 
@@ -42,6 +34,12 @@ export class Num {
     }
 
     return value;
+  }
+
+  public static within(number: number, range: NumberOrRange): boolean {
+    range = this.getRangeFromNumberOrRange(range);
+
+    return number >= range[0] && number <= range[1];
   }
 
   public static cycle(value: number, range: NumberOrRange): number {
@@ -80,8 +78,6 @@ export class Num {
     return value;
   }
 
-  // Get number-line distance between two integers.
-  // For example (-4, -2) = 6, (-4, 5) = 9
   // https://en.wikipedia.org/wiki/Euclidean_distance
   public static getEuclideanDistance(a: number, b: number): number {
     if (a === b) {
@@ -91,9 +87,7 @@ export class Num {
     return Math.sqrt(Math.abs((a - b) * (b - a)));
   }
 
-  // A more efficient way to calculate hypotenuse.
   public static hypotenuse(x: number, y: number): number {
-    // http://www.johndcook.com/blog/2010/06/02/whats-so-hard-about-finding-a-hypotenuse/
     let max = Math.max(Math.abs(x), Math.abs(y));
 
     if (max === 0) {
@@ -105,38 +99,6 @@ export class Num {
     const n = min / max;
 
     return max * Math.sqrt(1 + n * n);
-  }
-
-  // Get reciprocal of a number.
-  public static reciprocal(number: number): number {
-    if (number != 0) {
-      return 1 / number;
-    } else {
-      throw new Error('Num.reciprocal: Division by zero.');
-    }
-  }
-
-  public static roundTo(number: number, to?: number): number {
-    if (typeof to !== 'number') {
-      to = 0;
-    }
-
-    return parseFloat(number.toFixed(to));
-  }
-
-  // Simple linear interpolation.
-  public static lerp(t: number, from: number, to: number): number {
-    return (1 - t) * from + t * to;
-  }
-
-  // Cubic Bezier interpolation.
-  public static cubicBezier(t: number, p1: number, cp1: number, cp2: number, p2: number): number {
-    return (
-      Math.pow(1 - t, 3) * p1 +
-      3 * t * Math.pow(1 - t, 2) * cp1 +
-      3 * t * t * (1 - t) * cp2 +
-      t * t * t * p2
-    );
   }
 
   public static modulate(number: number, from: NumberOrRange, to: NumberOrRange, constrain: boolean = true): number {
@@ -160,6 +122,47 @@ export class Num {
     return result;
   }
 
+  public static lerp(t: number, from: number, to: number): number {
+    return (1 - t) * from + t * to;
+  }
+
+  public static cubicBezier(t: number, p1: number, cp1: number, cp2: number, p2: number): number {
+    return (
+      Math.pow(1 - t, 3) * p1 +
+      3 * t * Math.pow(1 - t, 2) * cp1 +
+      3 * t * t * (1 - t) * cp2 +
+      t * t * t * p2
+    );
+  }
+
+  public static reciprocal(number: number): number {
+    if (number != 0) {
+      return 1 / number;
+    } else {
+      throw new Error('Num.reciprocal: Division by zero.');
+    }
+  }
+
+  public static roundTo(number: number, to?: number): number {
+    if (typeof to !== 'number') {
+      to = 0;
+    }
+
+    return parseFloat(number.toFixed(to));
+  }
+
+  public static average(...numbers): number {
+    if (numbers.length < 2) {
+      throw new Error ('Num.average: Expects at least two numbers.');
+    }
+
+    return this.sum(...numbers) / numbers.length;
+  }
+
+  public static sum(...numbers: number[]): number {
+    return numbers.reduce((previous, current) => previous + current);
+  }
+
   public static random(range: NumberOrRange, whole: boolean = false, fixed: number = 2): number {
     range = this.getRangeFromNumberOrRange(range);
 
@@ -174,17 +177,6 @@ export class Num {
 
       return parseInt(number.toFixed(0), 10);
     }
-  }
-
-  public static sum(...numbers: number[]): number {
-    return numbers.reduce((previous, current) => previous + current);
-  }
-
-  // Check to see if given number is within given range.
-  public static within(number: number, range: NumberOrRange): boolean {
-    range = this.getRangeFromNumberOrRange(range);
-
-    return number >= range[0] && number <= range[1];
   }
 
   public static getSign(n: number): number {

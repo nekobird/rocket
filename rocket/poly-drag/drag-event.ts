@@ -2,11 +2,17 @@ import {
   Vector2,
 } from '../rocket';
 
+import {
+  PolyDrag,
+} from './poly-drag';
+
 export type DragEventIdentifier = number | 'mouse';
 
 export type DragEventType = 'start' | 'drag' | 'stop' | 'cancel';
 
 export class DragEvent {
+  public polyDrag: PolyDrag;
+
   public type: DragEventType;
 
   public isActive: boolean = false;
