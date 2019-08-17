@@ -42,7 +42,7 @@
     "cssnano": "^4.1.10",
     "jest": "^24.8.0",
     "parcel-bundler": "^1.12.3",
-    "sass": "^1.22.9",
+    "sass": "^1.22.10",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.3"
   }

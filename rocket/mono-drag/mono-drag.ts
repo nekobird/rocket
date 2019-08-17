@@ -70,7 +70,9 @@ export class MonoDrag {
   }
 
   private preventDefault(event: MouseEvent | TouchEvent) {
-    if (this.config.preventDefault === true) {
+    const { preventDefault } = this.config;
+
+    if (preventDefault === true) {
       event.preventDefault();
     }
   }
@@ -144,7 +146,7 @@ export class MonoDrag {
   public drag(pointerEvent: DragEvent) {
     const { event } = pointerEvent;
 
-    if (this.isActive === false) {
+    if (this.isActive === true) {
       this.preventDefault(event);
 
       this.config.onEvent(event, this);

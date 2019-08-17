@@ -15,9 +15,9 @@ export interface MonoDragConfig {
 
   preventDefault: boolean;
 
-  condition: (event: MouseEvent | TouchEvent, monoDrag: MonoDrag) => boolean;
-
   onEvent: (event: MouseEvent | TouchEvent, monoDrag: MonoDrag) => void;
+
+  condition: (dragEvent: DragEvent, monoDrag: MonoDrag) => boolean;
 
   onDragStart: (dragEvent: DragEvent, monoDrag: MonoDrag) => void;
   onDrag: (dragEvent: DragEvent, monoDrag: MonoDrag) => void;

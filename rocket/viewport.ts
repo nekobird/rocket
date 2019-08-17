@@ -168,6 +168,8 @@ export class Viewport {
     );
   }
 
+  // @mobile
+
   // @model
 
   private static get modelElement(): HTMLElement {

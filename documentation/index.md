@@ -12,8 +12,8 @@ Foundation for the rest of the library.
 
 | Name | Description |
 | --- | --- |
-| [Num](./core/num.md) | A utility library for dealing with numbers. |
-| [Util](./core/util.md) | General utility library. |
+| [Num](./core/num.md) | Num provides useful helper methods for dealing with numbers. |
+| [Util](./core/util.md) | Util provides general helper methods. |
 | [StringUtil](./core/string-util.md) | Simple string utility. |
 
 ## DOM

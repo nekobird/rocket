@@ -30,7 +30,7 @@ export class MouseSensor {
       target.addEventListener('mousedown', this.eventHandlerMouseDown);
       window.addEventListener('mousemove', this.eventHandlerMouseMove);
       window.addEventListener('mouseup', this.eventHandlerMouseUp);
-      document.body.addEventListener('mouseleave', this.eventHandlerMouseLeave);
+      document.documentElement.addEventListener('mouseleave', this.eventHandlerMouseLeave);
 
       this.isActive = true;
     }
@@ -45,7 +45,7 @@ export class MouseSensor {
       target.removeEventListener('mousedown', this.eventHandlerMouseDown);
       window.removeEventListener('mousemove', this.eventHandlerMouseMove);
       window.removeEventListener('mouseup', this.eventHandlerMouseUp);
-      document.body.removeEventListener('mouseleave', this.eventHandlerMouseLeave);
+      document.documentElement.removeEventListener('mouseleave', this.eventHandlerMouseLeave);
 
       this.isActive = false;
     }
@@ -85,13 +85,13 @@ export class MouseSensor {
   private eventHandlerMouseDown = (event: MouseEvent) => {
     const { isActive, config } = this.monoDrag;
 
+    const dragEvent = this.createDragEvent('start', event);
+
     if (
       isActive === false
-      && config.condition(event, this.monoDrag) === true
+      && config.condition(dragEvent, this.monoDrag) === true
     ) {
-      const pointerEvent = this.createDragEvent('start', event);
-
-      this.monoDrag.dragStart(pointerEvent);
+      this.monoDrag.dragStart(dragEvent);
     }
   }
 
@@ -99,9 +99,9 @@ export class MouseSensor {
     const { isActive } = this.monoDrag;
 
     if (isActive === true) {
-      const pointerEvent = this.createDragEvent('drag', event);
+      const dragEvent = this.createDragEvent('drag', event);
 
-      this.monoDrag.drag(pointerEvent);
+      this.monoDrag.drag(dragEvent);
     }
   }
 
@@ -109,19 +109,19 @@ export class MouseSensor {
     const { isActive } = this.monoDrag;
 
     if (isActive === true) {
-      const pointerEvent = this.createDragEvent('stop', event);
+      const dragEvent = this.createDragEvent('stop', event);
 
-      this.monoDrag.dragStop(pointerEvent);
+      this.monoDrag.dragStop(dragEvent);
     }
   }
 
   private eventHandlerMouseLeave = (event: MouseEvent) => {
     const { isActive } = this.monoDrag;
-
+    console.log('leaving');
     if (isActive === true) {
-      const pointerEvent = this.createDragEvent('cancel', event);
+      const dragEvent = this.createDragEvent('cancel', event);
 
-      this.monoDrag.dragCancel(pointerEvent);
+      this.monoDrag.dragCancel(dragEvent);
     }
   }
 }

@@ -2,7 +2,7 @@
 
 # Num
 
-A utility library for dealing with numbers.
+Num provides useful helper methods for dealing with numbers.
 
 ## Import
 
@@ -18,7 +18,7 @@ import { Num } from '@nekobird/rocket';
 
 `average(...numbers): number`
 
-Calculate the average of numbers given in the arguments.
+Calculate the average of the arguments.
 You need to enter at least two numbers or else it will throw an error.
 
 #### Example
@@ -26,13 +26,16 @@ You need to enter at least two numbers or else it will throw an error.
 ```typescript
 // Returns 2
 Num.average(1, 2, 3);
+
+// Returns 5
+Num.average(...[4, 5, 6]);
 ```
 
 ### constrain
 
 `constrain(value: number, range: NumberOrRange): number`
 
-Constrain a number to given range.
+Constrain a number to a range.
 
 #### Example
 
@@ -75,7 +78,7 @@ Num.cycle(2, [3, 5]);
 
 `getEuclideanDistance(a: number, b: number): number`
 
-Get the euclidean distance between two numbers.
+Calculate the euclidean distance between two numbers.
 
 #### Example
 
@@ -97,21 +100,26 @@ Num.getEuclideanDistance(-3, -5);
 
 `hypotenuse(x: number, y: number): number`
 
-A [more efficient](http://www.johndcook.com/blog/2010/06/02/whats-so-hard-about-finding-a-hypotenuse/) way of calculating hypotenuse (Pythagorean Theorem).
+A [more efficient way](http://www.johndcook.com/blog/2010/06/02/whats-so-hard-about-finding-a-hypotenuse/) of calculating hypotenuse (Pythagorean Theorem).
 
 #### Example
 
 ```typescript
+// Using Pythagorean Triples for examples.
+
 // Returns 5
 Num.hypotenuse(3, 4);
+
+// Returns 10
+Num.hypotenuse(6, 8);
 ```
 
 ### reciprocal
 
 `reciprocal(number: number): number`
 
-Get reciprocal of a number (1/n).
-This will throw an error if n is 0.
+Get reciprocal of a number `1 / n`.
+This will throw an error if **n** is **0**.
 
 #### Example
 
@@ -153,12 +161,12 @@ modulate(
   number: number,
   from: NumberOrRange,
   to: NumberOrRange,
-  constrain: boolean = true
+  constrain: boolean = true,
 ): number
 ```
 
 Map a number from one range to another.
-The last flag, if set to true, will constrain the number within that target range.
+The last flag, if set to true, will constrain the number within the target range.
 
 #### Example
 
@@ -176,7 +184,7 @@ Num.modulate(0.75, [0.5, 1], [1, 2], true);
 random(
   range: NumberOrRange,
   whole: boolean = false,
-  fixed: number = 2
+  fixed: number = 2,
 ): number
 ```
 
@@ -205,13 +213,13 @@ Num.random(1, false, 4);
 
 `sum(...numbers: number[]): number`
 
-Sum all the numbers given in the parameter.
+Sum all the number arguments.
 
 #### Example
 
 ```typescript
-// Returns 10
-Num.sum(1, 2, 3, 4);
+// Returns 6
+Num.sum(4, 2, 0);
 ```
 
 ### within
@@ -223,15 +231,18 @@ Returns true if number is within given range.
 #### Example
 
 ```typescript
-// Returns true.
-Num.within(5, [2, 6]);
+// Returns true
+Num.within(4, [2, 4]);
+
+// Returns false
+Num.within(4, [0, 2]);
 ```
 
 ### getSign
 
 `getSign(n: number): number`
 
-Similar to `Math.sign()` but returns 1 if 0 is given.
+Similar to `Math.sign()` but returns **1** if **0** is given.
 
 #### Example
 
