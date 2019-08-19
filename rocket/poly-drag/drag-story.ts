@@ -54,19 +54,9 @@ export class DragStory {
     this.previousPosition.equals(position);
     this.previousVelocity.equals(velocity);
 
-    return {
-      type,
-      event,
-      target,
-      isTouch: true,
-      touch,
-      identifier,
-      offset,
-      position,
-      velocity,
-      acceleration,
-      time: Date.now(),
-    };
+    const dragEvent = new DragEvent(type, event, touch, this);
+
+    return dragEvent;
   }
 
   private addToHistory(dragEvent: DragEvent) {
