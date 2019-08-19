@@ -20,7 +20,6 @@ export class DragStory {
     
   }
 
-
   private createDragEvent(type: DragEventType, event: TouchEvent, touch: Touch): DragEvent {
     const { identifier, clientX, clientY, target } = touch;
 
