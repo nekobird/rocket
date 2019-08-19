@@ -45,7 +45,7 @@ from that element.
 ```
 ascendFrom(
   from: HTMLElement,
-  inspect: DOMTraverseInspectFunction,
+  inspect: DOMTraverseInspectFunction
 ): void
 ```
 
@@ -71,7 +71,7 @@ DOMTraverse.ascendFrom(from, parent => {
 ```
 descendFrom(
   from: HTMLElement,
-  inspect: DOMTraverseInspectFunction,
+  inspect: DOMTraverseInspectFunction
 ): void
 ```
 

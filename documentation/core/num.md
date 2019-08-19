@@ -31,9 +31,12 @@ Num.average(1, 2, 3);
 Num.average(...[4, 5, 6]);
 ```
 
-### constrain
+### constrain, clamp
 
-`constrain(value: number, range: NumberOrRange): number`
+```
+constrain(value: number, range: NumberOrRange): number
+clamp(value: number, range: NumberOrRange): number
+```
 
 Constrain a number to a range.
 
@@ -42,17 +45,21 @@ Constrain a number to a range.
 ```typescript
 // Returns 3
 Num.constrain(4, [1, 3]);
+Num.clamp(4, [1, 3]);
 
 // Returns -2
 Num.constrain(-10, [-2, 4]);
+Num.clamp(-10, [-2, 4]);
 
 // Returns 6
 Num.constrain(8, [6, 4]);
+Num.clamp(8, [6, 4]);
 
 // Returns 0
 // If you enter a number for range it will
 // assume the minimum or maximum is 0.
 Num.constrain(-1, 5);
+Num.clamp(-1, 5);
 ```
 
 ### cycle

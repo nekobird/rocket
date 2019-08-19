@@ -18,12 +18,12 @@ import { Util } from '@nekobird/rocket';
 
 `isPromise(...things): boolean`
 
-Check to see if the given arguments are all a promise object.
+Check to see if given arguments are all valid promise object.
 
 #### Example
 
 ```typescript
-// Returns true if each of the arguments is a promise object.
+// Returns true if a, b, and c are promise objects.
 Util.isPromise(a, b, c);
 ```
 
