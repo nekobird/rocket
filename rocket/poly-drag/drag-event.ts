@@ -15,7 +15,6 @@ export class DragEvent {
 
   public type: DragEventType;
 
-  public isActive: boolean = false;
   public isTouch: boolean = false;
 
   public position: Vector2;

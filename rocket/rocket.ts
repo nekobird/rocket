@@ -28,7 +28,7 @@ export * from './viewport';
 
 // @two
 export * from './two/angle';
-export * from './two/geo-2-util';
+export * from './two/geometry';
 export * from './two/point';
 export * from './two/vector-2';
 export * from './two/vector-2-group';

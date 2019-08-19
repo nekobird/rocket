@@ -24,7 +24,5 @@ export class SensorHub {
 
   constructor(polyDrag: PolyDrag) {
     this.polyDrag = polyDrag;
-  }
-
-  
+  }  
 }

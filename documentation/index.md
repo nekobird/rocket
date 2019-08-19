@@ -25,8 +25,14 @@ Really useful DOM helper methods.
 | [DOMUtil](./dom/dom-util.md) | A collection of general static methods for working with the DOM and HTMLElement. |
 | [DOMTraverse](./dom/dom-traverse.md) | A collection of static methods for traversing the DOM and do stuff along the way. |
 | [DOMStyle](./dom/dom-style.md) | A collection of static methods for getting and setting styles from HTMLElements. |
+| [DOMBoxModel](./dom/dom-style.md) | Get accurate Box Model properties from HTMLElements. |
 | [DOMImage](./dom/dom-image.md) | A collection of static methods for working with images. |
 | [DOMText](./dom/dom-text.md) | A collection of static methods for working with text and text-boxes. |
+| [DOMPoint](./dom/dom-point.md) | Helper methods to relate points and elements. |
+| [DOMView](./dom/dom-view.md) | Find out how elements relate to the Viewport. |
+| [DOMAlignOffset](./dom/dom-align-offset.md) | Comprehensive tool to find HTMLElements offsets based on reference points. |
+| [DOMOffset](./dom/dom-text.md) | Useful utility to find HTMLElement offsets. |
+| [DOMScroll](./dom/dom-text.md) | Find accurate scroll values from HTMLElements. |
 
 ## Viewport
 
@@ -46,7 +52,7 @@ Really useful DOM helper methods.
 | Name | Description |
 | --- | --- |
 | [Angles](./angles.md) | Utility for calculating angles. |
-| [Geo2Util](./geo-2-util.md) | Utility for calculating 2D Geometric stuff. |
+| [Geometry](./geometry.md) | Utility for calculating 2D Geometric stuff. |
 | [Point](./point.md) | A Point Class. |
 | [Vector2](./vector-2.md) | A powerful 2D Vector Class. |
 
@@ -62,4 +68,9 @@ Really useful DOM helper methods.
 
 - [Animation](./animation.md)
 - [Easings](./easings.md)
+
+## Pointer Events
+
+- [MonoDrag](./mono-drag.md)
+- [PolyDrag](./poly-drag.md)
 
