@@ -1,19 +1,21 @@
 export interface PolyDragConfig {
   preventDefault: boolean;
 
-  dragCondition: () => boolean;
-
   condition: () => boolean;
 
+  onDragStart: () => void;
   onDrag: () => void;
+  onDragStop: () => void;
+  onDragCancel: () => void;
 }
 
 export const POLY_DRAG_DEFAULT_CONFIG: PolyDragConfig = {
   preventDefault: true,
 
-  dragCondition: () => true,
-
   condition: () => true,
 
+  onDragStart: () => {},
   onDrag: () => {},
+  onDragStop: () => {},
+  onDragCancel: () => {},
 }

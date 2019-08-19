@@ -20,11 +20,11 @@ export class DOMTraverse {
   public static ascendFrom(
     from: HTMLElement,
     inspect: DOMTraverseInspectFunction,
-    rootNode: HTMLElement = document.documentElement
+    to: HTMLElement = document.documentElement
   ): void {
     let currentElement: HTMLElement | null = from;
 
-    while (currentElement !== null && currentElement !== rootNode) {
+    while (currentElement !== null && currentElement !== to) {
       currentElement = currentElement as HTMLElement;
 
       if (currentElement !== null) {
@@ -208,24 +208,24 @@ export class DOMTraverse {
 
   public static hasAncestor(
     from: HTMLElement,
-    options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
+    config: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
   ): DOMTraverseResult {
     const identifyElement = element => {
       if (
-        Array.isArray(options) === true
-        && DOMUtil.isHTMLElement(...options as HTMLElement[]) === true
+        Array.isArray(config) === true
+        && DOMUtil.isHTMLElement(...config as HTMLElement[]) === true
       ) {
-        options = options as HTMLElement[];
+        config = config as HTMLElement[];
 
-        return options.indexOf(element) !== -1;
+        return config.indexOf(element) !== -1;
       } else if (
-        DOMUtil.isNodeListOfHTMLElement(options) === true
+        DOMUtil.isNodeListOfHTMLElement(config) === true
       ) {
-        options = options as NodeListOf<HTMLElement>;
+        config = config as NodeListOf<HTMLElement>;
 
-        return [...options].indexOf(element) !== -1;
+        return [...config].indexOf(element) !== -1;
       } else {
-        return element === options;
+        return element === config;
       }
     };
 
@@ -234,24 +234,24 @@ export class DOMTraverse {
 
   public static hasDescendant(
     from: HTMLElement,
-    options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
+    config: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
   ): DOMTraverseResult {
     const identifyElement: DOMTraverseIdentifyElementFunction = element => {
       if (
-        Array.isArray(options) === true
-        && DOMUtil.isHTMLElement(...options as HTMLElement[]) === true
+        Array.isArray(config) === true
+        && DOMUtil.isHTMLElement(...config as HTMLElement[]) === true
       ) {
-        options = options as HTMLElement[];
+        config = config as HTMLElement[];
 
-        return options.indexOf(element) !== -1;
+        return config.indexOf(element) !== -1;
       } else if (
-        DOMUtil.isNodeListOfHTMLElement(options) === true
+        DOMUtil.isNodeListOfHTMLElement(config) === true
       ) {
-        options = options as NodeListOf<HTMLElement>;
+        config = config as NodeListOf<HTMLElement>;
         
-        return [...options].indexOf(element) !== -1;
+        return [...config].indexOf(element) !== -1;
       } else {
-        return element === options;
+        return element === config;
       }
     };
 

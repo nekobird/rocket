@@ -23,17 +23,13 @@ export class Num {
   public static constrain(value: number, range: NumberOrRange): number {
     range = this.getRangeFromNumberOrRange(range);
 
-    const [min, max] = this.orderRangeArray(range);
+    let [min, max] = this.orderRangeArray(range);
 
-    if (value <= min) {
-      return min;
-    }
+    return Math.max(min, Math.min(value, max));
+  }
 
-    if (value >= max) {
-      return max;
-    }
-
-    return value;
+  public static clamp(value: number, range: NumberOrRange): number {
+    return this.constrain(value, range);
   }
 
   public static within(number: number, range: NumberOrRange): boolean {

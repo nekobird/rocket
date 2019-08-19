@@ -1,4 +1,5 @@
 // https://cs.uwaterloo.ca/~alopez-o/math-faq/node73.html
+// https://github.com/Shopify/javascript-utilities/blob/master/src/dates.ts
 
 export const DAY = ['Sunday', 'Monday', 'Tusday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 export const MONTH = [
