@@ -22,11 +22,11 @@ Really useful DOM helper methods.
 
 | Name | Description |
 | --- | --- |
-| [DOMUtil](./dom/dom-util.md) | General utility for dealing with the DOM and HTMLElement. |
-| [DOMTraverse](./dom/dom-traverse.md) | Provides useful methods for traversing the DOM and do stuff along the way. |
-| [DOMStyle](./dom/dom-style.md) | Provides helper methods for setting and getting styles from HTMLElements. |
-| [DOMImage](./dom/dom-image.md) | Provieds helper methods for dealing with images. |
-| [DOMText](./dom/dom-text.md) | Provides powerful methods for dealing with text and text-boxes |
+| [DOMUtil](./dom/dom-util.md) | A collection of general static methods for working with the DOM and HTMLElement. |
+| [DOMTraverse](./dom/dom-traverse.md) | A collection of static methods for traversing the DOM and do stuff along the way. |
+| [DOMStyle](./dom/dom-style.md) | A collection of static methods for getting and setting styles from HTMLElements. |
+| [DOMImage](./dom/dom-image.md) | A collection of static methods for working with images. |
+| [DOMText](./dom/dom-text.md) | A collection of static methods for working with text and text-boxes. |
 
 ## Viewport
 
@@ -38,8 +38,8 @@ Really useful DOM helper methods.
 
 | Name | Description |
 | --- | --- |
-| [Color](./color.md) | A powerful Color class that lets you modulate every spectrum with ease, regardless of formats. |
-| [ConvertColor](./convert-color.md) | Convert one color format to another |
+| [Color](./color.md) | A powerful class that lets you modulate every aspect of color properties regardless of format. |
+| [ConvertColor](./convert-color.md) | Convert colors from one format to another. |
 
 ## Two
 

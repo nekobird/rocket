@@ -117,7 +117,7 @@ export class MouseSensor {
 
   private onMouseLeave = (event: MouseEvent) => {
     const { isActive } = this.monoDrag;
-    console.log('leaving');
+
     if (isActive === true) {
       const dragEvent = this.createDragEvent('cancel', event);
 

@@ -31,9 +31,9 @@ Util.isPromise(a, b, c);
 
 `promiseEach<A>(array: A[], func: (value: A) => Promise<void>): Promise<void>`
 
-Takes in an array of values and a function that takes each value as a parameter and returns a Promise.
-
-It will then go through the array in sequence and chain the promise object returned by the func argument.
+Takes in an array of values and a function that returns a promise. 
+It will then loop through the array and pass each value to the function.
+Finally, it will chain the promise objects returned by the function.
 
 ### promiseChain
 

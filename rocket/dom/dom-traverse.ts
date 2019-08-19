@@ -17,13 +17,14 @@ export interface DOMTraverseExtractFunction<T> {
 export type DOMTraverseResult = HTMLElement | HTMLElement[] | false;
 
 export class DOMTraverse {
-  public static ascendFrom(from: HTMLElement, inspect: DOMTraverseInspectFunction): void {
+  public static ascendFrom(
+    from: HTMLElement,
+    inspect: DOMTraverseInspectFunction,
+    rootNode: HTMLElement = document.documentElement
+  ): void {
     let currentElement: HTMLElement | null = from;
 
-    while (
-      currentElement !== null
-      && currentElement !== document.documentElement
-    ) {
+    while (currentElement !== null && currentElement !== rootNode) {
       currentElement = currentElement as HTMLElement;
 
       if (currentElement !== null) {

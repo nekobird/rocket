@@ -41,5 +41,4 @@ export class DragEvent {
   public attachSensors() {
 
   }
-
 }
