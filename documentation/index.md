@@ -12,9 +12,9 @@ Foundation for the rest of the library.
 
 | Name | Description |
 | --- | --- |
-| [Num](./core/num.md) | Num provides useful helper methods for dealing with numbers. |
-| [Util](./core/util.md) | Util provides general helper methods. |
-| [StringUtil](./core/string-util.md) | Simple string utility. |
+| [Num](./core/num.md) | Provides useful helper methods for working with numbers. |
+| [Util](./core/util.md) | Provides general useful helper methods. |
+| [StringUtil](./core/string-util.md) | Simple utility for working with strings. |
 
 ## DOM
 
@@ -22,11 +22,11 @@ Really useful DOM helper methods.
 
 | Name | Description |
 | --- | --- |
-| [DOMUtil](./dom/dom-util.md) | |
-| [DOMTraverse](./dom/dom-traverse.md) | |
-| [DOMStyle](./dom/dom-style.md) | |
-| [DOMImage](./dom/dom-image.md) | |
-| [DOMText](./dom/dom-text.md) | |
+| [DOMUtil](./dom/dom-util.md) | General utility for dealing with the DOM and HTMLElement. |
+| [DOMTraverse](./dom/dom-traverse.md) | Provides useful methods for traversing the DOM and do stuff along the way. |
+| [DOMStyle](./dom/dom-style.md) | Provides helper methods for setting and getting styles from HTMLElements. |
+| [DOMImage](./dom/dom-image.md) | Provieds helper methods for dealing with images. |
+| [DOMText](./dom/dom-text.md) | Provides powerful methods for dealing with text and text-boxes |
 
 ## Viewport
 
@@ -38,7 +38,7 @@ Really useful DOM helper methods.
 
 | Name | Description |
 | --- | --- |
-| [Color](./color.md) | A powerful Color object that lets you easily modify, convert, increment. |
+| [Color](./color.md) | A powerful Color class that lets you modulate every spectrum with ease, regardless of formats. |
 | [ConvertColor](./convert-color.md) | Convert one color format to another |
 
 ## Two
@@ -47,8 +47,8 @@ Really useful DOM helper methods.
 | --- | --- |
 | [Angles](./angles.md) | Utility for calculating angles. |
 | [Geo2Util](./geo-2-util.md) | Utility for calculating 2D Geometric stuff. |
-| [Point](./point.md) | Point Class |
-| [Vector2](./vector-2.md) | 2D Vector Class |
+| [Point](./point.md) | A Point Class. |
+| [Vector2](./vector-2.md) | A powerful 2D Vector Class. |
 
 ## Repeater
 

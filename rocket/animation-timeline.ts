@@ -1,4 +1,6 @@
-import { Animation } from './rocket';
+import {
+  Animation,
+} from './rocket';
 
 export interface AnimationTimelineConfig {
   beforeStart: () => Promise<void> | void;
@@ -30,14 +32,19 @@ export class AnimationTimeline {
   public config: AnimationTimelineConfig;
 
   constructor(config: Partial<AnimationTimelineConfig>) {
-    this.config = Object.assign({}, ANIMATION_TIMELINE_DEFAULT_CONFIG);
+    this.config = {...ANIMATION_TIMELINE_DEFAULT_CONFIG};
+    this.setConfig(config);
+
+    this.animation = new Animation();
 
     this.queue = [];
-    this.animation = new Animation();
   }
 
   public setConfig(config: Partial<AnimationTimelineConfig>): this {
-    if (typeof config === 'object') Object.assign(this.config, config);
+    if (typeof config === 'object') {
+      Object.assign(this.config, config);
+    }
+
     return this;
   }
 
