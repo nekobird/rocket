@@ -5,21 +5,19 @@ import {
 } from '../rocket';
 
 export class DOMOffset {
-  // Assumes from top-left.
-  public static getElementOffsetFrom(target: HTMLElement, from: HTMLElement): FullOffset {
-    const targetRect = target.getBoundingClientRect();
+  public static getElementOffsetFromAnotherElement(from: HTMLElement, to: HTMLElement): FullOffset {
     const fromRect = from.getBoundingClientRect();
+    const toRect = to.getBoundingClientRect();
 
-    const top = Num.getEuclideanDistance(targetRect.top, fromRect.top);
-    const bottom = Num.getEuclideanDistance(targetRect.bottom, fromRect.bottom);
+    const top = Num.getEuclideanDistance(fromRect.top, toRect.top);
+    const bottom = Num.getEuclideanDistance(fromRect.bottom, toRect.bottom);
 
-    const left = Num.getEuclideanDistance(targetRect.left, fromRect.left);
-    const right = Num.getEuclideanDistance(targetRect.right, fromRect.right);
+    const left = Num.getEuclideanDistance(fromRect.left, toRect.left);
+    const right = Num.getEuclideanDistance(fromRect.right, toRect.right);
 
     return { top, bottom, left, right };
   }
 
-  // Get element offset top-left relative to document top-left.
   public static getElementOffsetFromDocument(element: HTMLElement): FullOffset {
     const rect = element.getBoundingClientRect();
 
@@ -30,6 +28,12 @@ export class DOMOffset {
 
     const left = rect.left + scrollLeft;
     const right = rect.right + scrollLeft;
+
+    return { top, bottom, left, right };
+  }
+
+  public static getElementOffsetFromView(element: HTMLElement): FullOffset {
+    const { top, bottom, left, right } = element.getBoundingClientRect();
 
     return { top, bottom, left, right };
   }

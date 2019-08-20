@@ -58,7 +58,7 @@ export class DOMRectangle {
     return result;
   }
 
-  public static areTwoElementRectanglesOverlapping(
+  public static twoElementRectanglesAreOverlapping(
     element1: HTMLElement,
     element2: HTMLElement,
   ): boolean {
@@ -84,7 +84,7 @@ export class DOMRectangle {
     const rect1 = element1.getBoundingClientRect();
     const rect2 = element2.getBoundingClientRect();
 
-    if (this.areTwoElementRectanglesOverlapping(element1, element2) === true) {
+    if (this.twoElementRectanglesAreOverlapping(element1, element2) === true) {
       const top = Math.max(rect1.top, rect2.top);
       const bottom = Math.min(rect1.bottom, rect2.bottom);
 

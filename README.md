@@ -4,7 +4,7 @@ Rocket is a foundational library for creating interactive web experiences.
 
 ## Why
 
-Rocket provides a wide range of tools that cover many aspects of developing interactivity on the web. It is perfect for creating rapid prototypes and web-apps that requires a lot of dynamic interactions. It does most of the heavy lifting so you can focus on your mission.
+Rocket provides a wide range of tools that cover many aspects of developing interactivity on the web. It is perfect for creating rapid prototypes and web-apps that require a lot of dynamic interactions. It can handle most of the heavy lifting so you can focus on your mission!
 
 [See Documentation Here](./documentation/index.md) (Still in progress).
 

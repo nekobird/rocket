@@ -12,27 +12,27 @@ Foundation for the rest of the library.
 
 | Name | Description |
 | --- | --- |
-| [Num](./core/num.md) | Provides useful helper methods for working with numbers. |
-| [Util](./core/util.md) | Provides general useful helper methods. |
+| [Num](./core/num.md) | Tools for working with numbers. |
+| [Util](./core/util.md) | General utility methods. |
 | [StringUtil](./core/string-util.md) | Simple utility for working with strings. |
 
 ## DOM
 
-Really useful DOM helper methods.
+A collection of modules to help your interaction with the DOM a breeze.
 
 | Name | Description |
 | --- | --- |
-| [DOMUtil](./dom/dom-util.md) | A collection of general static methods for working with the DOM and HTMLElement. |
-| [DOMTraverse](./dom/dom-traverse.md) | A collection of static methods for traversing the DOM and do stuff along the way. |
-| [DOMStyle](./dom/dom-style.md) | A collection of static methods for getting and setting styles from HTMLElements. |
-| [DOMBoxModel](./dom/dom-style.md) | Get accurate Box Model properties from HTMLElements. |
-| [DOMImage](./dom/dom-image.md) | A collection of static methods for working with images. |
-| [DOMText](./dom/dom-text.md) | A collection of static methods for working with text and text-boxes. |
-| [DOMPoint](./dom/dom-point.md) | Helper methods to relate points and elements. |
-| [DOMView](./dom/dom-view.md) | Find out how elements relate to the Viewport. |
-| [DOMAlignOffset](./dom/dom-align-offset.md) | Comprehensive tool to find HTMLElements offsets based on reference points. |
-| [DOMOffset](./dom/dom-text.md) | Useful utility to find HTMLElement offsets. |
-| [DOMScroll](./dom/dom-text.md) | Find accurate scroll values from HTMLElements. |
+| [DOMUtil](./dom/dom-util.md) | General DOM Utilities. |
+| [DOMTraverse](./dom/dom-traverse.md) | Traverse the DOM tree and do stuff along the way. |
+| [DOMStyle](./dom/dom-style.md) | Easily get and set style values. |
+| [DOMBoxModel](./dom/dom-box-model.md) | Quickly get HTMLElement box-model properties from. |
+| [DOMImage](./dom/dom-image.md) | Asynchronously load Images and get their dimensions. |
+| [DOMText](./dom/dom-text.md) | Anything to do with text and text-boxes. |
+| [DOMPoint](./dom/dom-point.md) | Calculate or get points from HTMLElements and vice versa. |
+| [DOMView](./dom/dom-view.md) | HTMLElements and how relate to the Viewport. |
+| [DOMAlignOffset](./dom/dom-align-offset.md) | Find HTMLElement offsets relative to a set of reference points. |
+| [DOMOffset](./dom/dom-offset.md) | Find HTMLElement offsets. |
+| [DOMScroll](./dom/dom-text.md) | Get useful scroll values from HTMLElements. |
 
 ## Viewport
 
