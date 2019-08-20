@@ -129,7 +129,7 @@ export class DOMStyle {
     return this.getStyleValue(element, 'fontSize', true) as number;
   }
 
-  public static setFontSize(element: HTMLElement, fontSize: number) {
+  public static setFontSize(element: HTMLElement, fontSize: number): void {
     element.style.fontSize = `${fontSize}px`;
   }
 
