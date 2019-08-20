@@ -33,7 +33,7 @@ export class DOMScroll {
     let left = 0;
 
     if (elements.length > 1) {
-      rect = DOMRectangle.getMinimumBoundingRectangleOfElements(...elements);
+      rect = DOMRectangle.getMinimumBoundingRectangleFromElements(...elements);
     } else {
       rect = elements[0].getBoundingClientRect();
     }
@@ -51,7 +51,7 @@ export class DOMScroll {
     let top = 0;
 
     if (elements.length > 1) {
-      rect = DOMRectangle.getMinimumBoundingRectangleOfElements(...elements);
+      rect = DOMRectangle.getMinimumBoundingRectangleFromElements(...elements);
     } else {
       rect = elements[0].getBoundingClientRect();
     }
@@ -71,7 +71,7 @@ export class DOMScroll {
     let width = 0;
 
     if (elements.length > 1) {
-      rect = DOMRectangle.getMinimumBoundingRectangleOfElements(...elements);
+      rect = DOMRectangle.getMinimumBoundingRectangleFromElements(...elements);
     } else {
       rect = elements[0].getBoundingClientRect();
     }
@@ -93,7 +93,7 @@ export class DOMScroll {
     let height = 0;
 
     if (elements.length > 1) {
-      rect = DOMRectangle.getMinimumBoundingRectangleOfElements(...elements);
+      rect = DOMRectangle.getMinimumBoundingRectangleFromElements(...elements);
     } else {
       rect = elements[0].getBoundingClientRect();
     }
