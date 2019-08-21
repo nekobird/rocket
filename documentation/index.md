@@ -56,21 +56,19 @@ A collection of modules to help your interaction with the DOM a breeze.
 | [Point](./point.md) | A Point Class. |
 | [Vector2](./vector-2.md) | A powerful 2D Vector Class. |
 
-## Repeater
+## Dynamics
 
-- [Repeater](./repeater.md)
-
-## Ticker
-
-- [Ticker](./ticker.md)
-
-## Animation
-
-- [Animation](./animation.md)
-- [Easings](./easings.md)
+| Name | Description |
+| --- | --- |
+| [Repeater](./repeater.md) | Repeater is a simple class that uses useInterval. |
+| [Ticker](./ticker.md) | Ticker. |
+| [Animation](./animation.md) | Animation. |
+| [Easings](./easings.md) | Penner Functions. |
 
 ## Pointer Events
 
-- [MonoDrag](./mono-drag.md)
-- [PolyDrag](./poly-drag.md)
+| Name | Description |
+| --- | --- |
+| [MonoDrag](./mono-drag.md) | Hybrid Touch and Mouse event manager. |
+| [PolyDrag](./poly-drag.md) | Manage and control multiple drag events. |
 
