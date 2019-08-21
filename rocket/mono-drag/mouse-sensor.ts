@@ -28,6 +28,7 @@ export class MouseSensor {
       target = target as HTMLElement;
 
       target.addEventListener('mousedown', this.onMouseDown);
+      target.addEventListener('contextmenu', this.onContextMenu);
       window.addEventListener('mousemove', this.onMouseMove);
       window.addEventListener('mouseup', this.onMouseUp);
       document.documentElement.addEventListener('mouseleave', this.onMouseLeave);
@@ -43,6 +44,7 @@ export class MouseSensor {
       target = target as HTMLElement;
 
       target.removeEventListener('mousedown', this.onMouseDown);
+      target.removeEventListener('contextmenu', this.onContextMenu);
       window.removeEventListener('mousemove', this.onMouseMove);
       window.removeEventListener('mouseup', this.onMouseUp);
       document.documentElement.removeEventListener('mouseleave', this.onMouseLeave);
@@ -136,6 +138,15 @@ export class MouseSensor {
       const dragEvent = this.createDragEvent('cancel', event);
 
       this.monoDrag.dragCancel(dragEvent);
+    }
+  }
+
+  private onContextMenu = (event: MouseEvent) => {
+    const { disableContextMenu } = this.monoDrag.config;
+
+    if (disableContextMenu === true) {
+      event.preventDefault();
+      event.stopPropagation();
     }
   }
 }

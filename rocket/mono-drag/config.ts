@@ -14,10 +14,11 @@ export interface MonoDragConfig {
   keepHistory: boolean;
 
   preventDefault: boolean;
-
-  onEvent: (event: MouseEvent | TouchEvent, monoDrag: MonoDrag) => void;
+  disableContextMenu: boolean;
 
   condition: (dragEvent: DragEvent, monoDrag: MonoDrag) => boolean;
+
+  onEvent: (event: MouseEvent | TouchEvent, monoDrag: MonoDrag) => void;
 
   onDragStart: (dragEvent: DragEvent, monoDrag: MonoDrag) => void;
   onDrag: (dragEvent: DragEvent, monoDrag: MonoDrag) => void;
@@ -33,6 +34,7 @@ export const MONO_DRAG_DEFAULT_CONFIG: MonoDragConfig = {
   keepHistory: false,
 
   preventDefault: true,
+  disableContextMenu: false,
 
   condition: () => true,
 
