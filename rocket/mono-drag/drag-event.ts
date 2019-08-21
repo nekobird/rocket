@@ -7,13 +7,15 @@ export type DragEventType = 'start' | 'drag' | 'stop' | 'cancel';
 export interface DragEvent {
   type: DragEventType;
 
-  event: TouchEvent | MouseEvent;
-
-  target: EventTarget | null;
-
   isTouch: boolean;
-  touch?: Touch;
-  identifier?: number;
+
+  touchIdentifier?: number;
+
+  originalEvent: TouchEvent | MouseEvent;
+  originalTouch?: Touch;
+
+  targetFromEvent: EventTarget | null;
+  target: HTMLElement | null;
 
   offset: Vector2;
 

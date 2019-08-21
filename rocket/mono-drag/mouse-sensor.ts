@@ -51,17 +51,24 @@ export class MouseSensor {
     }
   }
 
-  private createDragEvent(type: DragEventType, event: MouseEvent): DragEvent {
-    const { clientX, clientY, target } = event;
+  private createDragEvent(type: DragEventType, originalEvent: MouseEvent): DragEvent {
+    const {
+      clientX,
+      clientY,
+      target: targetFromEvent
+    } = originalEvent;
+
+    const target = document.elementFromPoint(clientX, clientY) as HTMLElement | null;
 
     const position = new Vector2(clientX, clientY);
-
-    let velocity = new Vector2();
-    let acceleration = new Vector2();
+    const velocity = new Vector2();
+    const acceleration = new Vector2();
 
     if (type !== 'start') {
-      velocity = Vector2.subtract(position, this.monoDrag.previousPosition);
-      acceleration = Vector2.subtract(velocity, this.monoDrag.previousVelocity);
+      const { previousPosition, previousVelocity } = this.monoDrag;
+
+      velocity.equals(Vector2.subtract(position, previousPosition));
+      acceleration.equals(Vector2.subtract(velocity, previousVelocity));
     }
 
     const offset = Vector2.clone(this.monoDrag.offset);
@@ -71,13 +78,20 @@ export class MouseSensor {
 
     return {
       type,
-      event,
-      target,
+
       isTouch: false,
+
+      originalEvent,
+
+      targetFromEvent,
+      target,
+
       offset,
+
       position,
       velocity,
       acceleration,
+
       time: Date.now(),
     };
   }

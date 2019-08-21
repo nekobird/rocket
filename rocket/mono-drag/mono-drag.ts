@@ -137,7 +137,7 @@ export class MonoDrag {
   }
 
   public dragStart(pointerEvent: DragEvent, isTouch: boolean = false) {
-    const { event, position, time } = pointerEvent;
+    const { originalEvent: event, position, time } = pointerEvent;
 
     if (this.isActive === false) {
       this.preventDefault(event);
@@ -147,7 +147,7 @@ export class MonoDrag {
       this.isTouch = isTouch;
 
       if (isTouch === true) {
-        this.touchIdentifier = pointerEvent.identifier as number;
+        this.touchIdentifier = pointerEvent.touchIdentifier as number;
       }
 
       this.startTime = time;
@@ -169,7 +169,7 @@ export class MonoDrag {
   }
 
   public drag(pointerEvent: DragEvent) {
-    const { event } = pointerEvent;
+    const { originalEvent: event } = pointerEvent;
 
     if (this.isActive === true) {
       this.preventDefault(event);
@@ -185,7 +185,7 @@ export class MonoDrag {
   }
 
   public dragStop(pointerEvent: DragEvent) {
-    const { event } = pointerEvent;
+    const { originalEvent: event } = pointerEvent;
 
     if (this.isActive === true) {
       this.preventDefault(event);
@@ -203,7 +203,7 @@ export class MonoDrag {
   }
 
   public dragCancel(pointerEvent: DragEvent) {
-    const { event } = pointerEvent;
+    const { originalEvent: event } = pointerEvent;
 
     if (this.isActive === true) {
       this.preventDefault(event);

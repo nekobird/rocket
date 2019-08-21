@@ -51,17 +51,25 @@ export class TouchSensor {
     }
   }
 
-  private createDragEvent(type: DragEventType, event: TouchEvent, touch: Touch): DragEvent {
-    const { identifier, clientX, clientY, target } = touch;
+  private createDragEvent(type: DragEventType, originalEvent: TouchEvent, originalTouch: Touch): DragEvent {
+    const {
+      identifier: touchIdentifier,
+      clientX,
+      clientY,
+      target: targetFromEvent
+    } = originalTouch;
+
+    const target = document.elementFromPoint(clientX, clientY) as HTMLElement | null;
 
     const position = new Vector2(clientX, clientY);
-
-    let velocity = new Vector2();
-    let acceleration = new Vector2();
+    const velocity = new Vector2();
+    const acceleration = new Vector2();
 
     if (type !== 'start') {
-      velocity = Vector2.subtract(position, this.monoDrag.previousPosition);
-      acceleration = Vector2.subtract(velocity, this.monoDrag.previousVelocity);
+      const { previousPosition, previousVelocity } = this.monoDrag;
+
+      velocity.equals(Vector2.subtract(position, previousPosition));
+      acceleration.equals(Vector2.subtract(velocity, previousVelocity));
     }
 
     const offset = Vector2.clone(this.monoDrag.offset);
@@ -71,15 +79,23 @@ export class TouchSensor {
 
     return {
       type,
-      event,
-      target,
+
       isTouch: true,
-      touch,
-      identifier,
+
+      touchIdentifier,
+
+      originalEvent,
+      originalTouch,
+
+      targetFromEvent,
+      target,
+      
       offset,
+
       position,
       velocity,
       acceleration,
+
       time: Date.now(),
     };
   }
