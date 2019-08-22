@@ -189,7 +189,7 @@ Num.modulate(0.75, [0.5, 1], [1, 2], true);
 
 ```
 transform(
-  number: number,
+  value: number,
   from: NumberOrRange,
   to: NumberOrRange,
   constrain: boolean = true,
