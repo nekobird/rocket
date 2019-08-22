@@ -20,10 +20,9 @@
     "build-ts": "rm -r build; tsc -t es6",
     "clean": "rm -r dist; rm -r build; rm -r .cache",
     "prepare": "npm run build",
-    "start-playground": "parcel ./playground/index.html",
+    "start": "parcel ./playground/index.html",
     "test": "jest"
   },
-  "browserslist": "> 1%, not dead",
   "dependencies": {
     "@babel/runtime": "^7.4.4",
     "@nekobird/controls": "0.0.1"
