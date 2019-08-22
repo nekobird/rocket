@@ -1,12 +1,12 @@
 [Back](../index.md)
 
-# Num
+# `Num`
 
 Num provides useful helper methods for dealing with numbers.
 
 ## Import
 
-Import **Num** into your project file.
+Import **`Num`** into your project file.
 
 ```typescript
 import { Num } from '@nekobird/rocket';
@@ -14,7 +14,7 @@ import { Num } from '@nekobird/rocket';
 
 ## Static Methods
 
-### average
+### `average`
 
 `average(...numbers): number`
 
@@ -31,7 +31,7 @@ Num.average(1, 2, 3);
 Num.average(...[4, 5, 6]);
 ```
 
-### constrain, clamp
+### `constrain`, `clamp`
 
 ```
 constrain(value: number, range: NumberOrRange): number
@@ -62,7 +62,7 @@ Num.constrain(-1, 5);
 Num.clamp(-1, 5);
 ```
 
-### cycle
+### `cycle`
 
 `cycle(value: number, range: NumberOrRange): number`
 
@@ -81,7 +81,7 @@ Num.cycle(-1, [0, 3])
 Num.cycle(2, [3, 5]);
 ```
 
-### getEuclideanDistance
+### `getEuclideanDistance`
 
 `getEuclideanDistance(a: number, b: number): number`
 
@@ -103,7 +103,7 @@ Num.getEuclideanDistance(5, -3);
 Num.getEuclideanDistance(-3, -5);
 ```
 
-### hypotenuse
+### `hypotenuse`
 
 `hypotenuse(x: number, y: number): number`
 
@@ -121,7 +121,7 @@ Num.hypotenuse(3, 4);
 Num.hypotenuse(6, 8);
 ```
 
-### reciprocal
+### `reciprocal`
 
 `reciprocal(number: number): number`
 
@@ -135,7 +135,7 @@ This will throw an error if **n** is **0**.
 Num.reciprocal(1);
 ```
 
-### roundTo
+### `roundTo`
 
 `roundTo(number: number, to?: number): number`
 
@@ -149,19 +149,19 @@ If `to` is not defined, it will default to 0 decimal point.
 Num.roundTo(3.1415, 2);
 ```
 
-### lerp
+### `lerp`
 
 `lerp(t: number, from: number, to: number): number`
 
 Linear interpolation.
 
-### cubicBezier
+### `cubicBezier`
 
 `cubicBezier(t: number, p1: number, cp1: number, cp2: number, p2: number): number`
 
 Cubic Bezier interpolation.
 
-### modulate
+### `modulate`
 
 ```
 modulate(
@@ -185,7 +185,7 @@ Num.modulate(0.5, 1, 2, true);
 Num.modulate(0.75, [0.5, 1], [1, 2], true);
 ```
 
-### random
+### `random`
 
 ```
 random(
@@ -216,7 +216,7 @@ Num.random(1, true);
 Num.random(1, false, 4);
 ```
 
-### sum
+### `sum`
 
 `sum(...numbers: number[]): number`
 
@@ -229,7 +229,7 @@ Sum all the number arguments.
 Num.sum(4, 2, 0);
 ```
 
-### within
+### `within`
 
 `within(number: number, range: NumberOrRange): boolean`
 
@@ -245,7 +245,7 @@ Num.within(4, [2, 4]);
 Num.within(4, [0, 2]);
 ```
 
-### getSign
+### `getSign`
 
 `getSign(n: number): number`
 

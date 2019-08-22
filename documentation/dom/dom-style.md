@@ -1,6 +1,6 @@
 [Back](../index.md)
 
-# DOMStyle
+# `DOMStyle`
 
 A collection of style helper.
 
@@ -14,25 +14,25 @@ import { DOMStyle } from '@nekobird/rocket';
 
 ## Interfaces
 
-### StyleList
+### `StyleList`
 
 `[key: string]: string | number`
 
-### StyleValue
+### `StyleValue`
 
 `[key: string]: string`
 
 ## Static Methods
 
-### getLineHeight
+### `getLineHeight`
 
 `getLineHeight(element: HTMLElement): number`
 
-### applyStyle
+### `applyStyle`
 
 `applyStyle(element: HTMLElement, styles: StyleList)`
 
-### copyStylesFrom
+### `copyStylesFrom`
 
 ```
 copyStylesFrom(
@@ -42,15 +42,15 @@ copyStylesFrom(
 ): void
 ```
 
-### clearStyles
+### `clearStyles`
 
 `clearStyles(element: HTMLElement)`
 
-### removeStyles
+### `removeStyles`
 
 `removeStyles(element: HTMLElement, styleProperties: string | string[])`
 
-### getStyleValue
+### `getStyleValue`
 
 ```
 getStyleValue(
@@ -60,7 +60,7 @@ getStyleValue(
 ): string | number
 ```
 
-### getStyleValues
+### `getStyleValues`
 
 ```
 getStyleValues(
@@ -69,18 +69,18 @@ getStyleValues(
 ): StyleValue
 ```
 
-### getFontSize
+### `getFontSize`
 
 `getFontSize(element: HTMLElement): number`
 
-### setFontSize
+### `setFontSize`
 
 `setFontSize(element: HTMLElement, fontSize: number): void`
 
-### getBaseFontSize
+### `getBaseFontSize`
 
 `getBaseFontSize(): number`
 
-### RemToPx
+### `RemToPx`
 
 `RemToPx(rem: number): number`

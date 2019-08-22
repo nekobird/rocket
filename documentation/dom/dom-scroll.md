@@ -1,12 +1,12 @@
 [Back](../index.md)
 
-# DOMScroll
+# `DOMScroll`
 
 A collection of scroll helpers.
 
 ## Import
 
-Import **DOMScroll** into your project:
+Import **`DOMScroll`** into your project:
 
 ```typescript
 import { DOMScroll } from '@nekobird/rocket';
@@ -14,13 +14,13 @@ import { DOMScroll } from '@nekobird/rocket';
 
 ## Static Properties
 
-### scrollLeft
+### `scrollLeft`
 
 `scrollLeft: number`
 
 This is a `readonly` property that returns the current document scroll left location from the viewport.
 
-### scrollTop
+### `scrollTop`
 
 `scrollTop: number`
 

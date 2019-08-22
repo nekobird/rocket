@@ -1,20 +1,20 @@
 # Interfaces
 
-## Size
+## `Size`
 
 ```
 width: number
 height: number
 ```
 
-## Offset
+## `Offset`
 
 ```
 left: number
 top: number
 ```
 
-## FullOffset
+## `FullOffset`
 
 ```
 left: number
@@ -25,7 +25,7 @@ bottom: number
 
 `FullOffset` is an extension of `Offset`.
 
-## Rectangle
+## `Rectangle`
 
 ```
 left: number
@@ -39,14 +39,14 @@ center: Point
 
 # Types
 
-## RangeArray
+## `RangeArray`
 
 `[number, number]`
 
 An array containing two numbers.
 Usually, to represent min and max value.
 
-## NumberOrRange
+## `NumberOrRange`
 
 `number | RangeArray`
 

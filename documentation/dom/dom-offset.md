@@ -1,10 +1,10 @@
 [Back](../index.md)
 
-# DOMOffset
+# `DOMOffset`
 
 ## Import
 
-Import **DOMOffset** into your project:
+Import **`DOMOffset`** into your project:
 
 ```typescript
 import { DOMOffset } from '@nekobird/rocket';
@@ -12,7 +12,7 @@ import { DOMOffset } from '@nekobird/rocket';
 
 ## Static Properties
 
-### getElementOffsetFromAnotherElement
+### `getElementOffsetFromAnotherElement`
 
 ```
 getElementOffsetFromAnotherElement(
@@ -23,7 +23,7 @@ getElementOffsetFromAnotherElement(
 
 Get offset from given element to another element, relative to top-left of both elements.
 
-### getElementOffsetFromDocument
+### `getElementOffsetFromDocument`
 
 ```
 getElementOffsetFromDocument(
@@ -31,7 +31,7 @@ getElementOffsetFromDocument(
 ): FullOffset
 ```
 
-### getElementOffsetFromView Methods
+### `getElementOffsetFromView`
 
 ```
 getElementOffsetFromView(

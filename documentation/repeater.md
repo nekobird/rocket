@@ -1,6 +1,6 @@
 [Back](./index.md)
 
-# Repeater
+# `Repeater`
 
 ## Import
 
