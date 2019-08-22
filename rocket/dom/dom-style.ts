@@ -23,7 +23,11 @@ export class DOMStyle {
 
     temp.textContent = 'abcd';
 
-    this.copyStylesFrom(element, ['fontSize', 'fontFamily', 'lineHeight'], temp);
+    this.copyStylesFrom(
+      element,
+      ['fontSize', 'fontFamily', 'lineHeight'],
+      temp
+    );
 
     let result;
 
