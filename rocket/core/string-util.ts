@@ -7,6 +7,7 @@ export class StringUtil {
     return string.charAt(0).toLowerCase() + string.slice(1);
   }
 
+  // https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Whitespace_in_the_DOM
   public static removeExtraWhitespaces(string: string): string {
     return string.replace(/[\s]+/g, ' ');
   }
@@ -29,5 +30,21 @@ export class StringUtil {
     }
 
     return value;
+  }
+
+  public static replace(string: string, patterns: (string | RegExp) | (string | RegExp)[], replacement: string = ''): string {
+    if (Array.isArray(patterns) === true) {
+      patterns = patterns as (string | RegExp)[];
+
+      patterns.forEach(pattern => {
+        string = string.replace(pattern, replacement);
+      });
+    } else {
+      let pattern = patterns as (string | RegExp);
+
+      string = string.replace(pattern, replacement);
+    }
+
+    return string;
   }
 }
