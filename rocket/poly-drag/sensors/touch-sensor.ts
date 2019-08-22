@@ -1,20 +1,20 @@
 import {
   DOMUtil,
   Vector2,
-} from '../rocket';
+} from '../../rocket';
 
 import {
   PolyDrag,
-} from './poly-drag';
+} from '../poly-drag';
 
 import {
   DragEvent,
   DragEventType,
-} from './drag-event';
+} from '../drag-event';
 
 import {
   SensorHub
-} from './sensor-hub';
+} from '../sensor-hub';
 
 export class TouchSensor {
   private polyDrag: PolyDrag;

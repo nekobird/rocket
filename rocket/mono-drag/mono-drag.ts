@@ -14,11 +14,11 @@ import {
 
 import {
   MouseSensor,
-} from './mouse-sensor';
+} from './sensors/mouse-sensor';
 
 import {
   TouchSensor,
-} from './touch-sensor';
+} from './sensors/touch-sensor';
 
 export class MonoDrag {
   public config: MonoDragConfig;

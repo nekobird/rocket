@@ -4,11 +4,11 @@ import {
 
 import {
   MouseSensor,
-} from './mouse-sensor';
+} from './sensors/mouse-sensor';
 
 import {
   TouchSensor,
-} from './touch-sensor';
+} from './sensors/touch-sensor';
 
 import {
   DragStory,
@@ -24,5 +24,5 @@ export class SensorHub {
 
   constructor(polyDrag: PolyDrag) {
     this.polyDrag = polyDrag;
-  }  
+  }
 }

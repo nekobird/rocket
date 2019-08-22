@@ -1,16 +1,16 @@
 import {
   DOMUtil,
   Vector2,
-} from '../rocket';
+} from '../../rocket';
 
 import {
   MonoDrag,
-} from './mono-drag';
+} from '../mono-drag';
 
 import {
   DragEvent,
   DragEventType,
-} from './drag-event';
+} from '../drag-event';
 
 export class TouchSensor {
   private monoDrag: MonoDrag;

@@ -5,8 +5,10 @@ import {
 export interface AnimationTimelineConfig {
   beforeStart: () => Promise<void> | void;
   onStart: () => Promise<void> | void;
+
   beforeEach: () => Promise<void> | void;
   afterEach: () => Promise<void> | void;
+
   onComplete: () => void;
 }
 
