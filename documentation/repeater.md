@@ -2,11 +2,12 @@
 
 # `Repeater`
 
+Repeater 
+
 ## Import
 
-Import **Repeater** into your project file.
+Import **`Repeater`** into your project file.
 
 ```typescript
 import { Repeater } from '@nekobird/rocket';
 ```
-

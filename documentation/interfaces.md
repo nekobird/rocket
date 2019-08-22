@@ -44,7 +44,7 @@ center: Point
 `[number, number]`
 
 An array containing two numbers.
-Usually, to represent min and max value.
+Usually to represent min and max value.
 
 ## `NumberOrRange`
 

@@ -24,5 +24,10 @@ export class SensorHub {
 
   constructor(polyDrag: PolyDrag) {
     this.polyDrag = polyDrag;
+
+    this.mouseSensor = new MouseSensor();
+    this.touchSensor = new TouchSensor();
   }
+
+
 }

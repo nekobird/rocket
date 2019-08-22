@@ -3,8 +3,7 @@
 # `Viewport`
 
 Viewport is the visible viewing region of your document.
-This static class helps you get useful accurate and reliable information (dimensions, scrolling properties, etc).
-It also, easily, lets you toggle document scrolling without writing much code.
+This static class helps you get useful, accurate, and reliable viewport information.
 
 ## Import
 
