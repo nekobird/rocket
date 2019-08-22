@@ -97,11 +97,11 @@ export class Num {
     return max * Math.sqrt(1 + n * n);
   }
 
-  public static modulate(number: number, from: NumberOrRange, to: NumberOrRange, constrain: boolean = true): number {
+  public static modulate(value: number, from: NumberOrRange, to: NumberOrRange, constrain: boolean = true): number {
     from = this.getRangeFromNumberOrRange(from);
     to = this.getRangeFromNumberOrRange(to);
 
-    const percent = (number - from[0]) / (from[1] - from[0]);
+    const percent = (value - from[0]) / (from[1] - from[0]);
 
     let result;
 
@@ -110,6 +110,20 @@ export class Num {
     } else {
       result = to[0] - percent * (to[0] - to[1]);
     }
+
+    if (constrain === true) {
+      return this.constrain(result, to);
+    }
+
+    return result;
+  }
+
+  // https://math.stackexchange.com/questions/377169/calculating-a-value-inside-one-range-to-a-value-of-another-range/377174
+  public static transform(value: number, from: NumberOrRange, to: NumberOrRange, constrain: boolean = true): number {
+    from = this.getRangeFromNumberOrRange(from);
+    to = this.getRangeFromNumberOrRange(to);
+
+    let result = (value - from[0]) * ((to[1] - to[0]) / (from[1] - from[0])) + to[0];
 
     if (constrain === true) {
       return this.constrain(result, to);
