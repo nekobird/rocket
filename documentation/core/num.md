@@ -161,7 +161,7 @@ Linear interpolation.
 
 Cubic Bezier interpolation.
 
-### `modulate`
+### `modulate` (Will soon be deprecated, replaced with `transform`)
 
 ```
 modulate(
@@ -183,6 +183,30 @@ Num.modulate(0.5, 1, 2, true);
 
 // Returns 1.5
 Num.modulate(0.75, [0.5, 1], [1, 2], true);
+```
+
+### `transform`
+
+```
+transform(
+  number: number,
+  from: NumberOrRange,
+  to: NumberOrRange,
+  constrain: boolean = true,
+): number
+```
+
+Map a number from one range to another.
+The last flag, if set to true, will constrain the number within the target range.
+
+#### Example
+
+```typescript
+// Returns 1
+Num.transform(0.5, 1, 2, true);
+
+// Returns 1.5
+Num.transform(0.75, [0.5, 1], [1, 2], true);
 ```
 
 ### `random`
