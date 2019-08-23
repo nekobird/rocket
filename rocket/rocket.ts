@@ -62,3 +62,6 @@ export * from './ticker/ticker';
 
 // @scroll
 export * from './scroll-trigger-manager/scroll-trigger-manager';
+
+// @listener
+export * from './listen';

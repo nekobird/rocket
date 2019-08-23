@@ -43,6 +43,75 @@ export class DOMView {
     return true;
   }
 
+  public static getElementWidthInView(element: HTMLElement): number {  
+    const rect = element.getBoundingClientRect();
+    
+    let { width } = rect;
+  
+    if (width === 0) {
+      return 0;
+    }
+  
+    if (rect.left < 0) {
+      width = width + rect.left;
+    }
+  
+    if (rect.right > Viewport.width) {
+      width = width - (rect.right - Viewport.width);
+    }
+  
+    return width;
+  }
+  
+  public static getElementHeightInView(element: HTMLElement): number {  
+    const rect = element.getBoundingClientRect();
+    
+    let { height } = rect;
+  
+    if (height === 0) {
+      return 0;
+    }
+
+    if (rect.top < 0) {
+      height = height + rect.top;
+    }
+  
+    if (rect.bottom > Viewport.height) {
+      height = height - (rect.bottom - Viewport.height);
+    }
+  
+    return height;
+  }
+
+  public static getProportionOfElementWidthInView(element: HTMLElement): number {  
+    const rect = element.getBoundingClientRect();
+    
+    const width = this.getElementWidthInView(element);
+  
+    return width / rect.width;
+  }
+
+  public static getProportionOfElementHeightInView(element: HTMLElement): number {
+    const rect = element.getBoundingClientRect();
+    
+    const height = this.getElementHeightInView(element);
+  
+    return height / rect.height;
+  }
+
+  public static getProportionOfElementInView(element: HTMLElement): number {
+    if (this.elementIsInView(element) === false) {
+      return 0;
+    }
+  
+    const rect = element.getBoundingClientRect();
+
+    const width = this.getElementWidthInView(element);
+    const height = this.getElementHeightInView(element);
+
+    return (width * height) / (rect.width * rect.height);
+  }
+
   public static elementIsClipping(
     element: HTMLElement,
     cornersOrEdges?: DOMViewEdgeAndCornerNames | DOMViewEdgeAndCornerNames[],

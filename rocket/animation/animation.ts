@@ -1,11 +1,11 @@
 import {
   AnimationConfig,
-  DEFAULT_ANIMATION_CONFIG
+  DEFAULT_ANIMATION_CONFIG,
 } from './animation-config';
 
 import {
   AnimationCore,
-  AnimationState
+  AnimationState,
 } from './animation-core';
 
 export class Animation {
