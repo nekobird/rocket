@@ -3,6 +3,10 @@ import {
 } from './poly-drag';
 
 import {
+  DragStory,
+} from './drag-story';
+
+import {
   DragEvent
 } from './drag-event';
 
@@ -18,16 +22,15 @@ export interface PolyDragConfig {
 
   condition: (dragEvent: DragEvent) => boolean;
 
-  onEvent: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
+  onEvent: (dragEvent: DragEvent, dragStory: DragStory, polyDrag: PolyDrag) => void;
 
-  onStart: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
+  onStart: (dragEvent: DragEvent, dragStory: DragStory, polyDrag: PolyDrag) => void;
+  onEnd: (dragEvent: DragEvent, dragStory: DragStory, polyDrag: PolyDrag) => void;
 
-  onEachDragStart: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
-  onEachDrag: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
-  onEachDragStop: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
-  onEachDragCancel: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
-
-  onEnd: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
+  onEachDragStart: (dragEvent: DragEvent, dragStory: DragStory, polyDrag: PolyDrag) => void;
+  onEachDrag: (dragEvent: DragEvent, dragStory: DragStory, polyDrag: PolyDrag) => void;
+  onEachDragStop: (dragEvent: DragEvent, dragStory: DragStory, polyDrag: PolyDrag) => void;
+  onEachDragCancel: (dragEvent: DragEvent, dragStory: DragStory, polyDrag: PolyDrag) => void;
 }
 
 export const POLY_DRAG_DEFAULT_CONFIG: PolyDragConfig = {
@@ -41,9 +44,10 @@ export const POLY_DRAG_DEFAULT_CONFIG: PolyDragConfig = {
   onEvent: () => {},
 
   onStart: () => {},
+  onEnd: () => {},
+
   onEachDragStart: () => {},
   onEachDrag: () => {},
   onEachDragStop: () => {},
   onEachDragCancel: () => {},
-  onEnd: () => {},
 }

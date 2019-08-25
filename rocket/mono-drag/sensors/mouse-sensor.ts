@@ -73,10 +73,10 @@ export class MouseSensor {
       acceleration.equals(Vector2.subtract(velocity, previousVelocity));
     }
 
-    const offset = Vector2.clone(this.monoDrag.offset);
-
     this.monoDrag.previousPosition.equals(position);
     this.monoDrag.previousVelocity.equals(velocity);
+
+    const offset = Vector2.clone(this.monoDrag.offset);
 
     return {
       type,

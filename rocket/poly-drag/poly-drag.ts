@@ -22,6 +22,8 @@ export class PolyDrag {
     this.setConfig(config);
 
     this.sensorHub = new SensorHub(this);
+
+    this.sensorHub.attach();
   }
 
   public setConfig(config: Partial<PolyDragConfig>): this {

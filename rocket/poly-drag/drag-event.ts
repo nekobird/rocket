@@ -17,6 +17,8 @@ export class DragEvent {
 
   public isTouch: boolean = false;
 
+  public touch?: Touch;
+
   public position: Vector2;
   public velocity: Vector2;
   public acceleration: Vector2;
@@ -25,7 +27,8 @@ export class DragEvent {
 
   public originalEvent: MouseEvent | TouchEvent;
 
-  public touch?: Touch;
+  public targetFromEvent: EventTarget;
+  public target: HTMLElement | null;
 
   public identifier: DragEventIdentifier;
 
@@ -46,6 +49,12 @@ export class DragEvent {
 
     this.originalEvent = event;
 
+    this.targetFromEvent = event.target;
+
+    const { clientX, clientY } = this.originalEvent;
+
+    this.target = document.elementFromPoint(clientX, clientY) as HTMLElement | null;
+
     this.identifier = 'mouse';
   }
 
@@ -57,6 +66,12 @@ export class DragEvent {
     this.time = Date.now();
 
     this.originalEvent = event;
+
+    this.targetFromEvent = touch.target;
+
+    const { clientX, clientY } = touch;
+
+    this.target = document.elementFromPoint(clientX, clientY) as HTMLElement | null;
 
     this.identifier = touch.identifier;
   }

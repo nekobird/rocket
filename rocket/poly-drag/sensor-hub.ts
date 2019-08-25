@@ -85,19 +85,19 @@ export class SensorHub {
       this.dragEventIsActive(dragEvent) === false
       && config.condition(dragEvent) === true
     ) {
-      config.onEvent(dragEvent, this.polyDrag);
-
-      this.preventDefault(dragEvent);
-
-      if (this.activeStories.length === 0) {
-        config.onStart(dragEvent, this.polyDrag);
-      }
-
-      config.onEachDragStart(dragEvent, this.polyDrag);
-
       const story = new DragStory(this.polyDrag);
 
       story.start(dragEvent);
+
+      this.preventDefault(dragEvent);
+
+      config.onEvent(dragEvent, story, this.polyDrag);
+
+      if (this.activeStories.length === 0) {
+        config.onStart(dragEvent, story, this.polyDrag);
+      }
+
+      config.onEachDragStart(dragEvent, story, this.polyDrag);
     }
   }
 
@@ -105,15 +105,15 @@ export class SensorHub {
     const { config } = this.polyDrag;
 
     if (this.dragEventIsActive(dragEvent) === false) {
-      config.onEvent(dragEvent, this.polyDrag);
-
-      this.preventDefault(dragEvent);
-
-      config.onEachDrag(dragEvent, this.polyDrag);
-
       const story = this.getDragStory(dragEvent);
 
       story.drag(dragEvent);
+
+      this.preventDefault(dragEvent);
+
+      config.onEvent(dragEvent, story, this.polyDrag);
+
+      config.onEachDrag(dragEvent, story, this.polyDrag);      
     }
   }
 
@@ -121,13 +121,17 @@ export class SensorHub {
     const { config } = this.polyDrag;
 
     if (this.dragEventIsActive(dragEvent) === false) {
-      config.onEvent(dragEvent, this.polyDrag);
+      const story = this.getDragStory(dragEvent);
+
+      story.stop(dragEvent);
 
       this.preventDefault(dragEvent);
 
-      config.onEachDragStop(dragEvent, this.polyDrag);
+      config.onEvent(dragEvent, story, this.polyDrag);      
 
-      this.removeDragStory(dragEvent);
+      config.onEachDragStop(dragEvent, story, this.polyDrag);
+
+      this.end(dragEvent, story);
     }
   }
 
@@ -135,13 +139,27 @@ export class SensorHub {
     const { config } = this.polyDrag;
 
     if (this.dragEventIsActive(dragEvent) === false) {
-      config.onEvent(dragEvent, this.polyDrag);
+      const story = this.getDragStory(dragEvent);
+
+      story.stop(dragEvent);
 
       this.preventDefault(dragEvent);
 
-      config.onEachDragCancel(dragEvent, this.polyDrag);
+      config.onEvent(dragEvent, story, this.polyDrag);     
 
-      this.removeDragStory(dragEvent);
+      config.onEachDragCancel(dragEvent, story, this.polyDrag);
+
+      this.end(dragEvent, story);
+    }
+  }
+
+  public end(dragEvent: DragEvent, dragStory: DragStory) {
+    const { config } = this.polyDrag;
+
+    this.removeDragStory(dragEvent);
+
+    if (this.activeStories.length === 0) {
+      config.onEnd(dragEvent, dragStory, this.polyDrag);
     }
   }
 }

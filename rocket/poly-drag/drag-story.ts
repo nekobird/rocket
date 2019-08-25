@@ -29,6 +29,7 @@ export class DragStory {
 
   public startingDragEvent: DragEvent;
   public previousDragEvent: DragEvent;
+  public finalDragEvent: DragEvent;
 
   public history: DragEvent[];
 
@@ -38,6 +39,28 @@ export class DragStory {
     this.polyDrag = polyDrag;
 
     this.history = [];
+  }
+
+  private updateVectors(dragEvent: DragEvent) {
+    let event: MouseEvent | Touch;
+
+    if (dragEvent.isTouch === true) {
+      event = dragEvent.touch;
+    } else {
+      event = dragEvent.originalEvent as MouseEvent;
+    }
+
+    const { clientX, clientY } = event;
+
+    dragEvent.position.equals(clientX, clientY);
+
+    if (dragEvent.type !== 'start') {
+      dragEvent.velocity.equals(Vector2.subtract(dragEvent.position, this.previousPosition));
+      dragEvent.acceleration.equals(Vector2.subtract(dragEvent.velocity, this.previousVelocity));
+    }
+
+    this.previousPosition.equals(dragEvent.position);
+    this.previousVelocity.equals(dragEvent.velocity);
   }
 
   private setOffset(from: Vector2) {
@@ -83,6 +106,8 @@ export class DragStory {
 
       this.setOffset(dragEvent.position);
 
+      this.updateVectors(dragEvent);
+
       this.addToHistory(dragEvent);
     }
   }
@@ -95,6 +120,8 @@ export class DragStory {
       && dragEvent.identifier === this.identifier
     ) {
       this.previousDragEvent = dragEvent;
+
+      this.updateVectors(dragEvent);
 
       this.addToHistory(dragEvent);
     }
@@ -111,8 +138,17 @@ export class DragStory {
       )
     ) {
       this.previousDragEvent = dragEvent;
+      this.finalDragEvent = dragEvent;
+
+      this.updateVectors(dragEvent);
 
       this.addToHistory(dragEvent);
+
+      this.end();
     }
+  }
+
+  private end() {
+    this.isActive = false;
   }
 }
