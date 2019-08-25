@@ -3,7 +3,7 @@ import {
 } from './ticker';
 
 export interface TickerConfig {
-  isForever: boolean;
+  loopForever: boolean;
 
   durationInSeconds: number;
 
@@ -16,7 +16,7 @@ export interface TickerConfig {
 }
 
 export const TICKER_DEFAULT_CONFIG: TickerConfig = {
-  isForever: false,
+  loopForever: false,
 
   durationInSeconds: 1,
 

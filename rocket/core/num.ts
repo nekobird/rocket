@@ -123,6 +123,7 @@ export class Num {
     from = this.getRangeFromNumberOrRange(from);
     to = this.getRangeFromNumberOrRange(to);
 
+    // Division by zero returns Infinite in JavaScript?
     let result = (value - from[0]) * ((to[1] - to[0]) / (from[1] - from[0])) + to[0];
 
     if (constrain === true) {

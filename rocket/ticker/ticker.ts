@@ -92,9 +92,9 @@ export class Ticker {
   }
 
   private updateProgress() {
-    const { durationInSeconds, isForever } = this.config;
+    const { durationInSeconds, loopForever } = this.config;
 
-    if (isForever === true) {
+    if (loopForever === true) {
       this.progress = 0;
     } else {
       const now = Date.now();
