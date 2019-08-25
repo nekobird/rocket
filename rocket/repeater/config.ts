@@ -3,13 +3,11 @@ import {
 } from './repeater';
 
 export interface RepeaterConfig {
-  timeUnit: 's' | 'ms',
-
   enableTimeout: boolean;
 
-  timeoutDelay: number;
+  timeoutDelayInSeconds: number;
 
-  frequency: number;
+  numberOfRepeatsPerSecond: number;
 
   condition: (context: Repeater) => boolean;
 
@@ -21,13 +19,11 @@ export interface RepeaterConfig {
 }
 
 export const REPEATER_DEFAULT_CONFIG: RepeaterConfig = {
-  timeUnit: 's',
-
   enableTimeout: true,
 
-  timeoutDelay: 10,
+  timeoutDelayInSeconds: 10,
 
-  frequency: 24,
+  numberOfRepeatsPerSecond: 24,
 
   condition: () => true,
 

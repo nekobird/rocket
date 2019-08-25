@@ -3,9 +3,9 @@ import {
 } from './ticker';
 
 export interface TickerConfig {
-  durationInSeconds: number;
-
   isForever: boolean;
+
+  durationInSeconds: number;
 
   timingFunction: (t: number) => number;
 
@@ -16,9 +16,9 @@ export interface TickerConfig {
 }
 
 export const TICKER_DEFAULT_CONFIG: TickerConfig = {
-  durationInSeconds: 1,
-
   isForever: false,
+
+  durationInSeconds: 1,
 
   timingFunction: t => t,
 

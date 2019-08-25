@@ -14,28 +14,35 @@ import { Repeater } from '@nekobird/rocket';
 
 ## Config
 
-### `timeUnit`
-
-Set the unit of time for the rest of the configurations.
-
-| Options | Description | Default |
-| --- | --- | --- |
-| 's' | Seconds | Default |
-| 'ms' | Milliseconds | |
-
 ### `enableTimeout`
 
-### `timeoutDelay`
+`enableTimeout: boolean`
 
-### `frequency`
+If this is set to `true`.
+
+### `timeoutDelayInSeconds`
+
+`timeoutDelayInSeconds: number`
+
+### `numberOfRepeatsPerSecond`
+
+`numberOfRepeatsPerSecond: number`
 
 ### `condition`
 
+`condition: (context: Repeater) => boolean`
+
 ### `onStart`
+
+`onStart: (context: Repeater) => void`
 
 ### `onRepeat`
 
+`onRepeat: (context: Repeater) => void`
+
 ### `onEnd`
+
+`onEnd: (context: Repeater) => void`
 
 ## Properties
 

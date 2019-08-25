@@ -474,14 +474,10 @@ export class Point {
   }
 
   public static isPointLike(point): boolean {
-    if (
+    return (
       typeof point === 'object'
       && typeof point.x === 'number'
       && typeof point.y === 'number'
-    ) {
-      return true;
-    }
-    
-    return false;
+    )
   }
 }

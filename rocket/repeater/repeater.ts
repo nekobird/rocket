@@ -32,33 +32,6 @@ export class Repeater {
     return this;
   }
 
-  public startTimeout(): this {
-    const { timeoutDelay } = this.config;
-
-    this.timeoutId = setTimeout(
-      () => this.stop(),
-      timeoutDelay * 1000
-    );
-
-    return this;
-  }
-
-  public resetTimeout(): this {
-    clearTimeout(this.timeoutId);
-
-    this.startTimeout();
-
-    return this;
-  }
-
-  private onRepeat(): this {
-    this.count++;
-
-    this.config.onRepeat(this);
-
-    return this;
-  }
-
   public forceStart(): this {
     if (this.isActive === true) {
       this.stop();
@@ -82,17 +55,21 @@ export class Repeater {
 
       this.config.onStart(this);
 
-      const { enableTimeout, timeoutDelay, frequency } = this.config;
+      const {
+        enableTimeout,
+        timeoutDelayInSeconds,
+        numberOfRepeatsPerSecond,
+      } = this.config;
 
       this.intervalId = setInterval(
         () => this.onRepeat(),
-        1000 / frequency
+        1000 / numberOfRepeatsPerSecond
       );
 
       if (
         enableTimeout === true
-        && typeof timeoutDelay === 'number'
-        && timeoutDelay > 0
+        && typeof timeoutDelayInSeconds === 'number'
+        && timeoutDelayInSeconds > 0
       ) {
         this.startTimeout();
       }
@@ -117,6 +94,33 @@ export class Repeater {
 
       this.config.onEnd(this);
     }
+
+    return this;
+  }
+
+  private startTimeout(): this {
+    const { timeoutDelayInSeconds } = this.config;
+
+    this.timeoutId = setTimeout(
+      () => this.stop(),
+      timeoutDelayInSeconds * 1000
+    );
+
+    return this;
+  }
+
+  private resetTimeout(): this {
+    clearTimeout(this.timeoutId);
+
+    this.startTimeout();
+
+    return this;
+  }
+
+  private onRepeat(): this {
+    this.count++;
+
+    this.config.onRepeat(this);
 
     return this;
   }

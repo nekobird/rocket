@@ -15,9 +15,9 @@ export class Ticker {
 
   public count: number = 0;
 
-  public callback?: Function;
-
   private requestAnimationFrameId?: number;
+
+  public callback?: Function;
 
   constructor(config: Partial<TickerConfig>) {
     this.config = {...TICKER_DEFAULT_CONFIG};
@@ -31,7 +31,7 @@ export class Ticker {
     }
   }
 
-  public play() {
+  public start() {
     if (this.isActive === false) {
       this.isActive = true;
 
@@ -48,7 +48,7 @@ export class Ticker {
       if (typeof this.requestAnimationFrameId === 'number') {
         window.cancelAnimationFrame(this.requestAnimationFrameId);
 
-        this.requestAnimationFrameId = undefined
+        this.requestAnimationFrameId = undefined;
       }
 
       this.timeEnd = Date.now();
