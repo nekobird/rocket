@@ -9,7 +9,9 @@ import {
 } from '../rocket';
 
 export type DOMAlignOffsetReferenceCornerNames = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+
 export type DOMAlignOffsetReferenceEdgeNames = 'top' | 'left' | 'right' | 'bottom';
+
 export type DOMAlignOffsetReferencePointNames = 'center' | DOMAlignOffsetReferenceCornerNames | DOMAlignOffsetReferenceEdgeNames;
 
 export const DOMAlignOffsetReferenceCornerNames: DOMAlignOffsetReferenceCornerNames[] = [
@@ -18,12 +20,14 @@ export const DOMAlignOffsetReferenceCornerNames: DOMAlignOffsetReferenceCornerNa
   'bottom-left',
   'bottom-right',
 ];
+
 export const DOMAlignOffsetReferenceEdgeNames: DOMAlignOffsetReferenceEdgeNames[] = [
   'top',
   'bottom',
   'left',
   'right',
 ];
+
 export const DOMAlignOffsetReferencePointNames: DOMAlignOffsetReferencePointNames[] = [
   'center',
   ...DOMAlignOffsetReferenceCornerNames,

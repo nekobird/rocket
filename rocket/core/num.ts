@@ -145,9 +145,9 @@ export class Num {
     );
   }
 
-  public static reciprocal(number: number): number {
-    if (number != 0) {
-      return 1 / number;
+  public static reciprocal(value: number): number {
+    if (value != 0) {
+      return 1 / value;
     } else {
       throw new Error('Num.reciprocal: Division by zero.');
     }

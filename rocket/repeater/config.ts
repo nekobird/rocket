@@ -3,8 +3,6 @@ import {
 } from './repeater';
 
 export interface RepeaterConfig {
-  useAnimationFrame: boolean;
-
   timeUnit: 's' | 'ms',
 
   enableTimeout: boolean;
@@ -23,8 +21,6 @@ export interface RepeaterConfig {
 }
 
 export const REPEATER_DEFAULT_CONFIG: RepeaterConfig = {
-  useAnimationFrame: true,
-
   timeUnit: 's',
 
   enableTimeout: true,

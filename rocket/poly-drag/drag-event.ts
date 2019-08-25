@@ -37,7 +37,15 @@ export class DragEvent {
     this.acceleration = new Vector2();
   }
 
-  public attachSensors() {
-    
+  public setFromTouchEvent(type: DragEventType, event: TouchEvent, touch: Touch) {
+    this.type = type;
+
+    this.isTouch = true;
+
+    this.time = Date.now();
+
+    this.event = event;
+
+    this.identifier = touch.identifier;
   }
 }

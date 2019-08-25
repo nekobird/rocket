@@ -1,21 +1,18 @@
 @import 'reset';
 
 @import 'config';
-@import 'utilities';
-@import 'variables/index';
 
-@import 'placeholders';
-
-@import 'global';
-@import 'components/index';
-@import 'mixins';
+@import 'global/index';
 
 @import 'site/index';
 @import 'pages/index';
 
 .box {
-  background-color: black;
-  color: white;
-  height: 200px;
-  width: 200px;
+  background-color: hsl(0, 0, 96);
+  border-radius: px-to-rem(12);
+  box-sizing: border-box;
+  color: hsl(0, 0, 20);
+  height: px-to-rem(200);
+  padding: px-to-rem(20);
+  width: px-to-rem(200);
 }

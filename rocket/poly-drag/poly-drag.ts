@@ -18,8 +18,6 @@ export class PolyDrag {
 
   public isActive: boolean = false;
 
-  public activeDragStories: DragStory[];
-
   constructor(config: Partial<PolyDragConfig>) {
     this.config = {...POLY_DRAG_DEFAULT_CONFIG};
 
@@ -28,10 +26,12 @@ export class PolyDrag {
     this.sensorHub = new SensorHub(this);
   }
 
-  public setConfig(config: Partial<PolyDragConfig>) {
+  public setConfig(config: Partial<PolyDragConfig>): this {
     if (typeof config === 'object') {
       Object.assign(this.config, config);
     }
+
+    return this;
   }
 
   public addStory() {

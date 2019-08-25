@@ -6,14 +6,17 @@ import {
 import {
   DragEvent,
   DragEventType,
+  DragEventIdentifier,
 } from './drag-event';
 
 import {
-  PolyDrag
+  PolyDrag,
 } from './poly-drag';
 
 export class DragStory {
   public polyDrag: PolyDrag;
+
+  public identifier: DragEventIdentifier;
 
   public isActive: boolean;
 
@@ -34,6 +37,51 @@ export class DragStory {
     this.polyDrag = polyDrag;
 
     this.history = [];
+  }
+
+  public start(dragEvent: DragEvent) {
+    if (
+      this.isActive === false
+      && dragEvent.type === 'start'
+    ) {
+      this.isActive = true;
+
+      this.identifier = dragEvent.identifier;
+
+      this.startingDragEvent = dragEvent;
+      this.previousDragEvent = dragEvent;
+
+      this.setOffset(dragEvent.position);
+    }
+  }
+
+  private setOffset(from: Vector2) {
+    const { target, offsetFrom } = this.polyDrag.config;
+
+    if (DOMUtil.isHTMLElement(target) === true) {
+      let element = target as HTMLElement;
+
+      if (DOMUtil.isHTMLElement(offsetFrom) === true) {
+        element = offsetFrom as HTMLElement;
+      }
+
+      const { left, top } = element.getBoundingClientRect();
+
+      this.offset.equals(
+        from.x - left,
+        from.y - top,
+      );
+    }
+  }
+
+  public drag(dragEvent: DragEvent) {
+    if (
+      this.isActive === true
+      && dragEvent.type === 'drag'
+      && dragEvent.identifier === this.identifier
+    ) {
+      this.previousDragEvent = dragEvent;
+    }
   }
 
   private addDragEvent(type: DragEventType, event: TouchEvent, touch: Touch): DragEvent {
@@ -64,25 +112,6 @@ export class DragStory {
 
     if (config.keepHistory === true) {
       this.history.push(dragEvent);
-    }
-  }
-
-  private setOffset(x: number, y: number) {
-    const { target, offsetFrom } = this.polyDrag.config;
-
-    if (DOMUtil.isHTMLElement(target) === true) {
-      let element = target as HTMLElement;
-
-      if (DOMUtil.isHTMLElement(offsetFrom) === true) {
-        element = offsetFrom as HTMLElement;
-      }
-
-      const { left, top } = element.getBoundingClientRect();
-
-      this.offset.equals(
-        x - left,
-        y - top,
-      );
     }
   }
 }

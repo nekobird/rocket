@@ -7,7 +7,7 @@ export interface PolyDragConfig {
 
   preventDefault: boolean;
 
-  condition: () => boolean;
+  condition: (event: MouseEvent | TouchEvent, ) => boolean;
 
   onEvent: () => void;
 

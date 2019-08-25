@@ -17,8 +17,6 @@ import {
 } from '../sensor-hub';
 
 export class TouchSensor {
-  private polyDrag: PolyDrag;
-
   public target?: HTMLElement;
 
   public isActive: boolean = false;
@@ -56,57 +54,38 @@ export class TouchSensor {
   }
 
   private onTouchStart = (event: TouchEvent) => {
-    const { isActive, config } = this.polyDrag;
+    [...event.changedTouches].forEach(touch => {
+      const dragEvent = new DragEvent(this.sensorHub.polyDrag);
+      dragEvent.setFromTouchEvent('start', event, touch);
 
-    if (
-      isActive === false
-      && config.condition(event, this.polyDrag) === true
-    ) {
-      const pointerEvent = this.createDragEvent('start', event, event.changedTouches[0]);
-
-      this.polyDrag.dragStart(pointerEvent, true);
-    }
+      this.sensorHub.onDragStart(dragEvent);
+    });
   }
 
   private onTouchMove = (event: TouchEvent) => {
-    const { isActive } = this.polyDrag;
+    [...event.changedTouches].forEach(touch => {
+      const dragEvent = new DragEvent(this.sensorHub.polyDrag);
+      dragEvent.setFromTouchEvent('move', event, touch);
 
-    if (isActive === true) {
-      [...event.changedTouches].forEach(touch => {
-        if (touch.identifier === this.polyDrag.touchIdentifier) {
-          const pointerEvent = this.createDragEvent('drag', event, touch);
-
-          this.polyDrag.drag(pointerEvent);
-        }
-      });
-    }
+      this.sensorHub.onDrag(dragEvent);
+    });
   }
 
   private onTouchEnd = (event: TouchEvent) => {
-    const { isActive } = this.polyDrag;
+    [...event.changedTouches].forEach(touch => {
+      const dragEvent = new DragEvent(this.sensorHub.polyDrag);
+      dragEvent.setFromTouchEvent('end', event, touch);
 
-    if (isActive === true) {
-      [...event.changedTouches].forEach(touch => {
-        if (touch.identifier === this.polyDrag.touchIdentifier) {
-          const pointerEvent = this.createDragEvent('stop', event, touch);
-
-          this.polyDrag.dragStop(pointerEvent);
-        }
-      });
-    }
+      this.sensorHub.onDragEnd(dragEvent);
+    });
   }
 
   private onTouchCancel = (event: TouchEvent) => {
-    const { isActive } = this.polyDrag;
+    [...event.changedTouches].forEach(touch => {
+      const dragEvent = new DragEvent(this.sensorHub.polyDrag);
+      dragEvent.setFromTouchEvent('cancel', event, touch);
 
-    if (isActive === true) {
-      [...event.changedTouches].forEach(touch => {
-        if (touch.identifier === this.polyDrag.touchIdentifier) {
-          const pointerEvent = this.createDragEvent('cancel', event, touch);
-
-          this.polyDrag.dragCancel(pointerEvent);
-        }
-      });
-    }
+      this.sensorHub.onDragCancel(dragEvent);
+    });
   }
 }
