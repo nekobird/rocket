@@ -30,9 +30,9 @@ export class MouseSensor {
 
   public attach(target: HTMLElement) {
     if (DOMUtil.isHTMLElement(target) === true) {
-      target = target as HTMLElement;
+      const targetElement = target as HTMLElement;
 
-      target.addEventListener('mousedown', this.onMouseDown);
+      targetElement.addEventListener('mousedown', this.onMouseDown);
       window.addEventListener('mousemove', this.onMouseMove);
       window.addEventListener('mouseup', this.onMouseUp);
       window.addEventListener('mouseleave', this.onMouseLeave);

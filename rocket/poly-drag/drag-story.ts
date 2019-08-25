@@ -18,7 +18,8 @@ export class DragStory {
 
   public identifier: DragEventIdentifier;
 
-  public isActive: boolean;
+  public isActive: boolean = false;
+  public wasActive: boolean = false;
 
   public dragEvents: DragEvent[];
   public activeDragEvent: DragEvent;
@@ -37,22 +38,6 @@ export class DragStory {
     this.polyDrag = polyDrag;
 
     this.history = [];
-  }
-
-  public start(dragEvent: DragEvent) {
-    if (
-      this.isActive === false
-      && dragEvent.type === 'start'
-    ) {
-      this.isActive = true;
-
-      this.identifier = dragEvent.identifier;
-
-      this.startingDragEvent = dragEvent;
-      this.previousDragEvent = dragEvent;
-
-      this.setOffset(dragEvent.position);
-    }
   }
 
   private setOffset(from: Vector2) {
@@ -74,44 +59,60 @@ export class DragStory {
     }
   }
 
+  private addToHistory(dragEvent: DragEvent) {
+    const { config } = this.polyDrag;
+
+    if (config.keepDragEventHistory === true) {
+      this.history.push(dragEvent);
+    }
+  }
+
+  public start(dragEvent: DragEvent) {
+    if (
+      this.isActive === false
+      && this.wasActive === false
+      && dragEvent.type === 'start'
+    ) {
+      this.isActive = true;
+      this.wasActive = true;
+
+      this.identifier = dragEvent.identifier;
+
+      this.startingDragEvent = dragEvent;
+      this.previousDragEvent = dragEvent;
+
+      this.setOffset(dragEvent.position);
+
+      this.addToHistory(dragEvent);
+    }
+  }
+
   public drag(dragEvent: DragEvent) {
     if (
-      this.isActive === true
+      this.wasActive === true
+      && this.isActive === true
       && dragEvent.type === 'drag'
       && dragEvent.identifier === this.identifier
     ) {
       this.previousDragEvent = dragEvent;
+
+      this.addToHistory(dragEvent);
     }
   }
 
-  private addDragEvent(type: DragEventType, event: TouchEvent, touch: Touch): DragEvent {
-    const { clientX, clientY, identifier, target } = touch;
+  public stop(dragEvent: DragEvent) {
+    if (
+      this.wasActive === true
+      && this.isActive === true
+      && dragEvent.identifier === this.identifier
+      && (
+        dragEvent.type === 'stop'
+        || dragEvent.type === 'cancel'
+      )
+    ) {
+      this.previousDragEvent = dragEvent;
 
-    const position = new Vector2(clientX, clientY);
-
-    let velocity = new Vector2();
-    let acceleration = new Vector2();
-
-    if (type !== 'start') {
-      velocity = Vector2.subtract(position, this.previousPosition);
-      acceleration = Vector2.subtract(velocity, this.previousVelocity);
-    }
-
-    const offset = Vector2.clone(this.offset);
-
-    this.previousPosition.equals(position);
-    this.previousVelocity.equals(velocity);
-
-    const dragEvent = new DragEvent(type, event, touch, this);
-
-    return dragEvent;
-  }
-
-  private addToHistory(dragEvent: DragEvent) {
-    const { config } = this.polyDrag;
-
-    if (config.keepHistory === true) {
-      this.history.push(dragEvent);
+      this.addToHistory(dragEvent);
     }
   }
 }

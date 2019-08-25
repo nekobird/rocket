@@ -16,8 +16,6 @@ export class PolyDrag {
 
   public sensorHub: SensorHub;
 
-  public isActive: boolean = false;
-
   constructor(config: Partial<PolyDragConfig>) {
     this.config = {...POLY_DRAG_DEFAULT_CONFIG};
 
@@ -32,9 +30,5 @@ export class PolyDrag {
     }
 
     return this;
-  }
-
-  public addStory() {
-    this.activeDragStories.push(new DragStory(this));
   }
 }

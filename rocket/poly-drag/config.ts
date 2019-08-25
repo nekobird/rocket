@@ -1,28 +1,40 @@
+import {
+  PolyDrag,
+} from './poly-drag';
+
+import {
+  DragEvent
+} from './drag-event';
+
 export interface PolyDragConfig {
   target?: HTMLElement;
 
   offsetFrom?: HTMLElement;
 
-  keepHistory: boolean;
-
   preventDefault: boolean;
 
-  condition: (event: MouseEvent | TouchEvent, ) => boolean;
+  keepDragEventHistory: boolean;
+  keepDragStoryHistory: boolean;
 
-  onEvent: () => void;
+  condition: (dragEvent: DragEvent) => boolean;
 
-  onStart: () => void;
-  onEachDragStart: () => void;
-  onEachDrag: () => void;
-  onEachDragStop: () => void;
-  onEachDragCancel: () => void;
-  onEnd: () => void;
+  onEvent: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
+
+  onStart: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
+
+  onEachDragStart: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
+  onEachDrag: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
+  onEachDragStop: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
+  onEachDragCancel: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
+
+  onEnd: (dragEvent: DragEvent, polyDrag: PolyDrag) => void;
 }
 
 export const POLY_DRAG_DEFAULT_CONFIG: PolyDragConfig = {
-  keepHistory: true,
-
   preventDefault: true,
+
+  keepDragEventHistory: true,
+  keepDragStoryHistory: true,
 
   condition: () => true,
 

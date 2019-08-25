@@ -56,6 +56,7 @@ export class TouchSensor {
   private onTouchStart = (event: TouchEvent) => {
     [...event.changedTouches].forEach(touch => {
       const dragEvent = new DragEvent(this.sensorHub.polyDrag);
+
       dragEvent.setFromTouchEvent('start', event, touch);
 
       this.sensorHub.onDragStart(dragEvent);
@@ -65,6 +66,7 @@ export class TouchSensor {
   private onTouchMove = (event: TouchEvent) => {
     [...event.changedTouches].forEach(touch => {
       const dragEvent = new DragEvent(this.sensorHub.polyDrag);
+
       dragEvent.setFromTouchEvent('drag', event, touch);
 
       this.sensorHub.onDrag(dragEvent);
@@ -74,6 +76,7 @@ export class TouchSensor {
   private onTouchEnd = (event: TouchEvent) => {
     [...event.changedTouches].forEach(touch => {
       const dragEvent = new DragEvent(this.sensorHub.polyDrag);
+
       dragEvent.setFromTouchEvent('stop', event, touch);
 
       this.sensorHub.onDragEnd(dragEvent);
@@ -83,6 +86,7 @@ export class TouchSensor {
   private onTouchCancel = (event: TouchEvent) => {
     [...event.changedTouches].forEach(touch => {
       const dragEvent = new DragEvent(this.sensorHub.polyDrag);
+
       dragEvent.setFromTouchEvent('cancel', event, touch);
 
       this.sensorHub.onDragCancel(dragEvent);
