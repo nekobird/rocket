@@ -23,7 +23,7 @@ export class DragEvent {
 
   public time: number;
 
-  public event: MouseEvent | TouchEvent;
+  public originalEvent: MouseEvent | TouchEvent;
 
   public touch?: Touch;
 
@@ -37,6 +37,18 @@ export class DragEvent {
     this.acceleration = new Vector2();
   }
 
+  public setFromMouseEvent(type: DragEventType, event: MouseEvent) {
+    this.type = type;
+
+    this.isTouch = false;
+
+    this.time = Date.now();
+
+    this.originalEvent = event;
+
+    this.identifier = 'mouse';
+  }
+
   public setFromTouchEvent(type: DragEventType, event: TouchEvent, touch: Touch) {
     this.type = type;
 
@@ -44,7 +56,7 @@ export class DragEvent {
 
     this.time = Date.now();
 
-    this.event = event;
+    this.originalEvent = event;
 
     this.identifier = touch.identifier;
   }

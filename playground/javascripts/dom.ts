@@ -4,10 +4,10 @@ import {
   DOMTraverse,
   DOMUtil,
   Num,
-  TextAutoScaler,
-  Util,
   Repeater,
+  TextAutoScaler,
   Ticker,
+  Util,
 } from '../../rocket/rocket';
 
 import * as Rocket from '../../rocket/rocket';

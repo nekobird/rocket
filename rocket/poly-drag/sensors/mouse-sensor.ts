@@ -19,6 +19,7 @@ import {
 export class MouseSensor {
   public target?: HTMLElement;
 
+  public isActive: boolean = false;
   public isDown: boolean = false;
 
   public sensorHub: SensorHub;
@@ -31,10 +32,10 @@ export class MouseSensor {
     if (DOMUtil.isHTMLElement(target) === true) {
       target = target as HTMLElement;
 
-      target.addEventListener('mousedown', this.onTouchStart);
-      window.addEventListener('mousemove', this.onTouchMove);
-      window.addEventListener('mouseup', this.onTouchEnd);
-      window.addEventListener('mouseleave', this.onTouchCancel);
+      target.addEventListener('mousedown', this.onMouseDown);
+      window.addEventListener('mousemove', this.onMouseMove);
+      window.addEventListener('mouseup', this.onMouseUp);
+      window.addEventListener('mouseleave', this.onMouseLeave);
 
       this.isActive = true;
     }
@@ -44,48 +45,54 @@ export class MouseSensor {
     if (DOMUtil.isHTMLElement(this.target) === true) {
       const target = this.target as HTMLElement;
 
-      target.removeEventListener('touchstart', this.onTouchStart);
-      window.removeEventListener('touchmove', this.onTouchMove);
-      window.removeEventListener('touchend', this.onTouchEnd);
-      window.removeEventListener('touchcancel', this.onTouchCancel);
+      target.removeEventListener('mousedown', this.onMouseDown);
+      window.removeEventListener('mousemove', this.onMouseMove);
+      window.removeEventListener('mouseup', this.onMouseUp);
+      window.removeEventListener('mouseleave', this.onMouseLeave);
 
       this.isActive = false;
     }
   }
 
-  private onTouchStart = (event: TouchEvent) => {
-    [...event.changedTouches].forEach(touch => {
-      const dragEvent = new DragEvent(this.sensorHub.polyDrag);
-      dragEvent.setFromTouchEvent('start', event, touch);
+  private onMouseDown = (event: MouseEvent) => {
+    const dragEvent = new DragEvent(this.sensorHub.polyDrag);
 
-      this.sensorHub.onDragStart(dragEvent);
-    });
+    dragEvent.setFromMouseEvent('start', event);
+
+    this.sensorHub.onDragStart(dragEvent);
+
+    this.isDown = true;
   }
 
-  private onTouchMove = (event: TouchEvent) => {
-    [...event.changedTouches].forEach(touch => {
+  private onMouseMove = (event: MouseEvent) => {
+    if (this.isDown === true) {
       const dragEvent = new DragEvent(this.sensorHub.polyDrag);
-      dragEvent.setFromTouchEvent('move', event, touch);
+
+      dragEvent.setFromMouseEvent('drag', event);
 
       this.sensorHub.onDrag(dragEvent);
-    });
+    }
   }
 
-  private onTouchEnd = (event: TouchEvent) => {
-    [...event.changedTouches].forEach(touch => {
+  private onMouseUp = (event: MouseEvent) => {
+    if (this.isDown === true) {
       const dragEvent = new DragEvent(this.sensorHub.polyDrag);
-      dragEvent.setFromTouchEvent('end', event, touch);
+
+      dragEvent.setFromMouseEvent('stop', event);
 
       this.sensorHub.onDragEnd(dragEvent);
-    });
+
+      this.isDown = false;
+    }
   }
 
-  private onTouchCancel = (event: TouchEvent) => {
-    [...event.changedTouches].forEach(touch => {
+  private onMouseLeave = (event: MouseEvent) => {
+    if (this.isDown === true) {
       const dragEvent = new DragEvent(this.sensorHub.polyDrag);
-      dragEvent.setFromTouchEvent('cancel', event, touch);
+
+      dragEvent.setFromMouseEvent('cancel', event);
 
       this.sensorHub.onDragCancel(dragEvent);
-    });
+    }
   }
 }
