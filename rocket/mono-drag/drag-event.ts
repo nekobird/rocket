@@ -25,3 +25,15 @@ export interface DragEvent {
 
   time: number;
 }
+
+// TODO: Convert this into a class.
+
+// export class DragEvent {
+//   public type: DragEventType;
+
+//   public isTouch: boolean = false;
+
+//   constructor() {
+
+//   }
+// }
