@@ -32,7 +32,11 @@ export class StringUtil {
     return value;
   }
 
-  public static replace(string: string, patterns: (string | RegExp) | (string | RegExp)[], replacement: string = ''): string {
+  public static replace(
+    string: string,
+    patterns: (string | RegExp) | (string | RegExp)[],
+    replacement: string = ''
+  ): string {
     if (Array.isArray(patterns) === true) {
       patterns = patterns as (string | RegExp)[];
 

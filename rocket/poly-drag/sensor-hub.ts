@@ -1,4 +1,8 @@
 import {
+  DOMUtil,
+} from '../rocket';
+
+import {
   PolyDrag
 } from './poly-drag';
 
@@ -19,14 +23,19 @@ import {
   DragEventIdentifier,
 } from './drag-event';
 
+// TODO: Add to check if there is an active event.
 export class SensorHub {
   public polyDrag: PolyDrag;
+
+  public isActive: boolean = false;
 
   public mouseSensor: MouseSensor;
   public touchSensor: TouchSensor;
 
-  public activeStories: DragStory[];
+  public activeDragStories: DragStory[];
   public activeIdentifiers: DragEventIdentifier[];
+
+  public history: DragStory[];
 
   constructor(polyDrag: PolyDrag) {
     this.polyDrag = polyDrag;
@@ -34,28 +43,62 @@ export class SensorHub {
     this.mouseSensor = new MouseSensor(this);
     this.touchSensor = new TouchSensor(this);
 
-    this.activeStories = [];
-    this.activeIdentifiers = [];
+    this.history = [];
+
+    this.reset();
   }
 
   public attach() {
     const { target } = this.polyDrag.config;
 
-    this.mouseSensor.attach(target);
-    this.touchSensor.attach(target);
+    if (
+      this.isActive === false
+      && DOMUtil.isHTMLElement(target) === true
+    ) {
+      this.mouseSensor.attach(target);
+      this.touchSensor.attach(target);
+
+      this.isActive = true;
+    }
   }
 
   public detach() {
-    this.mouseSensor.detach();
-    this.touchSensor.detach();
+    if (this.isActive === true) {
+      this.mouseSensor.detach();
+      this.touchSensor.detach();
+
+      this.reset();
+
+      this.isActive = false;
+    }
+  }
+
+  private addStoryToHistory(dragStory: DragStory) {
+    const { config } = this.polyDrag;
+
+    if (
+      this.isActive === true
+      && config.keepDragStoryHistory === true
+    ) {
+      if (Array.isArray(this.history) === true) {
+        this.history = [];
+      }
+
+      this.history.push(dragStory);
+    }
+  }
+
+  private reset() {
+    this.activeDragStories = [];
+    this.activeIdentifiers = [];
   }
 
   private dragEventIsActive(dragEvent: DragEvent): boolean {
-    return (this.activeIdentifiers.indexOf(dragEvent.identifier) === -1);
+    return (this.activeIdentifiers.indexOf(dragEvent.identifier) !== -1);
   }
 
   private getDragStory(dragEvent: DragEvent): DragStory {
-    const story = this.activeStories.find(story => {
+    const story = this.activeDragStories.find(story => {
       return story.identifier === dragEvent.identifier;
     });
 
@@ -65,9 +108,16 @@ export class SensorHub {
   private removeDragStory(dragEvent: DragEvent) {
     const story = this.getDragStory(dragEvent);
 
-    const index = this.activeStories.indexOf(story);
+    const activeDragStoryIndex = this.activeDragStories.indexOf(story);
+    const activeIdentifierIndex = this.activeIdentifiers.indexOf(dragEvent.identifier);
 
-    this.activeStories = this.activeStories.splice(index, 1);
+    if (
+      activeDragStoryIndex !== -1
+      && activeIdentifierIndex !== -1
+    ) {
+      this.activeDragStories.splice(activeDragStoryIndex, 1);
+      this.activeIdentifiers.splice(activeIdentifierIndex, 1);
+    }
   }
 
   private preventDefault(dragEvent: DragEvent) {
@@ -82,7 +132,8 @@ export class SensorHub {
     const { config } = this.polyDrag;
 
     if (
-      this.dragEventIsActive(dragEvent) === false
+      this.isActive === true
+      && this.dragEventIsActive(dragEvent) === false
       && config.condition(dragEvent) === true
     ) {
       const story = new DragStory(this.polyDrag);
@@ -91,9 +142,11 @@ export class SensorHub {
 
       this.preventDefault(dragEvent);
 
+      this.addStoryToHistory(story);
+
       config.onEvent(dragEvent, story, this.polyDrag);
 
-      if (this.activeStories.length === 0) {
+      if (this.activeDragStories.length === 0) {
         config.onStart(dragEvent, story, this.polyDrag);
       }
 
@@ -104,12 +157,17 @@ export class SensorHub {
   public onDrag(dragEvent: DragEvent) {
     const { config } = this.polyDrag;
 
-    if (this.dragEventIsActive(dragEvent) === false) {
+    if (
+      this.isActive === true
+      && this.dragEventIsActive(dragEvent) === false
+    ) {
       const story = this.getDragStory(dragEvent);
 
       story.drag(dragEvent);
 
       this.preventDefault(dragEvent);
+
+      this.addStoryToHistory(story);
 
       config.onEvent(dragEvent, story, this.polyDrag);
 
@@ -120,12 +178,17 @@ export class SensorHub {
   public onDragEnd(dragEvent: DragEvent) {
     const { config } = this.polyDrag;
 
-    if (this.dragEventIsActive(dragEvent) === false) {
+    if (
+      this.isActive === true
+      && this.dragEventIsActive(dragEvent) === false
+    ) {
       const story = this.getDragStory(dragEvent);
 
       story.stop(dragEvent);
 
       this.preventDefault(dragEvent);
+
+      this.addStoryToHistory(story);
 
       config.onEvent(dragEvent, story, this.polyDrag);      
 
@@ -138,12 +201,17 @@ export class SensorHub {
   public onDragCancel(dragEvent: DragEvent) {
     const { config } = this.polyDrag;
 
-    if (this.dragEventIsActive(dragEvent) === false) {
+    if (
+      this.isActive === true
+      && this.dragEventIsActive(dragEvent) === false
+    ) {
       const story = this.getDragStory(dragEvent);
 
       story.stop(dragEvent);
 
       this.preventDefault(dragEvent);
+
+      this.addStoryToHistory(story);
 
       config.onEvent(dragEvent, story, this.polyDrag);     
 
@@ -158,7 +226,10 @@ export class SensorHub {
 
     this.removeDragStory(dragEvent);
 
-    if (this.activeStories.length === 0) {
+    if (
+      this.isActive === true
+      && this.activeDragStories.length === 0
+    ) {
       config.onEnd(dragEvent, dragStory, this.polyDrag);
     }
   }

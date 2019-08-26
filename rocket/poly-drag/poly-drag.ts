@@ -33,4 +33,26 @@ export class PolyDrag {
 
     return this;
   }
+
+  public get activeDragStories(): DragStory[] {
+    return this.sensorHub.activeDragStories;
+  }
+
+  public get history(): DragStory[] {
+    return this.sensorHub.history;
+  }
+
+  public clearHistory(): this {
+    this.sensorHub.history = [];
+
+    return this;
+  }
+
+  public attach() {
+    this.sensorHub.attach();
+  }
+
+  public detach() {
+    this.sensorHub.detach();
+  }
 }
