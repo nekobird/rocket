@@ -41,9 +41,12 @@ const demoOne = new Animation({
   },
 });
 
-window.addEventListener('click', event => {
+window.addEventListener('touchstart', event => {
   const jump = DOMTraverse.findAncestorWithClass(event.target as HTMLElement, 'js-demoOne-jumpTo');
-  if (DOMTraverse.findAncestorWithClass(event.target as HTMLElement, 'js-demoOne-play') !== false) {
+
+  if (
+    DOMTraverse.findAncestorWithClass(event.target as HTMLElement, 'js-demoOne-play') !== false
+  ) {
     demoOne.play();
   } else if (
     DOMTraverse.findAncestorWithClass(event.target as HTMLElement, 'js-demoOne-pause') !== false
@@ -58,5 +61,6 @@ window.addEventListener('click', event => {
   ) {
     demoOne.jumpTo(parseFloat((jump as HTMLElement).dataset.jump));
   }
+
   console.log(demoOne.isActive);
 });

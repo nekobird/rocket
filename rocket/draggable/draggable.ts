@@ -10,8 +10,10 @@ import {
 export class Draggable {
   public config: DraggableConfig;
 
+  public monoDrag: MonoDrag;
+
   constructor(config: Partial<DraggableConfig>) {
-    this.config = {...this, DRAGGABLE_DEFAULT_CONFIG};
+    this.config = {...DRAGGABLE_DEFAULT_CONFIG};
 
     this.setConfig(config);
   }
@@ -25,8 +27,10 @@ export class Draggable {
   }
 
   public initializeMonoDrag() {
+    const { preventDefault } = this.config;
+
     this.monoDrag = new MonoDrag({
-      preventDefault: true,
+      preventDefault,
     });
   }
 

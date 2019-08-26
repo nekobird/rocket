@@ -1,6 +1,10 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
 
 export class Listen {
+  constructor() {
+
+  }
+
   public static once(
     target: EventTarget,
     eventName: string,

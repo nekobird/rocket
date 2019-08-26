@@ -1,3 +1,11 @@
+import {
+  Vector2,
+} from '../rocket';
+
+import {
+  Draggable,
+} from './draggable';
+
 export interface DragConstraints {
   top?: number;
   bottom?: number;
@@ -8,7 +16,10 @@ export interface DragConstraints {
 export interface DraggableConfig {
   target?: HTMLElement;
 
-  directionLock: 'x' | 'y';
+  lockDirection: boolean;
+  lockDirectionAxis: 'x' | 'y';
+
+  preventDefault: boolean;
 
   move: (target: HTMLElement, to: Vector2, draggable: Draggable) => void;
 
@@ -16,4 +27,18 @@ export interface DraggableConfig {
   onDrag: () => void;
   onDragStop: () => void;
   onDragCancel: () => void;
+}
+
+export const DRAGGABLE_DEFAULT_CONFIG: DraggableConfig = {
+  lockDirection: false,
+  lockDirectionAxis: 'y',
+
+  preventDefault: false,
+
+  move: () => { },
+
+  onDragStart: () => { },
+  onDrag: () => { },
+  onDragStop: () => { },
+  onDragCancel: () => { },
 }
