@@ -1,27 +1,47 @@
 import {
   Repeater,
   Ticker,
+  MonoDrag,
+  Vector2,
 } from '../../rocket/rocket';
 
-const repeater = new Repeater({
-  numberOfRepeatsPerSecond: 60,
+let boxElement = document.querySelector('.box');
 
-  enableTimeout: true,
-  timeoutDelayInSeconds: 2,
+if (boxElement !== null) {
+  let box = boxElement as HTMLElement;
 
-  onRepeat: context => {
-    console.log(context.count);
-  },
-});
+  const monoDrag = new MonoDrag({
+    target: box,
 
-// repeater.start();
+    onDrag: dragEvent => {
+      const position = Vector2.subtract(dragEvent.position, dragEvent.offset)
+
+      const { x, y } = position;
+
+      box.style.transform = `translate(${x}px, ${y}px)`;
+    }
+  });
+}
+
+// const repeater = new Repeater({
+//   numberOfRepeatsPerSecond: 60,
+
+//   enableTimeout: true,
+//   timeoutDelayInSeconds: 2,
+
+//   onRepeat: context => {
+//     console.log(context.count);
+//   },
+// });
+
+// // repeater.start();
 
 
-const ticker = new Ticker({
-  durationInSeconds: 2,
-  onTick: n => {
-    console.log(n);
-  }
-});
+// const ticker = new Ticker({
+//   durationInSeconds: 2,
+//   onTick: n => {
+//     console.log(n);
+//   }
+// });
 
-ticker.start();
+// ticker.start();

@@ -157,6 +157,8 @@ export class MonoDrag {
 
       this.updateOffset(position.x, position.y);
 
+      dragEvent.updateOffset();
+
       this.history = [];
 
       this.updateHistory(dragEvent);

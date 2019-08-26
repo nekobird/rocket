@@ -1,6 +1,5 @@
 import {
   DOMUtil,
-  Vector2,
 } from '../../rocket';
 
 import {
@@ -51,53 +50,8 @@ export class TouchSensor {
     }
   }
 
-  private createDragEvent(type: DragEventType, originalEvent: TouchEvent, originalTouch: Touch): DragEvent {
-    const {
-      identifier: touchIdentifier,
-      clientX,
-      clientY,
-      target: targetFromEvent
-    } = originalTouch;
-
-    const target = document.elementFromPoint(clientX, clientY) as HTMLElement | null;
-
-    const position = new Vector2(clientX, clientY);
-    const velocity = new Vector2();
-    const acceleration = new Vector2();
-
-    if (type !== 'start') {
-      const { previousPosition, previousVelocity } = this.monoDrag;
-
-      velocity.equals(Vector2.subtract(position, previousPosition));
-      acceleration.equals(Vector2.subtract(velocity, previousVelocity));
-    }
-
-    this.monoDrag.previousPosition.equals(position);
-    this.monoDrag.previousVelocity.equals(velocity);
-
-    const offset = Vector2.clone(this.monoDrag.offset);
-
-    return {
-      type,
-
-      isTouch: true,
-
-      touchIdentifier,
-
-      originalEvent,
-      originalTouch,
-
-      targetFromEvent,
-      target,
-      
-      offset,
-
-      position,
-      velocity,
-      acceleration,
-
-      time: Date.now(),
-    };
+  private createDragEvent(type: DragEventType, originalEvent: TouchEvent, touch: Touch): DragEvent {
+    return new DragEvent(this.monoDrag, type, originalEvent, true, touch);
   }
 
   private onTouchStart = (event: TouchEvent) => {
@@ -117,13 +71,15 @@ export class TouchSensor {
     const { isActive } = this.monoDrag;
 
     if (isActive === true) {
-      [...event.changedTouches].forEach(touch => {
-        if (touch.identifier === this.monoDrag.touchIdentifier) {
-          const dragEvent = this.createDragEvent('drag', event, touch);
-
-          this.monoDrag.drag(dragEvent);
-        }
+      const touch = [...event.changedTouches].find(touch => {
+        return touch.identifier === this.monoDrag.touchIdentifier;
       });
+
+      if (typeof touch !== 'undefined') {
+        const dragEvent = this.createDragEvent('drag', event, touch);
+
+        this.monoDrag.drag(dragEvent);
+      }
     }
   }
 
@@ -131,13 +87,15 @@ export class TouchSensor {
     const { isActive } = this.monoDrag;
 
     if (isActive === true) {
-      [...event.changedTouches].forEach(touch => {
-        if (touch.identifier === this.monoDrag.touchIdentifier) {
-          const dragEvent = this.createDragEvent('stop', event, touch);
-
-          this.monoDrag.dragStop(dragEvent);
-        }
+      const touch = [...event.changedTouches].find(touch => {
+        return touch.identifier === this.monoDrag.touchIdentifier;
       });
+
+      if (typeof touch !== 'undefined') {
+        const dragEvent = this.createDragEvent('stop', event, touch);
+
+        this.monoDrag.dragStop(dragEvent);
+      }
     }
   }
 
@@ -145,13 +103,15 @@ export class TouchSensor {
     const { isActive } = this.monoDrag;
 
     if (isActive === true) {
-      [...event.changedTouches].forEach(touch => {
-        if (touch.identifier === this.monoDrag.touchIdentifier) {
-          const dragEvent = this.createDragEvent('cancel', event, touch);
-
-          this.monoDrag.dragCancel(dragEvent);
-        }
+      const touch = [...event.changedTouches].find(touch => {
+        return touch.identifier === this.monoDrag.touchIdentifier;
       });
+
+      if (typeof touch !== 'undefined') {
+        const dragEvent = this.createDragEvent('cancel', event, touch);
+
+        this.monoDrag.dragCancel(dragEvent);
+      }
     }
   }
 }

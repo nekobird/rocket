@@ -1,6 +1,5 @@
 import {
   DOMUtil,
-  Vector2,
 } from '../../rocket';
 
 import {
@@ -58,48 +57,7 @@ export class MouseSensor {
   }
 
   private createDragEvent(type: DragEventType, originalEvent: MouseEvent): DragEvent {
-    const {
-      clientX,
-      clientY,
-      target: targetFromEvent
-    } = originalEvent;
-
-    const target = document.elementFromPoint(clientX, clientY) as HTMLElement | null;
-
-    const position = new Vector2(clientX, clientY);
-    const velocity = new Vector2();
-    const acceleration = new Vector2();
-
-    if (type !== 'start') {
-      const { previousPosition, previousVelocity } = this.monoDrag;
-
-      velocity.equals(Vector2.subtract(position, previousPosition));
-      acceleration.equals(Vector2.subtract(velocity, previousVelocity));
-    }
-
-    this.monoDrag.previousPosition.equals(position);
-    this.monoDrag.previousVelocity.equals(velocity);
-
-    const offset = Vector2.clone(this.monoDrag.offset);
-
-    return {
-      type,
-
-      isTouch: false,
-
-      originalEvent,
-
-      targetFromEvent,
-      target,
-
-      offset,
-
-      position,
-      velocity,
-      acceleration,
-
-      time: Date.now(),
-    };
+    return new DragEvent(this.monoDrag, type, originalEvent, false);
   }
 
   private onMouseDown = (event: MouseEvent) => {
