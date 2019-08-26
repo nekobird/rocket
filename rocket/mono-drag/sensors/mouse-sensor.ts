@@ -29,8 +29,10 @@ export class MouseSensor {
 
       target.addEventListener('mousedown', this.onMouseDown);
       target.addEventListener('contextmenu', this.onContextMenu);
+
       window.addEventListener('mousemove', this.onMouseMove);
       window.addEventListener('mouseup', this.onMouseUp);
+
       document.documentElement.addEventListener('mouseleave', this.onMouseLeave);
 
       this.isActive = true;
@@ -45,8 +47,10 @@ export class MouseSensor {
 
       target.removeEventListener('mousedown', this.onMouseDown);
       target.removeEventListener('contextmenu', this.onContextMenu);
+
       window.removeEventListener('mousemove', this.onMouseMove);
       window.removeEventListener('mouseup', this.onMouseUp);
+
       document.documentElement.removeEventListener('mouseleave', this.onMouseLeave);
 
       this.isActive = false;

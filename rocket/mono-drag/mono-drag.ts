@@ -115,7 +115,7 @@ export class MonoDrag {
     }
   }
 
-  private updateHistory(pointerEvent: DragEvent) {
+  private updateHistory(dragEvent: DragEvent) {
     const { keepHistory } = this.config;
 
     if (keepHistory === true) {
@@ -126,7 +126,7 @@ export class MonoDrag {
         this.history = [];
       }
 
-      this.history.push(pointerEvent);
+      this.history.push(dragEvent);
     }
   }
 
@@ -136,8 +136,9 @@ export class MonoDrag {
     this.isActive = false;
   }
 
-  public dragStart(pointerEvent: DragEvent, isTouch: boolean = false) {
-    const { originalEvent: event, position, time } = pointerEvent;
+  // Sensors will send DragEvent to these methods.
+  public dragStart(dragEvent: DragEvent, isTouch: boolean = false) {
+    const { originalEvent: event, position, time } = dragEvent;
 
     if (this.isActive === false) {
       this.preventDefault(event);
@@ -147,7 +148,7 @@ export class MonoDrag {
       this.isTouch = isTouch;
 
       if (isTouch === true) {
-        this.touchIdentifier = pointerEvent.touchIdentifier as number;
+        this.touchIdentifier = dragEvent.touchIdentifier as number;
       }
 
       this.startTime = time;
@@ -158,65 +159,65 @@ export class MonoDrag {
 
       this.history = [];
 
-      this.updateHistory(pointerEvent);
+      this.updateHistory(dragEvent);
 
-      this.startingDragEvent = pointerEvent;
+      this.startingDragEvent = dragEvent;
 
-      this.config.onDragStart(pointerEvent, this);
+      this.config.onDragStart(dragEvent, this);
 
-      this.previousDragEvent = pointerEvent;
+      this.previousDragEvent = dragEvent;
     }
   }
 
-  public drag(pointerEvent: DragEvent) {
-    const { originalEvent: event } = pointerEvent;
+  public drag(dragEvent: DragEvent) {
+    const { originalEvent: event } = dragEvent;
 
     if (this.isActive === true) {
       this.preventDefault(event);
 
       this.config.onEvent(event, this);
 
-      this.updateHistory(pointerEvent);
+      this.updateHistory(dragEvent);
 
-      this.config.onDrag(pointerEvent, this);
+      this.config.onDrag(dragEvent, this);
 
-      this.previousDragEvent = pointerEvent;
+      this.previousDragEvent = dragEvent;
     }
   }
 
-  public dragStop(pointerEvent: DragEvent) {
-    const { originalEvent: event } = pointerEvent;
+  public dragStop(dragEvent: DragEvent) {
+    const { originalEvent: event } = dragEvent;
 
     if (this.isActive === true) {
       this.preventDefault(event);
 
       this.config.onEvent(event, this);
 
-      this.updateHistory(pointerEvent);
+      this.updateHistory(dragEvent);
 
-      this.config.onDragStop(pointerEvent, this);
+      this.config.onDragStop(dragEvent, this);
 
       this.end();
 
-      this.previousDragEvent = pointerEvent;
+      this.previousDragEvent = dragEvent;
     }
   }
 
-  public dragCancel(pointerEvent: DragEvent) {
-    const { originalEvent: event } = pointerEvent;
+  public dragCancel(dragEvent: DragEvent) {
+    const { originalEvent: event } = dragEvent;
 
     if (this.isActive === true) {
       this.preventDefault(event);
 
       this.config.onEvent(event, this);
 
-      this.updateHistory(pointerEvent);
+      this.updateHistory(dragEvent);
 
-      this.config.onDragCancel(pointerEvent, this);
+      this.config.onDragCancel(dragEvent, this);
 
       this.end();
 
-      this.previousDragEvent = pointerEvent;
+      this.previousDragEvent = dragEvent;
     }
   }
 }

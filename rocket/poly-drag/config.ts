@@ -17,6 +17,8 @@ export interface PolyDragConfig {
 
   preventDefault: boolean;
 
+  disableContextMenu: boolean;
+
   keepDragEventHistory: boolean;
   keepDragStoryHistory: boolean;
 
@@ -35,6 +37,8 @@ export interface PolyDragConfig {
 
 export const POLY_DRAG_DEFAULT_CONFIG: PolyDragConfig = {
   preventDefault: true,
+
+  disableContextMenu: false,
 
   keepDragEventHistory: true,
   keepDragStoryHistory: true,

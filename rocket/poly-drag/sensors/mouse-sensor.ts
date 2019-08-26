@@ -33,9 +33,12 @@ export class MouseSensor {
       const targetElement = target as HTMLElement;
 
       targetElement.addEventListener('mousedown', this.onMouseDown);
+      targetElement.addEventListener('contextmenu', this.onContextMenu);
+
       window.addEventListener('mousemove', this.onMouseMove);
       window.addEventListener('mouseup', this.onMouseUp);
-      window.addEventListener('mouseleave', this.onMouseLeave);
+
+      document.documentElement.addEventListener('mouseleave', this.onMouseLeave);
 
       this.isActive = true;
     }
@@ -46,9 +49,12 @@ export class MouseSensor {
       const target = this.target as HTMLElement;
 
       target.removeEventListener('mousedown', this.onMouseDown);
+      target.removeEventListener('contextmenu', this.onContextMenu);
+
       window.removeEventListener('mousemove', this.onMouseMove);
       window.removeEventListener('mouseup', this.onMouseUp);
-      window.removeEventListener('mouseleave', this.onMouseLeave);
+
+      document.documentElement.removeEventListener('mouseleave', this.onMouseLeave);
 
       this.isActive = false;
     }
@@ -93,6 +99,15 @@ export class MouseSensor {
       dragEvent.setFromMouseEvent('cancel', event);
 
       this.sensorHub.onDragCancel(dragEvent);
+    }
+  }
+
+  private onContextMenu = (event: MouseEvent) => {
+    const { disableContextMenu } = this.sensorHub.polyDrag.config;
+
+    if (disableContextMenu === true) {
+      event.preventDefault();
+      event.stopPropagation();
     }
   }
 }
