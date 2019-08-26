@@ -54,6 +54,8 @@ export class DragEvent {
       isTouch === true
       && typeof touch !== 'undefined'
     ) {
+      this.touchIdentifier = touch.identifier;
+
       clientX = touch.clientX;
       clientY = touch.clientY;
     } else {

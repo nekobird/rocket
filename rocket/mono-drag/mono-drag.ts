@@ -137,7 +137,7 @@ export class MonoDrag {
   }
 
   // Sensors will send DragEvent to these methods.
-  public dragStart(dragEvent: DragEvent, isTouch: boolean = false) {
+  public dragStart(dragEvent: DragEvent) {
     const { originalEvent: event, position, time } = dragEvent;
 
     if (this.isActive === false) {
@@ -145,9 +145,9 @@ export class MonoDrag {
 
       this.isActive = true;
 
-      this.isTouch = isTouch;
+      this.isTouch = dragEvent.isTouch;
 
-      if (isTouch === true) {
+      if (dragEvent.isTouch === true) {
         this.touchIdentifier = dragEvent.touchIdentifier as number;
       }
 

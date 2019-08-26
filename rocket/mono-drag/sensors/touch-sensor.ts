@@ -63,7 +63,7 @@ export class TouchSensor {
       isActive === false
       && config.condition(dragEvent, this.monoDrag) === true
     ) {
-      this.monoDrag.dragStart(dragEvent, true);
+      this.monoDrag.dragStart(dragEvent);
     }
   }
 
