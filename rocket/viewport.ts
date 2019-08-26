@@ -11,12 +11,14 @@ const VIEWPORT_MODEL_ATTRIBUTES = {
   display: 'block',
   height: '100vh',
   left: '0',
+  maxHeight: '100%',
+  maxWidth: '100%',
   padding: '0',
   position: 'fixed',
   top: '0',
   visibility: 'hidden',
   width: '100vw',
-  zIndex: '-9999',
+  zIndex: '-9999999',
 };
 
 let modelElement: HTMLElement;
