@@ -170,6 +170,34 @@ export class Viewport {
     );
   }
 
+  public static get documentHeight(): number {
+    const { body } = document;
+
+    const html = document.documentElement;
+
+    return Math.max(
+      body.scrollHeight,
+      body.offsetHeight, 
+      html.clientHeight,
+      html.scrollHeight,
+      html.offsetHeight,
+    );
+  }
+
+  public static get documentWidth(): number {
+    const { body } = document;
+
+    const html = document.documentElement;
+
+    return Math.max(
+      body.scrollWidth,
+      body.offsetWidth, 
+      html.clientWidth,
+      html.scrollWidth,
+      html.offsetWidth,
+    );
+  }
+
   // @mobile
 
   // @model
