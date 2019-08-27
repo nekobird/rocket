@@ -7,14 +7,14 @@ import {
 } from '../mono-drag';
 
 import {
-  DragEvent,
-  DragEventType,
-} from '../drag-event';
+  MonoDragEvent,
+  MonoDragEventType,
+} from '../mono-drag-event';
 
 export class TouchSensor {
   private monoDrag: MonoDrag;
 
-  public isListening: boolean = false;
+  public isActive: boolean = false;
 
   constructor(monoDrag: MonoDrag) {
     this.monoDrag = monoDrag;
@@ -31,7 +31,7 @@ export class TouchSensor {
       window.addEventListener('touchend', this.onTouchEnd);
       window.addEventListener('touchcancel', this.onTouchCancel);
 
-      this.isListening = true;
+      this.isActive = true;
     }
   }
 
@@ -46,21 +46,21 @@ export class TouchSensor {
       window.removeEventListener('touchend', this.onTouchEnd);
       window.removeEventListener('touchcancel', this.onTouchCancel);
 
-      this.isListening = false;
+      this.isActive = false;
     }
   }
 
-  private createDragEvent(type: DragEventType, originalEvent: TouchEvent, touch: Touch): DragEvent {
-    return new DragEvent(this.monoDrag, type, originalEvent, true, touch);
+  private createMonoDragEvent(type: MonoDragEventType, originalEvent: TouchEvent, touch: Touch): MonoDragEvent {
+    return new MonoDragEvent(this.monoDrag, type, originalEvent, true, touch);
   }
 
   private onTouchStart = (event: TouchEvent) => {
-    const { isListening, config } = this.monoDrag;
+    const { isActive, config } = this.monoDrag;
 
-    const dragEvent = this.createDragEvent('start', event, event.changedTouches[0]);
+    const dragEvent = this.createMonoDragEvent('start', event, event.changedTouches[0]);
 
     if (
-      isListening === false
+      isActive === false
       && config.condition(dragEvent, this.monoDrag) === true
     ) {
       this.monoDrag.dragStart(dragEvent);
@@ -68,15 +68,15 @@ export class TouchSensor {
   }
 
   private onTouchMove = (event: TouchEvent) => {
-    const { isListening } = this.monoDrag;
+    const { isActive } = this.monoDrag;
 
-    if (isListening === true) {
+    if (isActive === true) {
       const touch = [...event.changedTouches].find(touch => {
         return touch.identifier === this.monoDrag.touchIdentifier;
       });
 
       if (typeof touch !== 'undefined') {
-        const dragEvent = this.createDragEvent('drag', event, touch);
+        const dragEvent = this.createMonoDragEvent('drag', event, touch);
 
         this.monoDrag.drag(dragEvent);
       }
@@ -84,15 +84,15 @@ export class TouchSensor {
   }
 
   private onTouchEnd = (event: TouchEvent) => {
-    const { isListening } = this.monoDrag;
+    const { isActive } = this.monoDrag;
 
-    if (isListening === true) {
+    if (isActive === true) {
       const touch = [...event.changedTouches].find(touch => {
         return touch.identifier === this.monoDrag.touchIdentifier;
       });
 
       if (typeof touch !== 'undefined') {
-        const dragEvent = this.createDragEvent('stop', event, touch);
+        const dragEvent = this.createMonoDragEvent('stop', event, touch);
 
         this.monoDrag.dragStop(dragEvent);
       }
@@ -100,15 +100,15 @@ export class TouchSensor {
   }
 
   private onTouchCancel = (event: TouchEvent) => {
-    const { isListening } = this.monoDrag;
+    const { isActive } = this.monoDrag;
 
-    if (isListening === true) {
+    if (isActive === true) {
       const touch = [...event.changedTouches].find(touch => {
         return touch.identifier === this.monoDrag.touchIdentifier;
       });
 
       if (typeof touch !== 'undefined') {
-        const dragEvent = this.createDragEvent('cancel', event, touch);
+        const dragEvent = this.createMonoDragEvent('cancel', event, touch);
 
         this.monoDrag.dragCancel(dragEvent);
       }

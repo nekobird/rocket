@@ -1,5 +1,4 @@
 import {
-  DOMTraverse,
   DOMUtil,
 } from '../../rocket';
 
@@ -8,8 +7,8 @@ import {
 } from '../mono-tap';
 
 import {
-  TapEvent,
-} from '../tap-event';
+  MonoTapEvent,
+} from '../mono-tap-event';
 
 export class MouseSensor {
   public monoTap: MonoTap;
@@ -58,7 +57,7 @@ export class MouseSensor {
   private onMouseDown = (event: MouseEvent) => {
     this.isDown = true;
 
-    const tapEvent = new TapEvent(this.monoTap, 'down', event);
+    const tapEvent = new MonoTapEvent(this.monoTap, 'down', event);
 
     this.monoTap.sensorHub.dispatch(tapEvent);
   }
@@ -70,7 +69,7 @@ export class MouseSensor {
   private onMouseUp = (event: MouseEvent) => {
     this.isDown = false;
 
-    const tapEvent = new TapEvent(this.monoTap, 'up', event);
+    const tapEvent = new MonoTapEvent(this.monoTap, 'up', event);
 
     this.monoTap.sensorHub.dispatch(tapEvent);
   }

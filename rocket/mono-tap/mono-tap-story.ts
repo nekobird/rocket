@@ -1,16 +1,16 @@
 import {
-  TapEvent,
-  TapEventIdentifier,
-} from './tap-event';
+  MonoTapEvent,
+  MonoTapEventIdentifier,
+} from './mono-tap-event';
 
 import {
   MonoTap,
 } from './mono-tap';
 
-export class TapStory {
+export class MonoTapStory {
   public monoTap: MonoTap;
 
-  public identifier?: TapEventIdentifier;
+  public identifier?: MonoTapEventIdentifier;
 
   // TODO: Clean this mess.
   public isActive: boolean = false;
@@ -18,17 +18,17 @@ export class TapStory {
   public isCancelled: boolean = false;
   public hasEnded: boolean = false;
 
-  public downEvent?: TapEvent;
-  public upEvent?: TapEvent;
-  public cancelEvent?: TapEvent;
+  public downEvent?: MonoTapEvent;
+  public upEvent?: MonoTapEvent;
+  public cancelEvent?: MonoTapEvent;
 
   public startTime?: number;
   public endTime?: number;
 
-  constructor(monoTap: MonoTap, tapEvent: TapEvent) {
+  constructor(monoTap: MonoTap, tapEvent: MonoTapEvent) {
     this.monoTap = monoTap;
 
-    this.addTapEvent(tapEvent);
+    this.addMonoTapEvent(tapEvent);
   }
 
   public get duration(): number | null {
@@ -43,7 +43,7 @@ export class TapStory {
     return null;
   }
 
-  public addTapEvent(tapEvent: TapEvent) {
+  public addMonoTapEvent(tapEvent: MonoTapEvent) {
     switch (tapEvent.type) {
       case 'down': {
         if (

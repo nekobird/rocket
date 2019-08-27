@@ -6,12 +6,12 @@ import {
   MonoDrag
 } from './mono-drag';
 
-export type DragEventType = 'start' | 'drag' | 'stop' | 'cancel';
+export type MonoDragEventType = 'start' | 'drag' | 'stop' | 'cancel';
 
-export class DragEvent {
+export class MonoDragEvent {
   public monoDrag: MonoDrag;
 
-  public type: DragEventType;
+  public type: MonoDragEventType;
 
   public isTouch: boolean;
 
@@ -33,7 +33,7 @@ export class DragEvent {
 
   constructor(
     monoDrag: MonoDrag,
-    type: DragEventType,
+    type: MonoDragEventType,
     originalEvent: MouseEvent | TouchEvent,
     isTouch: boolean = false,
     touch?: Touch,

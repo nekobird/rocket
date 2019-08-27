@@ -7,7 +7,7 @@ import {
 } from '../mono-tap';
 
 import {
-  TapEvent,
+  MonoTapEvent,
 } from '../tap-event';
 
 export class TouchSensor {
@@ -59,7 +59,7 @@ export class TouchSensor {
 
   private onTouchStart = (event: TouchEvent) => {
     [...event.changedTouches].forEach(touch => {
-      const tapEvent = new TapEvent(this.monoTap, 'down', event, true, touch);
+      const tapEvent = new MonoTapEvent(this.monoTap, 'down', event, true, touch);
 
       this.monoTap.sensorHub.dispatch(tapEvent);
     });
@@ -71,7 +71,7 @@ export class TouchSensor {
 
   private onTouchEnd = (event: TouchEvent) => {
     [...event.changedTouches].forEach(touch => {
-      const tapEvent = new TapEvent(this.monoTap, 'up', event, true, touch);
+      const tapEvent = new MonoTapEvent(this.monoTap, 'up', event, true, touch);
 
       this.monoTap.sensorHub.dispatch(tapEvent);
     });
@@ -79,7 +79,7 @@ export class TouchSensor {
 
   private onTouchCancel = (event: TouchEvent) => {
     [...event.changedTouches].forEach(touch => {
-      const tapEvent = new TapEvent(this.monoTap, 'cancel', event, true, touch);
+      const tapEvent = new MonoTapEvent(this.monoTap, 'cancel', event, true, touch);
 
       this.monoTap.sensorHub.dispatch(tapEvent);
     });

@@ -9,8 +9,8 @@ import {
 } from './config';
 
 import {
-  DragEvent,
-} from './drag-event';
+  MonoDragEvent,
+} from './mono-drag-event';
 
 import {
   MouseSensor,
@@ -34,12 +34,12 @@ export class MonoDrag {
 
   public startTime: number = 0;
 
-  public history: DragEvent[];
+  public history: MonoDragEvent[];
 
   public offset: Vector2;
 
-  public startingDragEvent?: DragEvent;
-  public previousDragEvent?: DragEvent;
+  public startingDragEvent?: MonoDragEvent;
+  public previousDragEvent?: MonoDragEvent;
 
   public previousPosition: Vector2;
   public previousVelocity: Vector2;
@@ -115,7 +115,7 @@ export class MonoDrag {
     }
   }
 
-  private updateHistory(dragEvent: DragEvent) {
+  private updateHistory(dragEvent: MonoDragEvent) {
     const { keepHistory } = this.config;
 
     if (keepHistory === true) {
@@ -136,8 +136,8 @@ export class MonoDrag {
     this.isActive = false;
   }
 
-  // Sensors will send DragEvent to these methods.
-  public dragStart(dragEvent: DragEvent) {
+  // Sensors will send MonoDragEvent to these methods.
+  public dragStart(dragEvent: MonoDragEvent) {
     const { originalEvent: event, position, time } = dragEvent;
 
     if (this.isActive === false) {
@@ -171,7 +171,7 @@ export class MonoDrag {
     }
   }
 
-  public drag(dragEvent: DragEvent) {
+  public drag(dragEvent: MonoDragEvent) {
     const { originalEvent: event } = dragEvent;
 
     if (this.isActive === true) {
@@ -187,7 +187,7 @@ export class MonoDrag {
     }
   }
 
-  public dragStop(dragEvent: DragEvent) {
+  public dragStop(dragEvent: MonoDragEvent) {
     const { originalEvent: event } = dragEvent;
 
     if (this.isActive === true) {
@@ -205,7 +205,7 @@ export class MonoDrag {
     }
   }
 
-  public dragCancel(dragEvent: DragEvent) {
+  public dragCancel(dragEvent: MonoDragEvent) {
     const { originalEvent: event } = dragEvent;
 
     if (this.isActive === true) {

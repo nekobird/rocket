@@ -11,12 +11,12 @@ import {
 } from './sensors/touch-sensor';
 
 import {
-  TapStory,
-} from './tap-story';
+  MonoTapStory,
+} from './mono-tap-story';
 
 import {
-  TapEvent,
-} from './tap-event';
+  MonoTapEvent,
+} from './mono-tap-event';
 
 export class SensorHub {
   public monoTap: MonoTap;
@@ -26,11 +26,11 @@ export class SensorHub {
 
   public isListening: boolean = false;
 
-  public activeStories: TapStory[];
+  public activeStories: MonoTapStory[];
 
-  public history: TapStory[];
+  public history: MonoTapStory[];
 
-  public previousTapStory?: TapStory;
+  public previousMonoTapStory?: MonoTapStory;
 
   constructor(monoTap: MonoTap) {
     this.monoTap = monoTap;
@@ -61,15 +61,15 @@ export class SensorHub {
     }
   }
 
-  public dispatch(tapEvent: TapEvent) {
+  public dispatch(tapEvent: MonoTapEvent) {
     this.preventDefault(tapEvent);
 
     switch (tapEvent.type) {
       case 'down': {
         if (this.monoTap.config.condition(tapEvent, this.monoTap) === true) {
-          const story = new TapStory(this.monoTap, tapEvent);
+          const story = new MonoTapStory(this.monoTap, tapEvent);
 
-          this.addTapStory(story);
+          this.addMonoTapStory(story);
 
           this.monoTap.config.onDown(tapEvent, story, this.monoTap);
         }
@@ -78,10 +78,10 @@ export class SensorHub {
       }
 
       case 'up': {
-        const story = this.getTapStoryFromTapEvent(tapEvent);
+        const story = this.getMonoTapStoryFromMonoTapEvent(tapEvent);
 
         if (story !== null) {
-          story.addTapEvent(tapEvent);
+          story.addMonoTapEvent(tapEvent);
 
           const {
             onUp,
@@ -92,28 +92,28 @@ export class SensorHub {
           onUp(tapEvent, story, this.monoTap);
   
           if (isValidTap(tapEvent, story, this.monoTap) === true) {
-            this.previousTapStory = story;
+            this.previousMonoTapStory = story;
   
             this.addStoryToHistory(story);
   
             onTap(tapEvent, story, this.monoTap);
           }
   
-          this.removeTapStory(story);  
+          this.removeMonoTapStory(story);  
         }
 
         break;
       }
 
       case 'cancel': {
-        const story = this.getTapStoryFromTapEvent(tapEvent);
+        const story = this.getMonoTapStoryFromMonoTapEvent(tapEvent);
 
         if (story !== null) {
-          story.addTapEvent(tapEvent);
+          story.addMonoTapEvent(tapEvent);
 
           this.monoTap.config.onCancel(tapEvent, story, this.monoTap);
 
-          this.removeTapStory(story);
+          this.removeMonoTapStory(story);
         }
 
         break;
@@ -121,19 +121,19 @@ export class SensorHub {
     }
   }
 
-  private preventDefault(tapEvent: TapEvent) {
+  private preventDefault(tapEvent: MonoTapEvent) {
     if (this.monoTap.config.preventDefault === true) {
       tapEvent.originalEvent.preventDefault();
     }
   }
 
-  private addStoryToHistory(tapStory: TapStory) {
+  private addStoryToHistory(tapStory: MonoTapStory) {
     if (this.monoTap.config.keepHistory === true) {
       this.history.push(tapStory);
     }
   }
 
-  private addTapStory(tapStory: TapStory): boolean {
+  private addMonoTapStory(tapStory: MonoTapStory): boolean {
     if (this.activeStories.indexOf(tapStory) === -1) {
       this.activeStories.push(tapStory);
 
@@ -143,7 +143,7 @@ export class SensorHub {
     return false;
   }
 
-  private getTapStoryFromTapEvent(tapEvent: TapEvent): TapStory | null {
+  private getMonoTapStoryFromMonoTapEvent(tapEvent: MonoTapEvent): MonoTapStory | null {
     const tapStory = this.activeStories.find(tapStory => {
       return tapStory.identifier === tapEvent.identifier
     });
@@ -155,7 +155,7 @@ export class SensorHub {
     return null;
   }
 
-  private removeTapStory(tapStory: TapStory): boolean {
+  private removeMonoTapStory(tapStory: MonoTapStory): boolean {
     const index = this.activeStories.indexOf(tapStory);
 
     if (index !== -1) {

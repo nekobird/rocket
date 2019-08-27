@@ -8,8 +8,8 @@ import {
 } from './sensor-hub';
 
 import {
-  TapStory,
-} from './tap-story';
+  MonoTapStory,
+} from './mono-tap-story';
 
 export class MonoTap {
   public config: MonoTapConfig;
@@ -56,17 +56,17 @@ export class MonoTap {
     return this;
   }
 
-  public get previousTapStory(): TapStory | null {
-    const { previousTapStory } = this.sensorHub;
+  public get previousMonoTapStory(): MonoTapStory | null {
+    const { previousMonoTapStory } = this.sensorHub;
 
-    if (typeof previousTapStory === 'undefined') {
+    if (typeof previousMonoTapStory === 'undefined') {
       return null;
     }
 
-    return previousTapStory;
+    return previousMonoTapStory;
   }
 
-  public get history(): TapStory[] {
+  public get history(): MonoTapStory[] {
     return this.sensorHub.history;
   }
 

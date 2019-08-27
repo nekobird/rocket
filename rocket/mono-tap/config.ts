@@ -3,12 +3,12 @@ import {
 } from './mono-tap';
 
 import {
-  TapStory,
-} from './tap-story';
+  MonoTapStory,
+} from './mono-tap-story';
 
 import {
-  TapEvent,
-} from './tap-event';
+  MonoTapEvent,
+} from './mono-tap-event';
 
 export interface MonoTapConfig {
   target?: HTMLElement;
@@ -18,35 +18,35 @@ export interface MonoTapConfig {
 
   preventDefault: boolean;
 
-  condition: (event: TapEvent, monoTap: MonoTap) => boolean;
+  condition: (event: MonoTapEvent, monoTap: MonoTap) => boolean;
 
   isValidTap: (
-    event: TapEvent,
-    story: TapStory,
+    event: MonoTapEvent,
+    story: MonoTapStory,
     monoTap: MonoTap,
   ) => boolean;
 
   onTap: (
-    event: TapEvent,
-    story: TapStory,
+    event: MonoTapEvent,
+    story: MonoTapStory,
     monoTap: MonoTap,
   ) => void;
 
   onDown: (
-    event: TapEvent,
-    story: TapStory,
+    event: MonoTapEvent,
+    story: MonoTapStory,
     monoTap: MonoTap,
   ) => void;
 
   onUp: (
-    event: TapEvent,
-    story: TapStory,
+    event: MonoTapEvent,
+    story: MonoTapStory,
     monoTap: MonoTap,
   ) => void;
 
   onCancel: (
-    event: TapEvent,
-    story: TapStory,
+    event: MonoTapEvent,
+    story: MonoTapStory,
     monoTap: MonoTap,
   ) => void;
 }

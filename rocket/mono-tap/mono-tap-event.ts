@@ -7,18 +7,18 @@ import {
   MonoTap,
 } from './mono-tap';
 
-export type TapEventIdentifier = 'mouse' | number;
+export type MonoTapEventIdentifier = 'mouse' | number;
 
-export type TapEventType = 'down' | 'up' | 'cancel';
+export type MonoTapEventType = 'down' | 'up' | 'cancel';
 
-export class TapEvent {
+export class MonoTapEvent {
   public monoTap: MonoTap;
 
-  public type: TapEventType;
+  public type: MonoTapEventType;
 
   public isTouch: boolean;
 
-  public identifier?: TapEventIdentifier;
+  public identifier?: MonoTapEventIdentifier;
 
   public originalEvent: MouseEvent | TouchEvent;
   public originalTouch?: Touch;
@@ -33,7 +33,7 @@ export class TapEvent {
 
   constructor(
     monoTap: MonoTap,
-    type: TapEventType,
+    type: MonoTapEventType,
     originalEvent: MouseEvent | TouchEvent,
     isTouch: boolean = false,
     touch?: Touch,
