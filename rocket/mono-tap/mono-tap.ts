@@ -35,7 +35,13 @@ export class MonoTap {
   }
 
   public get previousTapStory(): TapStory | null {
-    return this.sensorHub.previousTapStory;
+    const { previousTapStory } = this.sensorHub;
+
+    if (typeof previousTapStory === 'undefined') {
+      return null;
+    }
+
+    return previousTapStory;
   }
 
   public get history(): TapStory[] {

@@ -10,7 +10,7 @@ import {
 export class TapStory {
   public monoTap: MonoTap;
 
-  public identifier: TapEventIdentifier;
+  public identifier?: TapEventIdentifier;
 
   // TODO: Clean this mess.
   public isActive: boolean = false;
@@ -18,12 +18,12 @@ export class TapStory {
   public isCancelled: boolean = false;
   public hasEnded: boolean = false;
 
-  public downEvent: TapEvent;
+  public downEvent?: TapEvent;
   public upEvent?: TapEvent;
   public cancelEvent?: TapEvent;
 
-  public startTime: number;
-  public endTime: number;
+  public startTime?: number;
+  public endTime?: number;
 
   constructor(monoTap: MonoTap, tapEvent: TapEvent) {
     this.monoTap = monoTap;
@@ -32,7 +32,11 @@ export class TapStory {
   }
 
   public get duration(): number | null {
-    if (this.hasEnded === true) {
+    if (
+      this.hasEnded === true
+      && typeof this.startTime === 'number'
+      && typeof this.endTime === 'number'
+    ) {
       return this.startTime - this.endTime;
     }
 

@@ -26,11 +26,11 @@ export class SensorHub {
 
   public isListening: boolean = false;
 
-  public activeStories?: TapStory[];
+  public activeStories: TapStory[];
 
   public history: TapStory[];
 
-  public previousTapStory: TapStory = null;
+  public previousTapStory?: TapStory;
 
   constructor(monoTap: MonoTap) {
     this.monoTap = monoTap;
@@ -80,25 +80,25 @@ export class SensorHub {
 
         if (story !== null) {
           story.addTapEvent(tapEvent);
+
+          const {
+            onUp,
+            isValidTap,
+            onTap,
+          } = this.monoTap.config;
+  
+          onUp(tapEvent, story, this.monoTap);
+  
+          if (isValidTap(tapEvent, story, this.monoTap) === true) {
+            this.previousTapStory = story;
+  
+            this.addStoryToHistory(story);
+  
+            onTap(tapEvent, story, this.monoTap);
+          }
+  
+          this.removeTapStory(story);  
         }
-
-        const {
-          onUp,
-          isValidTap,
-          onTap,
-        } = this.monoTap.config;
-
-        onUp(tapEvent, story, this.monoTap);
-
-        if (isValidTap(tapEvent, story, this.monoTap) === true) {
-          this.previousTapStory = story;
-
-          this.addStoryToHistory(story);
-
-          onTap(tapEvent, story, this.monoTap);
-        }
-
-        this.removeTapStory(story);
 
         break;
       }
@@ -108,11 +108,11 @@ export class SensorHub {
 
         if (story !== null) {
           story.addTapEvent(tapEvent);
+
+          this.monoTap.config.onCancel(tapEvent, story, this.monoTap);
+
+          this.removeTapStory(story);
         }
-
-        this.monoTap.config.onCancel(tapEvent, story, this.monoTap);
-
-        this.removeTapStory(story);
 
         break;
       }

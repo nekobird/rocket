@@ -28,7 +28,9 @@ export class MouseSensor {
       this.isListening === false
       && DOMUtil.isHTMLElement(target) === true
     ) {
-      target.addEventListener('mousedown', this.onMouseDown);
+      const targetElement = target as HTMLElement;
+
+      targetElement.addEventListener('mousedown', this.onMouseDown);
       // window.addEventListener('mousemove', this.onMouseMove);
       window.addEventListener('mouseup', this.onMouseUp);
 
@@ -43,7 +45,9 @@ export class MouseSensor {
       this.isListening === true
       && DOMUtil.isHTMLElement(target) === true
     ) {
-      target.removeEventListener('mousedown', this.onMouseDown);
+      const targetElement = target as HTMLElement;
+
+      targetElement.removeEventListener('mousedown', this.onMouseDown);
       // window.removeEventListener('mousemove', this.onMouseMove);
       window.removeEventListener('mouseup', this.onMouseUp);
 

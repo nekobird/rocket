@@ -27,7 +27,7 @@ export class TapEvent {
   public target: HTMLElement | null;
 
   public position: Vector2;
-  public offset: Vector2;
+  public offset?: Vector2;
 
   public time: number;
 
@@ -88,7 +88,7 @@ export class TapEvent {
 
       const { left, top } = element.getBoundingClientRect();
 
-      this.offset.equals(
+      this.offset= new Vector2(
         this.position.x - left,
         this.position.y - top,
       );

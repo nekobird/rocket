@@ -16,20 +16,20 @@ import {
 export class DragStory {
   public polyDrag: PolyDrag;
 
-  public identifier: DragEventIdentifier;
+  public identifier?: DragEventIdentifier;
 
   public isActive: boolean = false;
   public wasActive: boolean = false;
 
-  public dragEvents: DragEvent[];
-  public activeDragEvent: DragEvent;
+  public dragEvents?: DragEvent[];
+  public activeDragEvent?: DragEvent;
 
   public previousPosition: Vector2;
   public previousVelocity: Vector2;
 
-  public startingDragEvent: DragEvent;
-  public previousDragEvent: DragEvent;
-  public finalDragEvent: DragEvent;
+  public startingDragEvent?: DragEvent;
+  public previousDragEvent?: DragEvent;
+  public finalDragEvent?: DragEvent;
 
   public history: DragEvent[];
 
@@ -39,12 +39,20 @@ export class DragStory {
     this.polyDrag = polyDrag;
 
     this.history = [];
+
+    this.previousPosition = new Vector2();
+    this.previousVelocity = new Vector2();
+
+    this.offset = new Vector2();
   }
 
   private updateVectors(dragEvent: DragEvent) {
     let event: MouseEvent | Touch;
 
-    if (dragEvent.isTouch === true) {
+    if (
+      dragEvent.isTouch === true
+      && typeof dragEvent.touch !== 'undefined'
+    ) {
       event = dragEvent.touch;
     } else {
       event = dragEvent.originalEvent as MouseEvent;

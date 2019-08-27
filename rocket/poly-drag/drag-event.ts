@@ -13,7 +13,7 @@ export type DragEventType = 'start' | 'drag' | 'stop' | 'cancel';
 export class DragEvent {
   public polyDrag: PolyDrag;
 
-  public type: DragEventType;
+  public type?: DragEventType;
 
   public isTouch: boolean = false;
 
@@ -23,14 +23,14 @@ export class DragEvent {
   public velocity: Vector2;
   public acceleration: Vector2;
 
-  public time: number;
+  public time?: number;
 
-  public originalEvent: MouseEvent | TouchEvent;
+  public originalEvent?: MouseEvent | TouchEvent;
 
-  public targetFromEvent: EventTarget;
-  public target: HTMLElement | null;
+  public targetFromEvent?: EventTarget | null;
+  public target?: HTMLElement | null;
 
-  public identifier: DragEventIdentifier;
+  public identifier?: DragEventIdentifier;
 
   constructor(polyDrag: PolyDrag) {
     this.polyDrag = polyDrag;

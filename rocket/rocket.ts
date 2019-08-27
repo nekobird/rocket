@@ -48,7 +48,9 @@ export * from './color/convert-color';
 export * from './color/color';
 
 // @events
+export * from './mono-tap/mono-tap';
 export * from './mono-drag/mono-drag';
+export * from './poly-drag/poly-drag';
 export * from './pointer-move/pointer-move';
 
 // @text-auto-scaler

@@ -45,6 +45,9 @@ export class SensorHub {
 
     this.history = [];
 
+    this.activeDragStories = [];
+    this.activeIdentifiers = [];
+
     this.reset();
   }
 
@@ -55,8 +58,10 @@ export class SensorHub {
       this.isActive === false
       && DOMUtil.isHTMLElement(target) === true
     ) {
-      this.mouseSensor.attach(target);
-      this.touchSensor.attach(target);
+      const targetElement = target as HTMLElement;
+
+      this.mouseSensor.attach(targetElement);
+      this.touchSensor.attach(targetElement);
 
       this.isActive = true;
     }
@@ -94,13 +99,21 @@ export class SensorHub {
   }
 
   private dragEventIsActive(dragEvent: DragEvent): boolean {
-    return (this.activeIdentifiers.indexOf(dragEvent.identifier) !== -1);
+    if (typeof dragEvent.identifier !== 'undefined') {
+      return (this.activeIdentifiers.indexOf(dragEvent.identifier) !== -1);
+    }
+
+    return false;
   }
 
-  private getDragStory(dragEvent: DragEvent): DragStory {
+  private getDragStory(dragEvent: DragEvent): DragStory | null {
     const story = this.activeDragStories.find(story => {
       return story.identifier === dragEvent.identifier;
     });
+
+    if (typeof story === 'undefined') {
+      return null;
+    }
 
     return story;
   }
@@ -108,22 +121,30 @@ export class SensorHub {
   private removeDragStory(dragEvent: DragEvent) {
     const story = this.getDragStory(dragEvent);
 
-    const activeDragStoryIndex = this.activeDragStories.indexOf(story);
-    const activeIdentifierIndex = this.activeIdentifiers.indexOf(dragEvent.identifier);
-
     if (
-      activeDragStoryIndex !== -1
-      && activeIdentifierIndex !== -1
+      story !== null
+      && typeof dragEvent.identifier !== 'undefined'
     ) {
-      this.activeDragStories.splice(activeDragStoryIndex, 1);
-      this.activeIdentifiers.splice(activeIdentifierIndex, 1);
+      const activeDragStoryIndex = this.activeDragStories.indexOf(story);
+      const activeIdentifierIndex = this.activeIdentifiers.indexOf(dragEvent.identifier);
+
+      if (
+        activeDragStoryIndex !== -1
+        && activeIdentifierIndex !== -1
+      ) {
+        this.activeDragStories.splice(activeDragStoryIndex, 1);
+        this.activeIdentifiers.splice(activeIdentifierIndex, 1);
+      }
     }
   }
 
   private preventDefault(dragEvent: DragEvent) {
     const { config } = this.polyDrag;
 
-    if (config.preventDefault === true) {
+    if (
+      config.preventDefault === true
+      && typeof dragEvent.originalEvent !== 'undefined'
+    ) {
       dragEvent.originalEvent.preventDefault();
     }
   }
@@ -163,15 +184,17 @@ export class SensorHub {
     ) {
       const story = this.getDragStory(dragEvent);
 
-      story.drag(dragEvent);
+      if (story !== null) {
+        story.drag(dragEvent);
 
-      this.preventDefault(dragEvent);
+        this.preventDefault(dragEvent);
 
-      this.addStoryToHistory(story);
+        this.addStoryToHistory(story);
 
-      config.onEvent(dragEvent, story, this.polyDrag);
+        config.onEvent(dragEvent, story, this.polyDrag);
 
-      config.onEachDrag(dragEvent, story, this.polyDrag);      
+        config.onEachDrag(dragEvent, story, this.polyDrag);
+      }
     }
   }
 
@@ -184,17 +207,19 @@ export class SensorHub {
     ) {
       const story = this.getDragStory(dragEvent);
 
-      story.stop(dragEvent);
+      if (story !== null) {
+        story.stop(dragEvent);
 
-      this.preventDefault(dragEvent);
+        this.preventDefault(dragEvent);
 
-      this.addStoryToHistory(story);
+        this.addStoryToHistory(story);
 
-      config.onEvent(dragEvent, story, this.polyDrag);      
+        config.onEvent(dragEvent, story, this.polyDrag);
 
-      config.onEachDragStop(dragEvent, story, this.polyDrag);
+        config.onEachDragStop(dragEvent, story, this.polyDrag);
 
-      this.end(dragEvent, story);
+        this.end(dragEvent, story);
+      }
     }
   }
 
@@ -207,17 +232,19 @@ export class SensorHub {
     ) {
       const story = this.getDragStory(dragEvent);
 
-      story.stop(dragEvent);
+      if (story !== null) {
+        story.stop(dragEvent);
 
-      this.preventDefault(dragEvent);
+        this.preventDefault(dragEvent);
 
-      this.addStoryToHistory(story);
+        this.addStoryToHistory(story);
 
-      config.onEvent(dragEvent, story, this.polyDrag);     
+        config.onEvent(dragEvent, story, this.polyDrag);
 
-      config.onEachDragCancel(dragEvent, story, this.polyDrag);
+        config.onEachDragCancel(dragEvent, story, this.polyDrag);
 
-      this.end(dragEvent, story);
+        this.end(dragEvent, story);
+      }
     }
   }
 

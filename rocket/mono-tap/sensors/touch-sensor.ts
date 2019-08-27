@@ -15,7 +15,7 @@ export class TouchSensor {
 
   public isListening: boolean = false;
   
-  public touchIdentifier: number;
+  public touchIdentifier?: number;
 
   constructor(monoTap: MonoTap) {
     this.monoTap = monoTap;
@@ -28,7 +28,9 @@ export class TouchSensor {
       this.isListening === false
       && DOMUtil.isHTMLElement(target) === true
     ) {
-      target.addEventListener('touchstart', this.onTouchStart);
+      const targetElement = target as HTMLElement;
+
+      targetElement.addEventListener('touchstart', this.onTouchStart);
       // window.addEventListener('touchmove', this.onTouchMove);
       window.addEventListener('touchend', this.onTouchEnd);
       window.addEventListener('touchcancel', this.onTouchCancel);
@@ -44,7 +46,9 @@ export class TouchSensor {
       this.isListening === true
       && DOMUtil.isHTMLElement(target) === true
     ) {
-      target.removeEventListener('touchstart', this.onTouchStart);
+      const targetElement = target as HTMLElement;
+
+      targetElement.removeEventListener('touchstart', this.onTouchStart);
       // window.removeEventListener('touchmove', this.onTouchMove);
       window.removeEventListener('touchend', this.onTouchEnd);
       window.removeEventListener('touchcancel', this.onTouchCancel);
