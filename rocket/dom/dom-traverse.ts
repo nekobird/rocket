@@ -208,24 +208,24 @@ export class DOMTraverse {
 
   public static hasAncestor(
     from: HTMLElement,
-    config: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
+    elements: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
   ): DOMTraverseResult {
     const identifyElement = element => {
       if (
-        Array.isArray(config) === true
-        && DOMUtil.isHTMLElement(...config as HTMLElement[]) === true
+        Array.isArray(elements) === true
+        && DOMUtil.isHTMLElement(...elements as HTMLElement[]) === true
       ) {
-        config = config as HTMLElement[];
+        elements = elements as HTMLElement[];
 
-        return config.indexOf(element) !== -1;
+        return elements.indexOf(element) !== -1;
       } else if (
-        DOMUtil.isNodeListOfHTMLElement(config) === true
+        DOMUtil.isNodeListOfHTMLElement(elements) === true
       ) {
-        config = config as NodeListOf<HTMLElement>;
+        elements = elements as NodeListOf<HTMLElement>;
 
-        return [...config].indexOf(element) !== -1;
+        return [...elements].indexOf(element) !== -1;
       } else {
-        return element === config;
+        return element === elements;
       }
     };
 
@@ -234,24 +234,24 @@ export class DOMTraverse {
 
   public static hasDescendant(
     from: HTMLElement,
-    config: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
+    elements: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
   ): DOMTraverseResult {
     const identifyElement: DOMTraverseIdentifyElementFunction = element => {
       if (
-        Array.isArray(config) === true
-        && DOMUtil.isHTMLElement(...config as HTMLElement[]) === true
+        Array.isArray(elements) === true
+        && DOMUtil.isHTMLElement(...elements as HTMLElement[]) === true
       ) {
-        config = config as HTMLElement[];
+        elements = elements as HTMLElement[];
 
-        return config.indexOf(element) !== -1;
+        return elements.indexOf(element) !== -1;
       } else if (
-        DOMUtil.isNodeListOfHTMLElement(config) === true
+        DOMUtil.isNodeListOfHTMLElement(elements) === true
       ) {
-        config = config as NodeListOf<HTMLElement>;
+        elements = elements as NodeListOf<HTMLElement>;
         
-        return [...config].indexOf(element) !== -1;
+        return [...elements].indexOf(element) !== -1;
       } else {
-        return element === config;
+        return element === elements;
       }
     };
 
