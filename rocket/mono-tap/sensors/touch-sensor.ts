@@ -8,7 +8,7 @@ import {
 
 import {
   MonoTapEvent,
-} from '../tap-event';
+} from '../mono-tap-event';
 
 export class TouchSensor {
   public monoTap: MonoTap;
