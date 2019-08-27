@@ -89,4 +89,12 @@ export class MonoDragEvent {
   public updateOffset() {
     this.offset = Vector2.clone(this.monoDrag.offset);
   }
+
+  private preventDefault() {
+    const { preventDefault } = this.monoDrag.config;
+
+    if (preventDefault === true) {
+      this.originalEvent.preventDefault();
+    }
+  }
 }

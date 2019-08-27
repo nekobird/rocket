@@ -3,6 +3,10 @@ import {
 } from './mono-drag';
 
 import {
+  MonoDragEvent,
+} from './mono-drag-event';
+
+import {
   MouseSensor,
 } from './sensors/mouse-sensor';
 
@@ -14,10 +18,10 @@ import {
 export class SensorHub {
   public monoDrag: MonoDrag;
 
-  public isListening: boolean = false;
-
   public mouseSensor: MouseSensor;
   public touchSensor: TouchSensor;
+
+  public isListening: boolean = false;
 
   constructor(monoDrag: MonoDrag) {
     this.monoDrag = monoDrag;
@@ -35,5 +39,20 @@ export class SensorHub {
     }
 
     return this;
+  }
+
+  public stopListening() {
+    if (this.isListening === true) {
+      this.mouseSensor.detach();
+      this.touchSensor.detach();
+
+      this.isListening = false;
+    }
+  }
+
+  public receive(monoDragEvent: MonoDragEvent) {
+    if (monoDragEvent.type === 'start') {
+
+    }
   }
 }

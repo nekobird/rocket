@@ -13,53 +13,20 @@ import {
 } from './mono-drag-event';
 
 import {
-  MouseSensor,
-} from './sensors/mouse-sensor';
-
-import {
-  TouchSensor,
-} from './sensors/touch-sensor';
+  SensorHub,
+} from './sensor-hub';
 
 export class MonoDrag {
   public config: MonoDragConfig;
 
-  public mouseSensor: MouseSensor;
-  public touchSensor: TouchSensor;
-
-  public isActive: boolean = false;
-  public isTouch: boolean = false;
-  public isListening: boolean = false;
-
-  public touchIdentifier: number = 0;
-
-  public startTime: number = 0;
-
-  public history: MonoDragEvent[];
-
-  public offset: Vector2;
-
-  public startingDragEvent?: MonoDragEvent;
-  public previousDragEvent?: MonoDragEvent;
-
-  public previousPosition: Vector2;
-  public previousVelocity: Vector2;
+  public sensorHub: SensorHub;
 
   constructor(config?: Partial<MonoDragConfig>) {
     this.config = {...MONO_DRAG_DEFAULT_CONFIG};
 
     this.setConfig(config);
 
-    this.mouseSensor = new MouseSensor(this);
-    this.touchSensor = new TouchSensor(this);
-
-    this.offset = new Vector2();
-
-    this.previousPosition = new Vector2();
-    this.previousVelocity = new Vector2();
-
-    this.history = [];
-
-    this.listen();
+    this.sensorHub = new SensorHub(this);
   }
 
   public setConfig(config?: Partial<MonoDragConfig>): this {
@@ -68,32 +35,6 @@ export class MonoDrag {
     }
 
     return this;
-  }
-
-  public listen() {
-    if (this.isListening === false) {
-      this.mouseSensor.attach();
-      this.touchSensor.attach();
-
-      this.isListening = true;
-    }
-  }
-
-  public stopListening() {
-    if (this.isListening === true) {
-      this.mouseSensor.detach();
-      this.touchSensor.detach();
-
-      this.isListening = false;
-    }
-  }
-
-  private preventDefault(event: MouseEvent | TouchEvent) {
-    const { preventDefault } = this.config;
-
-    if (preventDefault === true) {
-      event.preventDefault();
-    }
   }
 
   private updateOffset(x: number, y: number) {

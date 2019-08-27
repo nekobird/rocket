@@ -7,14 +7,14 @@ import {
 } from '../mono-tap';
 
 import {
-  MonoTapEvent,
+  MonoTapEvent, MonoTapEventType,
 } from '../mono-tap-event';
 
 export class TouchSensor {
   public monoTap: MonoTap;
 
   public isListening: boolean = false;
-  
+
   public touchIdentifier?: number;
 
   constructor(monoTap: MonoTap) {
@@ -57,31 +57,21 @@ export class TouchSensor {
     }
   }
 
-  private onTouchStart = (event: TouchEvent) => {
-    [...event.changedTouches].forEach(touch => {
-      const tapEvent = new MonoTapEvent(this.monoTap, 'down', event, true, touch);
-
-      this.monoTap.sensorHub.dispatch(tapEvent);
-    });
-  }
+  private onTouchStart = (event: TouchEvent) => this.dispatch('down', event);
 
   private onTouchMove = (event: TouchEvent) => {
     // TODO: Do nothing for now.
   }
 
-  private onTouchEnd = (event: TouchEvent) => {
+  private onTouchEnd = (event: TouchEvent) => this.dispatch('up', event);
+  
+  private onTouchCancel = (event: TouchEvent) => this.dispatch('cancel', event);
+
+  private dispatch(type: MonoTapEventType, event: TouchEvent) {
     [...event.changedTouches].forEach(touch => {
-      const tapEvent = new MonoTapEvent(this.monoTap, 'up', event, true, touch);
+      const tapEvent = new MonoTapEvent(this.monoTap, type, event, true, touch);
 
-      this.monoTap.sensorHub.dispatch(tapEvent);
-    });
-  }
-
-  private onTouchCancel = (event: TouchEvent) => {
-    [...event.changedTouches].forEach(touch => {
-      const tapEvent = new MonoTapEvent(this.monoTap, 'cancel', event, true, touch);
-
-      this.monoTap.sensorHub.dispatch(tapEvent);
+      this.monoTap.sensorHub.receive(tapEvent);
     });
   }
 }

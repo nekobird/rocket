@@ -18,7 +18,7 @@ export class MonoDragStory {
   public previousPosition: Vector2;
   public previousVelocity: Vector2;
 
-  public history: DragEvent[];
+  public history: MonoDragEvent[];
 
   constructor(monoDrag: MonoDrag) {
     this.monoDrag = monoDrag;
@@ -33,5 +33,13 @@ export class MonoDragStory {
 
   public addDragEvent(monoDragEvent: MonoDragEvent) {
 
+  }
+
+  private updateHistory(monoDragEvent: MonoDragEvent) {
+    const { keepHistory } = this.monoDrag.config;
+
+    if (keepHistory === true) {
+      this.history.push(monoDragEvent);
+    }
   }
 }

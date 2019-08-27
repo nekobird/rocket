@@ -61,7 +61,7 @@ export class SensorHub {
     }
   }
 
-  public dispatch(tapEvent: MonoTapEvent) {
+  public receive(tapEvent: MonoTapEvent) {
     this.preventDefault(tapEvent);
 
     switch (tapEvent.type) {

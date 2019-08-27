@@ -7,7 +7,7 @@ import {
 } from '../mono-tap';
 
 import {
-  MonoTapEvent,
+  MonoTapEvent, MonoTapEventType,
 } from '../mono-tap-event';
 
 export class MouseSensor {
@@ -57,9 +57,7 @@ export class MouseSensor {
   private onMouseDown = (event: MouseEvent) => {
     this.isDown = true;
 
-    const tapEvent = new MonoTapEvent(this.monoTap, 'down', event);
-
-    this.monoTap.sensorHub.dispatch(tapEvent);
+    this.dispatch('down', event);
   }
 
   private onMouseMove = (event: MouseEvent) => {
@@ -69,8 +67,12 @@ export class MouseSensor {
   private onMouseUp = (event: MouseEvent) => {
     this.isDown = false;
 
-    const tapEvent = new MonoTapEvent(this.monoTap, 'up', event);
+    this.dispatch('up', event);
+  }
 
-    this.monoTap.sensorHub.dispatch(tapEvent);
+  private dispatch(type: MonoTapEventType, event: MouseEvent) {
+    const tapEvent = new MonoTapEvent(this.monoTap, type, event);
+
+    this.monoTap.sensorHub.receive(tapEvent);
   }
 }

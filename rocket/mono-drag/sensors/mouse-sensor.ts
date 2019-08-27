@@ -14,7 +14,9 @@ import {
 export class MouseSensor {
   private monoDrag: MonoDrag;
 
-  public isActive: boolean = false;
+  public isListening: boolean = false;
+
+  public isDown: boolean = false;
 
   constructor(monoDrag: MonoDrag) {
     this.monoDrag = monoDrag;
@@ -23,7 +25,10 @@ export class MouseSensor {
   public attach() {
     let { target } = this.monoDrag.config;
 
-    if (DOMUtil.isHTMLElement(target) === true) {
+    if (
+      this.isListening === false
+      && DOMUtil.isHTMLElement(target) === true
+    ) {
       target = target as HTMLElement;
 
       target.addEventListener('mousedown', this.onMouseDown);
@@ -34,14 +39,17 @@ export class MouseSensor {
 
       document.documentElement.addEventListener('mouseleave', this.onMouseLeave);
 
-      this.isActive = true;
+      this.isListening = true;
     }
   }
 
   public detach() {
     let { target } = this.monoDrag.config;
 
-    if (DOMUtil.isHTMLElement(target) === true) {
+    if (
+      this.isListening === true
+      && DOMUtil.isHTMLElement(target) === true
+    ) {
       target = target as HTMLElement;
 
       target.removeEventListener('mousedown', this.onMouseDown);
@@ -52,54 +60,35 @@ export class MouseSensor {
 
       document.documentElement.removeEventListener('mouseleave', this.onMouseLeave);
 
-      this.isActive = false;
+      this.isListening = false;
     }
-  }
-
-  private createMonoDragEvent(type: MonoDragEventType, originalEvent: MouseEvent): MonoDragEvent {
-    return new MonoDragEvent(this.monoDrag, type, originalEvent, false);
   }
 
   private onMouseDown = (event: MouseEvent) => {
-    const { isActive, config } = this.monoDrag;
+    this.dispatch('start', event);
 
-    const dragEvent = this.createMonoDragEvent('start', event);
-
-    if (
-      isActive === false
-      && config.condition(dragEvent, this.monoDrag) === true
-    ) {
-      this.monoDrag.dragStart(dragEvent);
-    }
+    this.isDown = true;
   }
 
   private onMouseMove = (event: MouseEvent) => {
-    const { isActive } = this.monoDrag;
-
-    if (isActive === true) {
-      const dragEvent = this.createMonoDragEvent('drag', event);
-
-      this.monoDrag.drag(dragEvent);
+    if (this.isDown === true) {
+      this.dispatch('drag', event);
     }
   }
 
   private onMouseUp = (event: MouseEvent) => {
-    const { isActive } = this.monoDrag;
+    if (this.isDown === true) {
+      this.dispatch('stop', event);
 
-    if (isActive === true) {
-      const dragEvent = this.createMonoDragEvent('stop', event);
-
-      this.monoDrag.dragStop(dragEvent);
+      this.isDown = false;
     }
   }
 
   private onMouseLeave = (event: MouseEvent) => {
-    const { isActive } = this.monoDrag;
+    if (this.isDown === true) {
+      this.dispatch('cancel', event);
 
-    if (isActive === true) {
-      const dragEvent = this.createMonoDragEvent('cancel', event);
-
-      this.monoDrag.dragCancel(dragEvent);
+      this.isDown = false;
     }
   }
 
@@ -110,5 +99,11 @@ export class MouseSensor {
       event.preventDefault();
       event.stopPropagation();
     }
+  }
+
+  private dispatch(type: MonoDragEventType, event: MouseEvent) {
+    const monoDragEvent = new MonoDragEvent(this.monoDrag, type, event);
+
+    this.monoDrag.sensorHub.receive(monoDragEvent);
   }
 }
