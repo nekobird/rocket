@@ -1,7 +1,7 @@
 export interface MonoTapConfig {
   target?: HTMLElement;
 
-
+  isValidTap: () => boolean;
 }
 
 export const MONO_TAP_DEFAULT_CONFIG = {
