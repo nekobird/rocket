@@ -1,23 +1,32 @@
-export interface MonoTapConfig {
-  target?: HTMLElement;
+import {
+  MONO_TAP_DEFAULT_CONFIG,
+  MonoTapConfig,
+} from './config';
 
-  isValidTap: () => boolean;
-}
+import {
+  SensorHub,
+} from './sensor-hub';
 
-export const MONO_TAP_DEFAULT_CONFIG = {
-
-}
+import {
+  TapStory,
+} from './tap-story';
 
 export class MonoTap {
   public config: MonoTapConfig;
 
-  constructor(config: MonoTapConfig) {
+  public sensorHub: SensorHub;
+
+  constructor(config: Partial<MonoTapConfig>) {
     this.config = {...MONO_TAP_DEFAULT_CONFIG};
 
     this.setConfig(config);
+
+    this.sensorHub = new SensorHub(this);
+
+    this.sensorHub.attach();
   }
 
-  public setConfig(config: MonoTapConfig): this {
+  public setConfig(config: Partial<MonoTapConfig>): this {
     if (typeof config === 'object') {
       Object.assign(this.config, config);
     }
@@ -25,10 +34,15 @@ export class MonoTap {
     return this;
   }
 
-  public tapStart() {
+  public get previousTapStory(): TapStory | null {
+    return this.sensorHub.previousTapStory;
   }
 
-  public tapUp() {
+  public get history(): TapStory[] {
+    return this.sensorHub.history;
+  }
 
+  public clearHistory() {
+    this.sensorHub.history = [];
   }
 }

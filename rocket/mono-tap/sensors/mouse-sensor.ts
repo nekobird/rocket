@@ -7,13 +7,15 @@ import {
   MonoTap,
 } from '../mono-tap';
 
+import {
+  TapEvent,
+} from '../tap-event';
+
 export class MouseSensor {
   public monoTap: MonoTap;
 
-  public isActive: boolean = false;
+  public isListening: boolean = false;
   public isDown: boolean = false;
-
-  public downTarget: HTMLElement;
 
   constructor(monoTap: MonoTap) {
     this.monoTap = monoTap;
@@ -23,14 +25,14 @@ export class MouseSensor {
     const { target } = this.monoTap.config;
 
     if (
-      this.isActive === false
+      this.isListening === false
       && DOMUtil.isHTMLElement(target) === true
     ) {
       target.addEventListener('mousedown', this.onMouseDown);
-      window.addEventListener('mousemove', this.onMouseMove);
+      // window.addEventListener('mousemove', this.onMouseMove);
       window.addEventListener('mouseup', this.onMouseUp);
 
-      this.isActive = true;
+      this.isListening = true;
     }
   }
 
@@ -38,36 +40,34 @@ export class MouseSensor {
     const { target } = this.monoTap.config;
 
     if (
-      this.isActive === true
+      this.isListening === true
       && DOMUtil.isHTMLElement(target) === true
     ) {
       target.removeEventListener('mousedown', this.onMouseDown);
-      window.removeEventListener('mousemove', this.onMouseMove);
+      // window.removeEventListener('mousemove', this.onMouseMove);
       window.removeEventListener('mouseup', this.onMouseUp);
 
-      this.isActive = false;
+      this.isListening = false;
     }
   }
 
   private onMouseDown = (event: MouseEvent) => {
     this.isDown = true;
+
+    const tapEvent = new TapEvent(this.monoTap, 'down', event);
+
+    this.monoTap.sensorHub.dispatch(tapEvent);
   }
 
   private onMouseMove = (event: MouseEvent) => {
-
+    // TODO: Do nothing for now.
   }
 
   private onMouseUp = (event: MouseEvent) => {
-    const { target } = this.monoTap.config;
-
     this.isDown = false;
 
+    const tapEvent = new TapEvent(this.monoTap, 'up', event);
 
-    if (
-      DOMUtil.isHTMLElement(event.target) === true
-      && DOMTraverse.hasAncestor(event.target as HTMLElement, target) === true
-    ) {
-      this.monoTap.tapComplete();
-    }    
+    this.monoTap.sensorHub.dispatch(tapEvent);
   }
 }

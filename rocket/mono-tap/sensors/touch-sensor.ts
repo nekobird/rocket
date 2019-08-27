@@ -6,10 +6,14 @@ import {
   MonoTap,
 } from '../mono-tap';
 
+import {
+  TapEvent,
+} from '../tap-event';
+
 export class TouchSensor {
   public monoTap: MonoTap;
 
-  public isActive: boolean = false;
+  public isListening: boolean = false;
   
   public touchIdentifier: number;
 
@@ -21,15 +25,15 @@ export class TouchSensor {
     const { target } = this.monoTap.config;
 
     if (
-      this.isActive === false
+      this.isListening === false
       && DOMUtil.isHTMLElement(target) === true
     ) {
       target.addEventListener('touchstart', this.onTouchStart);
-      window.addEventListener('touchmove', this.onTouchMove);
+      // window.addEventListener('touchmove', this.onTouchMove);
       window.addEventListener('touchend', this.onTouchEnd);
       window.addEventListener('touchcancel', this.onTouchCancel);
 
-      this.isActive = true;
+      this.isListening = true;
     }
   }
 
@@ -37,26 +41,43 @@ export class TouchSensor {
     const { target } = this.monoTap.config;
 
     if (
-      this.isActive === true
+      this.isListening === true
       && DOMUtil.isHTMLElement(target) === true
     ) {
-      target.removeEventListener('mousedown', this.onMouseDown);
-      window.removeEventListener('mousemove', this.onMouseMove);
-      window.removeEventListener('mouseup', this.onMouseUp);
+      target.removeEventListener('touchstart', this.onTouchStart);
+      // window.removeEventListener('touchmove', this.onTouchMove);
+      window.removeEventListener('touchend', this.onTouchEnd);
+      window.removeEventListener('touchcancel', this.onTouchCancel);
 
-      this.isActive = false;
+      this.isListening = false;
     }
   }
 
-  private onMouseDown = (event: MouseEvent) => {
-    this.isDown = true;
+  private onTouchStart = (event: TouchEvent) => {
+    [...event.changedTouches].forEach(touch => {
+      const tapEvent = new TapEvent(this.monoTap, 'down', event, true, touch);
+
+      this.monoTap.sensorHub.dispatch(tapEvent);
+    });
   }
 
-  private onMouseMove = (event: MouseEvent) => {
-
+  private onTouchMove = (event: TouchEvent) => {
+    // TODO: Do nothing for now.
   }
 
-  private onMouseUp = (event: MouseEvent) => {
-    this.isDown = false;
+  private onTouchEnd = (event: TouchEvent) => {
+    [...event.changedTouches].forEach(touch => {
+      const tapEvent = new TapEvent(this.monoTap, 'up', event, true, touch);
+
+      this.monoTap.sensorHub.dispatch(tapEvent);
+    });
+  }
+
+  private onTouchCancel = (event: TouchEvent) => {
+    [...event.changedTouches].forEach(touch => {
+      const tapEvent = new TapEvent(this.monoTap, 'cancel', event, true, touch);
+
+      this.monoTap.sensorHub.dispatch(tapEvent);
+    });
   }
 }
