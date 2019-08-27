@@ -198,6 +198,14 @@ export class Viewport {
     );
   }
 
+  public static getCurrentHorizontalScrollPercentage(): number {
+    return (DOMScroll.scrollLeft / this.documentWidth) * 100;
+  }
+
+  public static getCurrentVerticalScrollPercentage(): number {
+    return (DOMScroll.scrollTop / this.documentHeight) * 100;
+  }
+
   // @mobile
 
   // @model
