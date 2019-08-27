@@ -14,7 +14,7 @@ import {
 export class TouchSensor {
   private monoDrag: MonoDrag;
 
-  public isActive: boolean = false;
+  public isListening: boolean = false;
 
   constructor(monoDrag: MonoDrag) {
     this.monoDrag = monoDrag;
@@ -31,7 +31,7 @@ export class TouchSensor {
       window.addEventListener('touchend', this.onTouchEnd);
       window.addEventListener('touchcancel', this.onTouchCancel);
 
-      this.isActive = true;
+      this.isListening = true;
     }
   }
 
@@ -46,7 +46,7 @@ export class TouchSensor {
       window.removeEventListener('touchend', this.onTouchEnd);
       window.removeEventListener('touchcancel', this.onTouchCancel);
 
-      this.isActive = false;
+      this.isListening = false;
     }
   }
 
@@ -55,12 +55,12 @@ export class TouchSensor {
   }
 
   private onTouchStart = (event: TouchEvent) => {
-    const { isActive, config } = this.monoDrag;
+    const { isListening, config } = this.monoDrag;
 
     const dragEvent = this.createDragEvent('start', event, event.changedTouches[0]);
 
     if (
-      isActive === false
+      isListening === false
       && config.condition(dragEvent, this.monoDrag) === true
     ) {
       this.monoDrag.dragStart(dragEvent);
@@ -68,9 +68,9 @@ export class TouchSensor {
   }
 
   private onTouchMove = (event: TouchEvent) => {
-    const { isActive } = this.monoDrag;
+    const { isListening } = this.monoDrag;
 
-    if (isActive === true) {
+    if (isListening === true) {
       const touch = [...event.changedTouches].find(touch => {
         return touch.identifier === this.monoDrag.touchIdentifier;
       });
@@ -84,9 +84,9 @@ export class TouchSensor {
   }
 
   private onTouchEnd = (event: TouchEvent) => {
-    const { isActive } = this.monoDrag;
+    const { isListening } = this.monoDrag;
 
-    if (isActive === true) {
+    if (isListening === true) {
       const touch = [...event.changedTouches].find(touch => {
         return touch.identifier === this.monoDrag.touchIdentifier;
       });
@@ -100,9 +100,9 @@ export class TouchSensor {
   }
 
   private onTouchCancel = (event: TouchEvent) => {
-    const { isActive } = this.monoDrag;
+    const { isListening } = this.monoDrag;
 
-    if (isActive === true) {
+    if (isListening === true) {
       const touch = [...event.changedTouches].find(touch => {
         return touch.identifier === this.monoDrag.touchIdentifier;
       });

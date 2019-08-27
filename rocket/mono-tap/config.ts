@@ -18,6 +18,8 @@ export interface MonoTapConfig {
 
   preventDefault: boolean;
 
+  condition: (event: TapEvent, monoTap: MonoTap) => boolean;
+
   isValidTap: (
     event: TapEvent,
     story: TapStory,
@@ -50,12 +52,14 @@ export interface MonoTapConfig {
 }
 
 export const MONO_TAP_DEFAULT_CONFIG = {
-  isValidTap: () => true,
-  onTap: () => {},
-
   keepHistory: false,
 
   preventDefault: false,
+
+  condition: () => true,
+
+  isValidTap: () => true,
+  onTap: () => {},
 
   onDown: () => {},
   onUp: () => {},

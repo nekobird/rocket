@@ -66,11 +66,13 @@ export class SensorHub {
 
     switch (tapEvent.type) {
       case 'down': {
-        const story = new TapStory(this.monoTap, tapEvent);
+        if (this.monoTap.config.condition(tapEvent, this.monoTap) === true) {
+          const story = new TapStory(this.monoTap, tapEvent);
 
-        this.addTapStory(story);
+          this.addTapStory(story);
 
-        this.monoTap.config.onDown(tapEvent, story, this.monoTap);
+          this.monoTap.config.onDown(tapEvent, story, this.monoTap);
+        }
 
         break;
       }

@@ -14,7 +14,7 @@ import {
 export class MouseSensor {
   private monoDrag: MonoDrag;
 
-  public isActive: boolean = false;
+  public isListening: boolean = false;
 
   constructor(monoDrag: MonoDrag) {
     this.monoDrag = monoDrag;
@@ -34,7 +34,7 @@ export class MouseSensor {
 
       document.documentElement.addEventListener('mouseleave', this.onMouseLeave);
 
-      this.isActive = true;
+      this.isListening = true;
     }
   }
 
@@ -52,7 +52,7 @@ export class MouseSensor {
 
       document.documentElement.removeEventListener('mouseleave', this.onMouseLeave);
 
-      this.isActive = false;
+      this.isListening = false;
     }
   }
 
@@ -61,12 +61,12 @@ export class MouseSensor {
   }
 
   private onMouseDown = (event: MouseEvent) => {
-    const { isActive, config } = this.monoDrag;
+    const { isListening, config } = this.monoDrag;
 
     const dragEvent = this.createDragEvent('start', event);
 
     if (
-      isActive === false
+      isListening === false
       && config.condition(dragEvent, this.monoDrag) === true
     ) {
       this.monoDrag.dragStart(dragEvent);
@@ -74,9 +74,9 @@ export class MouseSensor {
   }
 
   private onMouseMove = (event: MouseEvent) => {
-    const { isActive } = this.monoDrag;
+    const { isListening } = this.monoDrag;
 
-    if (isActive === true) {
+    if (isListening === true) {
       const dragEvent = this.createDragEvent('drag', event);
 
       this.monoDrag.drag(dragEvent);
@@ -84,9 +84,9 @@ export class MouseSensor {
   }
 
   private onMouseUp = (event: MouseEvent) => {
-    const { isActive } = this.monoDrag;
+    const { isListening } = this.monoDrag;
 
-    if (isActive === true) {
+    if (isListening === true) {
       const dragEvent = this.createDragEvent('stop', event);
 
       this.monoDrag.dragStop(dragEvent);
@@ -94,9 +94,9 @@ export class MouseSensor {
   }
 
   private onMouseLeave = (event: MouseEvent) => {
-    const { isActive } = this.monoDrag;
+    const { isListening } = this.monoDrag;
 
-    if (isActive === true) {
+    if (isListening === true) {
       const dragEvent = this.createDragEvent('cancel', event);
 
       this.monoDrag.dragCancel(dragEvent);
