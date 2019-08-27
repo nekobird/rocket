@@ -70,7 +70,9 @@ export class MonoTap {
     return this.sensorHub.history;
   }
 
-  public clearHistory() {
+  public clearHistory(): this {
     this.sensorHub.history = [];
+
+    return this;
   }
 }

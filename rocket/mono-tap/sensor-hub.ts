@@ -61,15 +61,14 @@ export class SensorHub {
     }
   }
 
+  // Receive MonoTapEvent from sensors.
   public receive(tapEvent: MonoTapEvent) {
-    this.preventDefault(tapEvent);
-
     switch (tapEvent.type) {
       case 'down': {
         if (this.monoTap.config.condition(tapEvent, this.monoTap) === true) {
           const story = new MonoTapStory(this.monoTap, tapEvent);
 
-          this.addMonoTapStory(story);
+          this.addActiveMonoTapStory(story);
 
           this.monoTap.config.onDown(tapEvent, story, this.monoTap);
         }
@@ -78,7 +77,7 @@ export class SensorHub {
       }
 
       case 'up': {
-        const story = this.getMonoTapStoryFromMonoTapEvent(tapEvent);
+        const story = this.getActiveMonoTapStoryFromMonoTapEvent(tapEvent);
 
         if (story !== null) {
           story.addMonoTapEvent(tapEvent);
@@ -99,31 +98,25 @@ export class SensorHub {
             onTap(tapEvent, story, this.monoTap);
           }
   
-          this.removeMonoTapStory(story);  
+          this.removeActiveMonoTapStory(story);  
         }
 
         break;
       }
 
       case 'cancel': {
-        const story = this.getMonoTapStoryFromMonoTapEvent(tapEvent);
+        const story = this.getActiveMonoTapStoryFromMonoTapEvent(tapEvent);
 
         if (story !== null) {
           story.addMonoTapEvent(tapEvent);
 
           this.monoTap.config.onCancel(tapEvent, story, this.monoTap);
 
-          this.removeMonoTapStory(story);
+          this.removeActiveMonoTapStory(story);
         }
 
         break;
       }
-    }
-  }
-
-  private preventDefault(tapEvent: MonoTapEvent) {
-    if (this.monoTap.config.preventDefault === true) {
-      tapEvent.originalEvent.preventDefault();
     }
   }
 
@@ -133,7 +126,7 @@ export class SensorHub {
     }
   }
 
-  private addMonoTapStory(tapStory: MonoTapStory): boolean {
+  private addActiveMonoTapStory(tapStory: MonoTapStory): boolean {
     if (this.activeStories.indexOf(tapStory) === -1) {
       this.activeStories.push(tapStory);
 
@@ -143,7 +136,7 @@ export class SensorHub {
     return false;
   }
 
-  private getMonoTapStoryFromMonoTapEvent(tapEvent: MonoTapEvent): MonoTapStory | null {
+  private getActiveMonoTapStoryFromMonoTapEvent(tapEvent: MonoTapEvent): MonoTapStory | null {
     const tapStory = this.activeStories.find(tapStory => {
       return tapStory.identifier === tapEvent.identifier
     });
@@ -155,7 +148,7 @@ export class SensorHub {
     return null;
   }
 
-  private removeMonoTapStory(tapStory: MonoTapStory): boolean {
+  private removeActiveMonoTapStory(tapStory: MonoTapStory): boolean {
     const index = this.activeStories.indexOf(tapStory);
 
     if (index !== -1) {

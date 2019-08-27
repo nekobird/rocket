@@ -18,7 +18,7 @@ export class MonoTapEvent {
 
   public isTouch: boolean;
 
-  public identifier?: MonoTapEventIdentifier;
+  public identifier: MonoTapEventIdentifier;
 
   public originalEvent: MouseEvent | TouchEvent;
   public originalTouch?: Touch;
@@ -74,6 +74,7 @@ export class MonoTapEvent {
     this.position = new Vector2(clientX, clientY);
 
     this.updateOffset();
+    this.preventDefault();
   }
 
   private updateOffset() {
@@ -92,6 +93,12 @@ export class MonoTapEvent {
         this.position.x - left,
         this.position.y - top,
       );
+    }
+  }
+
+  public preventDefault() {
+    if (this.monoTap.config.preventDefault === true) {
+      this.originalEvent.preventDefault();
     }
   }
 }

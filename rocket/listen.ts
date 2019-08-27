@@ -1,8 +1,28 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
 
 export class Listen {
-  constructor() {
+  public config?;
 
+  private target: HTMLElement | Window;
+
+  private events: string[];
+  private handler?: EventListener;
+
+  constructor(target: HTMLElement | Window) {
+    this.target = target;
+
+    this.events = [];
+  }
+
+  public on(
+    eventString: string,
+    handlers: EventListener[] | EventListener
+  ) {
+
+  }
+
+  public off() {
+    
   }
 
   public static once(

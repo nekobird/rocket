@@ -6,24 +6,24 @@ import {
   MonoDrag
 } from './mono-drag';
 
+export type MonoDragEventIdentifier = 'mouse' | number;
+
 export type MonoDragEventType = 'start' | 'drag' | 'stop' | 'cancel';
 
 export class MonoDragEvent {
   public monoDrag: MonoDrag;
 
+  public identifier: MonoDragEventIdentifier;
+
   public type: MonoDragEventType;
 
   public isTouch: boolean;
-
-  public touchIdentifier?: number;
 
   public originalEvent: MouseEvent | TouchEvent;
   public originalTouch?: Touch;
 
   public targetFromEvent: EventTarget | null;
   public target: HTMLElement | null;
-
-  public offset: Vector2;
 
   public position: Vector2;
   public velocity: Vector2;
@@ -54,11 +54,13 @@ export class MonoDragEvent {
       isTouch === true
       && typeof touch !== 'undefined'
     ) {
-      this.touchIdentifier = touch.identifier;
+      this.identifier = touch.identifier;
 
       clientX = touch.clientX;
       clientY = touch.clientY;
     } else {
+      this.identifier = 'mouse';
+
       const event = originalEvent as MouseEvent;
 
       clientX = event.clientX;
@@ -84,6 +86,8 @@ export class MonoDragEvent {
     this.offset = Vector2.clone(this.monoDrag.offset);
 
     this.time = Date.now();
+
+    this.preventDefault();
   }
 
   public updateOffset() {
