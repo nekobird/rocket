@@ -12,9 +12,7 @@ export class MonoTapStory {
 
   public identifier?: MonoTapEventIdentifier;
 
-  // TODO: Clean this mess.
   public isActive: boolean = false;
-  public wasActive: boolean = false;
   public isCancelled: boolean = false;
   public hasEnded: boolean = false;
 
@@ -47,9 +45,8 @@ export class MonoTapStory {
     switch (tapEvent.type) {
       case 'down': {
         if (
-          this.hasEnded === false
-          && this.wasActive === false
-          && this.isActive === false
+          this.isActive === false
+          && this.hasEnded === false
         ) {
           this.identifier = tapEvent.identifier;
 
@@ -58,7 +55,6 @@ export class MonoTapStory {
           this.startTime = tapEvent.time;
 
           this.isActive = true;
-          this.wasActive = true;
         }
       }
 
@@ -85,9 +81,9 @@ export class MonoTapStory {
 
           this.endTime = tapEvent.time;
 
-          this.isCancelled = true;
           this.isActive = false;
           this.hasEnded = true;
+          this.isCancelled = true;
         }
       }
     }

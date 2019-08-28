@@ -4,8 +4,8 @@ import {
 } from './config';
 
 import {
-  DragStory,
-} from './drag-story';
+  PolyDragStory,
+} from './poly-drag-story';
 
 import {
   SensorHub,

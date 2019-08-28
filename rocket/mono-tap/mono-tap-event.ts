@@ -16,9 +16,9 @@ export class MonoTapEvent {
 
   public type: MonoTapEventType;
 
-  public isTouch: boolean;
-
   public identifier: MonoTapEventIdentifier;
+
+  public isTouch: boolean;
 
   public originalEvent: MouseEvent | TouchEvent;
   public originalTouch?: Touch;

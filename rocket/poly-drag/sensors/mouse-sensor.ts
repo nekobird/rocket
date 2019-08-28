@@ -8,9 +8,9 @@ import {
 } from '../poly-drag';
 
 import {
-  DragEvent,
-  DragEventType,
-} from '../drag-event';
+  PolyDragEvent,
+  PolyDragEventType,
+} from '../poly-drag-event';
 
 import {
   SensorHub
@@ -61,7 +61,7 @@ export class MouseSensor {
   }
 
   private onMouseDown = (event: MouseEvent) => {
-    const dragEvent = new DragEvent(this.sensorHub.polyDrag);
+    const dragEvent = new PolyDragEvent(this.sensorHub.polyDrag);
 
     dragEvent.setFromMouseEvent('start', event);
 
@@ -72,7 +72,7 @@ export class MouseSensor {
 
   private onMouseMove = (event: MouseEvent) => {
     if (this.isDown === true) {
-      const dragEvent = new DragEvent(this.sensorHub.polyDrag);
+      const dragEvent = new PolyDragEvent(this.sensorHub.polyDrag);
 
       dragEvent.setFromMouseEvent('drag', event);
 
@@ -82,7 +82,7 @@ export class MouseSensor {
 
   private onMouseUp = (event: MouseEvent) => {
     if (this.isDown === true) {
-      const dragEvent = new DragEvent(this.sensorHub.polyDrag);
+      const dragEvent = new PolyDragEvent(this.sensorHub.polyDrag);
 
       dragEvent.setFromMouseEvent('stop', event);
 
@@ -94,7 +94,7 @@ export class MouseSensor {
 
   private onMouseLeave = (event: MouseEvent) => {
     if (this.isDown === true) {
-      const dragEvent = new DragEvent(this.sensorHub.polyDrag);
+      const dragEvent = new PolyDragEvent(this.sensorHub.polyDrag);
 
       dragEvent.setFromMouseEvent('cancel', event);
 

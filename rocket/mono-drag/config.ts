@@ -18,6 +18,7 @@ export interface MonoDragConfig {
   keepHistory: boolean;
 
   preventDefault: boolean;
+
   disableContextMenu: boolean;
 
   condition: (
@@ -63,6 +64,7 @@ export const MONO_DRAG_DEFAULT_CONFIG: MonoDragConfig = {
   keepHistory: false,
 
   preventDefault: true,
+
   disableContextMenu: false,
 
   condition: () => true,

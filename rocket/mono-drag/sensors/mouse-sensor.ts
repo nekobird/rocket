@@ -97,6 +97,7 @@ export class MouseSensor {
 
     if (disableContextMenu === true) {
       event.preventDefault();
+
       event.stopPropagation();
     }
   }

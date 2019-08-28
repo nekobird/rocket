@@ -4,34 +4,34 @@ import {
 } from '../rocket';
 
 import {
-  DragEvent,
-  DragEventType,
-  DragEventIdentifier,
-} from './drag-event';
+  PolyDragEvent,
+  PolyDragEventType,
+  PolyDragEventIdentifier,
+} from './poly-drag-event';
 
 import {
   PolyDrag,
 } from './poly-drag';
 
-export class DragStory {
+export class PolyDragStory {
   public polyDrag: PolyDrag;
 
-  public identifier?: DragEventIdentifier;
+  public identifier?: PolyDragEventIdentifier;
 
   public isActive: boolean = false;
   public wasActive: boolean = false;
 
-  public dragEvents?: DragEvent[];
-  public activeDragEvent?: DragEvent;
+  public dragEvents?: PolyDragEvent[];
+  public activePolyDragEvent?: PolyDragEvent;
 
   public previousPosition: Vector2;
   public previousVelocity: Vector2;
 
-  public startingDragEvent?: DragEvent;
-  public previousDragEvent?: DragEvent;
-  public finalDragEvent?: DragEvent;
+  public startingPolyDragEvent?: PolyDragEvent;
+  public previousPolyDragEvent?: PolyDragEvent;
+  public finalPolyDragEvent?: PolyDragEvent;
 
-  public history: DragEvent[];
+  public history: PolyDragEvent[];
 
   public offset: Vector2;
 
@@ -46,7 +46,7 @@ export class DragStory {
     this.offset = new Vector2();
   }
 
-  private updateVectors(dragEvent: DragEvent) {
+  private updateVectors(dragEvent: PolyDragEvent) {
     let event: MouseEvent | Touch;
 
     if (
@@ -90,15 +90,15 @@ export class DragStory {
     }
   }
 
-  private addToHistory(dragEvent: DragEvent) {
+  private addToHistory(dragEvent: PolyDragEvent) {
     const { config } = this.polyDrag;
 
-    if (config.keepDragEventHistory === true) {
+    if (config.keepPolyDragEventHistory === true) {
       this.history.push(dragEvent);
     }
   }
 
-  public start(dragEvent: DragEvent) {
+  public start(dragEvent: PolyDragEvent) {
     if (
       this.isActive === false
       && this.wasActive === false
@@ -109,8 +109,8 @@ export class DragStory {
 
       this.identifier = dragEvent.identifier;
 
-      this.startingDragEvent = dragEvent;
-      this.previousDragEvent = dragEvent;
+      this.startingPolyDragEvent = dragEvent;
+      this.previousPolyDragEvent = dragEvent;
 
       this.setOffset(dragEvent.position);
 
@@ -120,14 +120,14 @@ export class DragStory {
     }
   }
 
-  public drag(dragEvent: DragEvent) {
+  public drag(dragEvent: PolyDragEvent) {
     if (
       this.wasActive === true
       && this.isActive === true
       && dragEvent.type === 'drag'
       && dragEvent.identifier === this.identifier
     ) {
-      this.previousDragEvent = dragEvent;
+      this.previousPolyDragEvent = dragEvent;
 
       this.updateVectors(dragEvent);
 
@@ -135,7 +135,7 @@ export class DragStory {
     }
   }
 
-  public stop(dragEvent: DragEvent) {
+  public stop(dragEvent: PolyDragEvent) {
     if (
       this.wasActive === true
       && this.isActive === true
@@ -145,8 +145,8 @@ export class DragStory {
         || dragEvent.type === 'cancel'
       )
     ) {
-      this.previousDragEvent = dragEvent;
-      this.finalDragEvent = dragEvent;
+      this.previousPolyDragEvent = dragEvent;
+      this.finalPolyDragEvent = dragEvent;
 
       this.updateVectors(dragEvent);
 

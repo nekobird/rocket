@@ -6,14 +6,14 @@ import {
   PolyDrag,
 } from './poly-drag';
 
-export type DragEventIdentifier = number | 'mouse';
+export type PolyDragEventIdentifier = number | 'mouse';
 
-export type DragEventType = 'start' | 'drag' | 'stop' | 'cancel';
+export type PolyDragEventType = 'start' | 'drag' | 'stop' | 'cancel';
 
-export class DragEvent {
+export class PolyDragEvent {
   public polyDrag: PolyDrag;
 
-  public type?: DragEventType;
+  public type?: PolyDragEventType;
 
   public isTouch: boolean = false;
 
@@ -30,7 +30,7 @@ export class DragEvent {
   public targetFromEvent?: EventTarget | null;
   public target?: HTMLElement | null;
 
-  public identifier?: DragEventIdentifier;
+  public identifier?: PolyDragEventIdentifier;
 
   constructor(polyDrag: PolyDrag) {
     this.polyDrag = polyDrag;
@@ -40,7 +40,7 @@ export class DragEvent {
     this.acceleration = new Vector2();
   }
 
-  public setFromMouseEvent(type: DragEventType, event: MouseEvent) {
+  public setFromMouseEvent(type: PolyDragEventType, event: MouseEvent) {
     this.type = type;
 
     this.isTouch = false;
@@ -58,7 +58,7 @@ export class DragEvent {
     this.identifier = 'mouse';
   }
 
-  public setFromTouchEvent(type: DragEventType, event: TouchEvent, touch: Touch) {
+  public setFromTouchEvent(type: PolyDragEventType, event: TouchEvent, touch: Touch) {
     this.type = type;
 
     this.isTouch = true;

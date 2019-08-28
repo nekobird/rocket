@@ -73,25 +73,9 @@ export class MonoDragEvent {
     this.velocity = new Vector2();
     this.acceleration = new Vector2();
 
-    if (type !== 'start') {
-      const { previousPosition, previousVelocity } = this.monoDrag;
-
-      this.velocity.equals(Vector2.subtract(this.position, previousPosition));
-      this.acceleration.equals(Vector2.subtract(this.velocity, previousVelocity));
-    }
-
-    this.monoDrag.previousPosition.equals(this.position);
-    this.monoDrag.previousVelocity.equals(this.velocity);
-
-    this.offset = Vector2.clone(this.monoDrag.offset);
-
     this.time = Date.now();
 
     this.preventDefault();
-  }
-
-  public updateOffset() {
-    this.offset = Vector2.clone(this.monoDrag.offset);
   }
 
   private preventDefault() {

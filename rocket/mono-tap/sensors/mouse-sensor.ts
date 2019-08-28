@@ -7,13 +7,15 @@ import {
 } from '../mono-tap';
 
 import {
-  MonoTapEvent, MonoTapEventType,
+  MonoTapEvent,
+  MonoTapEventType,
 } from '../mono-tap-event';
 
 export class MouseSensor {
   public monoTap: MonoTap;
 
   public isListening: boolean = false;
+
   public isDown: boolean = false;
 
   constructor(monoTap: MonoTap) {
@@ -30,7 +32,7 @@ export class MouseSensor {
       const targetElement = target as HTMLElement;
 
       targetElement.addEventListener('mousedown', this.onMouseDown);
-      // window.addEventListener('mousemove', this.onMouseMove);
+
       window.addEventListener('mouseup', this.onMouseUp);
 
       this.isListening = true;
@@ -47,7 +49,7 @@ export class MouseSensor {
       const targetElement = target as HTMLElement;
 
       targetElement.removeEventListener('mousedown', this.onMouseDown);
-      // window.removeEventListener('mousemove', this.onMouseMove);
+
       window.removeEventListener('mouseup', this.onMouseUp);
 
       this.isListening = false;
@@ -58,10 +60,6 @@ export class MouseSensor {
     this.isDown = true;
 
     this.dispatch('down', event);
-  }
-
-  private onMouseMove = (event: MouseEvent) => {
-    // TODO: Do nothing for now.
   }
 
   private onMouseUp = (event: MouseEvent) => {

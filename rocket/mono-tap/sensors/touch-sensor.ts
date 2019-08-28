@@ -7,7 +7,8 @@ import {
 } from '../mono-tap';
 
 import {
-  MonoTapEvent, MonoTapEventType,
+  MonoTapEvent,
+  MonoTapEventType,
 } from '../mono-tap-event';
 
 export class TouchSensor {
@@ -31,7 +32,7 @@ export class TouchSensor {
       const targetElement = target as HTMLElement;
 
       targetElement.addEventListener('touchstart', this.onTouchStart);
-      // window.addEventListener('touchmove', this.onTouchMove);
+
       window.addEventListener('touchend', this.onTouchEnd);
       window.addEventListener('touchcancel', this.onTouchCancel);
 
@@ -49,7 +50,7 @@ export class TouchSensor {
       const targetElement = target as HTMLElement;
 
       targetElement.removeEventListener('touchstart', this.onTouchStart);
-      // window.removeEventListener('touchmove', this.onTouchMove);
+
       window.removeEventListener('touchend', this.onTouchEnd);
       window.removeEventListener('touchcancel', this.onTouchCancel);
 
@@ -57,15 +58,17 @@ export class TouchSensor {
     }
   }
 
-  private onTouchStart = (event: TouchEvent) => this.dispatch('down', event);
-
-  private onTouchMove = (event: TouchEvent) => {
-    // TODO: Do nothing for now.
+  private onTouchStart = (event: TouchEvent) => {
+    this.dispatch('down', event);
   }
 
-  private onTouchEnd = (event: TouchEvent) => this.dispatch('up', event);
+  private onTouchEnd = (event: TouchEvent) => {
+    this.dispatch('up', event);
+  }
   
-  private onTouchCancel = (event: TouchEvent) => this.dispatch('cancel', event);
+  private onTouchCancel = (event: TouchEvent) => {
+    this.dispatch('cancel', event);
+  }
 
   private dispatch(type: MonoTapEventType, event: TouchEvent) {
     [...event.changedTouches].forEach(touch => {

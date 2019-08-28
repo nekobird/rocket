@@ -22,8 +22,9 @@ export class MonoDragStory {
   public history: MonoDragEvent[];
 
   public startingMonoDragEvent: MonoDragEvent | null = null;
-  public endingMonoDragEvent: MonoDragEvent | null = null;
   public previousMonoDragEvent: MonoDragEvent | null = null;
+  public currentMonoDragEvent: MonoDragEvent | null = null;
+  public endingMonoDragEvent: MonoDragEvent | null = null;
 
   constructor(monoDrag: MonoDrag) {
     this.monoDrag = monoDrag;
@@ -37,13 +38,60 @@ export class MonoDragStory {
   }
 
   public addDragEvent(monoDragEvent: MonoDragEvent) {
-    this.addEventToHistory(monoDragEvent);
+    this.addMonoDragEventToHistory(monoDragEvent);
 
-    if (monoDragEvent.type === 'start') {
-      this.startingMonoDragEvent = monoDragEvent;
+    switch (monoDragEvent.type) {
+      case 'start': {
+        this.startingMonoDragEvent = monoDragEvent;
+        this.currentMonoDragEvent = monoDragEvent;
+        this.previousMonoDragEvent = monoDragEvent;
 
-      this.updateOffset(monoDragEvent.position);
+        this.updateOffset(monoDragEvent.position);
+      }
+
+      case 'drag': {
+        this.updateDragEventVectors(monoDragEvent);
+
+        this.previousMonoDragEvent = this.currentMonoDragEvent;
+        this.currentMonoDragEvent = monoDragEvent;       
+      }
+
+      case 'stop': {
+        this.updateDragEventVectors(monoDragEvent);
+
+        this.previousMonoDragEvent = this.currentMonoDragEvent;
+        this.currentMonoDragEvent = monoDragEvent;
+        this.endingMonoDragEvent = monoDragEvent;
+      }
+
+      case 'cancel': {
+        this.updateDragEventVectors(monoDragEvent);
+
+        this.previousMonoDragEvent = this.currentMonoDragEvent;
+        this.currentMonoDragEvent = monoDragEvent;
+        this.endingMonoDragEvent = monoDragEvent;
+      }
     }
+  }
+
+  private updateDragEventVectors(monoDragEvent: MonoDragEvent) {
+    if (monoDragEvent.type !== 'start') {
+      const velocity = Vector2.subtract(
+        monoDragEvent.position,
+        this.previousPosition,
+      );
+
+      const acceleration = Vector2.subtract(
+        monoDragEvent.velocity,
+        this.previousVelocity,
+      );
+
+      monoDragEvent.velocity.equals(velocity);
+      monoDragEvent.acceleration.equals(acceleration);
+    }
+
+    this.previousPosition.equals(monoDragEvent.position);
+    this.previousVelocity.equals(monoDragEvent.velocity);
   }
 
   private updateOffset(position: Vector2): boolean {
@@ -69,7 +117,7 @@ export class MonoDragStory {
     return false;
   }
 
-  private addEventToHistory(monoDragEvent: MonoDragEvent) {
+  private addMonoDragEventToHistory(monoDragEvent: MonoDragEvent) {
     const { keepHistory } = this.monoDrag.config;
 
     if (keepHistory === true) {
