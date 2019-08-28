@@ -18,6 +18,8 @@ export class MouseSensor {
 
   public mouseButtonIsDown: boolean = false;
 
+  private target?: HTMLElement;
+
   constructor(monoDrag: MonoDrag) {
     this.monoDrag = monoDrag;
   }
@@ -29,10 +31,10 @@ export class MouseSensor {
       this.isListening === false
       && DOMUtil.isHTMLElement(target) === true
     ) {
-      target = target as HTMLElement;
+      this.target = target as HTMLElement;
 
-      target.addEventListener('mousedown', this.onMouseDown);
-      target.addEventListener('contextmenu', this.onContextMenu);
+      this.target.addEventListener('mousedown', this.onMouseDown);
+      this.target.addEventListener('contextmenu', this.onContextMenu);
 
       window.addEventListener('mousemove', this.onMouseMove);
       window.addEventListener('mouseup', this.onMouseUp);
@@ -44,13 +46,11 @@ export class MouseSensor {
   }
 
   public detach() {
-    let { target } = this.monoDrag.config;
-
     if (
       this.isListening === true
-      && DOMUtil.isHTMLElement(target) === true
+      && DOMUtil.isHTMLElement(this.target) === true
     ) {
-      target = target as HTMLElement;
+      const target = this.target as HTMLElement;
 
       target.removeEventListener('mousedown', this.onMouseDown);
       target.removeEventListener('contextmenu', this.onContextMenu);
@@ -65,9 +65,11 @@ export class MouseSensor {
   }
 
   private onMouseDown = (event: MouseEvent) => {
-    this.dispatch('start', event);
+    if (this.mouseButtonIsDown === false) {
+      this.dispatch('start', event);
 
-    this.mouseButtonIsDown = true;
+      this.mouseButtonIsDown = true;
+    }
   }
 
   private onMouseMove = (event: MouseEvent) => {
@@ -77,19 +79,18 @@ export class MouseSensor {
   }
 
   private onMouseUp = (event: MouseEvent) => {
-    console.log('mouseUp');
     if (this.mouseButtonIsDown === true) {
-      this.dispatch('stop', event);
-
       this.mouseButtonIsDown = false;
+
+      this.dispatch('stop', event);
     }
   }
 
   private onMouseLeave = (event: MouseEvent) => {
     if (this.mouseButtonIsDown === true) {
-      this.dispatch('cancel', event);
-
       this.mouseButtonIsDown = false;
+
+      this.dispatch('cancel', event);      
     }
   }
 

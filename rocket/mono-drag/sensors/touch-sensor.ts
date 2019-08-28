@@ -16,6 +16,8 @@ export class TouchSensor {
 
   public isListening: boolean = false;
 
+  public target?: HTMLElement;
+
   constructor(monoDrag: MonoDrag) {
     this.monoDrag = monoDrag;
   }
@@ -27,9 +29,9 @@ export class TouchSensor {
       this.isListening === false
       && DOMUtil.isHTMLElement(target) === true
     ) {
-      target = target as HTMLElement;
+      this.target = target as HTMLElement;
 
-      target.addEventListener('touchstart', this.onTouchStart);
+      this.target.addEventListener('touchstart', this.onTouchStart);
 
       window.addEventListener('touchmove', this.onTouchMove);
       window.addEventListener('touchend', this.onTouchEnd);
@@ -40,13 +42,11 @@ export class TouchSensor {
   }
 
   public detach() {
-    let { target } = this.monoDrag.config;
-
     if (
       this.isListening === true
-      && DOMUtil.isHTMLElement(target) === true
+      && DOMUtil.isHTMLElement(this.target) === true
     ) {
-      target = target as HTMLElement;
+      const target = this.target as HTMLElement;
 
       target.removeEventListener('touchstart', this.onTouchStart);
 

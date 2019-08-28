@@ -16,6 +16,8 @@ export class TouchSensor {
 
   public isListening: boolean = false;
 
+  public target?: HTMLElement;
+
   constructor(polyDrag: PolyDrag) {
     this.polyDrag = polyDrag;
   }
@@ -23,10 +25,13 @@ export class TouchSensor {
   public attach() {
     const { target } = this.polyDrag.config;
 
-    if (DOMUtil.isHTMLElement(target) === true) {
-      const targetElement = target as HTMLElement;
+    if (
+      this.isListening === false
+      && DOMUtil.isHTMLElement(target) === true
+    ) {
+      this.target = target as HTMLElement;
 
-      targetElement.addEventListener('touchstart', this.onTouchStart);
+      this.target.addEventListener('touchstart', this.onTouchStart);
 
       window.addEventListener('touchmove', this.onTouchMove);
       window.addEventListener('touchend', this.onTouchEnd);
@@ -37,12 +42,13 @@ export class TouchSensor {
   }
 
   public detach() {
-    const { target } = this.polyDrag.config;
+    if (
+      this.isListening === true
+      && DOMUtil.isHTMLElement(this.target) === true
+    ) {
+      const target = this.target as HTMLElement;
 
-    if (DOMUtil.isHTMLElement(target) === true) {
-      const targetElement = target as HTMLElement;
-
-      targetElement.removeEventListener('touchstart', this.onTouchStart);
+      target.removeEventListener('touchstart', this.onTouchStart);
 
       window.removeEventListener('touchmove', this.onTouchMove);
       window.removeEventListener('touchend', this.onTouchEnd);

@@ -16,7 +16,9 @@ export class MouseSensor {
 
   public isListening: boolean = false;
 
-  public isDown: boolean = false;
+  public mouseButtonIsDown: boolean = false;
+
+  private target?: HTMLElement;
 
   constructor(monoTap: MonoTap) {
     this.monoTap = monoTap;
@@ -29,9 +31,9 @@ export class MouseSensor {
       this.isListening === false
       && DOMUtil.isHTMLElement(target) === true
     ) {
-      const targetElement = target as HTMLElement;
+      this.target = target as HTMLElement;
 
-      targetElement.addEventListener('mousedown', this.onMouseDown);
+      this.target.addEventListener('mousedown', this.onMouseDown);
 
       window.addEventListener('mouseup', this.onMouseUp);
 
@@ -40,15 +42,13 @@ export class MouseSensor {
   }
 
   public detach() {
-    const { target } = this.monoTap.config;
-
     if (
       this.isListening === true
-      && DOMUtil.isHTMLElement(target) === true
+      && DOMUtil.isHTMLElement(this.target) === true
     ) {
-      const targetElement = target as HTMLElement;
+      const target = this.target as HTMLElement;
 
-      targetElement.removeEventListener('mousedown', this.onMouseDown);
+      target.removeEventListener('mousedown', this.onMouseDown);
 
       window.removeEventListener('mouseup', this.onMouseUp);
 
@@ -57,13 +57,13 @@ export class MouseSensor {
   }
 
   private onMouseDown = (event: MouseEvent) => {
-    this.isDown = true;
+    this.mouseButtonIsDown = true;
 
     this.dispatch('down', event);
   }
 
   private onMouseUp = (event: MouseEvent) => {
-    this.isDown = false;
+    this.mouseButtonIsDown = false;
 
     this.dispatch('up', event);
   }

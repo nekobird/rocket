@@ -12,13 +12,17 @@ import {
 
 export interface MonoTapConfig {
   target?: HTMLElement;
+
   offsetFrom?: HTMLElement;
 
   keepHistory: boolean;
 
   preventDefault: boolean;
 
-  condition: (event: MonoTapEvent, monoTap: MonoTap) => boolean;
+  condition: (
+    event: MonoTapEvent,
+    monoTap: MonoTap,
+  ) => boolean;
 
   isValidTap: (
     event: MonoTapEvent,
@@ -59,6 +63,7 @@ export const MONO_TAP_DEFAULT_CONFIG = {
   condition: () => true,
 
   isValidTap: () => true,
+
   onTap: () => {},
 
   onDown: () => {},

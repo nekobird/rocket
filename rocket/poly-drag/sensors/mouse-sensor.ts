@@ -18,6 +18,8 @@ export class MouseSensor {
 
   public mouseButtonIsDown: boolean = false;
 
+  public target?: HTMLElement;
+
   constructor(polyDrag: PolyDrag) {
     this.polyDrag = polyDrag;
   }
@@ -25,11 +27,14 @@ export class MouseSensor {
   public attach() {
     const { target } = this.polyDrag.config;
 
-    if (DOMUtil.isHTMLElement(target) === true) {
-      const targetElement = target as HTMLElement;
+    if (
+      this.isListening === false
+      && DOMUtil.isHTMLElement(target) === true
+    ) {
+      this.target = target as HTMLElement;
 
-      targetElement.addEventListener('mousedown', this.onMouseDown);
-      targetElement.addEventListener('contextmenu', this.onContextMenu);
+      this.target.addEventListener('mousedown', this.onMouseDown);
+      this.target.addEventListener('contextmenu', this.onContextMenu);
 
       window.addEventListener('mousemove', this.onMouseMove);
       window.addEventListener('mouseup', this.onMouseUp);
@@ -41,13 +46,14 @@ export class MouseSensor {
   }
 
   public detach() {
-    const { target } = this.polyDrag.config;
+    if (
+      this.isListening === true
+      && DOMUtil.isHTMLElement(this.target) === true
+    ) {
+      const target = this.target as HTMLElement;
 
-    if (DOMUtil.isHTMLElement(target) === true) {
-      const targetElement = target as HTMLElement;
-
-      targetElement.removeEventListener('mousedown', this.onMouseDown);
-      targetElement.removeEventListener('contextmenu', this.onContextMenu);
+      target.removeEventListener('mousedown', this.onMouseDown);
+      target.removeEventListener('contextmenu', this.onContextMenu);
 
       window.removeEventListener('mousemove', this.onMouseMove);
       window.removeEventListener('mouseup', this.onMouseUp);
