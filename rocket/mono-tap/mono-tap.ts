@@ -56,14 +56,14 @@ export class MonoTap {
     return this;
   }
 
-  public get previousMonoTapStory(): MonoTapStory | null {
-    const { previousMonoTapStory } = this.sensorHub;
+  public get previousStory(): MonoTapStory | null {
+    const { previousStory } = this.sensorHub;
 
-    if (typeof previousMonoTapStory === 'undefined') {
+    if (typeof previousStory === 'undefined') {
       return null;
     }
 
-    return previousMonoTapStory;
+    return previousStory;
   }
 
   public get history(): MonoTapStory[] {

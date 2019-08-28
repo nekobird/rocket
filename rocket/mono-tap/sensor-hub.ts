@@ -34,7 +34,7 @@ export class SensorHub {
 
   public history: MonoTapStory[];
 
-  public previousMonoTapStory?: MonoTapStory;
+  public previousStory?: MonoTapStory;
 
   constructor(monoTap: MonoTap) {
     this.monoTap = monoTap;
@@ -60,10 +60,12 @@ export class SensorHub {
 
   public detach() {
     if (this.isListening === true) {
-      this.mouseSensor.detach();
-      this.touchSensor.detach();
+      const result = Util.truthChain(
+        () => this.mouseSensor.detach(),
+        () => this.touchSensor.detach(),
+      );
 
-      this.isListening = false;
+      this.isListening = !result;
     }
   }
 
@@ -78,7 +80,7 @@ export class SensorHub {
         if (config.condition(event, this.monoTap) === true) {
           const story = new MonoTapStory(this.monoTap, event);
 
-          this.addActiveMonoTapStory(story);
+          this.addActiveStory(story);
 
           config.onDown(event, story, this.monoTap);
         }
@@ -87,7 +89,7 @@ export class SensorHub {
       }
 
       case 'up': {
-        const story = this.getActiveMonoTapStoryFromMonoTapEvent(event);
+        const story = this.getStoryFromEvent(event);
 
         if (story !== null) {
           story.addMonoTapEvent(event);
@@ -101,28 +103,28 @@ export class SensorHub {
           onUp(event, story, this.monoTap);
   
           if (isValidTap(event, story, this.monoTap) === true) {
-            this.previousMonoTapStory = story;
+            this.previousStory = story;
   
             this.addStoryToHistory(story);
   
             onTap(event, story, this.monoTap);
           }
   
-          this.removeActiveMonoTapStory(story);  
+          this.removeActiveStory(story);  
         }
 
         break;
       }
 
       case 'cancel': {
-        const story = this.getActiveMonoTapStoryFromMonoTapEvent(event);
+        const story = this.getStoryFromEvent(event);
 
         if (story !== null) {
           story.addMonoTapEvent(event);
 
           this.monoTap.config.onCancel(event, story, this.monoTap);
 
-          this.removeActiveMonoTapStory(story);
+          this.removeActiveStory(story);
         }
 
         break;
@@ -130,15 +132,15 @@ export class SensorHub {
     }
   }
 
-  private addStoryToHistory(tapStory: MonoTapStory) {
+  private addStoryToHistory(story: MonoTapStory) {
     if (this.monoTap.config.keepHistory === true) {
-      this.history.push(tapStory);
+      this.history.push(story);
     }
   }
 
-  private addActiveMonoTapStory(tapStory: MonoTapStory): boolean {
-    if (this.activeStories.indexOf(tapStory) === -1) {
-      this.activeStories.push(tapStory);
+  private addActiveStory(story: MonoTapStory): boolean {
+    if (this.activeStories.indexOf(story) === -1) {
+      this.activeStories.push(story);
 
       return true;
     }
@@ -146,20 +148,20 @@ export class SensorHub {
     return false;
   }
 
-  private getActiveMonoTapStoryFromMonoTapEvent(event: MonoTapEvent): MonoTapStory | null {
-    const tapStory = this.activeStories.find(tapStory => {
-      return tapStory.identifier === event.identifier
+  private getStoryFromEvent(event: MonoTapEvent): MonoTapStory | null {
+    const story = this.activeStories.find(story => {
+      return story.identifier === event.identifier
     });
 
-    if (typeof tapStory !== 'undefined') {
-      return tapStory;
+    if (typeof story !== 'undefined') {
+      return story;
     }
 
     return null;
   }
 
-  private removeActiveMonoTapStory(tapStory: MonoTapStory): boolean {
-    const index = this.activeStories.indexOf(tapStory);
+  private removeActiveStory(story: MonoTapStory): boolean {
+    const index = this.activeStories.indexOf(story);
 
     if (index !== -1) {
       this.activeStories.splice(index, 1);

@@ -21,10 +21,10 @@ export class MonoDragStory {
 
   public history: MonoDragEvent[];
 
-  public startingMonoDragEvent: MonoDragEvent | null = null;
-  public previousMonoDragEvent: MonoDragEvent | null = null;
-  public currentMonoDragEvent: MonoDragEvent | null = null;
-  public finalMonoDragEvent: MonoDragEvent | null = null;
+  public startingEvent: MonoDragEvent | null = null;
+  public previousEvent: MonoDragEvent | null = null;
+  public currentEvent: MonoDragEvent | null = null;
+  public finalEvent: MonoDragEvent | null = null;
 
   constructor(monoDrag: MonoDrag) {
     this.monoDrag = monoDrag;
@@ -37,16 +37,16 @@ export class MonoDragStory {
     this.history = [];
   }
 
-  public addMonoDragEvent(event: MonoDragEvent) {
+  public addEvent(event: MonoDragEvent) {
     this.preventDefault(event);
 
-    this.addMonoDragEventToHistory(event);
+    this.addEventToHistory(event);
 
     switch (event.type) {
       case 'start': {
-        this.startingMonoDragEvent = event;
-        this.currentMonoDragEvent = event;
-        this.previousMonoDragEvent = event;
+        this.startingEvent = event;
+        this.currentEvent = event;
+        this.previousEvent = event;
 
         this.updateOffset(event.position);
 
@@ -54,22 +54,22 @@ export class MonoDragStory {
       }
 
       case 'drag': {
-        this.updateMonoDragEventVectors(event);
+        this.updateEventVectors(event);
 
-        this.previousMonoDragEvent = this.currentMonoDragEvent;
-        this.currentMonoDragEvent = event;
+        this.previousEvent = this.currentEvent;
+        this.currentEvent = event;
 
         break;
       }
 
       case 'stop': {
-        this.addStopOrCancelMonoDragEvent(event);
+        this.handleStopOrCancelEvent(event);
 
         break;
       }
 
       case 'cancel': {
-        this.addStopOrCancelMonoDragEvent(event);
+        this.handleStopOrCancelEvent(event);
 
         break;
       }
@@ -84,7 +84,7 @@ export class MonoDragStory {
     }
   }
 
-  private addMonoDragEventToHistory(event: MonoDragEvent) {
+  private addEventToHistory(event: MonoDragEvent) {
     const { keepHistory } = this.monoDrag.config;
 
     if (keepHistory === true) {
@@ -111,7 +111,7 @@ export class MonoDragStory {
     }
   }
 
-  private updateMonoDragEventVectors(event: MonoDragEvent) {
+  private updateEventVectors(event: MonoDragEvent) {
     if (event.type !== 'start') {
       const velocity = Vector2.subtract(
         event.position,
@@ -131,11 +131,11 @@ export class MonoDragStory {
     this.previousVelocity.equals(event.velocity);
   }
 
-  private addStopOrCancelMonoDragEvent(event: MonoDragEvent) {
-    this.updateMonoDragEventVectors(event);
+  private handleStopOrCancelEvent(event: MonoDragEvent) {
+    this.updateEventVectors(event);
 
-    this.previousMonoDragEvent = this.currentMonoDragEvent;
-    this.currentMonoDragEvent = event;
-    this.finalMonoDragEvent = event;
+    this.previousEvent = this.currentEvent;
+    this.currentEvent = event;
+    this.finalEvent = event;
   }
 }
