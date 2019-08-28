@@ -1,16 +1,7 @@
-import  {
-  DOMUtil,
-  Vector2,
-} from '../rocket';
-
 import {
   MONO_DRAG_DEFAULT_CONFIG,
   MonoDragConfig,
 } from './config';
-
-import {
-  MonoDragEvent,
-} from './mono-drag-event';
 
 import {
   SensorHub,
@@ -27,6 +18,8 @@ export class MonoDrag {
     this.setConfig(config);
 
     this.sensorHub = new SensorHub(this);
+
+    this.sensorHub.listen();
   }
 
   public setConfig(config?: Partial<MonoDragConfig>): this {

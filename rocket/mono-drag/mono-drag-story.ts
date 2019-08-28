@@ -47,21 +47,29 @@ export class MonoDragStory {
         this.previousMonoDragEvent = monoDragEvent;
 
         this.updateOffset(monoDragEvent.position);
+
+        break;
       }
 
       case 'drag': {
         this.updateDragEventVectors(monoDragEvent);
 
         this.previousMonoDragEvent = this.currentMonoDragEvent;
-        this.currentMonoDragEvent = monoDragEvent;       
+        this.currentMonoDragEvent = monoDragEvent;
+
+        break;
       }
 
       case 'stop': {
         this.addStopOrCancelMonoDragEvent(monoDragEvent);
+
+        break;
       }
 
       case 'cancel': {
         this.addStopOrCancelMonoDragEvent(monoDragEvent);
+
+        break;
       }
     }
   }

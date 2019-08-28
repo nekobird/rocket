@@ -16,7 +16,7 @@ export class MouseSensor {
 
   public isListening: boolean = false;
 
-  public isDown: boolean = false;
+  public mouseButtonIsDown: boolean = false;
 
   constructor(monoDrag: MonoDrag) {
     this.monoDrag = monoDrag;
@@ -67,28 +67,29 @@ export class MouseSensor {
   private onMouseDown = (event: MouseEvent) => {
     this.dispatch('start', event);
 
-    this.isDown = true;
+    this.mouseButtonIsDown = true;
   }
 
   private onMouseMove = (event: MouseEvent) => {
-    if (this.isDown === true) {
+    if (this.mouseButtonIsDown === true) {
       this.dispatch('drag', event);
     }
   }
 
   private onMouseUp = (event: MouseEvent) => {
-    if (this.isDown === true) {
+    console.log('mouseUp');
+    if (this.mouseButtonIsDown === true) {
       this.dispatch('stop', event);
 
-      this.isDown = false;
+      this.mouseButtonIsDown = false;
     }
   }
 
   private onMouseLeave = (event: MouseEvent) => {
-    if (this.isDown === true) {
+    if (this.mouseButtonIsDown === true) {
       this.dispatch('cancel', event);
 
-      this.isDown = false;
+      this.mouseButtonIsDown = false;
     }
   }
 

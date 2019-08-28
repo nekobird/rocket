@@ -13,8 +13,10 @@ if (boxElement !== null) {
   const monoDrag = new MonoDrag({
     target: box,
 
-    onDrag: dragEvent => {
-      const position = Vector2.subtract(dragEvent.position, dragEvent.offset)
+    onDrag: (event, story) => {
+      console.log('drag');
+
+      const position = Vector2.subtract(event.position, story.offset)
 
       const { x, y } = position;
 

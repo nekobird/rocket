@@ -82,11 +82,12 @@ export class SensorHub {
 
           config.onDragStart(monoDragEvent, story, this.monoDrag);
         }
+
+        break;
       }
 
       case 'drag': {
         const { config } = this.monoDrag;
-
         if (this.isActive(monoDragEvent) === true) {
           const story = this.activeMonoDragStory as MonoDragStory;
 
@@ -96,6 +97,8 @@ export class SensorHub {
 
           config.onDrag(monoDragEvent, story, this.monoDrag);
         }
+
+        break;
       }
 
       case 'stop': {
@@ -112,6 +115,8 @@ export class SensorHub {
 
           this.deactivate();
         }
+
+        break;
       }
 
       case 'cancel': {
@@ -128,6 +133,8 @@ export class SensorHub {
 
           this.deactivate();
         }
+
+        break;
       }
     }
   }
