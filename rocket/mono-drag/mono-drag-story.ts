@@ -37,7 +37,7 @@ export class MonoDragStory {
     this.history = [];
   }
 
-  public addDragEvent(monoDragEvent: MonoDragEvent) {
+  public addMonoDragEvent(monoDragEvent: MonoDragEvent) {
     this.addMonoDragEventToHistory(monoDragEvent);
 
     switch (monoDragEvent.type) {
@@ -57,21 +57,21 @@ export class MonoDragStory {
       }
 
       case 'stop': {
-        this.updateDragEventVectors(monoDragEvent);
-
-        this.previousMonoDragEvent = this.currentMonoDragEvent;
-        this.currentMonoDragEvent = monoDragEvent;
-        this.endingMonoDragEvent = monoDragEvent;
+        this.addStopOrCancelMonoDragEvent(monoDragEvent);
       }
 
       case 'cancel': {
-        this.updateDragEventVectors(monoDragEvent);
-
-        this.previousMonoDragEvent = this.currentMonoDragEvent;
-        this.currentMonoDragEvent = monoDragEvent;
-        this.endingMonoDragEvent = monoDragEvent;
+        this.addStopOrCancelMonoDragEvent(monoDragEvent);
       }
     }
+  }
+
+  private addStopOrCancelMonoDragEvent(monoDragEvent: MonoDragEvent) {
+    this.updateDragEventVectors(monoDragEvent);
+
+    this.previousMonoDragEvent = this.currentMonoDragEvent;
+    this.currentMonoDragEvent = monoDragEvent;
+    this.endingMonoDragEvent = monoDragEvent;
   }
 
   private updateDragEventVectors(monoDragEvent: MonoDragEvent) {
@@ -94,7 +94,7 @@ export class MonoDragStory {
     this.previousVelocity.equals(monoDragEvent.velocity);
   }
 
-  private updateOffset(position: Vector2): boolean {
+  private updateOffset(position: Vector2) {
     const { target, offsetFrom } = this.monoDrag.config;
 
     if (DOMUtil.isHTMLElement(target) === true) {
@@ -110,11 +110,7 @@ export class MonoDragStory {
         position.x - left,
         position.y - top,
       );
-
-      return true;
     }
-
-    return false;
   }
 
   private addMonoDragEventToHistory(monoDragEvent: MonoDragEvent) {

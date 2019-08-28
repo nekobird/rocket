@@ -45,7 +45,6 @@ export class MonoDragEvent {
     this.isTouch = isTouch;
 
     this.originalEvent = originalEvent;
-    this.targetFromEvent = originalEvent.target;
 
     let clientX;
     let clientY;
@@ -66,6 +65,8 @@ export class MonoDragEvent {
       clientX = event.clientX;
       clientY = event.clientY;
     }
+
+    this.targetFromEvent = originalEvent.target;
 
     this.target = document.elementFromPoint(clientX, clientY) as HTMLElement | null;
 

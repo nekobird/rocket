@@ -73,7 +73,7 @@ export class SensorHub {
         if (this.isActive(monoDragEvent) === false) {
           const story = new MonoDragStory(this.monoDrag);          
 
-          story.addDragEvent(monoDragEvent);
+          story.addMonoDragEvent(monoDragEvent);
 
           this.activeMonoDragStory = story;
           this.activeMonoDragIdentifier = monoDragEvent.identifier;
@@ -90,7 +90,7 @@ export class SensorHub {
         if (this.isActive(monoDragEvent) === true) {
           const story = this.activeMonoDragStory as MonoDragStory;
 
-          story.addDragEvent(monoDragEvent);
+          story.addMonoDragEvent(monoDragEvent);
 
           config.onEvent(monoDragEvent.originalEvent, this.monoDrag);
 
@@ -104,7 +104,7 @@ export class SensorHub {
         if (this.isActive(monoDragEvent) === true) {
           const story = this.activeMonoDragStory as MonoDragStory;
 
-          story.addDragEvent(monoDragEvent);
+          story.addMonoDragEvent(monoDragEvent);
 
           config.onEvent(monoDragEvent.originalEvent, this.monoDrag);
 
@@ -120,7 +120,7 @@ export class SensorHub {
         if (this.isActive(monoDragEvent) === true) {
           const story = this.activeMonoDragStory as MonoDragStory;
 
-          story.addDragEvent(monoDragEvent);
+          story.addMonoDragEvent(monoDragEvent);
 
           config.onEvent(monoDragEvent.originalEvent, this.monoDrag);
 
