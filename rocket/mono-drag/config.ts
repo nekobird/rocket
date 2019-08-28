@@ -17,6 +17,8 @@ export interface MonoDragConfig {
 
   keepHistory: boolean;
 
+  keepEventHistory: boolean;
+
   preventDefault: boolean;
 
   disableContextMenu: boolean;
@@ -68,6 +70,8 @@ export const MONO_DRAG_DEFAULT_CONFIG: MonoDragConfig = {
   offsetFrom: undefined,
 
   keepHistory: false,
+
+  keepEventHistory: false,
 
   preventDefault: true,
 

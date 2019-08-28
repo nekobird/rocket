@@ -208,14 +208,18 @@ export class SensorHub {
     }
   }
 
-  private addStoryToHistory(story: PolyDragStory) {
-    const { config } = this.polyDrag;
+  private addStoryToHistory(story: PolyDragStory): boolean {
+    const { keepStoryHistory } = this.polyDrag.config;
 
     if (
-      this.activeStories.indexOf(story) !== -1
-      && config.keepStoryHistory === true
+      keepStoryHistory === true
+      && this.activeStories.indexOf(story) === -1
     ) {
       this.history.push(story);
+
+      return true;
     }
+
+    return false;
   }
 }

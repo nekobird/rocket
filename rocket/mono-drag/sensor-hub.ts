@@ -159,6 +159,8 @@ export class SensorHub {
     this.activeEventIdentifier = null;
 
     this.previousStory = story;
+
+    this.addStoryToHistory(story);
   }
 
   private isActive(event: MonoDragEvent): boolean {
@@ -167,5 +169,16 @@ export class SensorHub {
       && this.activeEventIdentifier !== null
       && this.activeEventIdentifier === event.identifier
     );
+  }
+
+  private addStoryToHistory(story: MonoDragStory) {
+    const { config } = this.monoDrag;
+
+    if (
+      config.keepHistory === true
+      && this.history.indexOf(story) === -1
+    ) {
+      this.history.push(story);
+    }
   }
 }

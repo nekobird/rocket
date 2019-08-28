@@ -132,10 +132,19 @@ export class SensorHub {
     }
   }
 
-  private addStoryToHistory(story: MonoTapStory) {
-    if (this.monoTap.config.keepHistory === true) {
+  private addStoryToHistory(story: MonoTapStory): boolean {
+    const { keepHistory } = this.monoTap.config;
+
+    if (
+      keepHistory === true
+      && this.history.indexOf(story) === -1
+    ) {
       this.history.push(story);
+
+      return true;
     }
+
+    return false;
   }
 
   private addActiveStory(story: MonoTapStory): boolean {

@@ -76,6 +76,14 @@ export class MonoDragStory {
     }
   }
 
+  private handleStopOrCancelEvent(event: MonoDragEvent) {
+    this.updateEventVectors(event);
+
+    this.previousEvent = this.currentEvent;
+    this.currentEvent = event;
+    this.finalEvent = event;
+  }
+
   private preventDefault(event: MonoDragEvent) {
     const { preventDefault } = this.monoDrag.config;
 
@@ -85,9 +93,12 @@ export class MonoDragStory {
   }
 
   private addEventToHistory(event: MonoDragEvent) {
-    const { keepHistory } = this.monoDrag.config;
+    const { keepEventHistory } = this.monoDrag.config;
 
-    if (keepHistory === true) {
+    if (
+      keepEventHistory === true
+      && this.history.indexOf(event) === -1
+    ) {
       this.history.push(event);
     }
   }
@@ -129,13 +140,5 @@ export class MonoDragStory {
 
     this.previousPosition.equals(event.position);
     this.previousVelocity.equals(event.velocity);
-  }
-
-  private handleStopOrCancelEvent(event: MonoDragEvent) {
-    this.updateEventVectors(event);
-
-    this.previousEvent = this.currentEvent;
-    this.currentEvent = event;
-    this.finalEvent = event;
   }
 }

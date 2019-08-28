@@ -96,12 +96,19 @@ export class PolyDragStory {
     return event.identifier === this.identifier;
   }
 
-  private addEventToHistory(event: PolyDragEvent) {
-    const { config } = this.polyDrag;
+  private addEventToHistory(event: PolyDragEvent): boolean {
+    const { keepEventHistory } = this.polyDrag.config;
 
-    if (config.keepEventHistory === true) {
+    if (
+      keepEventHistory === true
+      && this.history.indexOf(event) === -1
+    ) {
       this.history.push(event);
+
+      return true;
     }
+
+    return false;
   }
 
   private updateOffset(position: Vector2) {
