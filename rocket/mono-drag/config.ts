@@ -54,6 +54,12 @@ export interface MonoDragConfig {
     monoDragStory: MonoDragStory,
     monoDrag: MonoDrag
   ) => void;
+
+  onDragEnd: (
+    monoDragEvent: MonoDragEvent,
+    monoDragStory: MonoDragStory,
+    monoDrag: MonoDrag
+  ) => void; 
 }
 
 export const MONO_DRAG_DEFAULT_CONFIG: MonoDragConfig = {
@@ -75,4 +81,5 @@ export const MONO_DRAG_DEFAULT_CONFIG: MonoDragConfig = {
   onDrag: () => {},
   onDragStop: () => {},
   onDragCancel: () => {},
+  onDragEnd: () => {},
 };

@@ -19,9 +19,9 @@ export interface PolyDragConfig {
 
   disableContextMenu: boolean;
 
-  keepPolyDragEventHistory: boolean;
+  keepEventHistory: boolean;
 
-  keepDragStoryHistory: boolean;
+  keepStoryHistory: boolean;
 
   condition: (
     polyDragEvent: PolyDragEvent,
@@ -68,6 +68,12 @@ export interface PolyDragConfig {
     polyDragStory: PolyDragStory,
     polyDrag: PolyDrag,
   ) => void;
+
+  onEachDragEnd: (
+    polyDragEvent: PolyDragEvent,
+    polyDragStory: PolyDragStory,
+    polyDrag: PolyDrag,
+  ) => void;
 }
 
 export const POLY_DRAG_DEFAULT_CONFIG: PolyDragConfig = {
@@ -75,9 +81,9 @@ export const POLY_DRAG_DEFAULT_CONFIG: PolyDragConfig = {
 
   disableContextMenu: false,
 
-  keepPolyDragEventHistory: true,
+  keepEventHistory: true,
 
-  keepDragStoryHistory: true,
+  keepStoryHistory: true,
 
   condition: () => true,
 
@@ -91,4 +97,5 @@ export const POLY_DRAG_DEFAULT_CONFIG: PolyDragConfig = {
   onEachDrag: () => {},
   onEachDragStop: () => {},
   onEachDragCancel: () => {},
+  onEachDragEnd: () => {},
 }

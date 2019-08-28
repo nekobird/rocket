@@ -23,7 +23,6 @@ import {
   TouchSensor,
 } from './sensors/touch-sensor';
 
-// TODO: Add to check if there is an active event.
 export class SensorHub {
   public polyDrag: PolyDrag;
 
@@ -88,7 +87,13 @@ export class SensorHub {
 
           story.addEvent(event);
 
-          this.addActiveStoryAndIdentifier(story);
+          if (this.activeStories.length === 0) {
+            this.addActiveStoryAndIdentifier(story);
+
+            config.onStart(event, story, this.polyDrag);
+          } else {
+            this.addActiveStoryAndIdentifier(story);
+          }
 
           config.onEachDragStart(event, story, this.polyDrag);
         }
@@ -97,15 +102,11 @@ export class SensorHub {
       }
 
       case 'drag': {
-        const { config } = this.polyDrag;
-
         if (this.eventIsActive(event) === true) {
           const story = this.getActiveStory(event);
 
           if (story !== null) {
             story.addEvent(event);
-
-            this.addActiveStoryAndIdentifier(story);
 
             config.onEachDrag(event, story, this.polyDrag);
           }
@@ -115,12 +116,50 @@ export class SensorHub {
       }
 
       case 'stop': {
+        this.handleStopOrCancelEvent(event);
+
         break;
       }
 
       case 'cancel': {
+        this.handleStopOrCancelEvent(event);
+
         break;
       }
+    }
+  }
+
+  private handleStopOrCancelEvent(event: PolyDragEvent) {
+    const { config } = this.polyDrag;
+
+    if (this.eventIsActive(event) === true) {
+      const story = this.getActiveStory(event);
+
+      if (story !== null) {
+        story.addEvent(event);
+
+        if (event.type === 'stop') {
+          config.onEachDragStop(event, story, this.polyDrag);
+        } else if (event.type === 'cancel') {
+          config.onEachDragCancel(event, story, this.polyDrag);
+        }
+
+        config.onEachDragEnd(event, story, this.polyDrag);
+
+        this.deactivate(event, story);
+      }
+    }
+  }
+
+  private deactivate(event: PolyDragEvent, story: PolyDragStory) {
+    const { config } = this.polyDrag;
+
+    this.addStoryToHistory(story);
+
+    this.removeActiveStoryAndIdentifier(story);
+
+    if (this.activeStories.length === 0) {
+      config.onEnd(event, story, this.polyDrag);      
     }
   }
 
@@ -156,161 +195,27 @@ export class SensorHub {
     return null;
   }
 
-  private addStoryToHistory(dragStory: PolyDragStory) {
-    const { config } = this.polyDrag;
+  private removeActiveStoryAndIdentifier(story: PolyDragStory) {
+    const storyIndex = this.activeStories.indexOf(story);
+    const identifierIndex = this.activeIdentifiers.indexOf(story.identifier);
 
     if (
-      this.eventIsActive === true
-      && config.keepPolyDragStoryHistory === true
+      storyIndex !== -1
+      && identifierIndex !== -1
     ) {
-      if (Array.isArray(this.history) === true) {
-        this.history = [];
-      }
-
-      this.history.push(dragStory);
+      this.activeStories.splice(storyIndex, 1);
+      this.activeIdentifiers.splice(identifierIndex, 1);
     }
   }
 
-  private removeActiveStory(dragEvent: PolyDragEvent) {
-    const story = this.getStoryFromEvent(dragEvent);
-
-    if (
-      story !== null
-      && typeof dragEvent.identifier !== 'undefined'
-    ) {
-      const activePolyDragStoryIndex = this.activeDragStories.indexOf(story);
-      const activeIdentifierIndex = this.activeIdentifiers.indexOf(dragEvent.identifier);
-
-      if (
-        activePolyDragStoryIndex !== -1
-        && activeIdentifierIndex !== -1
-      ) {
-        this.activeDragStories.splice(activePolyDragStoryIndex, 1);
-        this.activeIdentifiers.splice(activeIdentifierIndex, 1);
-      }
-    }
-  }
-
-  private preventDefault(dragEvent: PolyDragEvent) {
+  private addStoryToHistory(story: PolyDragStory) {
     const { config } = this.polyDrag;
 
     if (
-      config.preventDefault === true
-      && typeof dragEvent.originalEvent !== 'undefined'
+      this.activeStories.indexOf(story) !== -1
+      && config.keepStoryHistory === true
     ) {
-      dragEvent.originalEvent.preventDefault();
-    }
-  }
-
-  public onDragStart(dragEvent: PolyDragEvent) {
-    const { config } = this.polyDrag;
-
-    if (
-      this.isListening === true
-      && this.eventIsActive(dragEvent) === false
-      && config.condition(dragEvent) === true
-    ) {
-      const story = new PolyDragStory(this.polyDrag);
-
-      story.start(dragEvent);
-
-      this.preventDefault(dragEvent);
-
-      this.addStoryToHistory(story);
-
-      config.onEvent(dragEvent, story, this.polyDrag);
-
-      if (this.activeDragStories.length === 0) {
-        config.onStart(dragEvent, story, this.polyDrag);
-      }
-
-      config.onEachDragStart(dragEvent, story, this.polyDrag);
-    }
-  }
-
-  public onDrag(dragEvent: PolyDragEvent) {
-    const { config } = this.polyDrag;
-
-    if (
-      this.eventIsActive === true
-      && this.eventIsActive(dragEvent) === false
-    ) {
-      const story = this.getStoryFromEvent(dragEvent);
-
-      if (story !== null) {
-        story.drag(dragEvent);
-
-        this.preventDefault(dragEvent);
-
-        this.addStoryToHistory(story);
-
-        config.onEvent(dragEvent, story, this.polyDrag);
-
-        config.onEachDrag(dragEvent, story, this.polyDrag);
-      }
-    }
-  }
-
-  public onDragEnd(dragEvent: PolyDragEvent) {
-    const { config } = this.polyDrag;
-
-    if (
-      this.eventIsActive === true
-      && this.eventIsActive(dragEvent) === false
-    ) {
-      const story = this.getStoryFromEvent(dragEvent);
-
-      if (story !== null) {
-        story.stop(dragEvent);
-
-        this.preventDefault(dragEvent);
-
-        this.addStoryToHistory(story);
-
-        config.onEvent(dragEvent, story, this.polyDrag);
-
-        config.onEachDragStop(dragEvent, story, this.polyDrag);
-
-        this.end(dragEvent, story);
-      }
-    }
-  }
-
-  public onDragCancel(dragEvent: PolyDragEvent) {
-    const { config } = this.polyDrag;
-
-    if (
-      this.eventIsActive === true
-      && this.eventIsActive(dragEvent) === false
-    ) {
-      const story = this.getStoryFromEvent(dragEvent);
-
-      if (story !== null) {
-        story.stop(dragEvent);
-
-        this.preventDefault(dragEvent);
-
-        this.addStoryToHistory(story);
-
-        config.onEvent(dragEvent, story, this.polyDrag);
-
-        config.onEachDragCancel(dragEvent, story, this.polyDrag);
-
-        this.end(dragEvent, story);
-      }
-    }
-  }
-
-  public end(dragEvent: PolyDragEvent, dragStory: PolyDragStory) {
-    const { config } = this.polyDrag;
-
-    this.removeActiveStory(dragEvent);
-
-    if (
-      this.eventIsActive === true
-      && this.activeDragStories.length === 0
-    ) {
-      config.onEnd(dragEvent, dragStory, this.polyDrag);
+      this.history.push(story);
     }
   }
 }

@@ -117,6 +117,7 @@ export class SensorHub {
           story.addEvent(event);
 
           config.onDragStop(event, story, this.monoDrag);
+          config.onDragEnd(event, story, this.monoDrag);
 
           this.deactivate();
         }
@@ -131,6 +132,7 @@ export class SensorHub {
           story.addEvent(event);
 
           config.onDragCancel(event, story, this.monoDrag);
+          config.onDragEnd(event, story, this.monoDrag);
 
           this.deactivate();
         }

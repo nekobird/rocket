@@ -99,7 +99,7 @@ export class PolyDragStory {
   private addEventToHistory(event: PolyDragEvent) {
     const { config } = this.polyDrag;
 
-    if (config.keepPolyDragEventHistory === true) {
+    if (config.keepEventHistory === true) {
       this.history.push(event);
     }
   }
