@@ -3,6 +3,21 @@ import {
 } from '../rocket';
 
 export class Util {
+
+  public static isObject(object): boolean {
+    return (
+      object !== null
+      && typeof object === 'object'
+    );
+  }
+  
+  public static isEmptyObject(object): boolean {
+    return (
+      this.isObject(object)
+      && Object.keys(object).length < 1
+    );
+  }
+
   public static isPromise(...things): boolean {
     if (things.length === 0) {
       return false;
