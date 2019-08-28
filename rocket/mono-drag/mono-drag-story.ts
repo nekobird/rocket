@@ -38,6 +38,8 @@ export class MonoDragStory {
   }
 
   public addMonoDragEvent(event: MonoDragEvent) {
+    this.preventDefault(event);
+
     this.addMonoDragEventToHistory(event);
 
     switch (event.type) {
@@ -71,6 +73,14 @@ export class MonoDragStory {
 
         break;
       }
+    }
+  }
+
+  private preventDefault(event: MonoDragEvent) {
+    const { preventDefault } = this.monoDrag.config;
+
+    if (preventDefault === true) {
+      event.originalEvent.preventDefault();
     }
   }
 

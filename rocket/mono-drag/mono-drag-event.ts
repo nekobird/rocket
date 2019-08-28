@@ -82,16 +82,6 @@ export class MonoDragEvent {
     this.position = new Vector2(clientX, clientY);
     this.velocity = new Vector2();
     this.acceleration = new Vector2();
-
-    this.preventDefault();
-  }
-
-  private preventDefault() {
-    const { preventDefault } = this.monoDrag.config;
-
-    if (preventDefault === true) {
-      this.originalEvent.preventDefault();
-    }
   }
 }
 

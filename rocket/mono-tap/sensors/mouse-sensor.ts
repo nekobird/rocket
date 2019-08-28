@@ -24,7 +24,7 @@ export class MouseSensor {
     this.monoTap = monoTap;
   }
 
-  public attach() {
+  public attach(): boolean {
     const { target } = this.monoTap.config;
 
     if (
@@ -38,10 +38,14 @@ export class MouseSensor {
       window.addEventListener('mouseup', this.onMouseUp);
 
       this.isListening = true;
+
+      return true;
     }
+
+    return false;
   }
 
-  public detach() {
+  public detach(): boolean {
     if (
       this.isListening === true
       && DOMUtil.isHTMLElement(this.target) === true
@@ -53,7 +57,11 @@ export class MouseSensor {
       window.removeEventListener('mouseup', this.onMouseUp);
 
       this.isListening = false;
+
+      return true;
     }
+
+    return false;
   }
 
   private onMouseDown = (event: MouseEvent) => {

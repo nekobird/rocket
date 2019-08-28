@@ -28,7 +28,6 @@ export interface MonoDragConfig {
 
   onEvent: (
     monoDragEvent: MonoDragEvent,
-    monoDragStory: MonoDragStory,
     monoDrag: MonoDrag,
   ) => void;
 

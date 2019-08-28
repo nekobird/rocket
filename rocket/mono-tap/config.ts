@@ -36,6 +36,11 @@ export interface MonoTapConfig {
     monoTap: MonoTap,
   ) => void;
 
+  onEvent: (
+    event: MonoTapEvent,
+    monoTap: MonoTap,
+  ) => void;
+
   onDown: (
     event: MonoTapEvent,
     story: MonoTapStory,
@@ -65,6 +70,8 @@ export const MONO_TAP_DEFAULT_CONFIG = {
   isValidTap: () => true,
 
   onTap: () => {},
+
+  onEvent: () => {},
 
   onDown: () => {},
   onUp: () => {},

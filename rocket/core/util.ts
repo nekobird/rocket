@@ -61,6 +61,20 @@ export class Util {
     });
   }
 
+  public static truthChain(...funcs: (() => boolean)[]): boolean {
+    let result = true;
+
+    for (let i = 0; i < funcs.length; i++) {
+      if (funcs[i]() === false) {
+        result = false;
+
+        break;
+      }
+    }
+
+    return result;
+  }
+
   public static cycleArrayNext<A>(array: A[]): Function {
     let index = -1;
 

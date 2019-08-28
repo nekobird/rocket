@@ -42,6 +42,8 @@ export class MonoTapStory {
   }
 
   public addMonoTapEvent(tapEvent: MonoTapEvent) {
+    this.preventDefault(tapEvent);
+
     switch (tapEvent.type) {
       case 'down': {
         if (
@@ -86,6 +88,14 @@ export class MonoTapStory {
           this.isCancelled = true;
         }
       }
+    }
+  }
+
+  private preventDefault(event: MonoTapEvent) {
+    const { preventDefault } = this.monoTap.config;
+
+    if (preventDefault === true) {
+      event.originalEvent.preventDefault();
     }
   }
 }

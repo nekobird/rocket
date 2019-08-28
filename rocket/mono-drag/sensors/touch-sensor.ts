@@ -22,7 +22,7 @@ export class TouchSensor {
     this.monoDrag = monoDrag;
   }
 
-  public attach() {
+  public attach(): boolean {
     let { target } = this.monoDrag.config;
 
     if (
@@ -38,10 +38,14 @@ export class TouchSensor {
       window.addEventListener('touchcancel', this.onTouchCancel);
 
       this.isListening = true;
+
+      return true;
     }
+
+    return false;
   }
 
-  public detach() {
+  public detach(): boolean {
     if (
       this.isListening === true
       && DOMUtil.isHTMLElement(this.target) === true
@@ -55,7 +59,11 @@ export class TouchSensor {
       window.removeEventListener('touchcancel', this.onTouchCancel);
 
       this.isListening = false;
+
+      return true;
     }
+
+    return false;
   }
 
   private onTouchStart = (event: TouchEvent) => {

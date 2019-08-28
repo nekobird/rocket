@@ -24,7 +24,7 @@ export class MouseSensor {
     this.monoDrag = monoDrag;
   }
 
-  public attach() {
+  public attach(): boolean {
     let { target } = this.monoDrag.config;
 
     if (
@@ -42,10 +42,14 @@ export class MouseSensor {
       document.documentElement.addEventListener('mouseleave', this.onMouseLeave);
 
       this.isListening = true;
+
+      return true;
     }
+
+    return false;
   }
 
-  public detach() {
+  public detach(): boolean {
     if (
       this.isListening === true
       && DOMUtil.isHTMLElement(this.target) === true
@@ -61,7 +65,11 @@ export class MouseSensor {
       document.documentElement.removeEventListener('mouseleave', this.onMouseLeave);
 
       this.isListening = false;
+
+      return true;
     }
+
+    return false;
   }
 
   private onMouseDown = (event: MouseEvent) => {
