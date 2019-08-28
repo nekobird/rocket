@@ -17,7 +17,6 @@ if (boxElement !== null) {
       console.log('drag');
 
       const position = Vector2.subtract(event.position, story.offset)
-
       const { x, y } = position;
 
       box.style.transform = `translate(${x}px, ${y}px)`;
