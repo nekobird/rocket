@@ -3,7 +3,7 @@ import {
 } from './poly-drag';
 
 import {
-  DragStory,
+  PolyDragStory,
 } from './poly-drag-story';
 
 import {
@@ -23,48 +23,51 @@ export interface PolyDragConfig {
 
   keepDragStoryHistory: boolean;
 
-  condition: (polyDragEvent: PolyDragEvent) => boolean;
+  condition: (
+    polyDragEvent: PolyDragEvent,
+    polyDrag: PolyDrag,
+  ) => boolean;
 
   onEvent: (
     polyDragEvent: PolyDragEvent,
-    polyDragStory: DragStory,
-    polyDrag: PolyDrag
+    polyDragStory: PolyDragStory,
+    polyDrag: PolyDrag,
   ) => void;
 
   onStart: (
     polyDragEvent: PolyDragEvent,
-    polyDragStory: DragStory,
-    polyDrag: PolyDrag
+    polyDragStory: PolyDragStory,
+    polyDrag: PolyDrag,
   ) => void;
 
   onEnd: (
     polyDragEvent: PolyDragEvent,
-    polyDragStory: DragStory,
-    polyDrag: PolyDrag
+    polyDragStory: PolyDragStory,
+    polyDrag: PolyDrag,
   ) => void;
 
   onEachDragStart: (
     polyDragEvent: PolyDragEvent,
-    polyDragStory: DragStory,
-    polyDrag: PolyDrag
+    polyDragStory: PolyDragStory,
+    polyDrag: PolyDrag,
   ) => void;
 
   onEachDrag: (
     polyDragEvent: PolyDragEvent,
-    polyDragStory: DragStory,
-    polyDrag: PolyDrag
+    polyDragStory: PolyDragStory,
+    polyDrag: PolyDrag,
   ) => void;
 
   onEachDragStop: (
     polyDragEvent: PolyDragEvent,
-    polyDragStory: DragStory,
-    polyDrag: PolyDrag
+    polyDragStory: PolyDragStory,
+    polyDrag: PolyDrag,
   ) => void;
 
   onEachDragCancel: (
     polyDragEvent: PolyDragEvent,
-    polyDragStory: DragStory,
-    polyDrag: PolyDrag
+    polyDragStory: PolyDragStory,
+    polyDrag: PolyDrag,
   ) => void;
 }
 

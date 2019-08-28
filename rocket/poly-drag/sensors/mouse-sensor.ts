@@ -1,11 +1,6 @@
 import {
   DOMUtil,
-  Vector2,
 } from '../../rocket';
-
-import {
-  PolyDrag,
-} from '../poly-drag';
 
 import {
   PolyDragEvent,
@@ -13,22 +8,23 @@ import {
 } from '../poly-drag-event';
 
 import {
-  SensorHub
-} from '../sensor-hub';
+  PolyDrag,
+} from '../poly-drag';
 
 export class MouseSensor {
-  public target?: HTMLElement;
+  public polyDrag: PolyDrag;
 
-  public isActive: boolean = false;
-  public isDown: boolean = false;
+  public isListening: boolean = false;
 
-  public sensorHub: SensorHub;
+  public mouseButtonIsDown: boolean = false;
 
-  constructor(sensorHub: SensorHub) {
-    this.sensorHub = sensorHub;
+  constructor(polyDrag: PolyDrag) {
+    this.polyDrag = polyDrag;
   }
 
-  public attach(target: HTMLElement) {
+  public attach() {
+    const { target } = this.polyDrag.config;
+
     if (DOMUtil.isHTMLElement(target) === true) {
       const targetElement = target as HTMLElement;
 
@@ -40,74 +36,66 @@ export class MouseSensor {
 
       document.documentElement.addEventListener('mouseleave', this.onMouseLeave);
 
-      this.isActive = true;
+      this.isListening = true;
     }
   }
 
   public detach() {
-    if (DOMUtil.isHTMLElement(this.target) === true) {
-      const target = this.target as HTMLElement;
+    const { target } = this.polyDrag.config;
 
-      target.removeEventListener('mousedown', this.onMouseDown);
-      target.removeEventListener('contextmenu', this.onContextMenu);
+    if (DOMUtil.isHTMLElement(target) === true) {
+      const targetElement = target as HTMLElement;
+
+      targetElement.removeEventListener('mousedown', this.onMouseDown);
+      targetElement.removeEventListener('contextmenu', this.onContextMenu);
 
       window.removeEventListener('mousemove', this.onMouseMove);
       window.removeEventListener('mouseup', this.onMouseUp);
 
       document.documentElement.removeEventListener('mouseleave', this.onMouseLeave);
 
-      this.isActive = false;
+      this.isListening = false;
     }
   }
 
   private onMouseDown = (event: MouseEvent) => {
-    const dragEvent = new PolyDragEvent(this.sensorHub.polyDrag);
+    this.dispatch('start', event);
 
-    dragEvent.setFromMouseEvent('start', event);
-
-    this.sensorHub.onDragStart(dragEvent);
-
-    this.isDown = true;
+    this.mouseButtonIsDown = true;
   }
 
   private onMouseMove = (event: MouseEvent) => {
-    if (this.isDown === true) {
-      const dragEvent = new PolyDragEvent(this.sensorHub.polyDrag);
-
-      dragEvent.setFromMouseEvent('drag', event);
-
-      this.sensorHub.onDrag(dragEvent);
+    if (this.mouseButtonIsDown === true) {
+      this.dispatch('drag', event);
     }
   }
 
   private onMouseUp = (event: MouseEvent) => {
-    if (this.isDown === true) {
-      const dragEvent = new PolyDragEvent(this.sensorHub.polyDrag);
+    if (this.mouseButtonIsDown === true) {
+      this.dispatch('stop', event);
 
-      dragEvent.setFromMouseEvent('stop', event);
-
-      this.sensorHub.onDragEnd(dragEvent);
-
-      this.isDown = false;
+      this.mouseButtonIsDown = false;
     }
   }
 
   private onMouseLeave = (event: MouseEvent) => {
-    if (this.isDown === true) {
-      const dragEvent = new PolyDragEvent(this.sensorHub.polyDrag);
-
-      dragEvent.setFromMouseEvent('cancel', event);
-
-      this.sensorHub.onDragCancel(dragEvent);
+    if (this.mouseButtonIsDown === true) {
+      this.dispatch('cancel', event);
     }
   }
 
   private onContextMenu = (event: MouseEvent) => {
-    const { disableContextMenu } = this.sensorHub.polyDrag.config;
+    const { disableContextMenu } = this.polyDrag.config;
 
     if (disableContextMenu === true) {
       event.preventDefault();
       event.stopPropagation();
     }
+  }
+
+  private dispatch(type: PolyDragEventType, event: MouseEvent) {
+    const polyDragEvent = new PolyDragEvent(this.polyDrag, type, event);
+
+    this.polyDrag.sensorHub.receive(polyDragEvent);
   }
 }

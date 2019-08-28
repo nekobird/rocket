@@ -15,12 +15,12 @@
   "main": "build/rocket.js",
   "types": "build/rocket.d.ts",
   "scripts": {
-    "build": "rm -r build; tsc -t es6 --emitDeclarationOnly; parcel build ./rocket/rocket.ts --out-dir build",
-    "build-playground": "parcel build ./playground/index.html --public-url ./",
+    "build": "rm -r build; tsc -t es6 --emitDeclarationOnly; npx parcel build ./rocket/rocket.ts --out-dir build",
+    "build-playground": "npx parcel build ./playground/index.html --public-url ./",
     "build-ts": "rm -r build; tsc -t es6",
     "clean": "rm -r dist; rm -r build; rm -r .cache",
     "prepare": "npm run build",
-    "start": "parcel ./playground/index.html",
+    "start": "npx parcel ./playground/index.html",
     "test": "jest"
   },
   "dependencies": {
@@ -40,7 +40,6 @@
     "autoprefixer": "^9.6.1",
     "cssnano": "^4.1.10",
     "jest": "^24.9.0",
-    "parcel-bundler": "^1.12.3",
     "sass": "^1.22.10",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.3"

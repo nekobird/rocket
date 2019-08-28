@@ -27,7 +27,8 @@ export interface MonoDragConfig {
   ) => boolean;
 
   onEvent: (
-    event: MouseEvent | TouchEvent,
+    monoDragEvent: MonoDragEvent,
+    monoDragStory: MonoDragStory,
     monoDrag: MonoDrag,
   ) => void;
 

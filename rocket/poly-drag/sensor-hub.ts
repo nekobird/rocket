@@ -1,16 +1,4 @@
 import {
-  DOMUtil,
-} from '../rocket';
-
-import {
-  MouseSensor,
-} from './sensors/mouse-sensor';
-
-import {
-  TouchSensor,
-} from './sensors/touch-sensor';
-
-import {
   PolyDrag
 } from './poly-drag';
 
@@ -23,14 +11,20 @@ import {
   PolyDragEventIdentifier,
 } from './poly-drag-event';
 
+import {
+  MouseSensor,
+} from './sensors/mouse-sensor';
+
+import {
+  TouchSensor,
+} from './sensors/touch-sensor';
+
 // TODO: Add to check if there is an active event.
 export class SensorHub {
   public polyDrag: PolyDrag;
 
   public mouseSensor: MouseSensor;
   public touchSensor: TouchSensor;
-
-  public isActive: boolean = false;
 
   public activePolyDragStories: PolyDragStory[];
 
@@ -41,8 +35,8 @@ export class SensorHub {
   constructor(polyDrag: PolyDrag) {
     this.polyDrag = polyDrag;
 
-    this.mouseSensor = new MouseSensor(this);
-    this.touchSensor = new TouchSensor(this);
+    this.mouseSensor = new MouseSensor(this.polyDrag);
+    this.touchSensor = new TouchSensor(this.polyDrag);
 
     this.activePolyDragStories = [];
 
@@ -51,36 +45,63 @@ export class SensorHub {
     this.history = [];
   }
 
-  public attach() {
-    const { target } = this.polyDrag.config;
-
-    if (
-      this.isActive === false
-      && DOMUtil.isHTMLElement(target) === true
-    ) {
-      const targetElement = target as HTMLElement;
-
-      this.mouseSensor.attach(targetElement);
-      this.touchSensor.attach(targetElement);
-
-      this.isActive = true;
-    }
+  public listen() {
+    this.mouseSensor.attach();
+    this.touchSensor.attach();
   }
 
-  public detach() {
-    if (this.isActive === true) {
-      this.mouseSensor.detach();
-      this.touchSensor.detach();
-
-      this.reset();
-
-      this.isActive = false;
-    }
+  public stopListening() {
+    this.mouseSensor.detach();
+    this.touchSensor.detach();
   }
 
-  public receive(polyDragEvent: PolyDragEvent) {
-    switch (polyDragEvent.type) {
+  public receive(event: PolyDragEvent) {
+    switch (event.type) {
+      case 'start': {
+        const { config } = this.polyDrag;
 
+        if (
+          this.isActive(event) === false
+          && config.condition(event, this.polyDrag) === true
+        ) {
+          const story = new PolyDragStory(this.polyDrag);          
+
+          story.addPolyDragEvent(event);
+
+          this.activePolyDragStories.push(story);
+          this.activePolyDragEventIdentifiers.push(event.identifier);
+
+          config.onEvent(event, story, this.polyDrag);
+
+          config.onEachDragStart(event, story, this.polyDrag);
+        }
+
+        break;
+      }
+
+      case 'drag': {
+        const { config } = this.polyDrag;
+
+        if (this.isActive(event) === true) {
+          const story = this.getActivePolyDragStory(event);
+
+          story.addPolyDragEvent(event);
+
+          config.onEvent(event, story, this.polyDrag);
+
+          config.onEachDrag(event, story, this.polyDrag);
+        }
+
+        break;
+      }
+
+      case 'stop': {
+        break;
+      }
+
+      case 'cancel': {
+        break;
+      }
     }
   }
 
@@ -99,9 +120,9 @@ export class SensorHub {
     }
   }
 
-  private polyDragEventIsActive(polyDragEvent: PolyDragEvent): boolean {
-    if (typeof polyDragEvent.identifier !== 'undefined') {
-      return (this.activePolyDragEventIdentifiers.indexOf(polyDragEvent.identifier) !== -1);
+  private eventIsActive(event: PolyDragEvent): boolean {
+    if (typeof event.identifier !== 'undefined') {
+      return (this.activePolyDragEventIdentifiers.indexOf(event.identifier) !== -1);
     }
 
     return false;
