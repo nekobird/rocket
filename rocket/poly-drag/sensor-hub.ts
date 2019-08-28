@@ -3,16 +3,16 @@ import {
 } from '../rocket';
 
 import {
-  PolyDrag
-} from './poly-drag';
-
-import {
   MouseSensor,
 } from './sensors/mouse-sensor';
 
 import {
   TouchSensor,
 } from './sensors/touch-sensor';
+
+import {
+  PolyDrag
+} from './poly-drag';
 
 import {
   PolyDragStory,
@@ -27,13 +27,14 @@ import {
 export class SensorHub {
   public polyDrag: PolyDrag;
 
-  public isActive: boolean = false;
-
   public mouseSensor: MouseSensor;
   public touchSensor: TouchSensor;
 
-  public activeDragStories: PolyDragStory[];
-  public activeIdentifiers: PolyDragEventIdentifier[];
+  public isActive: boolean = false;
+
+  public activePolyDragStories: PolyDragStory[];
+
+  public activePolyDragEventIdentifiers: PolyDragEventIdentifier[];
 
   public history: PolyDragStory[];
 
@@ -43,12 +44,11 @@ export class SensorHub {
     this.mouseSensor = new MouseSensor(this);
     this.touchSensor = new TouchSensor(this);
 
+    this.activePolyDragStories = [];
+
+    this.activePolyDragEventIdentifiers = [];
+
     this.history = [];
-
-    this.activeDragStories = [];
-    this.activeIdentifiers = [];
-
-    this.reset();
   }
 
   public attach() {
@@ -78,8 +78,10 @@ export class SensorHub {
     }
   }
 
-  public receive(polyPolyDragEvent: PolyPolyDragEvent) {
+  public receive(polyDragEvent: PolyDragEvent) {
+    switch (polyDragEvent.type) {
 
+    }
   }
 
   private addStoryToHistory(dragStory: PolyDragStory) {
@@ -97,21 +99,16 @@ export class SensorHub {
     }
   }
 
-  private reset() {
-    this.activeDragStories = [];
-    this.activeIdentifiers = [];
-  }
-
-  private dragEventIsActive(dragEvent: PolyDragEvent): boolean {
-    if (typeof dragEvent.identifier !== 'undefined') {
-      return (this.activeIdentifiers.indexOf(dragEvent.identifier) !== -1);
+  private polyDragEventIsActive(polyDragEvent: PolyDragEvent): boolean {
+    if (typeof polyDragEvent.identifier !== 'undefined') {
+      return (this.activePolyDragEventIdentifiers.indexOf(polyDragEvent.identifier) !== -1);
     }
 
     return false;
   }
 
   private getPolyDragStory(dragEvent: PolyDragEvent): PolyDragStory | null {
-    const story = this.activeDragStories.find(story => {
+    const story = this.activePolyDragStories.find(story => {
       return story.identifier === dragEvent.identifier;
     });
 
