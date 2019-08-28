@@ -29,7 +29,7 @@ export class PolyDragStory {
 
   public history: PolyDragEvent[];
 
-  public startTime?: number;
+  public startTime: number;
   public endTime?: number;
 
   constructor(polyDrag: PolyDrag, event: PolyDragEvent) {
@@ -44,15 +44,13 @@ export class PolyDragStory {
 
     this.identifier = event.identifier;
 
+    this.startTime = event.time;
+
     this.addEvent(event);
   }
 
   public addEvent(event: PolyDragEvent) {
-    if (event.type === 'start') {
-      this.identifier = event.identifier;
-    }
-
-    if (this.isValidEvent(event) === false) {
+    if (this.identifier !== event.identifier) {
       return;
     }
 
@@ -92,8 +90,14 @@ export class PolyDragStory {
     }
   }
 
-  private isValidEvent(event: PolyDragEvent): boolean {
-    return event.identifier === this.identifier;
+  private addStopOrCancelEvent(event: PolyDragEvent) {
+    this.updateEventVectors(event);
+
+    this.previousEvent = this.currentEvent;
+    this.currentEvent = event;
+    this.finalEvent = event;
+
+    this.endTime = event.time;
   }
 
   private addEventToHistory(event: PolyDragEvent): boolean {
@@ -148,13 +152,5 @@ export class PolyDragStory {
 
     this.previousPosition.equals(event.position);
     this.previousVelocity.equals(event.velocity);
-  }
-
-  private addStopOrCancelEvent(event: PolyDragEvent) {
-    this.updateEventVectors(event);
-
-    this.previousEvent = this.currentEvent;
-    this.currentEvent = event;
-    this.finalEvent = event;
   }
 }

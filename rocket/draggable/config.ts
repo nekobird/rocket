@@ -16,6 +16,8 @@ export interface DragConstraints {
 export interface DraggableConfig {
   target?: HTMLElement;
 
+  startingPosition: Vector2;
+
   lockDirection: boolean;
   lockDirectionAxis: 'x' | 'y';
 
@@ -30,6 +32,8 @@ export interface DraggableConfig {
 }
 
 export const DRAGGABLE_DEFAULT_CONFIG: DraggableConfig = {
+  startingPosition: new Vector2(),
+
   lockDirection: false,
   lockDirectionAxis: 'y',
 

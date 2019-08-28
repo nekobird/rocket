@@ -85,8 +85,6 @@ export class SensorHub {
         ) {
           const story = new PolyDragStory(this.polyDrag, event);
 
-          story.addEvent(event);
-
           if (this.activeStories.length === 0) {
             this.addActiveStoryAndIdentifier(story);
 

@@ -9,10 +9,13 @@ import {
 
 import {
   MonoDragEvent,
+  MonoDragEventIdentifier,
 } from './mono-drag-event';
 
 export class MonoDragStory {
   public monoDrag: MonoDrag;
+
+  public identifier: MonoDragEventIdentifier;
 
   public offset: Vector2;
 
@@ -26,7 +29,10 @@ export class MonoDragStory {
   public currentEvent: MonoDragEvent | null = null;
   public finalEvent: MonoDragEvent | null = null;
 
-  constructor(monoDrag: MonoDrag) {
+  public startTime: number;
+  public endTime: number | null = null;
+
+  constructor(monoDrag: MonoDrag, event: MonoDragEvent) {
     this.monoDrag = monoDrag;
 
     this.offset = new Vector2();
@@ -35,9 +41,17 @@ export class MonoDragStory {
     this.previousVelocity = new Vector2();
 
     this.history = [];
+
+    this.identifier = event.identifier;
+
+    this.startTime = event.time;
   }
 
   public addEvent(event: MonoDragEvent) {
+    if (this.identifier !== event.identifier) {
+      return;
+    }
+
     this.preventDefault(event);
 
     this.addEventToHistory(event);
@@ -82,6 +96,8 @@ export class MonoDragStory {
     this.previousEvent = this.currentEvent;
     this.currentEvent = event;
     this.finalEvent = event;
+
+    this.endTime = event.time;
   }
 
   private preventDefault(event: MonoDragEvent) {

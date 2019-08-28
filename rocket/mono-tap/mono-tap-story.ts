@@ -10,7 +10,7 @@ import {
 export class MonoTapStory {
   public monoTap: MonoTap;
 
-  public identifier?: MonoTapEventIdentifier;
+  public identifier: MonoTapEventIdentifier;
 
   public isActive: boolean = false;
   public isCancelled: boolean = false;
@@ -20,13 +20,17 @@ export class MonoTapStory {
   public upEvent?: MonoTapEvent;
   public cancelEvent?: MonoTapEvent;
 
-  public startTime?: number;
+  public startTime: number;
   public endTime?: number;
 
-  constructor(monoTap: MonoTap, tapEvent: MonoTapEvent) {
+  constructor(monoTap: MonoTap, event: MonoTapEvent) {
     this.monoTap = monoTap;
 
-    this.addMonoTapEvent(tapEvent);
+    this.identifier = event.identifier;
+
+    this.startTime = event.time;
+
+    this.addEvent(event);
   }
 
   public get duration(): number | null {
@@ -41,33 +45,32 @@ export class MonoTapStory {
     return null;
   }
 
-  public addMonoTapEvent(tapEvent: MonoTapEvent) {
-    this.preventDefault(tapEvent);
+  public addEvent(event: MonoTapEvent) {
+    if (this.identifier !== event.identifier) {
+      return;
+    }
 
-    switch (tapEvent.type) {
+    this.preventDefault(event);
+
+    switch (event.type) {
       case 'down': {
         if (
           this.isActive === false
           && this.hasEnded === false
         ) {
-          this.identifier = tapEvent.identifier;
+          this.downEvent = event;
 
-          this.downEvent = tapEvent;
-
-          this.startTime = tapEvent.time;
+          this.startTime = event.time;
 
           this.isActive = true;
         }
       }
 
       case 'up': {
-        if (
-          this.isActive === true
-          && tapEvent.identifier === this.identifier
-        ) {
-          this.upEvent = tapEvent;
+        if (this.isActive === true) {
+          this.upEvent = event;
 
-          this.endTime = tapEvent.time;
+          this.endTime = event.time;
 
           this.isActive = false;
           this.hasEnded = true;
@@ -75,13 +78,10 @@ export class MonoTapStory {
       }
 
       case 'cancel': {
-        if (
-          this.isActive === true
-          && tapEvent.identifier === this.identifier
-        ) {
-          this.cancelEvent = tapEvent;
+        if (this.isActive === true) {
+          this.cancelEvent = event;
 
-          this.endTime = tapEvent.time;
+          this.endTime = event.time;
 
           this.isActive = false;
           this.hasEnded = true;

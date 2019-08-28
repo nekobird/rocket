@@ -33,20 +33,4 @@ export class Draggable {
       preventDefault,
     });
   }
-
-  private onDragStart() {
-
-  }
-
-  private onDrag() {
-
-  }
-
-  private onDragStop() {
-
-  }
-
-  private onDragCancel() {
-
-  }
 }

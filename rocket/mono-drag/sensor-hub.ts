@@ -89,9 +89,7 @@ export class SensorHub {
           this.isActive(event) === false
           && config.condition(event, this.monoDrag) === true
         ) {
-          const story = new MonoDragStory(this.monoDrag);          
-
-          story.addEvent(event);
+          const story = new MonoDragStory(this.monoDrag, event);
 
           this.currentStory = story;
 

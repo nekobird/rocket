@@ -92,7 +92,7 @@ export class SensorHub {
         const story = this.getStoryFromEvent(event);
 
         if (story !== null) {
-          story.addMonoTapEvent(event);
+          story.addEvent(event);
 
           const {
             onUp,
@@ -120,7 +120,7 @@ export class SensorHub {
         const story = this.getStoryFromEvent(event);
 
         if (story !== null) {
-          story.addMonoTapEvent(event);
+          story.addEvent(event);
 
           this.monoTap.config.onCancel(event, story, this.monoTap);
 
