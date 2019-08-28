@@ -7,6 +7,10 @@ import {
   SensorHub,
 } from './sensor-hub';
 
+import {
+  MonoDragStory
+} from './mono-drag-story';
+
 export class MonoDrag {
   public config: MonoDragConfig;
 
@@ -28,5 +32,29 @@ export class MonoDrag {
     }
 
     return this;
+  }
+
+  public listen() {
+    this.sensorHub.listen();
+  }
+
+  public stopListening() {
+    this.sensorHub.stopListening();
+  }
+
+  public get history(): MonoDragStory[] {
+    return this.sensorHub.history;
+  }
+
+  public get activeStory(): MonoDragStory | null {
+    return this.sensorHub.activeStory;
+  }
+
+  public get currentStory(): MonoDragStory | null {
+    return this.sensorHub.currentStory;
+  }
+
+  public get previousStory(): MonoDragStory | null {
+    return this.sensorHub.previousStory;
   }
 }

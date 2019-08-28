@@ -30,11 +30,11 @@ export class SensorHub {
 
   public isListening: boolean = false;
 
+  public previousStory: MonoTapStory | null = null;
+
   public activeStories: MonoTapStory[];
 
   public history: MonoTapStory[];
-
-  public previousStory?: MonoTapStory;
 
   constructor(monoTap: MonoTap) {
     this.monoTap = monoTap;
