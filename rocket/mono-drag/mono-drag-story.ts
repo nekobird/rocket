@@ -47,6 +47,14 @@ export class MonoDragStory {
     this.startTime = event.time;
   }
 
+  public get duration(): number | null {
+    if (this.endTime === null) {
+      return null;
+    }
+
+    return this.startTime - this.endTime;
+  }
+
   public addEvent(event: MonoDragEvent) {
     if (this.identifier !== event.identifier) {
       return;
@@ -77,20 +85,20 @@ export class MonoDragStory {
       }
 
       case 'stop': {
-        this.handleStopOrCancelEvent(event);
+        this.addStopOrCancelEvent(event);
 
         break;
       }
 
       case 'cancel': {
-        this.handleStopOrCancelEvent(event);
+        this.addStopOrCancelEvent(event);
 
         break;
       }
     }
   }
 
-  private handleStopOrCancelEvent(event: MonoDragEvent) {
+  private addStopOrCancelEvent(event: MonoDragEvent) {
     this.updateEventVectors(event);
 
     this.previousEvent = this.currentEvent;
