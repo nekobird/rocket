@@ -20,6 +20,10 @@ if (boxElement !== null) {
       const { x, y } = position;
 
       box.style.transform = `translate(${x}px, ${y}px)`;
+    },
+
+    onDragEnd: (event, story) => {
+      console.log(story.currentEvent.type);
     }
   });
 }

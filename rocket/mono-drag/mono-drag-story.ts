@@ -45,6 +45,8 @@ export class MonoDragStory {
     this.identifier = event.identifier;
 
     this.startTime = event.time;
+
+    this.addEvent(event);
   }
 
   public get duration(): number | null {
@@ -153,12 +155,13 @@ export class MonoDragStory {
         this.previousPosition,
       );
 
+      event.velocity.equals(velocity);
+
       const acceleration = Vector2.subtract(
         event.velocity,
         this.previousVelocity,
       );
 
-      event.velocity.equals(velocity);
       event.acceleration.equals(acceleration);
     }
 

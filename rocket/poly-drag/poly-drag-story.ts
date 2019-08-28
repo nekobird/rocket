@@ -141,12 +141,13 @@ export class PolyDragStory {
         this.previousPosition,
       );
 
+      event.velocity.equals(velocity);
+
       const acceleration = Vector2.subtract(
         event.velocity,
         this.previousVelocity,
       );
 
-      event.velocity.equals(velocity);
       event.acceleration.equals(acceleration);
     }
 
