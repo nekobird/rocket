@@ -30,7 +30,6 @@ export interface PolyDragConfig {
 
   onEvent: (
     polyDragEvent: PolyDragEvent,
-    polyDragStory: PolyDragStory,
     polyDrag: PolyDrag,
   ) => void;
 

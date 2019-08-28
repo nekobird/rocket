@@ -15,24 +15,24 @@ import {
 export class PolyDragStory {
   public polyDrag: PolyDrag;
 
-  public identifier?: PolyDragEventIdentifier;
+  public identifier: PolyDragEventIdentifier;
 
   public offset: Vector2;
 
   public previousPosition: Vector2;
   public previousVelocity: Vector2;
 
-  public startingPolyDragEvent: PolyDragEvent | null = null;
-  public previousPolyDragEvent: PolyDragEvent | null = null;
-  public currentPolyDragEvent: PolyDragEvent | null = null;
-  public finalPolyDragEvent: PolyDragEvent | null = null;
+  public startingEvent: PolyDragEvent | null = null;
+  public previousEvent: PolyDragEvent | null = null;
+  public currentEvent: PolyDragEvent | null = null;
+  public finalEvent: PolyDragEvent | null = null;
 
   public history: PolyDragEvent[];
 
   public startTime?: number;
   public endTime?: number;
 
-  constructor(polyDrag: PolyDrag) {
+  constructor(polyDrag: PolyDrag, event: PolyDragEvent) {
     this.polyDrag = polyDrag;
 
     this.history = [];
@@ -41,62 +41,66 @@ export class PolyDragStory {
     this.previousVelocity = new Vector2();
 
     this.offset = new Vector2();
+
+    this.identifier = event.identifier;
+
+    this.addEvent(event);
   }
 
-  public addPolyDragEvent(polyDragEvent: PolyDragEvent) {
-    if (polyDragEvent.type === 'start') {
-      this.identifier = polyDragEvent.identifier;
+  public addEvent(event: PolyDragEvent) {
+    if (event.type === 'start') {
+      this.identifier = event.identifier;
     }
 
-    if (this.isValidPolyDragEvent(polyDragEvent) === false) {
+    if (this.isValidEvent(event) === false) {
       return;
     }
 
-    this.addPolyDragEventToHistory(polyDragEvent);
+    this.addEventToHistory(event);
 
-    switch (polyDragEvent.type) {
+    switch (event.type) {
       case 'start': {
-        this.startingPolyDragEvent = polyDragEvent;
-        this.currentPolyDragEvent = polyDragEvent;
-        this.previousPolyDragEvent = polyDragEvent;
+        this.startingEvent = event;
+        this.currentEvent = event;
+        this.previousEvent = event;
 
-        this.updateOffset(polyDragEvent.position);
+        this.updateOffset(event.position);
 
         break;
       }
 
       case 'drag': {
-        this.updatePolyDragEventVectors(polyDragEvent);
+        this.updateEventVectors(event);
 
-        this.previousPolyDragEvent = this.currentPolyDragEvent;
-        this.currentPolyDragEvent = polyDragEvent;
+        this.previousEvent = this.currentEvent;
+        this.currentEvent = event;
 
         break;
       }
 
       case 'stop': {
-        this.addStopOrCancelPolyDragEvent(polyDragEvent);
+        this.addStopOrCancelEvent(event);
 
         break;
       }
 
       case 'cancel': {
-        this.addStopOrCancelPolyDragEvent(polyDragEvent);
+        this.addStopOrCancelEvent(event);
 
         break;
       }
     }
   }
 
-  private isValidPolyDragEvent(polyDragEvent: PolyDragEvent): boolean {
-    return polyDragEvent.identifier === this.identifier;
+  private isValidEvent(event: PolyDragEvent): boolean {
+    return event.identifier === this.identifier;
   }
 
-  private addPolyDragEventToHistory(polyDragEvent: PolyDragEvent) {
+  private addEventToHistory(event: PolyDragEvent) {
     const { config } = this.polyDrag;
 
     if (config.keepPolyDragEventHistory === true) {
-      this.history.push(polyDragEvent);
+      this.history.push(event);
     }
   }
 
@@ -119,31 +123,31 @@ export class PolyDragStory {
     }
   }
 
-  private updatePolyDragEventVectors(polyDragEvent: PolyDragEvent) {
-    if (polyDragEvent.type !== 'start') {
+  private updateEventVectors(event: PolyDragEvent) {
+    if (event.type !== 'start') {
       const velocity = Vector2.subtract(
-        polyDragEvent.position,
+        event.position,
         this.previousPosition,
       );
 
       const acceleration = Vector2.subtract(
-        polyDragEvent.velocity,
+        event.velocity,
         this.previousVelocity,
       );
 
-      polyDragEvent.velocity.equals(velocity);
-      polyDragEvent.acceleration.equals(acceleration);
+      event.velocity.equals(velocity);
+      event.acceleration.equals(acceleration);
     }
 
-    this.previousPosition.equals(polyDragEvent.position);
-    this.previousVelocity.equals(polyDragEvent.velocity);
+    this.previousPosition.equals(event.position);
+    this.previousVelocity.equals(event.velocity);
   }
 
-  private addStopOrCancelPolyDragEvent(polyDragEvent: PolyDragEvent) {
-    this.updatePolyDragEventVectors(polyDragEvent);
+  private addStopOrCancelEvent(event: PolyDragEvent) {
+    this.updateEventVectors(event);
 
-    this.previousPolyDragEvent = this.currentPolyDragEvent;
-    this.currentPolyDragEvent = polyDragEvent;
-    this.finalPolyDragEvent = polyDragEvent;
+    this.previousEvent = this.currentEvent;
+    this.currentEvent = event;
+    this.finalEvent = event;
   }
 }

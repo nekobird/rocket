@@ -23,7 +23,7 @@ export class PolyDrag {
 
     this.sensorHub = new SensorHub(this);
 
-    this.sensorHub.attach();
+    this.sensorHub.listen();
   }
 
   public setConfig(config: Partial<PolyDragConfig>): this {
@@ -34,11 +34,11 @@ export class PolyDrag {
     return this;
   }
 
-  public get activeDragStories(): DragStory[] {
-    return this.sensorHub.activeDragStories;
+  public get activeStories(): PolyDragStory[] {
+    return this.sensorHub.activeStories;
   }
 
-  public get history(): DragStory[] {
+  public get history(): PolyDragStory[] {
     return this.sensorHub.history;
   }
 
@@ -49,10 +49,10 @@ export class PolyDrag {
   }
 
   public attach() {
-    this.sensorHub.attach();
+    this.sensorHub.listen();
   }
 
   public detach() {
-    this.sensorHub.detach();
+    this.sensorHub.stopListening();
   }
 }
