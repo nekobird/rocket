@@ -9,11 +9,12 @@ export class Ticker {
   public isActive: boolean = false;
 
   public timeStart: number = 0;
+
   public timeEnd: number = 0;
 
   public progress: number = 0;
 
-  public count: number = 0;
+  public tickCount: number = 0;
 
   private requestAnimationFrameId?: number;
 
@@ -25,10 +26,12 @@ export class Ticker {
     this.setConfig(config);
   }
 
-  public setConfig(config: Partial<TickerConfig>) {
+  public setConfig(config: Partial<TickerConfig>): this {
     if (typeof config === 'object') {
       Object.assign(this.config, config);
     }
+
+    return this;
   }
 
   public start() {
@@ -55,7 +58,7 @@ export class Ticker {
 
       this.progress = 0;
 
-      this.count = 0;
+      this.tickCount = 0;
 
       this.isActive = false;
 
@@ -69,14 +72,20 @@ export class Ticker {
 
       const n = this.config.timingFunction(this.progress);
 
-      this.config.onTick(n, this.count, this);
+      this.config.onTick(n, this.tickCount, this);
 
-      this.count++;
+      this.tickCount++;
 
-      if (this.progress < 1) {
+      if (this.progress <= 1) {
         this.continueLoop();
       } else {
-        this.stop();
+        if (this.config.loopForever === true) {
+          this.progress = 0;
+
+          this.continueLoop();
+        } else {
+          this.stop();
+        }
       }
     }
   }
@@ -94,18 +103,14 @@ export class Ticker {
   private updateProgress() {
     const { durationInSeconds, loopForever } = this.config;
 
-    if (loopForever === true) {
-      this.progress = 0;
-    } else {
-      const now = Date.now();
+    const now = Date.now();
 
-      const durationInMilliseconds = durationInSeconds * 1000;
+    const durationInMilliseconds = durationInSeconds * 1000;
 
-      this.progress = (now - this.timeStart) / durationInMilliseconds;
+    this.progress = (now - this.timeStart) / durationInMilliseconds;
 
-      if (this.progress > 1) {
-        this.progress = 1;
-      }
+    if (this.progress > 1) {
+      this.progress = 1;
     }
   }
 }
