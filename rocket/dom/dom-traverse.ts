@@ -72,7 +72,6 @@ export class DOMTraverse {
 
     let currentElement: HTMLElement | null = from;
 
-    console.log(currentElement);
     while (
       currentElement !== null
       && currentElement !== document.documentElement
