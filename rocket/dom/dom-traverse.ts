@@ -226,37 +226,33 @@ export class DOMTraverse {
       candidates = elements as HTMLElement[];
     }
 
-    const identifyElement = element => {
-      return candidates.indexOf(element) !== -1;
-    }
+    const identifyElement = element => candidates.indexOf(element) !== -1;
 
-    return this.findAncestor(from, identifyElement, false) !== false ? true : false;
+    return this.findAncestor(from, identifyElement, false) !== false;
   }
 
   public static hasDescendant(
     from: HTMLElement,
     elements: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
   ): boolean {
-    const identifyElement: DOMTraverseIdentifyElementFunction = element => {
-      if (
-        Array.isArray(elements) === true
-        && DOMUtil.isHTMLElement(...elements as HTMLElement[]) === true
-      ) {
-        elements = elements as HTMLElement[];
+    let candidates: HTMLElement[] = [];
 
-        return elements.indexOf(element) !== -1;
-      } else if (
-        DOMUtil.isNodeListOfHTMLElement(elements) === true
-      ) {
-        elements = elements as NodeListOf<HTMLElement>;
-        
-        return [...elements].indexOf(element) !== -1;
-      } else {
-        return element === elements;
-      }
-    };
+    if (DOMUtil.isHTMLElement(elements) === true) {
+      candidates = [elements as HTMLElement];
+    } else if (
+      DOMUtil.isNodeListOfHTMLElement(elements) === true
+    ) {
+      candidates = [...elements as NodeListOf<HTMLElement>] as HTMLElement[]
+    } else if (
+      Array.isArray(elements) === true
+      && DOMUtil.isHTMLElement(...elements as HTMLElement[]) === true
+    ) {
+      candidates = elements as HTMLElement[];
+    }
 
-    return this.findDescendant(from, identifyElement, false) ? true : false;
+    const identifyElement = element => candidates.indexOf(element) !== -1;
+
+    return this.findDescendant(from, identifyElement, false) !== false;
   }
 
   // @siblings
