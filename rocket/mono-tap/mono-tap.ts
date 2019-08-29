@@ -25,7 +25,7 @@ export class MonoTap {
 
     this.sensorHub = new SensorHub(this);
 
-    this.sensorHub.attach();
+    this.listen();
   }
 
   public setConfig(config: Partial<MonoTapConfig>): this {

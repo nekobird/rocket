@@ -373,7 +373,7 @@ export class AnimationCore {
   }
 
   private getCurrentProgress(): number {
-    return Num.modulate(
+    return Num.transform(
       Date.now() + this.progressTimeOffset,
       [this.startTime, this.endTime],
       1,
@@ -387,7 +387,12 @@ export class AnimationCore {
 
     let sign = Num.getSign(offset) * -1;
 
-    let timeOffset = Num.modulate(Math.abs(offset), 1, [this.startTime, this.endTime], true);
+    let timeOffset = Num.transform(
+      Math.abs(offset),
+      1,
+      [this.startTime, this.endTime],
+      true
+    );
 
     this.progressTimeOffset += (timeOffset - this.startTime) * sign;
   }

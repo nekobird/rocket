@@ -94,20 +94,16 @@ export class SensorHub {
         if (story !== null) {
           story.addEvent(event);
 
-          const {
-            onUp,
-            isValidTap,
-            onTap,
-          } = this.monoTap.config;
+          const { config } = this.monoTap;
   
-          onUp(event, story, this.monoTap);
+          config.onUp(event, story, this.monoTap);
   
-          if (isValidTap(event, story, this.monoTap) === true) {
+          if (config.isValidTap(event, story, this.monoTap) === true) {
             this.previousStory = story;
+
+            config.onTap(event, story, this.monoTap);
   
-            this.addStoryToHistory(story);
-  
-            onTap(event, story, this.monoTap);
+            this.addStoryToHistory(story);            
           }
   
           this.removeActiveStory(story);  

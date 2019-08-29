@@ -2,6 +2,7 @@ import {
   Repeater,
   Ticker,
   MonoDrag,
+  MonoTap,
   Vector2,
 } from '../../rocket/rocket';
 
@@ -27,6 +28,25 @@ if (boxElement !== null) {
     }
   });
 }
+
+let tapElement = document.querySelector('.tap');
+
+if (tapElement !== null) {
+  const monoTap = new MonoTap({
+    target: tapElement as HTMLElement,
+
+    onTap: () => {
+      alert('tap');
+    },
+
+    onUp: () => {
+    }
+  });
+}
+
+// tapElement.addEventListener('click', () => {
+//   alert('test');
+// });
 
 // const repeater = new Repeater({
 //   numberOfRepeatsPerSecond: 60,

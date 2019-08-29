@@ -91,7 +91,10 @@ export class Viewport {
     if (scrollingIsDisabled === true) {
       if (
         scrollingIsLocked === false
-        || (scrollingIsLocked === true && unlock === true)
+        || (
+          scrollingIsLocked === true
+          && unlock === true
+        )
       ) {
         document.documentElement.style.removeProperty('overflow-x');
         document.documentElement.style.removeProperty('overflow-y');

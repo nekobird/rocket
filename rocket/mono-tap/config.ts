@@ -63,7 +63,7 @@ export interface MonoTapConfig {
 export const MONO_TAP_DEFAULT_CONFIG = {
   keepHistory: false,
 
-  preventDefault: false,
+  preventDefault: true,
 
   condition: () => true,
 
