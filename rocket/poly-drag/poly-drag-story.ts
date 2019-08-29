@@ -22,7 +22,7 @@ export class PolyDragStory {
   public previousPosition: Vector2;
   public previousVelocity: Vector2;
 
-  public startingEvent: PolyDragEvent | null = null;
+  public startingEvent: PolyDragEvent;
   public previousEvent: PolyDragEvent | null = null;
   public currentEvent: PolyDragEvent | null = null;
   public finalEvent: PolyDragEvent | null = null;
@@ -31,6 +31,8 @@ export class PolyDragStory {
 
   public startTime: number;
   public endTime?: number;
+
+  public maximumTranslationDistance: number = 0;
 
   constructor(polyDrag: PolyDrag, event: PolyDragEvent) {
     this.polyDrag = polyDrag;
@@ -46,7 +48,17 @@ export class PolyDragStory {
 
     this.startTime = event.time;
 
+    this.startingEvent = event;
+
     this.addEvent(event);
+  }
+
+  public get translationDistance(): number | null {
+    if (this.finalEvent !== null) {
+      return Vector2.getDistanceBetween(this.startingEvent.position, this.finalEvent.position);
+    }
+
+    return null;
   }
 
   public addEvent(event: PolyDragEvent) {
@@ -73,6 +85,8 @@ export class PolyDragStory {
         this.previousEvent = this.currentEvent;
         this.currentEvent = event;
 
+        this.updateMaximumTranslationDistance(event);
+
         break;
       }
 
@@ -97,7 +111,17 @@ export class PolyDragStory {
     this.currentEvent = event;
     this.finalEvent = event;
 
+    this.updateMaximumTranslationDistance(event);
+
     this.endTime = event.time;
+  }
+
+  private updateMaximumTranslationDistance(event: PolyDragEvent) {
+    const distance = Vector2.getDistanceBetween(this.startingEvent.position, event.position);
+
+    if (distance > this.maximumTranslationDistance) {
+      this.maximumTranslationDistance = distance;
+    }
   }
 
   private addEventToHistory(event: PolyDragEvent): boolean {

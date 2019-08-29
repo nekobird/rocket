@@ -1,4 +1,8 @@
 import {
+  Vector2,
+} from '../rocket';
+
+import {
   MonoTapEvent,
   MonoTapEventIdentifier,
 } from './mono-tap-event';
@@ -16,9 +20,9 @@ export class MonoTapStory {
   public isCancelled: boolean = false;
   public hasEnded: boolean = false;
 
-  public downEvent?: MonoTapEvent;
-  public upEvent?: MonoTapEvent;
-  public cancelEvent?: MonoTapEvent;
+  public downEvent: MonoTapEvent;
+  public upEvent: MonoTapEvent | null = null;
+  public cancelEvent: MonoTapEvent | null = null;
 
   public startTime: number;
   public endTime?: number;
@@ -30,6 +34,8 @@ export class MonoTapStory {
 
     this.startTime = event.time;
 
+    this.downEvent = event;
+
     this.addEvent(event);
   }
 
@@ -40,6 +46,14 @@ export class MonoTapStory {
       && typeof this.endTime === 'number'
     ) {
       return this.startTime - this.endTime;
+    }
+
+    return null;
+  }
+
+  public get translationDistance(): number | null {
+    if (this.upEvent !== null) {
+      return Vector2.getDistanceBetween(this.downEvent.position, this.upEvent.position);
     }
 
     return null;

@@ -15,6 +15,8 @@ export interface MonoTapConfig {
 
   offsetFrom?: HTMLElement;
 
+  positionThreshold: number;
+
   keepHistory: boolean;
 
   preventDefault: boolean;
@@ -61,6 +63,8 @@ export interface MonoTapConfig {
 }
 
 export const MONO_TAP_DEFAULT_CONFIG = {
+  positionThreshold: 10,
+
   keepHistory: false,
 
   preventDefault: true,

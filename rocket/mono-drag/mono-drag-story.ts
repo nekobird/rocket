@@ -24,13 +24,15 @@ export class MonoDragStory {
 
   public history: MonoDragEvent[];
 
-  public startingEvent: MonoDragEvent | null = null;
+  public startingEvent: MonoDragEvent;
   public previousEvent: MonoDragEvent | null = null;
   public currentEvent: MonoDragEvent | null = null;
   public finalEvent: MonoDragEvent | null = null;
 
   public startTime: number;
   public endTime: number | null = null;
+
+  public maximumTranslationDistance: number = 0;
 
   constructor(monoDrag: MonoDrag, event: MonoDragEvent) {
     this.monoDrag = monoDrag;
@@ -46,6 +48,8 @@ export class MonoDragStory {
 
     this.startTime = event.time;
 
+    this.startingEvent = event;
+
     this.addEvent(event);
   }
 
@@ -55,6 +59,14 @@ export class MonoDragStory {
     }
 
     return this.startTime - this.endTime;
+  }
+
+  public get translationDistance(): number | null {
+    if (this.finalEvent !== null) {
+      return Vector2.getDistanceBetween(this.startingEvent.position, this.finalEvent.position);
+    }
+
+    return null;
   }
 
   public addEvent(event: MonoDragEvent) {
@@ -83,6 +95,8 @@ export class MonoDragStory {
         this.previousEvent = this.currentEvent;
         this.currentEvent = event;
 
+        this.updateMaximumTranslationDistance(event);
+
         break;
       }
 
@@ -100,6 +114,14 @@ export class MonoDragStory {
     }
   }
 
+  private updateMaximumTranslationDistance(event: MonoDragEvent) {
+    const distance = Vector2.getDistanceBetween(this.startingEvent.position, event.position);
+
+    if (distance > this.maximumTranslationDistance) {
+      this.maximumTranslationDistance = distance;
+    }
+  }
+
   private addStopOrCancelEvent(event: MonoDragEvent) {
     this.updateEventVectors(event);
 
@@ -108,6 +130,8 @@ export class MonoDragStory {
     this.finalEvent = event;
 
     this.endTime = event.time;
+
+    this.updateMaximumTranslationDistance(event);
   }
 
   private preventDefault(event: MonoDragEvent) {
