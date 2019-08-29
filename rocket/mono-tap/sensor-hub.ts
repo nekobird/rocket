@@ -1,4 +1,5 @@
 import {
+  DOMTraverse,
   Util,
 } from '../rocket';
 
@@ -95,15 +96,17 @@ export class SensorHub {
           story.addEvent(event);
 
           const { config } = this.monoTap;
-  
-          config.onUp(event, story, this.monoTap);
-  
-          if (config.isValidTap(event, story, this.monoTap) === true) {
+
+          if (
+            story.upEvent !== null
+            && DOMTraverse.hasAncestor(story.upEvent.target as HTMLElement, config.target as HTMLElement) === true
+            && config.isValidTap(event, story, this.monoTap) === true
+          ) {
             this.previousStory = story;
 
             config.onTap(event, story, this.monoTap);
   
-            this.addStoryToHistory(story);            
+            this.addStoryToHistory(story);        
           }
   
           this.removeActiveStory(story);  

@@ -72,6 +72,7 @@ export class DOMTraverse {
 
     let currentElement: HTMLElement | null = from;
 
+    console.log(currentElement);
     while (
       currentElement !== null
       && currentElement !== document.documentElement
@@ -209,33 +210,33 @@ export class DOMTraverse {
   public static hasAncestor(
     from: HTMLElement,
     elements: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
-  ): DOMTraverseResult {
+  ): boolean {
+    let candidates: HTMLElement[] = [];
+
+    if (DOMUtil.isHTMLElement(elements) === true) {
+      candidates = [elements as HTMLElement];
+    } else if (
+      DOMUtil.isNodeListOfHTMLElement(elements) === true
+    ) {
+      candidates = [...elements as NodeListOf<HTMLElement>] as HTMLElement[]
+    } else if (
+      Array.isArray(elements) === true
+      && DOMUtil.isHTMLElement(...elements as HTMLElement[]) === true
+    ) {
+      candidates = elements as HTMLElement[];
+    }
+
     const identifyElement = element => {
-      if (
-        Array.isArray(elements) === true
-        && DOMUtil.isHTMLElement(...elements as HTMLElement[]) === true
-      ) {
-        elements = elements as HTMLElement[];
+      return candidates.indexOf(element) !== -1;
+    }
 
-        return elements.indexOf(element) !== -1;
-      } else if (
-        DOMUtil.isNodeListOfHTMLElement(elements) === true
-      ) {
-        elements = elements as NodeListOf<HTMLElement>;
-
-        return [...elements].indexOf(element) !== -1;
-      } else {
-        return element === elements;
-      }
-    };
-
-    return this.findAncestor(from, identifyElement, false);
+    return this.findAncestor(from, identifyElement, false) !== false ? true : false;
   }
 
   public static hasDescendant(
     from: HTMLElement,
     elements: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
-  ): DOMTraverseResult {
+  ): boolean {
     const identifyElement: DOMTraverseIdentifyElementFunction = element => {
       if (
         Array.isArray(elements) === true
@@ -255,7 +256,7 @@ export class DOMTraverse {
       }
     };
 
-    return this.findDescendant(from, identifyElement, false);
+    return this.findDescendant(from, identifyElement, false) ? true : false;
   }
 
   // @siblings

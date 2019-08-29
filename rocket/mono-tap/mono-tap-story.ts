@@ -78,6 +78,8 @@ export class MonoTapStory {
 
           this.isActive = true;
         }
+
+        break;
       }
 
       case 'up': {
@@ -89,6 +91,8 @@ export class MonoTapStory {
           this.isActive = false;
           this.hasEnded = true;
         }
+
+        break;
       }
 
       case 'cancel': {
@@ -101,6 +105,8 @@ export class MonoTapStory {
           this.hasEnded = true;
           this.isCancelled = true;
         }
+
+        break;
       }
     }
   }
