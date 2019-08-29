@@ -32,7 +32,7 @@ export class MonoDragStory {
   public startTime: number;
   public endTime: number | null = null;
 
-  public maximumTranslationDistance: number = 0;
+  public maxTranslationDistance: number = 0;
 
   constructor(monoDrag: MonoDrag, event: MonoDragEvent) {
     this.monoDrag = monoDrag;
@@ -95,7 +95,7 @@ export class MonoDragStory {
         this.previousEvent = this.currentEvent;
         this.currentEvent = event;
 
-        this.updateMaximumTranslationDistance(event);
+        this.updateMaxTranslationDistance(event);
 
         break;
       }
@@ -114,11 +114,11 @@ export class MonoDragStory {
     }
   }
 
-  private updateMaximumTranslationDistance(event: MonoDragEvent) {
+  private updateMaxTranslationDistance(event: MonoDragEvent) {
     const distance = Vector2.getDistanceBetween(this.startingEvent.position, event.position);
 
-    if (distance > this.maximumTranslationDistance) {
-      this.maximumTranslationDistance = distance;
+    if (distance > this.maxTranslationDistance) {
+      this.maxTranslationDistance = distance;
     }
   }
 
@@ -131,7 +131,7 @@ export class MonoDragStory {
 
     this.endTime = event.time;
 
-    this.updateMaximumTranslationDistance(event);
+    this.updateMaxTranslationDistance(event);
   }
 
   private preventDefault(event: MonoDragEvent) {

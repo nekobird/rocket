@@ -32,7 +32,7 @@ export class PolyDragStory {
   public startTime: number;
   public endTime?: number;
 
-  public maximumTranslationDistance: number = 0;
+  public maxTranslationDistance: number = 0;
 
   constructor(polyDrag: PolyDrag, event: PolyDragEvent) {
     this.polyDrag = polyDrag;
@@ -85,7 +85,7 @@ export class PolyDragStory {
         this.previousEvent = this.currentEvent;
         this.currentEvent = event;
 
-        this.updateMaximumTranslationDistance(event);
+        this.updateMaxTranslationDistance(event);
 
         break;
       }
@@ -111,16 +111,16 @@ export class PolyDragStory {
     this.currentEvent = event;
     this.finalEvent = event;
 
-    this.updateMaximumTranslationDistance(event);
+    this.updateMaxTranslationDistance(event);
 
     this.endTime = event.time;
   }
 
-  private updateMaximumTranslationDistance(event: PolyDragEvent) {
+  private updateMaxTranslationDistance(event: PolyDragEvent) {
     const distance = Vector2.getDistanceBetween(this.startingEvent.position, event.position);
 
-    if (distance > this.maximumTranslationDistance) {
-      this.maximumTranslationDistance = distance;
+    if (distance > this.maxTranslationDistance) {
+      this.maxTranslationDistance = distance;
     }
   }
 
