@@ -208,21 +208,21 @@ export class DOMTraverse {
 
   public static hasAncestor(
     from: HTMLElement,
-    elements: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
+    options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
   ): boolean {
     let candidates: HTMLElement[] = [];
 
-    if (DOMUtil.isHTMLElement(elements) === true) {
-      candidates = [elements as HTMLElement];
+    if (DOMUtil.isHTMLElement(options) === true) {
+      candidates = [options as HTMLElement];
     } else if (
-      DOMUtil.isNodeListOfHTMLElement(elements) === true
+      DOMUtil.isNodeListOfHTMLElement(options) === true
     ) {
-      candidates = [...elements as NodeListOf<HTMLElement>] as HTMLElement[]
+      candidates = [...options as NodeListOf<HTMLElement>] as HTMLElement[]
     } else if (
-      Array.isArray(elements) === true
-      && DOMUtil.isHTMLElement(...elements as HTMLElement[]) === true
+      Array.isArray(options) === true
+      && DOMUtil.isHTMLElement(...options as HTMLElement[]) === true
     ) {
-      candidates = elements as HTMLElement[];
+      candidates = options as HTMLElement[];
     }
 
     const identifyElement = element => candidates.indexOf(element) !== -1;
@@ -232,21 +232,21 @@ export class DOMTraverse {
 
   public static hasDescendant(
     from: HTMLElement,
-    elements: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
+    options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
   ): boolean {
     let candidates: HTMLElement[] = [];
 
-    if (DOMUtil.isHTMLElement(elements) === true) {
-      candidates = [elements as HTMLElement];
+    if (DOMUtil.isHTMLElement(options) === true) {
+      candidates = [options as HTMLElement];
     } else if (
-      DOMUtil.isNodeListOfHTMLElement(elements) === true
+      DOMUtil.isNodeListOfHTMLElement(options) === true
     ) {
-      candidates = [...elements as NodeListOf<HTMLElement>] as HTMLElement[]
+      candidates = [...options as NodeListOf<HTMLElement>] as HTMLElement[]
     } else if (
-      Array.isArray(elements) === true
-      && DOMUtil.isHTMLElement(...elements as HTMLElement[]) === true
+      Array.isArray(options) === true
+      && DOMUtil.isHTMLElement(...options as HTMLElement[]) === true
     ) {
-      candidates = elements as HTMLElement[];
+      candidates = options as HTMLElement[];
     }
 
     const identifyElement = element => candidates.indexOf(element) !== -1;

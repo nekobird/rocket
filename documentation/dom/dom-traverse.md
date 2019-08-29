@@ -201,7 +201,7 @@ findDescendantWithId(
 hasAncestor(
   from: HTMLElement,
   options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
-): DOMTraverseResult
+): boolean
 ```
 
 ### `hasDescendant`
@@ -210,7 +210,7 @@ hasAncestor(
 hasDescendant(
   from: HTMLElement,
   options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
-): DOMTraverseResult
+): boolean
 ```
 
 ### `getSiblings`
