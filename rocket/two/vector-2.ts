@@ -23,14 +23,21 @@ export class Vector2 {
   constructor(p: PointLike);
   constructor();
   constructor(a?: number | PointLike, b?: number) {
-    if (typeof a === 'number' && typeof b === 'number') {
+    if (
+      typeof a === 'number'
+      && typeof b === 'number'
+    ) {
       this.x = a;
       this.y = b;
-    } else if (typeof a === 'number' && typeof b !== 'number') {
+    } else if (
+      typeof a === 'number'
+      && typeof b !== 'number'
+    ) {
       this.x = a;
       this.y = a;
     } else if (Point.isPointLike(a) === true) {
       a = a as PointLike;
+
       this.x = a.x;
       this.y = a.y;
     }
@@ -44,10 +51,16 @@ export class Vector2 {
   public equals(p: Point): this;
   public equals(p: PointLike): this;
   public equals(a?: number | PointLike, b?: number): this {
-    if (typeof a === 'number' && typeof b === 'number') {
+    if (
+      typeof a === 'number'
+      && typeof b === 'number'
+    ) {
       this.x = a;
       this.y = b;
-    } else if (typeof a === 'number' && typeof b !== 'number') {
+    } else if (
+      typeof a === 'number'
+      && typeof b !== 'number'
+    ) {
       this.x = a;
       this.y = a;
     } else if (Point.isPointLike(a) === true) {
@@ -61,15 +74,7 @@ export class Vector2 {
   }
 
   public isEqual(...v: PointLike[]): boolean {
-    let isEqual = true;
-
-    v.forEach(p => {
-      if (this.x !== p.x || this.y !== p.y) {
-        isEqual = false;
-      }
-    });
-
-    return isEqual;
+    return v.every(p => this.x === p.x && this.y === p.y);
   }
 
   public toPoint(): Point {
@@ -90,9 +95,10 @@ export class Vector2 {
     return this;
   }
 
-  public constrain(constrain: number): this {
-    this.x = Num.constrain(this.x, constrain);
-    this.y = Num.constrain(this.y, constrain);
+  // TODO: See if this make sense
+  public clamp(by: number): this {
+    this.x = Num.clamp(this.x, by);
+    this.y = Num.clamp(this.y, by);
 
     return this;
   }

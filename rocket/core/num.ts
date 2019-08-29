@@ -29,7 +29,11 @@ export class Num {
   }
 
   public static clamp(value: number, range: NumberOrRange): number {
-    return this.constrain(value, range);
+    range = this.getRangeFromNumberOrRange(range);
+
+    let [min, max] = this.orderRangeArray(range);
+
+    return Math.max(min, Math.min(value, max));
   }
 
   public static within(number: number, range: NumberOrRange): boolean {
