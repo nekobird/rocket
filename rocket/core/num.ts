@@ -3,6 +3,7 @@ import {
   RangeArray,
 } from '../rocket';
 
+// TODO: Rename constrain to clamp?
 export class Num {
 
   private static getRangeFromNumberOrRange(range: NumberOrRange): RangeArray {

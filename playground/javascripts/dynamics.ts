@@ -35,12 +35,14 @@ if (tapElement !== null) {
   const monoTap = new MonoTap({
     target: tapElement as HTMLElement,
 
+    preventDefault: true,
+
     onTap: () => {
       alert('tap');
     },
 
     onUp: () => {
-    }
+    },
   });
 }
 
