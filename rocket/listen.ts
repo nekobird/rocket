@@ -1,29 +1,63 @@
 // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
 
+// export interface EventListenObject {
+//   target: HTMLElement | Window;
+//   event: string;
+//   handler: EventListener;
+//   useCapture: boolean;
+// }
+
+// const activeEvents: EventListenObject[] = [];
+
 export class Listen {
-  public config?;
+  // private stringToEvents(eventsString: string): string[] {
+  //   const events = eventsString.split(',').map(event => event.trim());
 
-  private target: HTMLElement | Window;
+  //   return events.filter(event => {
+  //     const matches = event.match(/^[a-z]+$/g);
 
-  private events: string[];
-  private handler?: EventListener;
+  //     return matches !== null;
+  //   });
+  // }
 
-  constructor(target: HTMLElement | Window) {
-    this.target = target;
+  // private createEventListenObject(events: string[]): string[] {
+  //   const acceptedEvents: string[] = [];
 
-    this.events = [];
-  }
+  //   events.forEach(event => {
+  //     if (this.events.indexOf(event) === -1) {
+  //       acceptedEvents.push(event);
+  //       this.events.push(event);
+  //     }
+  //   });
 
-  public on(
-    eventString: string,
-    handlers: EventListener[] | EventListener
-  ) {
+  //   return acceptedEvents;
+  // }
 
-  }
+  // public static on(
+  //   target: HTMLElement | Window,
+  //   eventsString: string | string[],
+  //   handler: EventListener,
+  //   useCapture: boolean = false,
+  // ) {
+  //   if (
+  //     Array.isArray(eventsString) === true
+  //     && (eventsString as string[]).every(string => typeof string === 'string')
+  //   ) {
+      
+  //   }
+  //   const events = this.stringToEvents(eventsString);
+  //   const acceptedEvents = this.appendEvents(events);
 
-  public off() {
+  //   if (acceptedEvents.length > 0) {
+  //     acceptedEvents.forEach(event => {
+  //       this.target.addEventListener(event );
+  //     });
+  //  }
+  // }
+
+  // public static off() {
     
-  }
+  // }
 
   public static once(
     target: EventTarget,

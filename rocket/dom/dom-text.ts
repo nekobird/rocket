@@ -71,7 +71,11 @@ interface StyleObject {
 }
 
 export class DOMText {
-  public static getTextBoxHeightFromElement(element: HTMLElement, text?: string, styleOverride?: StyleObject): number {
+  public static getTextBoxHeightFromElement(
+    element: HTMLElement,
+    text?: string,
+    styleOverride?: StyleObject,
+  ): number {
     const modelElement = document.createElement('TEXTAREA') as HTMLTextAreaElement;
 
     Object.assign(modelElement.style, TEXT_BOX_MODEL_ATTRIBUTES);
