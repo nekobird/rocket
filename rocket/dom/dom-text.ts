@@ -1,6 +1,8 @@
 import {
   DOMBoxModel,
   DOMStyle,
+  DOMUtil,
+  InputOrTextArea,
 } from '../rocket';
 
 const TEXT_BOX_MODEL_ATTRIBUTES = {
@@ -169,13 +171,8 @@ export class DOMText {
   }
 
   public static getTextFromElement(element: HTMLElement): string {
-    if (
-      element instanceof HTMLTextAreaElement
-      || element instanceof HTMLInputElement
-      || element.nodeName === 'INPUT'
-      || element.nodeName === 'TEXTAREA'
-    ) {
-      return (element as HTMLTextAreaElement | HTMLInputElement).value;
+    if (DOMUtil.isInputOrTextArea(element) === true) {
+      return (element as InputOrTextArea).value;
     }
 
     if (element.textContent !== null) {
@@ -186,13 +183,8 @@ export class DOMText {
   }
 
   public static setElementText(element: HTMLElement, text: string) {
-    if (
-      element instanceof HTMLTextAreaElement
-      || element instanceof HTMLInputElement
-      || element.nodeName === 'INPUT'
-      || element.nodeName === 'TEXTAREA'
-    ) {
-      const input = element as HTMLTextAreaElement | HTMLInputElement;
+    if (DOMUtil.isInputOrTextArea(element) === true) {
+      const input = element as InputOrTextArea;
 
       input.value = text;
     } else {

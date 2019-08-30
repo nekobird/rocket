@@ -1,6 +1,9 @@
 export type HTMLElements = NodeListOf<HTMLElement> | HTMLCollection | HTMLElement[];
 
+export type InputOrTextArea = HTMLTextAreaElement | HTMLInputElement;
+
 export class DOMUtil {
+  
   public static isHTMLElement(...things): boolean {
     if (things.length === 0) {
       return false;
@@ -16,15 +19,7 @@ export class DOMUtil {
       )
     }
 
-    for (let i = 0; i < things.length; i++) {
-      const thing = things[i];
-
-      if (isHTMLElement(thing) === false) {
-        return false;
-      }
-    };
-
-    return true;
+    return things.every(isHTMLElement);
   }
 
   public static isNodeListOfHTMLElement(...things): boolean {
@@ -40,15 +35,7 @@ export class DOMUtil {
       );
     }
 
-    for (let i = 0; i < things.length; i++) {
-      const thing = things[i];
-
-      if (isNodeListOfHTMLElement(thing) === false) {
-        return false;
-      }
-    };
-
-    return true;
+    return things.every(isNodeListOfHTMLElement);
   }
 
   public static isHTMLCollection(...things): boolean {
@@ -63,15 +50,27 @@ export class DOMUtil {
       );
     }
 
-    for (let i = 0; i < things.length; i++) {
-      const thing = things[i];
+    return things.every(isHTMLCollection);
+  }
 
-      if (isHTMLCollection(thing) === false) {
-        return false;
-      }
-    };
+  public static isInputOrTextArea(...things): boolean {
+    if (things.length === 0) {
+      return false;
+    }
 
-    return true;
+    const isInputOrTextArea = thing => {
+      return (
+        typeof thing === 'object'
+        && typeof thing.nodeType === 'number'
+        && thing.nodeType === 1
+        && (
+          (thing.nodeName === 'INPUT' && thing instanceof HTMLInputElement)
+          || (thing.nodeName === 'TEXTAREA' && thing instanceof HTMLTextAreaElement)
+        )
+      );
+    }
+
+    return things.every(isInputOrTextArea);
   }
 
   public static toHTMLElementArray(collection: HTMLElement | HTMLElements): HTMLElement[] {

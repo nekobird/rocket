@@ -89,8 +89,7 @@ export class Num {
     let isExclusive = false;
 
     if (
-      typeof a === 'number'
-      && typeof b === 'number'
+      typeof a === 'number' && typeof b === 'number'
       && (typeof c === 'boolean' || typeof c === 'undefined')
     ) {
       if (typeof c === 'boolean') {
@@ -246,11 +245,7 @@ export class Num {
     }
   }
 
-  public static roundTo(number: number, to?: number): number {
-    if (typeof to !== 'number') {
-      to = 0;
-    }
-
+  public static roundTo(number: number, to: number = 0): number {
     return parseFloat(number.toFixed(to));
   }
 
