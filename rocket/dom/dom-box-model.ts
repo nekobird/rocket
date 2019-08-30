@@ -145,7 +145,7 @@ export class DOMBoxModel {
   }
 
   public static getTotalHorizontalInnerSpace(element: HTMLElement): number {
-    if (DOMStyle.getStyleValue(element, 'box-sizing') === 'border-box') {
+    if (DOMStyle.getBoxSizing(element) === 'border-box') {
       return this.getTotalHorizontalPaddings(element) + this.getTotalHorizontalBorderWidths(element);
     }
 
@@ -153,7 +153,7 @@ export class DOMBoxModel {
   }
 
   public static getTotalVerticalInnerSpace(element: HTMLElement): number {
-    if (DOMStyle.getStyleValue(element, 'box-sizing') === 'border-box') {
+    if (DOMStyle.getBoxSizing(element) === 'border-box') {
       return this.getTotalVerticalPaddings(element) + this.getTotalVerticalBorderWidths(element);
     }
 
@@ -161,7 +161,7 @@ export class DOMBoxModel {
   }
 
   public static getTotalHorizontalOuterSpace(element: HTMLElement): number {
-    if (DOMStyle.getStyleValue(element, 'box-sizing') === 'content-box') {
+    if (DOMStyle.getBoxSizing(element) === 'content-box') {
       return this.getTotalHorizontalMargins(element) + this.getTotalHorizontalBorderWidths(element);
     }
 
@@ -169,7 +169,7 @@ export class DOMBoxModel {
   }
 
   public static getTotalVerticalOuterSpace(element: HTMLElement): number {
-    if (DOMStyle.getStyleValue(element, 'box-sizing') === 'content-box') {
+    if (DOMStyle.getBoxSizing(element) === 'content-box') {
       return this.getTotalVerticalMargins(element) + this.getTotalVerticalBorderWidths(element);
     }
 
