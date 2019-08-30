@@ -38,7 +38,7 @@ export class DOMPoint {
 
     return new Point(
       left + width / 2,
-      top + height / 2
+      top + height / 2,
     );
   }
 
@@ -56,7 +56,7 @@ export class DOMPoint {
 
     return [
       new Point(left, top),
-      new Point(right, top)
+      new Point(right, top),
     ];
   }
 
@@ -65,7 +65,7 @@ export class DOMPoint {
 
     return [
       new Point(left, bottom),
-      new Point(right, bottom)
+      new Point(right, bottom),
     ];
   }
 
@@ -74,7 +74,7 @@ export class DOMPoint {
 
     return [
       new Point(left, top),
-      new Point(left, bottom)
+      new Point(left, bottom),
     ];
   }
 
@@ -83,7 +83,7 @@ export class DOMPoint {
 
     return [
       new Point(right, top),
-      new Point(right, bottom)
+      new Point(right, bottom),
     ];
   }
 
