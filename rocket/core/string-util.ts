@@ -1,4 +1,20 @@
+export type StringOrRegExp = string | RegExp;
+
 export class StringUtil {
+  private static isStringOrRegExp(thing: any): boolean {
+    return (
+      typeof thing === 'string'
+      || thing instanceof RegExp
+    )
+  }
+
+  private static isStringOrRegExpArray(thing: any): boolean {
+    return (
+      Array.isArray(thing) === true
+      && thing.every(member => this.isStringOrRegExp(member))
+    )
+  }
+
   public static uppercaseFirstLetter(string: string): string {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
@@ -34,17 +50,27 @@ export class StringUtil {
 
   public static replace(
     string: string,
-    patterns: (string | RegExp) | (string | RegExp)[],
-    replacement: string = ''
+    patterns: StringOrRegExp,
+    replacement: string,
+  ): string
+  public static replace(
+    string: string,
+    patterns: StringOrRegExp[],
+    replacement: string,
+  ): string
+  public static replace(
+    string: string,
+    patterns: StringOrRegExp | StringOrRegExp[],
+    replacement: string = '',
   ): string {
-    if (Array.isArray(patterns) === true) {
-      patterns = patterns as (string | RegExp)[];
+    if (this.isStringOrRegExpArray(patterns) === true) {
+      patterns = patterns as StringOrRegExp[];
 
       patterns.forEach(pattern => {
         string = string.replace(pattern, replacement);
       });
-    } else {
-      let pattern = patterns as (string | RegExp);
+    } else if (this.isStringOrRegExp(patterns) === true) {
+      let pattern = patterns as StringOrRegExp;
 
       string = string.replace(pattern, replacement);
     }

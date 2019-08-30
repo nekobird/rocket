@@ -9,7 +9,7 @@ import {
 
 export type MonoTapEventIdentifier = 'mouse' | number;
 
-export type MonoTapEventType = 'down' | 'up' | 'cancel';
+export type MonoTapEventType = 'down' | 'move' | 'up' | 'cancel';
 
 export class MonoTapEvent {
   public monoTap: MonoTap;

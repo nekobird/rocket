@@ -3,9 +3,7 @@ import {
   RangeArray,
 } from '../rocket';
 
-// TODO: Rename constrain to clamp?
 export class Num {
-
   private static getRangeFromNumberOrRange(range: NumberOrRange): RangeArray {
     if (typeof range === 'number') {
       return [0, range];
@@ -21,16 +19,57 @@ export class Num {
     return [min, max];
   }
 
-  public static constrain(value: number, range: NumberOrRange): number {
-    range = this.getRangeFromNumberOrRange(range);
+  private static isRangeArray(thing: any): boolean {
+    return (
+      Array.isArray(thing) === true
+      && thing.length === 2
+      && thing.every(member => typeof member === 'number')
+    );
+  }
+
+  private static isNumberOrRange(thing: any): boolean {
+    return (
+      typeof thing === 'number'
+      || this.isRangeArray(thing)
+    )
+  }
+
+  public static constrain(value: number, min: number, max: number): number;
+  public static constrain(value: number, range: NumberOrRange): number;
+  public static constrain(value: number, a: NumberOrRange, b?: number): number {
+    let range: RangeArray;
+
+    if (typeof a === 'number' && typeof b === 'number') {
+      range = this.orderRangeArray([a, b]);
+    } else if (
+      this.isNumberOrRange(a) === true
+      && typeof b === 'undefined'
+    ) {
+      range = this.getRangeFromNumberOrRange(a);
+    } else {
+      return value;
+    }
 
     let [min, max] = this.orderRangeArray(range);
 
     return Math.max(min, Math.min(value, max));
   }
 
-  public static clamp(value: number, range: NumberOrRange): number {
-    range = this.getRangeFromNumberOrRange(range);
+  public static clamp(value: number, min: number, max: number): number;
+  public static clamp(value: number, range: NumberOrRange): number;
+  public static clamp(value: number, a: NumberOrRange, b?: number): number {
+    let range: RangeArray;
+
+    if (typeof a === 'number' && typeof b === 'number') {
+      range = this.orderRangeArray([a, b]);
+    } else if (
+      this.isNumberOrRange(a) === true
+      && typeof b === 'undefined'
+    ) {
+      range = this.getRangeFromNumberOrRange(a);
+    } else {
+      return value;
+    }
 
     let [min, max] = this.orderRangeArray(range);
 
@@ -106,7 +145,7 @@ export class Num {
     value: number,
     from: NumberOrRange,
     to: NumberOrRange,
-    constrain: boolean = true
+    constrain: boolean = true,
   ): number {
     from = this.getRangeFromNumberOrRange(from);
     to = this.getRangeFromNumberOrRange(to);

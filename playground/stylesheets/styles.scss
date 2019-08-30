@@ -5,7 +5,9 @@
 @import 'global/index';
 
 @import 'site/index';
+
 @import 'pages/index';
+
 
 .box {
   background-color: hsl(0, 0, 96);
@@ -19,7 +21,12 @@
 
 .tap {
   background-color: hsl(220, 50, 96);
-  padding: 40px;
+  border-radius: px-to-rem(40);
+  box-shadow: 0 0 px-to-rem(40) hsla(0, 0, 10, 0.2);
+  font-weight: bold;
   height: px-to-rem(200);
+  margin-left: px-to-rem(500);
+  margin-top: px-to-rem(2000);
+  padding: px-to-rem(40);
   width: px-to-rem(200);
 }

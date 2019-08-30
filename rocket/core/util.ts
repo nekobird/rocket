@@ -3,7 +3,6 @@ import {
 } from '../rocket';
 
 export class Util {
-
   public static isObject(object): boolean {
     return (
       object !== null

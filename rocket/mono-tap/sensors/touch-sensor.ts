@@ -33,6 +33,7 @@ export class TouchSensor {
 
       this.target.addEventListener('touchstart', this.onTouchStart);
 
+      window.addEventListener('touchmove', this.onTouchMove);
       window.addEventListener('touchend', this.onTouchEnd);
       window.addEventListener('touchcancel', this.onTouchCancel);
 
@@ -53,6 +54,7 @@ export class TouchSensor {
 
       target.removeEventListener('touchstart', this.onTouchStart);
 
+      window.removeEventListener('touchmove', this.onTouchMove);
       window.removeEventListener('touchend', this.onTouchEnd);
       window.removeEventListener('touchcancel', this.onTouchCancel);
 
@@ -66,6 +68,10 @@ export class TouchSensor {
 
   private onTouchStart = (event: TouchEvent) => {
     this.dispatch('down', event);
+  }
+
+  private onTouchMove = (event: TouchEvent) => {
+    this.dispatch('move', event);
   }
 
   private onTouchEnd = (event: TouchEvent) => {

@@ -35,6 +35,8 @@ export class MouseSensor {
 
       this.target.addEventListener('mousedown', this.onMouseDown);
 
+      window.addEventListener('mousemove', this.onMouseMove);
+
       window.addEventListener('mouseup', this.onMouseUp);
 
       this.isListening = true;
@@ -54,6 +56,8 @@ export class MouseSensor {
 
       target.removeEventListener('mousedown', this.onMouseDown);
 
+      window.removeEventListener('mousemove', this.onMouseMove);
+
       window.removeEventListener('mouseup', this.onMouseUp);
 
       this.isListening = false;
@@ -68,6 +72,12 @@ export class MouseSensor {
     this.mouseButtonIsDown = true;
 
     this.dispatch('down', event);
+  }
+
+  private onMouseMove = (event: MouseEvent) => {
+    this.mouseButtonIsDown = true;
+
+    this.dispatch('move', event);
   }
 
   private onMouseUp = (event: MouseEvent) => {
