@@ -1,3 +1,5 @@
+export type HTMLElements = NodeListOf<HTMLElement> | HTMLCollection | HTMLElement[];
+
 export class DOMUtil {
   public static isHTMLElement(...things): boolean {
     if (things.length === 0) {
@@ -47,6 +49,53 @@ export class DOMUtil {
     };
 
     return true;
+  }
+
+  public static isHTMLCollection(...things): boolean {
+    if (things.length === 0) {
+      return false;
+    }
+
+    const isHTMLCollection = thing => {
+      return (
+        typeof thing === 'object'
+        && HTMLCollection.prototype.isPrototypeOf(thing) === true
+      );
+    }
+
+    for (let i = 0; i < things.length; i++) {
+      const thing = things[i];
+
+      if (isHTMLCollection(thing) === false) {
+        return false;
+      }
+    };
+
+    return true;
+  }
+
+  public static toHTMLElementArray(collection: HTMLElement | HTMLElements): HTMLElement[] {
+    if (
+      this.isNodeListOfHTMLElement(collection) === true
+      || this.isHTMLCollection(collection) === true
+    ) {
+      const elements = collection as NodeListOf<HTMLElement> | HTMLCollection;
+
+      return [...elements] as HTMLElement[];
+    } else if (
+      this.isHTMLElement(collection) === true
+    ) {
+      const element = collection as HTMLElement;
+
+      return [element];
+    } else if (
+      Array.isArray(collection) === true
+      && this.isHTMLElement(...collection as unknown[]) === true
+    ) {
+      return collection as HTMLElement[];
+    }
+
+    return [];
   }
 
   public static prependChild(parent: HTMLElement, child: HTMLElement): void {

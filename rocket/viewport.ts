@@ -52,7 +52,10 @@ export class Viewport {
     return scrollingIsLocked;
   }
 
-  public static disableScrolling(isLocked: boolean = false, forceHideScrollbar: boolean = false) {
+  public static disableScrolling(
+    isLocked: boolean = false,
+    forceHideScrollbar: boolean = false,
+  ) {
     if (scrollingIsDisabled === false) {
       let { 
         hasHorizontalScrollBar,
