@@ -51,31 +51,32 @@ export class StringUtil {
     return value;
   }
 
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_function_as_a_parameter
   public static replace(
     string: string,
     patterns: StringOrRegExp,
-    replacement: string,
+    replacement: string | Function,
   ): string
   public static replace(
     string: string,
     patterns: StringOrRegExp[],
-    replacement: string,
+    replacement: string | Function,
   ): string
   public static replace(
     string: string,
     patterns: StringOrRegExp | StringOrRegExp[],
-    replacement: string = '',
+    replacement: string | Function = '',
   ): string {
     if (this.isStringOrRegExpArray(patterns) === true) {
       patterns = patterns as StringOrRegExp[];
 
       patterns.forEach(pattern => {
-        string = string.replace(pattern, replacement);
+        string = string.replace(pattern, replacement as string);
       });
     } else if (this.isStringOrRegExp(patterns) === true) {
       let pattern = patterns as StringOrRegExp;
 
-      string = string.replace(pattern, replacement);
+      string = string.replace(pattern, replacement as string);
     }
 
     return string;
