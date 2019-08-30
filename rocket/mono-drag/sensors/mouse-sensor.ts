@@ -39,7 +39,7 @@ export class MouseSensor {
       window.addEventListener('mousemove', this.onMouseMove);
       window.addEventListener('mouseup', this.onMouseUp);
 
-      document.documentElement.addEventListener('mouseleave', this.onMouseLeave);
+      // document.documentElement.addEventListener('mouseleave', this.onMouseLeave);
 
       this.isListening = true;
 
@@ -62,7 +62,7 @@ export class MouseSensor {
       window.removeEventListener('mousemove', this.onMouseMove);
       window.removeEventListener('mouseup', this.onMouseUp);
 
-      document.documentElement.removeEventListener('mouseleave', this.onMouseLeave);
+      // document.documentElement.removeEventListener('mouseleave', this.onMouseLeave);
 
       this.isListening = false;
 
@@ -98,7 +98,7 @@ export class MouseSensor {
     if (this.mouseButtonIsDown === true) {
       this.mouseButtonIsDown = false;
 
-      this.dispatch('cancel', event);      
+      this.dispatch('cancel', event);
     }
   }
 
