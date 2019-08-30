@@ -1,5 +1,6 @@
 import {
   DOMUtil,
+  HTMLElements,
 } from '../rocket';
 
 export interface DOMTraverseInspectFunction {
@@ -20,7 +21,7 @@ export class DOMTraverse {
   public static ascendFrom(
     from: HTMLElement,
     inspect: DOMTraverseInspectFunction,
-    to: HTMLElement = document.documentElement
+    to: HTMLElement = document.documentElement,
   ): void {
     let currentElement: HTMLElement | null = from;
 
@@ -37,7 +38,10 @@ export class DOMTraverse {
     }
   }
 
-  public static descendFrom(from: HTMLElement, inspect: DOMTraverseInspectFunction): void {
+  public static descendFrom(
+    from: HTMLElement,
+    inspect: DOMTraverseInspectFunction,
+  ): void {
     const descent = (currentElement: HTMLElement) => {
       const children = currentElement.children;
 
@@ -58,7 +62,7 @@ export class DOMTraverse {
   public static findAncestor(
     from: HTMLElement,
     identifyElement: DOMTraverseIdentifyElementFunction,
-    getAll: boolean = false
+    getAllMatchingAncestors: boolean = false,
   ): DOMTraverseResult {
     const results: HTMLElement[] = [];
 
@@ -82,7 +86,7 @@ export class DOMTraverse {
         if (identifyElement(currentElement) === true) {
           results.push(currentElement);
 
-          if (getAll === false) {
+          if (getAllMatchingAncestors === false) {
             break;
           }
         }
@@ -92,7 +96,7 @@ export class DOMTraverse {
     }
 
     if (results.length > 0) {
-      return getAll === true ? results : results[0];
+      return getAllMatchingAncestors === true ? results : results[0];
     }
 
     return false;
@@ -101,7 +105,7 @@ export class DOMTraverse {
   public static findDescendant(
     from: HTMLElement,
     identifyElement: DOMTraverseIdentifyElementFunction,
-    getAll: boolean = false
+    getAllMatchingDescendants: boolean = false,
   ): DOMTraverseResult {
     const results: HTMLElement[] = [];
 
@@ -117,7 +121,7 @@ export class DOMTraverse {
           if (identifyElement(children[i] as HTMLElement) === true) {
             results.push(children[i] as HTMLElement);
 
-            if (getAll === false) {
+            if (getAllMatchingDescendants === false) {
               break;
             }
           }
@@ -132,7 +136,7 @@ export class DOMTraverse {
     descent(from);
 
     if (results.length > 0) {
-      return getAll === true ? results : results[0];
+      return getAllMatchingDescendants === true ? results : results[0];
     }
 
     return false;
@@ -141,7 +145,7 @@ export class DOMTraverse {
   public static findAncestorWithClass(
     from: HTMLElement,
     classNames: string | string[],
-    getAll: boolean = false,
+    getAllMatchingAncestors: boolean = false,
   ): DOMTraverseResult {
     let identifyElement;
 
@@ -159,13 +163,13 @@ export class DOMTraverse {
       };
     }
 
-    return this.findAncestor(from, identifyElement, getAll);
+    return this.findAncestor(from, identifyElement, getAllMatchingAncestors);
   }
 
   public static findDescendantWithClass(
     from: HTMLElement,
     classNames: string | string[],
-    getAll: boolean = false,
+    getAllMatchingDescendants: boolean = false,
   ): DOMTraverseResult {
     let identifyElement;
 
@@ -183,47 +187,34 @@ export class DOMTraverse {
       };
     }
 
-    return this.findDescendant(from, identifyElement, getAll);
+    return this.findDescendant(from, identifyElement, getAllMatchingDescendants);
   }
 
   public static findAncestorWithId(
     from: HTMLElement,
     id: string,
-    getAll: boolean = false,
+    getAllMatchingAncestors: boolean = false,
   ): DOMTraverseResult {
     const identifyElement = element => element.id === id;
 
-    return this.findAncestor(from, identifyElement, getAll);
+    return this.findAncestor(from, identifyElement, getAllMatchingAncestors);
   }
 
   public static findDescendantWithId(
     from: HTMLElement,
     id: string,
-    getAll: boolean = false,
+    getAllMatchingDescendants: boolean = false,
   ): DOMTraverseResult {
     const identifyElement = element => element.id === id;
 
-    return this.findDescendant(from, identifyElement, getAll);
+    return this.findDescendant(from, identifyElement, getAllMatchingDescendants);
   }
 
   public static hasAncestor(
     from: HTMLElement,
-    options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
+    options: HTMLElement | HTMLElements,
   ): boolean {
-    let candidates: HTMLElement[] = [];
-
-    if (DOMUtil.isHTMLElement(options) === true) {
-      candidates = [options as HTMLElement];
-    } else if (
-      DOMUtil.isNodeListOfHTMLElement(options) === true
-    ) {
-      candidates = [...options as NodeListOf<HTMLElement>] as HTMLElement[]
-    } else if (
-      Array.isArray(options) === true
-      && DOMUtil.isHTMLElement(...options as HTMLElement[]) === true
-    ) {
-      candidates = options as HTMLElement[];
-    }
+    const candidates = DOMUtil.toHTMLElementArray(options);
 
     const identifyElement = element => candidates.indexOf(element) !== -1;
 
@@ -232,22 +223,9 @@ export class DOMTraverse {
 
   public static hasDescendant(
     from: HTMLElement,
-    options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
+    options: HTMLElement | HTMLElements,
   ): boolean {
-    let candidates: HTMLElement[] = [];
-
-    if (DOMUtil.isHTMLElement(options) === true) {
-      candidates = [options as HTMLElement];
-    } else if (
-      DOMUtil.isNodeListOfHTMLElement(options) === true
-    ) {
-      candidates = [...options as NodeListOf<HTMLElement>] as HTMLElement[]
-    } else if (
-      Array.isArray(options) === true
-      && DOMUtil.isHTMLElement(...options as HTMLElement[]) === true
-    ) {
-      candidates = options as HTMLElement[];
-    }
+    const candidates = DOMUtil.toHTMLElementArray(options);
 
     const identifyElement = element => candidates.indexOf(element) !== -1;
 
@@ -276,7 +254,7 @@ export class DOMTraverse {
   public static findSibling(
     element: HTMLElement,
     identifyElement: DOMTraverseIdentifyElementFunction,
-    getAll = true,
+    getAllMatchingSiblings = true,
   ): DOMTraverseResult {
     const siblings: HTMLElement[] | false = this.getSiblings(element);
 
@@ -294,7 +272,7 @@ export class DOMTraverse {
       }
 
       if (results.length > 0) {
-        return getAll === true ? results : results[0];
+        return getAllMatchingSiblings === true ? results : results[0];
       }
     }
 
@@ -324,7 +302,7 @@ export class DOMTraverse {
   public static findSiblingWithClass(
     element: HTMLElement,
     classNames: string | string[],
-    getAll: boolean = false,
+    getAllMatchingSiblings: boolean = false,
   ): DOMTraverseResult {
     let identifyElement;
 
@@ -342,7 +320,7 @@ export class DOMTraverse {
       };
     }
 
-    return this.findSibling(element, identifyElement, getAll);
+    return this.findSibling(element, identifyElement, getAllMatchingSiblings);
   }
 
   public static getChildren(
@@ -425,7 +403,7 @@ export class DOMTraverse {
 
   public static mapDataFromChildren<T>(
     element: HTMLElement,
-    extract: DOMTraverseExtractFunction<T>,
+    extractFunction: DOMTraverseExtractFunction<T>,
     identifyElement?: DOMTraverseIdentifyElementFunction,
   ): T[] {
     if (typeof identifyElement === 'undefined') {
@@ -441,7 +419,7 @@ export class DOMTraverse {
     }
 
     if (selectedChildren.length === 1) {
-      const datum: T = <T>extract(selectedChildren[0]);
+      const datum: T = <T>extractFunction(selectedChildren[0]);
 
       return typeof datum !== 'undefined' ? [datum] : [];
     }
@@ -449,7 +427,7 @@ export class DOMTraverse {
     const results: T[] = [];
 
     selectedChildren.forEach(child => {
-      const datum: T = <T>extract(child);
+      const datum: T = <T>extractFunction(child);
 
       if (typeof datum !== 'undefined') {
         results.push(datum);

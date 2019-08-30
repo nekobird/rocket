@@ -176,54 +176,63 @@ export class DOMAlignOffset {
       case 'center': {
         left = leftCenter;
         top = topCenter;
+
         break;
       }
 
       case 'top-left': {
         left = rect.left;
         top = rect.top;
+
         break;
       }
 
       case 'top': {
         left = leftCenter;
         top = rect.top;
+
         break;
       }
 
       case 'top-right': {
         left = rect.right;
         top = rect.top;
+
         break;
       }
 
       case 'left': {
         left = rect.left;
         top = topCenter;
+
         break;
       }
 
       case 'right': {
         left = rect.right;
         top = topCenter;
+
         break;
       }
 
       case 'bottom-left': {
         left = rect.left;
         top = rect.bottom;
+
         break;
       }
 
       case 'bottom': {
         left = leftCenter;
         top = rect.bottom;
+
         break;
       }
 
       case 'bottom-right': {
         left = rect.right;
         top = rect.bottom;
+
         break;
       }
     }
@@ -241,6 +250,7 @@ export class DOMAlignOffset {
       case 'center': {
         left = leftCenter;
         top = topCenter;
+
         break;
       }
 
@@ -250,39 +260,46 @@ export class DOMAlignOffset {
 
       case 'top': {
         left = leftCenter;
+
         break;
       }
 
       case 'top-right': {
         left = Viewport.width;
+
         break;
       }
 
       case 'left': {
         top = topCenter;
+
         break;
       }
 
       case 'right': {
         left = Viewport.width;
         top = topCenter;
+
         break;
       }
 
       case 'bottom-left': {
         top = Viewport.height;
+
         break;
       }
 
       case 'bottom': {
         left = leftCenter;
         top = Viewport.height;
+
         break;
       }
 
       case 'bottom-right': {
         left = Viewport.width;
         top = Viewport.height;
+
         break;
       }
     }
@@ -348,24 +365,28 @@ export class DOMAlignOffset {
         case 'top-left': {
           left = left - cornerSpacing;
           top = top - cornerSpacing;
+
           break;
         }
 
         case 'top-right': {
           left = left + cornerSpacing;
           top = top - cornerSpacing;
+
           break;
         }
 
         case 'bottom-left': {
           left = left - cornerSpacing;
           top = top + cornerSpacing;
+
           break;
         }
 
         case 'bottom-right': {
           left = left + cornerSpacing;
           top = top + cornerSpacing;
+
           break;
         }
       }
@@ -375,21 +396,25 @@ export class DOMAlignOffset {
       switch (referencePoint) {
         case 'top': {
           top = top - spacing;
+
           break;
         }
 
         case 'bottom': {
           top = top + spacing;
+
           break;
         }
 
         case 'left': {
           left = left - spacing;
+
           break;
         }
 
         case 'right': {
           left = left + spacing;
+
           break;
         }
       }

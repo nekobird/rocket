@@ -145,7 +145,7 @@ export class Num {
     value: number,
     from: NumberOrRange,
     to: NumberOrRange,
-    constrain: boolean = true,
+    clamp: boolean = true,
   ): number {
     from = this.getRangeFromNumberOrRange(from);
     to = this.getRangeFromNumberOrRange(to);
@@ -160,8 +160,8 @@ export class Num {
       result = to[0] - percent * (to[0] - to[1]);
     }
 
-    if (constrain === true) {
-      return this.constrain(result, to);
+    if (clamp === true) {
+      return this.clamp(result, to);
     }
 
     return result;
@@ -172,7 +172,7 @@ export class Num {
     value: number,
     from: NumberOrRange,
     to: NumberOrRange,
-    constrain: boolean = true
+    clamp: boolean = true,
   ): number {
     from = this.getRangeFromNumberOrRange(from);
     to = this.getRangeFromNumberOrRange(to);
@@ -180,8 +180,8 @@ export class Num {
     // Division by zero returns Infinite in JavaScript?
     let result = (value - from[0]) * ((to[1] - to[0]) / (from[1] - from[0])) + to[0];
 
-    if (constrain === true) {
-      return this.constrain(result, to);
+    if (clamp === true) {
+      return this.clamp(result, to);
     }
 
     return result;

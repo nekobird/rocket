@@ -3,14 +3,17 @@ import {
   Point,
 } from '../rocket';
 
-interface IdentifyElementFn {
+interface IdentifiyElementFunction {
   (element: HTMLElement): boolean;
 }
 
 export class DOMPoint {
   // Point is relative to viewport. (clientX, clientY)
   // Offset is relative to Point.
-  public static getElementOffsetFromPoint(element: HTMLElement, { x, y }: Point): Point {
+  public static getElementOffsetFromPoint(
+    element: HTMLElement,
+    { x, y }: Point,
+  ): Point {
     const { left, top } = element.getBoundingClientRect();
 
     return new Point(
@@ -205,7 +208,7 @@ export class DOMPoint {
 
   public static findElementFromPoint(
     { x, y }: Point,
-    identifyElementFn?: IdentifyElementFn,
+    identifiyElementFunction?: IdentifiyElementFunction,
     getAll: boolean = true,
   ): HTMLElement | HTMLElement[] | false {
     const elements = document.elementsFromPoint(x, y);
@@ -216,10 +219,10 @@ export class DOMPoint {
 
     let identifyElement;
 
-    if (typeof identifyElementFn === 'undefined') {
+    if (typeof identifiyElementFunction === 'undefined') {
       identifyElement = () => true;
     } else {
-      identifyElement = identifyElementFn;
+      identifyElement = identifiyElementFunction;
     }
 
     let results: HTMLElement[] = [];
@@ -246,15 +249,15 @@ export class DOMPoint {
   public static getClosestChildFromPoints(
     parent: HTMLElement,
     points: Point | Point[],
-    identifyElementFn?: IdentifyElementFn,
+    identifiyElementFunction?: IdentifiyElementFunction,
   ): HTMLElement | false {
-    if (typeof identifyElementFn === 'undefined') {
-      identifyElementFn = element => true;
+    if (typeof identifiyElementFunction === 'undefined') {
+      identifiyElementFunction = element => true;
     }
 
     const children = [...parent.children] as HTMLElement[];
 
-    const selectedChildren = children.filter(identifyElementFn);
+    const selectedChildren = children.filter(identifiyElementFunction);
 
     if (selectedChildren.length === 0) {
       return false;

@@ -36,7 +36,10 @@ export class StringUtil {
     return string.replace(/[\r\n]+/g, '');
   }
 
-  public static match(string: string, regex: RegExp): string | string[] | false {
+  public static match(
+    string: string,
+    regex: RegExp,
+  ): string | string[] | false {
     const value = string.match(regex);
 
     if (value === null) {

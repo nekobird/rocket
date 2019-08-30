@@ -12,13 +12,19 @@ Import **DOMUtil** into your project file.
 import { DOMUtil } from '@nekobird/rocket';
 ```
 
+## Interfaces
+
+### HTMLElements
+
+`NodeListOf<HTMLElement> | HTMLCollection | HTMLElement[]`
+
 ## Static Methods
 
 ### isHTMLElement
 
 `isHTMLElement(...things): boolean`
 
-Check if something is a valid HTMLElement.
+Check if something is a valid `HTMLElement`.
 
 #### Example
 
@@ -38,6 +44,25 @@ Check if something is a valid NodeListOf<HTMLElement>.
 ```typescript
 // Only returns true if everything passed are NodeListOf<HTMLElement>.
 DOMUtil.isNodeListOfHTMLElement(something, anotherThing);
+```
+
+### isHTMLCollection
+
+`isHTMLCollection(...things): boolean`
+
+### toHTMLElementArray
+
+`toHTMLElementArray(collection: HTMLElement | HTMLElements): HTMLElement[]`
+
+If you enter things that are not `HTMLElements` or `HTMLElement`, it will return an empty array.
+
+#### Example
+
+```typescript
+const collections = document.getElementsByTagName('div');
+
+// returns [div, div...]
+const result = DOMUtil.toHTMLElementArray(collections);
 ```
 
 ### prependChild

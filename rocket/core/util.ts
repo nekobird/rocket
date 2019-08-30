@@ -3,14 +3,14 @@ import {
 } from '../rocket';
 
 export class Util {
-  public static isObject(object): boolean {
+  public static isObject(object: any): boolean {
     return (
       object !== null
       && typeof object === 'object'
     );
   }
   
-  public static isEmptyObject(object): boolean {
+  public static isEmptyObject(object: any): boolean {
     return (
       this.isObject(object)
       && Object.keys(object).length < 1
