@@ -1,5 +1,6 @@
 import {
   DOMTraverse,
+  StringUtil,
 } from '../rocket';
 
 export interface StyleList {
@@ -53,6 +54,8 @@ export class DOMStyle {
   // @styles
   public static applyStyle(element: HTMLElement, styles: StyleList) {
     Object.keys(styles).forEach(property => {
+      property = StringUtil.kebabCaseToCamelCase(property);
+
       let value = styles[property]
 
       if (typeof value === 'number') {
@@ -78,6 +81,8 @@ export class DOMStyle {
 
     styleProperties.forEach(property => {
       to.forEach(element => {
+        property = StringUtil.kebabCaseToCamelCase(property);
+
         element.style[property] = style[property];
       });
     });
@@ -93,6 +98,8 @@ export class DOMStyle {
     }
 
     styleProperties.forEach(property => {
+      property = StringUtil.kebabCaseToCamelCase(property);
+
       element.style.removeProperty(property);
     });
   }
@@ -103,6 +110,8 @@ export class DOMStyle {
     isNumber: boolean = false,
   ): string | number {
     const style = window.getComputedStyle(element);
+
+    styleProperty = StringUtil.kebabCaseToCamelCase(styleProperty);
 
     const value = style[styleProperty];
 
@@ -122,10 +131,16 @@ export class DOMStyle {
     const result = {};
 
     styleProperties.forEach(property => {
+      property = StringUtil.kebabCaseToCamelCase(property);
+
       result[property] = style[property];
     });
 
     return result;
+  }
+
+  public static getBoxSizing(element: HTMLElement): string {
+    return this.getStyleValue(element, 'boxSizing', false) as string;
   }
 
   // @font-size

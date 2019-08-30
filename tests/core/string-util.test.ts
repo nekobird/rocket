@@ -31,3 +31,22 @@ describe('StringUtil.removeNewLines', () => {
     expect(StringUtil.removeExtraWhitespaces('a\nb')).toBe('a b');
   });
 });
+
+describe('StringUtil.isKebabCase', () => {
+  test('should return true if stings are kebab case', () => {
+    expect(StringUtil.isKebabCase('abc')).toBe(true);
+    expect(StringUtil.isKebabCase('abc', 'ab-c')).toBe(true);
+    expect(StringUtil.isKebabCase('abc', 'ab-c', 'a_bc')).toBe(false);
+    expect(StringUtil.isKebabCase('abc', 'aBc', 'a_bc')).toBe(false);
+
+    expect(StringUtil.isKebabCase('abc', ' abc', 'abc')).toBe(false);
+  });
+});
+
+describe('StringUtil.kebabCaseToCamelCase', () => {
+  test('should convert string from kebab case to camel case', () => {
+    expect(StringUtil.kebabCaseToCamelCase('abc')).toBe('abc');
+    expect(StringUtil.kebabCaseToCamelCase('ab-c')).toBe('abC');
+    expect(StringUtil.kebabCaseToCamelCase('ab_c')).toBe('ab_c');
+  });
+});

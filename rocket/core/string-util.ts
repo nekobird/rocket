@@ -80,4 +80,36 @@ export class StringUtil {
 
     return string;
   }
+
+  public static hasUppercaseLetter(...values: string[]): boolean {
+    return values.every(value => value !== value.toLowerCase());
+  }
+
+  public static isKebabCase(...values: string[]): boolean {
+    return values.every(value => {
+      return (
+        this.hasUppercaseLetter(value) === false
+        && value.match(/^([a-z]+|[a-z][a-z\-]+[a-z])$/g) !== null
+      )
+    });
+  }
+
+  public static isSnakeCase(...values: string[]): boolean {
+    return values.every(value => {
+      return (
+        this.hasUppercaseLetter(value) === false
+        && value.match(/^([a-z]+|[a-z][a-z\_]+[a-z])$/g) !== null
+      )
+    });
+  }
+
+  public static kebabCaseToCamelCase(from: string): string {
+    if (this.isKebabCase(from) === true) {
+      return from.replace(/(\-[a-z]{1})/g, match => {
+        return match.replace(/[\-]/g, '').toUpperCase();
+      });
+    }
+
+    return from;
+  }
 }
