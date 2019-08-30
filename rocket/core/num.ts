@@ -76,10 +76,48 @@ export class Num {
     return Math.max(min, Math.min(value, max));
   }
 
-  public static within(number: number, range: NumberOrRange): boolean {
-    range = this.getRangeFromNumberOrRange(range);
+  public static within(value: number, min: number, max: number, isExclusive?: boolean): boolean;
+  public static within(value: number, range: NumberOrRange, isExclusive?: boolean): boolean;
+  public static within(
+    value: number,
+    a: NumberOrRange,
+    b?: number | boolean,
+    c?: boolean,
+  ): boolean {
+    let range: RangeArray;
 
-    return number >= range[0] && number <= range[1];
+    let isExclusive = false;
+
+    if (
+      typeof a === 'number'
+      && typeof b === 'number'
+      && (typeof c === 'boolean' || typeof c === 'undefined')
+    ) {
+      if (typeof c === 'boolean') {
+        isExclusive = c;
+      }
+
+      range = this.orderRangeArray([a, b]);
+    } else if (
+      this.isNumberOrRange(a) == true
+      && (typeof b === 'boolean' || typeof b === 'undefined')
+    ) {
+      if (typeof b === 'boolean') {
+        isExclusive = b;
+      }
+
+      range = this.getRangeFromNumberOrRange(a);
+    } else {
+      throw new Error('Num.within: Invalid input.');
+    }
+
+    let [min, max] = range;
+
+    if (isExclusive === true) {
+      return value > min && value < max;
+    } else {
+      return value >= min && value <= max;
+    }
   }
 
   public static cycle(value: number, range: NumberOrRange): number {

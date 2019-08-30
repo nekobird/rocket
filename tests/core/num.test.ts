@@ -12,17 +12,72 @@ describe('Num.average', () => {
   });
 });
 
-describe('Num.constrain', () => {
+describe('Num.within', () => {
+  test('Should return true if values are within range', () => {
+    expect(Num.within(0.5, 1)).toBe(true);
+    expect(Num.within(0, 1)).toBe(true);
+    expect(Num.within(1, 1)).toBe(true);
+
+    expect(Num.within(1.5, 1, 2)).toBe(true);
+    expect(Num.within(1, 1, 2)).toBe(true);
+    expect(Num.within(2, 1, 2)).toBe(true);
+
+    expect(Num.within(1.5, [1, 2])).toBe(true);
+    expect(Num.within(1, [1, 2])).toBe(true);
+    expect(Num.within(2, [1, 2])).toBe(true);
+
+    expect(Num.within(0, 1, true)).toBe(false);
+    expect(Num.within(0.5, 1, true)).toBe(true);
+    expect(Num.within(1, 1, true)).toBe(false);
+
+    expect(Num.within(1, 1, 2, true)).toBe(false);
+    expect(Num.within(1.5, 1, 2, true)).toBe(true);
+    expect(Num.within(2, 1, 2, true)).toBe(false);
+
+    expect(Num.within(1, [1, 2], true)).toBe(false);
+    expect(Num.within(1.5, [1, 2], true)).toBe(true);
+    expect(Num.within(2, [1, 2], true)).toBe(false);
+  });
+});
+
+describe('Num.constrain & Num.clamp', () => {
   test('Should constrain number within range', () => {
     expect(Num.constrain(11, 10)).toBe(10);
+
+    expect(Num.clamp(11, 10)).toBe(10);
   });
 
   test('Should constrain number within range', () => {
     expect(Num.constrain(5, 10)).toBe(5);
+
+    expect(Num.clamp(5, 10)).toBe(5);
   });
 
   test('Should constrain number within range', () => {
     expect(Num.constrain(4, [5, 10])).toBe(5);
+    expect(Num.constrain(4, 5, 10)).toBe(5);
+
+    expect(Num.clamp(4, [5, 10])).toBe(5);    
+    expect(Num.clamp(4, 5, 10)).toBe(5);
+  });
+});
+
+describe('Num.transform & Num.modulate', () => {
+  test('Should transform number from one range to another', () => {
+    expect(Num.transform(0.5, 1, 2)).toBe(1);
+    expect(Num.modulate(0.5, 1, 2)).toBe(1);
+
+    expect(Num.transform(0.5, [1, 2], 2, true)).toBe(0);
+    expect(Num.modulate(0.5, [1, 2], 2, true)).toBe(0);
+
+    expect(Num.transform(3, [1, 2], 2, true)).toBe(2);
+    expect(Num.modulate(3, [1, 2], 2, true)).toBe(2);
+
+    expect(Num.transform(0, [1, 2], 1, false)).toBe(-1);
+    expect(Num.modulate(0, [1, 2], 1, false)).toBe(-1);
+
+    expect(Num.transform(3, [1, 2], 1, false)).toBe(2);
+    expect(Num.modulate(3, [1, 2], 1, false)).toBe(2);
   });
 });
 
