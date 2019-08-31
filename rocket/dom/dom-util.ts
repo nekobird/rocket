@@ -3,7 +3,6 @@ export type HTMLElements = NodeListOf<HTMLElement> | HTMLCollection | HTMLElemen
 export type InputOrTextArea = HTMLTextAreaElement | HTMLInputElement;
 
 export class DOMUtil {
-  
   public static isHTMLElement(...things): boolean {
     if (things.length === 0) {
       return false;
