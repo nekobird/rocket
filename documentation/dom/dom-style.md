@@ -1,8 +1,8 @@
 [Back](../index.md)
 
-# `DOMStyle`
+# DOMStyle
 
-A collection of style helper.
+A collection of helper methods to help you get and set styles.
 
 ## Import
 
@@ -14,58 +14,82 @@ import { DOMStyle } from '@nekobird/rocket';
 
 ## Interfaces
 
-### `StyleList`
+### StyleObject
 
 `[key: string]: string | number`
 
-### `StyleValue`
+Is an `object` with a value that is `string` or `number`.
+
+#### Example
+
+```typescript
+const styleObject: StyleObject = {
+  'backgroundColor': 'pink',
+  'lineHeight': 1.5,
+}
+```
+
+### StyleValue
 
 `[key: string]: string`
 
 ## Static Methods
 
-### `getLineHeight`
+### getLineHeight
 
 `getLineHeight(element: HTMLElement): number`
 
-### `applyStyle`
+Get computed `line-height` in `px` of given element.
 
-`applyStyle(element: HTMLElement, styles: StyleList)`
+### applyStyle
 
-### `copyStylesFrom`
+`applyStyle(element: HTMLElement, styles: StyleObject): void`
+
+### copyStylesFrom
 
 ```
 copyStylesFrom(
   from: HTMLElement,
-  styleProperties: string | string[],
+  properties: string | string[],
   ...to: HTMLElement[]
 ): void
 ```
 
-### `clearStyles`
+#### Example
 
-`clearStyles(element: HTMLElement)`
+```typescript
+DOMStyle.copyStylesFrom(element, 'font-size', anotherElement, someOtherElement);
+```
 
-### `removeStyles`
+### clearStyles
 
-`removeStyles(element: HTMLElement, styleProperties: string | string[])`
+`clearStyles(element: HTMLElement): void`
+
+### removeStyles
+
+`removeStyles(element: HTMLElement, properties: string | string[]): void`
 
 ### `getStyleValue`
 
 ```
 getStyleValue(
   element: HTMLElement,
-  styleProperty: string,
-  isNumber: boolean = false,
+  property: string,
+  stringOnly: boolean = false
 ): string | number
 ```
 
-### `getStyleValues`
+This will return specified style property value from an element.
+It will automatically return a `number` if the property contains one.
+You can override this default behaviour and only return a `string`
+by setting `stringOnly` flag to `true`.
+
+### getStyleValues
 
 ```
 getStyleValues(
   element: HTMLElement,
-  styleProperties: string | string[],
+  styleProperties: string | string[]
 ): StyleValue
 ```
 

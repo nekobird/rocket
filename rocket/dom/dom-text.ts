@@ -105,7 +105,7 @@ export class DOMText {
     // Set offset for when boxSizing is set to border-box.
     let offset = 0;
 
-    if (DOMStyle.getStyleValue(element, 'boxSizing') === 'border-box') {
+    if (DOMStyle.getBoxSizing(element) === 'border-box') {
       offset = DOMBoxModel.getTotalVerticalBorderWidths(element);
     } else {
       offset -= DOMBoxModel.getTotalVerticalPaddings(element);

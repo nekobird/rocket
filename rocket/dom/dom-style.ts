@@ -3,12 +3,8 @@ import {
   StringUtil,
 } from '../rocket';
 
-export interface StyleList {
+export interface StyleObject {
   [key: string]: string | number;
-}
-
-export interface StyleValue {
-  [key: string]: string;
 }
 
 // NOTE:
@@ -26,8 +22,12 @@ export class DOMStyle {
 
     this.copyStylesFrom(
       element,
-      ['fontSize', 'fontFamily', 'lineHeight'],
-      temp
+      [
+        'font-size',
+        'font-family',
+        'line-height',
+      ],
+      temp,
     );
 
     let result;
@@ -52,11 +52,11 @@ export class DOMStyle {
   }
 
   // @styles
-  public static applyStyle(element: HTMLElement, styles: StyleList) {
-    Object.keys(styles).forEach(property => {
+  public static applyStyle(element: HTMLElement, styleObject: StyleObject): void {
+    Object.keys(styleObject).forEach(property => {
       property = StringUtil.kebabCaseToCamelCase(property);
 
-      let value = styles[property]
+      let value = styleObject[property];
 
       if (typeof value === 'number') {
         value = value.toString();
@@ -70,16 +70,16 @@ export class DOMStyle {
 
   public static copyStylesFrom(
     from: HTMLElement,
-    styleProperties: string | string[],
+    properties: string | string[],
     ...to: HTMLElement[]
   ): void {
-    if (typeof styleProperties === 'string') {
-      styleProperties = [styleProperties];
+    if (typeof properties === 'string') {
+      properties = [properties];
     }
 
     const style = window.getComputedStyle(from);
 
-    styleProperties.forEach(property => {
+    properties.forEach(property => {
       to.forEach(element => {
         property = StringUtil.kebabCaseToCamelCase(property);
 
@@ -92,12 +92,12 @@ export class DOMStyle {
     element.removeAttribute('style');
   }
 
-  public static removeStyles(element: HTMLElement, styleProperties: string | string[]) {
-    if (typeof styleProperties === 'string') {
-      styleProperties = [styleProperties];
+  public static removeStyles(element: HTMLElement, properties: string | string[]) {
+    if (typeof properties === 'string') {
+      properties = [properties];
     }
 
-    styleProperties.forEach(property => {
+    properties.forEach(property => {
       property = StringUtil.kebabCaseToCamelCase(property);
 
       element.style.removeProperty(property);
@@ -106,50 +106,65 @@ export class DOMStyle {
 
   public static getStyleValue(
     element: HTMLElement,
-    styleProperty: string,
-    isNumber: boolean = false,
+    property: string,
+    stringOnly: boolean = false
   ): string | number {
     const style = window.getComputedStyle(element);
 
-    styleProperty = StringUtil.kebabCaseToCamelCase(styleProperty);
+    property = StringUtil.kebabCaseToCamelCase(property);
 
-    const value = style[styleProperty];
+    const value = style[property];
 
-    return isNumber === true ? parseFloat(value) : value;
+    if (stringOnly === false && value.match(/^[0-9]+/g) !== null) {
+      return parseFloat(value);
+    }
+
+    return value;
   }
 
   public static getStyleValues(
     element: HTMLElement,
-    styleProperties: string | string[],
-  ): StyleValue {
-    if (typeof styleProperties === 'string') {
-      styleProperties = [styleProperties];
+    properties: string | string[],
+    stringOnly: boolean = false
+  ): StyleObject {
+    if (typeof properties === 'string') {
+      properties = [properties];
     }
 
     const style = window.getComputedStyle(element);
 
     const result = {};
 
-    styleProperties.forEach(property => {
+    properties.forEach(property => {
       property = StringUtil.kebabCaseToCamelCase(property);
 
-      result[property] = style[property];
+      const value = style[property];
+
+      if (stringOnly === false && value.match(/^[0-9]+/g) !== null) {
+        result[property] = parseFloat(value);
+      } else {
+        result[property] = value
+      }
     });
 
     return result;
   }
 
   public static getBoxSizing(element: HTMLElement): string {
-    return this.getStyleValue(element, 'boxSizing', false) as string;
+    return this.getStyleValue(element, 'box-sizing') as string;
   }
 
   // @font-size
   public static getFontSize(element: HTMLElement): number {
-    return this.getStyleValue(element, 'fontSize', true) as number;
+    return this.getStyleValue(element, 'font-size') as number;
   }
 
-  public static setFontSize(element: HTMLElement, fontSize: number): void {
-    element.style.fontSize = `${fontSize}px`;
+  public static setFontSize(
+    element: HTMLElement,
+    fontSize: number,
+    unit: string = 'px'
+  ): void {
+    element.style.fontSize = `${fontSize}${unit}`;
   }
 
   public static getBaseFontSize(): number {
@@ -157,7 +172,7 @@ export class DOMStyle {
 
     if (
       typeof fontSize === 'string'
-      && fontSize !== ''
+      && fontSize.match(/^[0-9]+/g) !== null
     ) {
       return parseFloat(fontSize);
     }
@@ -197,7 +212,7 @@ export class DOMStyle {
 
   public static getParentsMaxAnimationDuration(
     from: HTMLElement,
-    withDelay: boolean = false,
+    withDelay: boolean = false
   ): number {
     let durations: number[] = [];
 
@@ -219,7 +234,7 @@ export class DOMStyle {
 
   public static getChildrenMaxAnimationDuration(
     from: HTMLElement,
-    withDelay: boolean = false,
+    withDelay: boolean = false
   ): number {
     let durations: number[] = [];
 
