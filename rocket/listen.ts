@@ -59,6 +59,10 @@ export class Listen {
     
   // }
 
+  public static delegate() {
+    
+  }
+
   public static once(
     target: EventTarget,
     eventName: string,

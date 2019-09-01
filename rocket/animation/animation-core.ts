@@ -236,10 +236,7 @@ export class AnimationCore {
   }
 
   public pause(): this {
-    if (
-      this.isActive === true
-      && this.isPaused === false
-    ) {
+    if (this.isActive === true && this.isPaused === false) {
       this.clearTimeoutsAndAnimationFrames();
 
       this.state = 'PAUSED';
