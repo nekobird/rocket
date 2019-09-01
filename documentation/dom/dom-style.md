@@ -18,20 +18,16 @@ import { DOMStyle } from '@nekobird/rocket';
 
 `[key: string]: string | number`
 
-Is an `object` with a value that is `string` or `number`.
+Is an `object` with a value that is a `string` or `number`.
 
 #### Example
 
 ```typescript
-const styleObject: StyleObject = {
-  'backgroundColor': 'pink',
-  'lineHeight': 1.5,
+const style: StyleObject = {
+  'background-color': 'pink',
+  'line-height': 1.5,
 }
 ```
-
-### StyleValue
-
-`[key: string]: string`
 
 ## Static Methods
 
@@ -39,11 +35,22 @@ const styleObject: StyleObject = {
 
 `getLineHeight(element: HTMLElement): number`
 
-Get computed `line-height` in `px` of given element.
+Get `line-height` in `px` of given element.
+
+**Warning** May cause re-draw.
 
 ### applyStyle
 
-`applyStyle(element: HTMLElement, styles: StyleObject): void`
+`applyStyle(styleObject: StyleObject, ...elements: HTMLElement[]): void`
+
+#### Example
+
+```typescript
+DOMStyle.applyStyle({
+  'background-color': 'pink',
+  'font-size': 24,
+}, element, anotherElement);
+```
 
 ### copyStylesFrom
 

@@ -2,6 +2,7 @@ import {
   DOMTraverse,
   StringUtil,
 } from '../rocket';
+import { DOMUtil } from './dom-util';
 
 export interface StyleObject {
   [key: string]: string | number;
@@ -52,7 +53,24 @@ export class DOMStyle {
   }
 
   // @styles
-  public static applyStyle(element: HTMLElement, styleObject: StyleObject): void {
+  public static applyStyle(element: HTMLElement, styleObject: StyleObject): void
+  public static applyStyle(styleObject: StyleObject, ...elements: HTMLElement[]): void
+    public static applyStyle(
+      a: HTMLElement | StyleObject,
+      b: HTMLElement | StyleObject,
+      ...c: HTMLElement[]
+    ): void {
+    let elements = c;
+    let styleObject;
+
+    if (DOMUtil.isHTMLElement(a) === true) {
+      elements.push(a as HTMLElement);
+      styleObject = b as StyleObject;
+    } else if (DOMUtil.isHTMLElement(b) === true) {
+      styleObject = a as StyleObject;
+      elements.push(b as HTMLElement);
+    }
+
     Object.keys(styleObject).forEach(property => {
       property = StringUtil.kebabCaseToCamelCase(property);
 
@@ -63,7 +81,7 @@ export class DOMStyle {
       }
 
       if (typeof value === 'string') {
-        element.style[property] = value;
+        elements.forEach(element => element.style[property] = value);
       }
     });
   }
