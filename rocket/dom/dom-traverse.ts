@@ -62,7 +62,7 @@ export class DOMTraverse {
   public static findAncestor(
     from: HTMLElement,
     identifyElement: DOMTraverseIdentifyElementFunction,
-    getAllMatchingAncestors: boolean = false,
+    getAllMatchingAncestors: boolean = false
   ): DOMTraverseResult {
     const results: HTMLElement[] = [];
 

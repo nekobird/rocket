@@ -17,7 +17,7 @@ export class Util {
     );
   }
 
-  public static isPromise(...things): boolean {
+  public static isPromise(...things: any[]): boolean {
     if (things.length === 0) {
       return false;
     }

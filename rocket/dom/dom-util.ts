@@ -3,7 +3,7 @@ export type HTMLElements = NodeListOf<HTMLElement> | HTMLCollection | HTMLElemen
 export type InputOrTextArea = HTMLTextAreaElement | HTMLInputElement;
 
 export class DOMUtil {
-  public static isHTMLElement(...things): boolean {
+  public static isHTMLElement(...things: any[]): boolean {
     if (things.length === 0) {
       return false;
     }
@@ -21,7 +21,7 @@ export class DOMUtil {
     return things.every(isHTMLElement);
   }
 
-  public static isNodeListOfHTMLElement(...things): boolean {
+  public static isNodeListOfHTMLElement(...things: any[]): boolean {
     if (things.length === 0) {
       return false;
     }
@@ -37,7 +37,7 @@ export class DOMUtil {
     return things.every(isNodeListOfHTMLElement);
   }
 
-  public static isHTMLCollection(...things): boolean {
+  public static isHTMLCollection(...things: any[]): boolean {
     if (things.length === 0) {
       return false;
     }
@@ -52,7 +52,7 @@ export class DOMUtil {
     return things.every(isHTMLCollection);
   }
 
-  public static isInputOrTextArea(...things): boolean {
+  public static isInputOrTextArea(...things: any[]): boolean {
     if (things.length === 0) {
       return false;
     }
