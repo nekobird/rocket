@@ -36,6 +36,7 @@ export class PointerMove {
 
   constructor(config?: Partial<PointerMoveConfig>) {
     this.config = {...POINTER_MOVE_DEFAULT_CONFIG};
+
     this.setConfig(config);
 
     this.position = new Vector2();

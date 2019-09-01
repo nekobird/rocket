@@ -76,8 +76,17 @@ export class Num {
     return Math.max(min, Math.min(value, max));
   }
 
-  public static within(value: number, min: number, max: number, isExclusive?: boolean): boolean;
-  public static within(value: number, range: NumberOrRange, isExclusive?: boolean): boolean;
+  public static within(
+    value: number,
+    min: number,
+    max: number,
+    isExclusive?: boolean,
+  ): boolean;
+  public static within(
+    value: number,
+    range: NumberOrRange,
+    isExclusive?: boolean,
+  ): boolean;
   public static within(
     value: number,
     a: NumberOrRange,
@@ -119,7 +128,10 @@ export class Num {
     }
   }
 
-  public static cycle(value: number, range: NumberOrRange): number {
+  public static cycle(
+    value: number,
+    range: NumberOrRange,
+  ): number {
     range = this.getRangeFromNumberOrRange(range);
 
     const [min, max] = this.orderRangeArray(range);
@@ -245,23 +257,27 @@ export class Num {
     }
   }
 
-  public static roundTo(number: number, to: number = 0): number {
-    return parseFloat(number.toFixed(to));
+  public static roundTo(value: number, to: number = 0): number {
+    return parseFloat(value.toFixed(to));
   }
 
-  public static average(...numbers): number {
-    if (numbers.length < 2) {
+  public static average(...values: number[]): number {
+    if (values.length < 2) {
       throw new Error ('Num.average: Expects at least two numbers.');
     }
 
-    return this.sum(...numbers) / numbers.length;
+    return this.sum(...values) / values.length;
   }
 
-  public static sum(...numbers: number[]): number {
-    return numbers.reduce((previous, current) => previous + current);
+  public static sum(...values: number[]): number {
+    return values.reduce((previous, current) => previous + current);
   }
 
-  public static random(range: NumberOrRange, whole: boolean = false, fixed: number = 2): number {
+  public static random(
+    range: NumberOrRange,
+    whole: boolean = false,
+    fixed: number = 2,
+  ): number {
     range = this.getRangeFromNumberOrRange(range);
 
     if (range[0] === 0 && range[1] === 1) {

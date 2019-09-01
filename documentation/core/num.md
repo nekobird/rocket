@@ -16,7 +16,7 @@ import { Num } from '@nekobird/rocket';
 
 ### `average`
 
-`average(...numbers): number`
+`average(...numbers: number[]): number`
 
 Calculate the average of the arguments.
 You need to enter at least two numbers or else it will throw an error.
