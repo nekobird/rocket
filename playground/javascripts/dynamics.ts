@@ -1,8 +1,8 @@
 import {
-  Repeater,
-  Ticker,
   MonoDrag,
   MonoTap,
+  Repeater,
+  Ticker,
   Vector2,
 } from '../../rocket/rocket';
 
@@ -17,7 +17,8 @@ if (boxElement !== null) {
     onDrag: (event, story) => {
       console.log('drag');
 
-      const position = Vector2.subtract(event.position, story.offset)
+      const position = Vector2.subtract(event.position, story.offset);
+
       const { x, y } = position;
 
       box.style.transform = `translate(${x}px, ${y}px)`;
@@ -35,13 +36,19 @@ if (tapElement !== null) {
   const monoTap = new MonoTap({
     target: tapElement as HTMLElement,
 
-    preventDefault: true,
+    preventDefault: false,
 
     onTap: () => {
-      alert('tap');
+      // alert('taperro');
     },
 
-    onUp: () => {
+    onDown: event => {
+      event.originalEvent.preventDefault();
+    },
+
+    onUp: event => {
+      // event.originalEvent.preventDefault();
+      alert('onUp');
     },
   });
 }

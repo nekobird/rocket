@@ -68,10 +68,7 @@ export class MonoTapStory {
 
     switch (event.type) {
       case 'down': {
-        if (
-          this.isActive === false
-          && this.hasEnded === false
-        ) {
+        if (this.isActive === false && this.hasEnded === false) {
           this.downEvent = event;
 
           this.startTime = event.time;
@@ -89,6 +86,7 @@ export class MonoTapStory {
           this.endTime = event.time;
 
           this.isActive = false;
+
           this.hasEnded = true;
         }
 

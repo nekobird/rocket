@@ -95,7 +95,7 @@ export class SensorHub {
         if (story !== null) {
           story.addEvent(event);
 
-          const { config } = this.monoTap;
+          config.onUp(event, story, this.monoTap);
 
           if (
             story.upEvent !== null

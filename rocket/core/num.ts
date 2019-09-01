@@ -28,10 +28,7 @@ export class Num {
   }
 
   private static isNumberOrRange(thing: any): boolean {
-    return (
-      typeof thing === 'number'
-      || this.isRangeArray(thing)
-    )
+    return typeof thing === 'number' || this.isRangeArray(thing);
   }
 
   public static constrain(value: number, min: number, max: number): number;
