@@ -72,16 +72,16 @@ export class DOMStyle {
     }
 
     Object.keys(styleObject).forEach(property => {
-      property = StringUtil.kebabCaseToCamelCase(property);
-
       let value = styleObject[property];
+
+      const propertyName = StringUtil.kebabCaseToCamelCase(property);
 
       if (typeof value === 'number') {
         value = value.toString();
       }
 
       if (typeof value === 'string') {
-        elements.forEach(element => element.style[property] = value);
+        elements.forEach(element => element.style[propertyName] = value);
       }
     });
   }
@@ -110,7 +110,10 @@ export class DOMStyle {
     element.removeAttribute('style');
   }
 
-  public static removeStyles(element: HTMLElement, properties: string | string[]) {
+  public static removeStyles(
+    element: HTMLElement,
+    properties: string | string[],
+  ) {
     if (typeof properties === 'string') {
       properties = [properties];
     }
@@ -125,7 +128,7 @@ export class DOMStyle {
   public static getStyleValue(
     element: HTMLElement,
     property: string,
-    stringOnly: boolean = false
+    stringOnly: boolean = false,
   ): string | number {
     const style = window.getComputedStyle(element);
 
@@ -143,7 +146,7 @@ export class DOMStyle {
   public static getStyleValues(
     element: HTMLElement,
     properties: string | string[],
-    stringOnly: boolean = false
+    stringOnly: boolean = false,
   ): StyleObject {
     if (typeof properties === 'string') {
       properties = [properties];
@@ -180,7 +183,7 @@ export class DOMStyle {
   public static setFontSize(
     element: HTMLElement,
     fontSize: number,
-    unit: string = 'px'
+    unit: string = 'px',
   ): void {
     element.style.fontSize = `${fontSize}${unit}`;
   }
@@ -230,7 +233,7 @@ export class DOMStyle {
 
   public static getParentsMaxAnimationDuration(
     from: HTMLElement,
-    withDelay: boolean = false
+    withDelay: boolean = false,
   ): number {
     let durations: number[] = [];
 
@@ -252,7 +255,7 @@ export class DOMStyle {
 
   public static getChildrenMaxAnimationDuration(
     from: HTMLElement,
-    withDelay: boolean = false
+    withDelay: boolean = false,
   ): number {
     let durations: number[] = [];
 

@@ -32,7 +32,7 @@ export class DOMImage {
   public static getImageSizeFromSource(
     source: string,
     timeoutInSeconds: number = 1,
-    checkIntervalInMilliseconds: number = 10
+    checkIntervalInMilliseconds: number = 10,
   ): Promise<Size> {
     return new Promise((resolve, reject) => {
       const image = new Image();

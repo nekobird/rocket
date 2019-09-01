@@ -22,7 +22,7 @@ import { DOMUtil } from '@nekobird/rocket';
 
 ### isHTMLElement
 
-`isHTMLElement(...things): boolean`
+`isHTMLElement(...things: any[]): boolean`
 
 Check if something is a valid `HTMLElement`.
 
@@ -35,7 +35,7 @@ DOMUtil.isHTMLElement(something, anotherThing);
 
 ### isNodeListOfHTMLElement
 
-`isNodeListOfHTMLElement(...things): boolean`
+`isNodeListOfHTMLElement(...things: any[]): boolean`
 
 Check if something is a valid NodeListOf<HTMLElement>.
 
@@ -48,7 +48,11 @@ DOMUtil.isNodeListOfHTMLElement(something, anotherThing);
 
 ### isHTMLCollection
 
-`isHTMLCollection(...things): boolean`
+`isHTMLCollection(...things: any[]): boolean`
+
+### isInputOrTextArea
+
+`isInputOrTextArea(...things: any[]): boolean`
 
 ### toHTMLElementArray
 

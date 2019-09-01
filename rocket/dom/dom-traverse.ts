@@ -21,7 +21,7 @@ export class DOMTraverse {
   public static ascendFrom(
     from: HTMLElement,
     inspect: DOMTraverseInspectFunction,
-    to: HTMLElement = document.documentElement
+    to: HTMLElement = document.documentElement,
   ): void {
     let currentElement: HTMLElement | null = from;
 
@@ -40,7 +40,7 @@ export class DOMTraverse {
 
   public static descendFrom(
     from: HTMLElement,
-    inspect: DOMTraverseInspectFunction
+    inspect: DOMTraverseInspectFunction,
   ): void {
     const descent = (currentElement: HTMLElement) => {
       const children = currentElement.children;
@@ -62,7 +62,7 @@ export class DOMTraverse {
   public static findAncestor(
     from: HTMLElement,
     identifyElement: DOMTraverseIdentifyElementFunction,
-    getAllMatchingAncestors: boolean = false
+    getAllMatchingAncestors: boolean = false,
   ): DOMTraverseResult {
     const results: HTMLElement[] = [];
 
@@ -236,7 +236,7 @@ export class DOMTraverse {
 
   public static getSiblings(
     element: HTMLElement,
-    isExclusive: boolean = false
+    isExclusive: boolean = false,
   ): HTMLElement[] | false {
     if (element.parentElement !== null) {
       const siblings = [...element.parentElement.children] as HTMLElement[];
@@ -254,7 +254,7 @@ export class DOMTraverse {
   public static findSibling(
     element: HTMLElement,
     identifyElement: DOMTraverseIdentifyElementFunction,
-    getAllMatchingSiblings = true
+    getAllMatchingSiblings = true,
   ): DOMTraverseResult {
     const siblings: HTMLElement[] | false = this.getSiblings(element);
 

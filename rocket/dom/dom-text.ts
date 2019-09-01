@@ -122,7 +122,11 @@ export class DOMText {
     return result;
   }
 
-  public static getTextBoxWidthFromElement(element: HTMLElement, text?: string, styleOverride?: StyleObject): number {
+  public static getTextBoxWidthFromElement(
+    element: HTMLElement,
+    text?: string,
+    styleOverride?: StyleObject,
+  ): number {
     const modelElement = document.createElement('DIV');
 
     Object.assign(modelElement.style, TEXT_BOX_MODEL_ATTRIBUTES);
@@ -161,6 +165,7 @@ export class DOMText {
     textString = textString.replace(/[\n\r]/g, '<br>');
     textString = textString.replace(/[\t]/g, '&#9');
     textString = textString.replace(/[\s]/g, '&nbsp');
+
     modelElement.innerHTML = textString;
 
     document.body.appendChild(modelElement);
@@ -211,7 +216,7 @@ export class DOMText {
       temp.style.padding = '0';
       temp.style.visibility = 'none';
 
-      DOMStyle.copyStylesFrom(element, ['fontSize', 'fontFamily', 'lineHeight'], temp);
+      DOMStyle.copyStylesFrom(element, ['font-size', 'font-family', 'line-height'], temp);
 
       const maxWidth = element.clientWidth - DOMBoxModel.getTotalHorizontalInnerSpace(element);
 

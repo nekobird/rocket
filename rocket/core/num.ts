@@ -182,7 +182,7 @@ export class Num {
     value: number,
     from: NumberOrRange,
     to: NumberOrRange,
-    clamp: boolean = true
+    clamp: boolean = true,
   ): number {
     from = this.getRangeFromNumberOrRange(from);
     to = this.getRangeFromNumberOrRange(to);
@@ -209,7 +209,7 @@ export class Num {
     value: number,
     from: NumberOrRange,
     to: NumberOrRange,
-    clamp: boolean = true
+    clamp: boolean = true,
   ): number {
     from = this.getRangeFromNumberOrRange(from);
     to = this.getRangeFromNumberOrRange(to);

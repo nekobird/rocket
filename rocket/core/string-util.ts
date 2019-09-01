@@ -52,17 +52,17 @@ export class StringUtil {
   public static replace(
     string: string,
     patterns: StringOrRegExp,
-    replacement: string | Function
+    replacement: string | Function,
   ): string
   public static replace(
     string: string,
     patterns: StringOrRegExp[],
-    replacement: string | Function
+    replacement: string | Function,
   ): string
   public static replace(
     string: string,
     patterns: StringOrRegExp | StringOrRegExp[],
-    replacement: string | Function = ''
+    replacement: string | Function = '',
   ): string {
     if (this.isStringOrRegExpArray(patterns) === true) {
       patterns = patterns as StringOrRegExp[];
