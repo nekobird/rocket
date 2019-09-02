@@ -1,6 +1,6 @@
 [Back](../index.md)
 
-# `DOMOffset`
+# DOMOffset
 
 ## Import
 
@@ -12,29 +12,29 @@ import { DOMOffset } from '@nekobird/rocket';
 
 ## Static Properties
 
-### `getElementOffsetFromAnotherElement`
+### getElementOffsetFromAnotherElement
 
 ```
 getElementOffsetFromAnotherElement(
   from: HTMLElement,
-  to: HTMLElement
+  to: HTMLElement,
 ): FullOffset
 ```
 
 Get offset from given element to another element, relative to top-left of both elements.
 
-### `getElementOffsetFromDocument`
+### getElementOffsetFromDocument
 
 ```
 getElementOffsetFromDocument(
-  element: HTMLElement
+  element: HTMLElement,
 ): FullOffset
 ```
 
-### `getElementOffsetFromView`
+### getElementOffsetFromView
 
 ```
 getElementOffsetFromView(
-  element: HTMLElement
+  element: HTMLElement,
 ): FullOffset
 ```

@@ -1,6 +1,6 @@
 [Back](../index.md)
 
-# `DOMScroll`
+# DOMScroll
 
 A collection of scroll helpers.
 
@@ -14,13 +14,13 @@ import { DOMScroll } from '@nekobird/rocket';
 
 ## Static Properties
 
-### `scrollLeft`
+### scrollLeft
 
 `scrollLeft: number`
 
 This is a `readonly` property that returns the current document scroll left location from the viewport.
 
-### `scrollTop`
+### scrollTop
 
 `scrollTop: number`
 
@@ -28,4 +28,22 @@ This is a `readonly` property that returns the current document scroll top locat
 
 ## Static Methods
 
-`getScrollLeftToElements(elements: HTMLElement | HTMLElement[]): number`
+### getScrollLeftToElement
+
+`getScrollLeftToElement(...elements: HTMLElement[]): number`
+
+### getScrollTopToElement
+
+`getScrollTopToElement(...elements: HTMLElement[]): number`
+
+### getScrollLeftToElementsCenterFrame
+
+`getScrollLeftToElementsCenterFrame(...elements: HTMLElement[]): number`
+
+### getScrollTopToElementsCenterFrame
+
+`getScrollTopToElementsCenterFrame(...elements: HTMLElement[]): number`
+
+### getScrollToElementsCenterFrame
+
+`getScrollToElementsCenterFrame(...elements: HTMLElement[]): Offset`

@@ -1,6 +1,6 @@
 [Back](../index.md)
 
-# `DOMImage`
+# DOMImage
 
 ## Import
 
@@ -12,7 +12,7 @@ import { DOMImage } from '@nekobird/rocket';
 
 ## Interfaces
 
-### `DOMImagePromiseValue`
+### DOMImagePromiseValue
 
 ```typescript
 image: HTMLImageElement;
@@ -23,7 +23,7 @@ height: number;
 
 ## Static Methods
 
-### `loadImageFromSource`
+### loadImageFromSource
 
 `loadImageFromSource(source: string): Promise<DOMImagePromiseValue>`
 
@@ -40,13 +40,13 @@ DOMImage.loadImageFromSource('https://somewebsite.com/image.png')
   });
 ```
 
-### `getImageSizeFromSource`
+### getImageSizeFromSource
 
 ```
 getImageSizeFromSource(
   source: string,
   timeoutInSeconds: number = 1,
-  checkIntervalInMilliseconds: number = 10
+  checkIntervalInMilliseconds: number = 10,
 ): Promise<Size>
 ```
 

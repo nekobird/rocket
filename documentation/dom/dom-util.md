@@ -1,6 +1,6 @@
 [Back](../index.md)
 
-# `DOMUtil`
+# DOMUtil
 
 A collection of static general DOM helper methods.
 

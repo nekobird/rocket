@@ -82,7 +82,7 @@ DOMStyle.copyStylesFrom(element, 'font-size', anotherElement, someOtherElement);
 getStyleValue(
   element: HTMLElement,
   property: string,
-  stringOnly: boolean = false
+  stringOnly: boolean = false,
 ): string | number
 ```
 
@@ -96,7 +96,7 @@ by setting `stringOnly` flag to `true`.
 ```
 getStyleValues(
   element: HTMLElement,
-  styleProperties: string | string[]
+  styleProperties: string | string[],
 ): StyleValue
 ```
 

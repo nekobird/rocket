@@ -1,6 +1,6 @@
 [Back](../index.md)
 
-# `DOMTraverse`
+# DOMTraverse
 
 A collection of static methods to help you traverse the DOM and do stuff along the way.
 
@@ -14,33 +14,33 @@ import { DOMTraverse } from '@nekobird/rocket';
 
 ## Interfaces
 
-### `DOMTraverseInspectFunction`
+### DOMTraverseInspectFunction
 
 `(element: HTMLElement): true | void`
 
 A function that takes in a HTMLElement and optionally return `true` if you want the inspection to stop.
 
-### `DOMTraverseIdentifyElementFunction`
+### DOMTraverseIdentifyElementFunction
 
 `(element: HTMLElement): boolean`
 
 A function that takes in a HTMLElement and returns a `boolean`.
 This is used for identifying an element while traversing.
 
-### `DOMTraverseExtractFunction`
+### DOMTraverseExtractFunction
 
 `(child: HTMLElement): T | void`
 
 A function that takes in a HTMLElement and returns something `<T>` that you want to extract
 from that element.
 
-### `DOMTraverseResult`
+### DOMTraverseResult
 
 `HTMLElement | HTMLElement[] | false`
 
 ## Methods
 
-### `ascendFrom`
+### ascendFrom
 
 ```
 ascendFrom(
@@ -66,7 +66,7 @@ DOMTraverse.ascendFrom(from, parent => {
 });
 ```
 
-### `descendFrom`
+### descendFrom
 
 ```
 descendFrom(
@@ -89,7 +89,7 @@ DOMTraverse.descendFrom(element, child => {
 });
 ```
 
-### `findAncestor`
+### findAncestor
 
 ```
 findAncestor(
@@ -112,7 +112,7 @@ DOMTraverse.findAncestor(from, element => {
 }, true);
 ```
 
-### `findDescendant`
+### findDescendant
 
 ```
 findDescendant(
@@ -139,7 +139,7 @@ DOMTraverse.findAncestor(from, parent => {
 }, true);
 ```
 
-### `findAncestorWithClass`
+### findAncestorWithClass
 
 ```
 findAncestorWithClass(
@@ -157,7 +157,7 @@ Find a parent ancestor element with given classnames.
 DOMTraverse.findAncestorWithClass(from, ['class-0', 'class-1'], true);
 ```
 
-### `findDescendantWithClass`
+### findDescendantWithClass
 
 ```
 findDescendantWithClass(
@@ -175,7 +175,7 @@ Find a parent ancestor element with given classnames.
 DOMTraverse.findDescendantWithClass(from, ['class-0', 'class-1'], true);
 ```
 
-### `findAncestorWithId`
+### findAncestorWithId
 
 ```
 findAncestorWithId(
@@ -185,7 +185,7 @@ findAncestorWithId(
 ): DOMTraverseResult
 ```
 
-### `findDescendantWithId`
+### findDescendantWithId
 
 ```
 findDescendantWithId(
@@ -195,7 +195,7 @@ findDescendantWithId(
 ): DOMTraverseResult
 ```
 
-### `hasAncestor`
+### hasAncestor
 
 ```
 hasAncestor(
@@ -204,7 +204,7 @@ hasAncestor(
 ): boolean
 ```
 
-### `hasDescendant`
+### hasDescendant
 
 ```
 hasDescendant(
@@ -213,7 +213,7 @@ hasDescendant(
 ): boolean
 ```
 
-### `getSiblings`
+### getSiblings
 
 ```
 getSiblings(
@@ -222,18 +222,18 @@ getSiblings(
 ): HTMLElement[] | false
 ```
 
-### `findSibling`
+### findSibling
 
-### `findNextSibling`
+### findNextSibling
 
-### `findSiblingWithClass`
+### findSiblingWithClass
 
-### `getChildren`
+### getChildren
 
-### `getNthChild`
+### getNthChild
 
-### `removeChildren`
+### removeChildren
 
-### `removeChild`
+### removeChild
 
-### `mapDataFromChildren`
+### mapDataFromChildren

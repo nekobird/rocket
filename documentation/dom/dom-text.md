@@ -14,7 +14,7 @@ import { DOMText } from '@nekobird/rocket';
 
 ## Static Methods
 
-### `getTextBoxHeightFromElement`
+### getTextBoxHeightFromElement
 
 ```
 getTextBoxHeightFromElement(
@@ -34,7 +34,7 @@ getTextBoxHeightFromElement(
 DOMText.getTextBoxHeightFromElement(element);
 ```
 
-### `getTextBoxWidthFromElement`
+### getTextBoxWidthFromElement
 
 ```
 getTextBoxWidthFromElement(

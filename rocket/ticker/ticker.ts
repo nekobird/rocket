@@ -101,7 +101,7 @@ export class Ticker {
   }
 
   private updateProgress() {
-    const { durationInSeconds, loopForever } = this.config;
+    const { durationInSeconds } = this.config;
 
     const now = Date.now();
 
