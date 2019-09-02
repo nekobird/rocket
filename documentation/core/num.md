@@ -1,12 +1,12 @@
 [Back](../index.md)
 
-# `Num`
+# Num
 
 Num provides useful helper methods for dealing with numbers.
 
 ## Import
 
-Import **`Num`** into your project file.
+Import **Num** into your project file.
 
 ```typescript
 import { Num } from '@nekobird/rocket';
@@ -14,7 +14,7 @@ import { Num } from '@nekobird/rocket';
 
 ## Static Methods
 
-### `average`
+### average
 
 `average(...numbers: number[]): number`
 
@@ -31,10 +31,13 @@ Num.average(1, 2, 3);
 Num.average(...[4, 5, 6]);
 ```
 
-### `constrain`, `clamp`
+### constrain, clamp
 
 ```
+constrain(value: number, min: number, max: number): number
 constrain(value: number, range: NumberOrRange): number
+
+clamp(value: number, min: number, max: number): number
 clamp(value: number, range: NumberOrRange): number
 ```
 
@@ -62,9 +65,30 @@ Num.constrain(-1, 5);
 Num.clamp(-1, 5);
 ```
 
-### `cycle`
+### within
 
-`cycle(value: number, range: NumberOrRange): number`
+```
+within(
+  value: number,
+  min: number,
+  max: number,
+  isExclusive?: boolean,
+): boolean
+within(
+  value: number,
+  range: NumberOrRange,
+  isExclusive?: boolean,
+): boolean
+```
+
+### cycle
+
+```
+cycle(
+  value: number,
+  range: NumberOrRange,
+): number
+```
 
 Cycle number within given range.
 
@@ -81,7 +105,7 @@ Num.cycle(-1, [0, 3])
 Num.cycle(2, [3, 5]);
 ```
 
-### `getEuclideanDistance`
+### getEuclideanDistance
 
 `getEuclideanDistance(a: number, b: number): number`
 
@@ -103,7 +127,7 @@ Num.getEuclideanDistance(5, -3);
 Num.getEuclideanDistance(-3, -5);
 ```
 
-### `hypotenuse`
+### hypotenuse
 
 `hypotenuse(x: number, y: number): number`
 
@@ -121,7 +145,7 @@ Num.hypotenuse(3, 4);
 Num.hypotenuse(6, 8);
 ```
 
-### `reciprocal`
+### reciprocal
 
 `reciprocal(number: number): number`
 
@@ -135,7 +159,7 @@ This will throw an error if **n** is **0**.
 Num.reciprocal(1);
 ```
 
-### `roundTo`
+### roundTo
 
 `roundTo(number: number, to?: number): number`
 
@@ -149,31 +173,38 @@ If `to` is not defined, it will default to 0 decimal point.
 Num.roundTo(3.1415, 2);
 ```
 
-### `lerp`
+### lerp
 
 `lerp(t: number, from: number, to: number): number`
 
 Linear interpolation.
 
-### `cubicBezier`
+### cubicBezier
 
 `cubicBezier(t: number, p1: number, cp1: number, cp2: number, p2: number): number`
 
 Cubic Bezier interpolation.
 
-### `modulate` (Will soon be deprecated, replaced with `transform`)
+### modulate & transform
 
 ```
 modulate(
-  number: number,
+  value: number,
   from: NumberOrRange,
   to: NumberOrRange,
-  constrain: boolean = true,
+  clamp: boolean = true,
+): number
+
+transform(
+  value: number,
+  from: NumberOrRange,
+  to: NumberOrRange,
+  clamp: boolean = true,
 ): number
 ```
 
 Map a number from one range to another.
-The last flag, if set to true, will constrain the number within the target range.
+The last flag, if set to true, will clamp the number within the target range.
 
 #### Example
 
@@ -185,31 +216,7 @@ Num.modulate(0.5, 1, 2, true);
 Num.modulate(0.75, [0.5, 1], [1, 2], true);
 ```
 
-### `transform`
-
-```
-transform(
-  value: number,
-  from: NumberOrRange,
-  to: NumberOrRange,
-  constrain: boolean = true,
-): number
-```
-
-Map a number from one range to another.
-The last flag, if set to true, will constrain the number within the target range.
-
-#### Example
-
-```typescript
-// Returns 1
-Num.transform(0.5, 1, 2, true);
-
-// Returns 1.5
-Num.transform(0.75, [0.5, 1], [1, 2], true);
-```
-
-### `random`
+### random
 
 ```
 random(
@@ -240,7 +247,7 @@ Num.random(1, true);
 Num.random(1, false, 4);
 ```
 
-### `sum`
+### sum
 
 `sum(...numbers: number[]): number`
 
@@ -253,23 +260,7 @@ Sum all the number arguments.
 Num.sum(4, 2, 0);
 ```
 
-### `within`
-
-`within(number: number, range: NumberOrRange): boolean`
-
-Returns true if number is within given range.
-
-#### Example
-
-```typescript
-// Returns true
-Num.within(4, [2, 4]);
-
-// Returns false
-Num.within(4, [0, 2]);
-```
-
-### `getSign`
+### getSign
 
 `getSign(n: number): number`
 
