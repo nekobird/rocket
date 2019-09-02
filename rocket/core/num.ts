@@ -4,6 +4,14 @@ import {
 } from '../rocket';
 
 export class Num {
+  private static isRangeArray(thing: any): boolean {
+    return (
+      Array.isArray(thing) === true
+      && thing.length === 2
+      && thing.every(member => typeof member === 'number')
+    );
+  }
+
   private static getRangeFromNumberOrRange(range: NumberOrRange): RangeArray {
     if (typeof range === 'number') {
       return [0, range];
@@ -17,14 +25,6 @@ export class Num {
     const max = Math.max(...range);
 
     return [min, max];
-  }
-
-  private static isRangeArray(thing: any): boolean {
-    return (
-      Array.isArray(thing) === true
-      && thing.length === 2
-      && thing.every(member => typeof member === 'number')
-    );
   }
 
   private static isNumberOrRange(thing: any): boolean {
@@ -79,11 +79,13 @@ export class Num {
     max: number,
     isExclusive?: boolean,
   ): boolean;
+
   public static within(
     value: number,
     range: NumberOrRange,
     isExclusive?: boolean,
   ): boolean;
+
   public static within(
     value: number,
     a: NumberOrRange,
