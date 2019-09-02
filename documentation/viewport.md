@@ -1,6 +1,6 @@
 [Back](./index.md)
 
-# `Viewport`
+# Viewport
 
 Viewport is the visible viewing region of your document.
 This static class helps you get useful, accurate, and reliable viewport information.
@@ -15,72 +15,72 @@ import { Viewport } from '@nekobird/rocket';
 
 ## Static Methods
 
-### `setScrollToggleElement`
+### setScrollToggleElement
 
 `setScrollToggleElement(element: HTMLElement): void`
 
-### `disableScrolling`
+### disableScrolling
 
 `disableScrolling(isLocked: boolean = false, forceHideScrollbar: boolean = false): void`
 
-### `enableScrolling`
+### enableScrolling
 
 `enableScrolling(unlock: boolean = false): void`
 
-### `scrollTo`
+### scrollTo
 
 `scrollTo(left: number, top: number): void`
 
 ## Static Properties
 
-### `scrollingIsEnabled`
+### scrollingIsEnabled
 
 `scrollingIsEnabled: boolean`
 
 Check to see if scrolling is enabled.
 
-### `scrollingIsDisabled`
+### scrollingIsDisabled
 
 `scrollingIsDisabled: boolean`
 
 Check to see if scrolling is disabled.
 
-### `scrollingIsLocked`
+### scrollingIsLocked
 
 `scrollingIsLocked: boolean`
 
 Check to see if scrolling is locked.
 
-### `hasHorizontalScrollBar`
+### hasHorizontalScrollBar
 
 `hasHorizontalScrollBar: boolean`
 
 Check to see if horizontal scroll bar is present.
 
-### `hasVerticalScrollBar`
+### hasVerticalScrollBar
 
 `hasVerticalScrollBar: boolean`
 
-### `centerPoint`
+### centerPoint
 
 `centerPoint: Point`
 
-### `centerX`
+### centerX
 
 `centerX: number`
 
-### `centerY`
+### centerY
 
 `centerY: number`
 
-### `width`
+### width
 
 `width: number`
 
-### `height`
+### height
 
 `height: number`
 
-### `diagonal`
+### diagonal
 
 `diagonal: number`
