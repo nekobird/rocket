@@ -1,6 +1,6 @@
 [Back](../index.md)
 
-# `Util`
+# Util
 
 A collection of general static utility methods.
 
@@ -14,7 +14,7 @@ import { Util } from '@nekobird/rocket';
 
 ## Static Methods
 
-### `isPromise`
+### isPromise
 
 `isPromise(...things): boolean`
 
@@ -27,7 +27,7 @@ Check to see if given arguments are all valid promise object.
 Util.isPromise(a, b, c);
 ```
 
-### `promiseEach`
+### promiseEach
 
 `promiseEach<A>(array: A[], func: (value: A) => Promise<void>): Promise<void>`
 
@@ -35,13 +35,13 @@ Takes in an array of values and a function that returns a promise.
 It will then loop through the array and pass each value to the function.
 Finally, it will chain the promise objects returned by the function.
 
-### `promiseChain`
+### promiseChain
 
 `promiseChain(...funcs: (() => Promise<void>)[]): Promise<void>`
 
 This will chain the promise object returned by each function in the arguments.
 
-### `cycleArrayNext`
+### cycleArrayNext
 
 `cycleArrayNext<A>(array: A[]): Function`
 
@@ -66,7 +66,7 @@ func();
 func();
 ```
 
-### `cycleArray`
+### cycleArray
 
 `cycleArray<A>(array: A[], offset: number): A`
 
@@ -89,7 +89,7 @@ Num.cycleArray([1, 2, 3], -1);
 Num.cycleArray([1, 2, 3], -5);
 ```
 
-### `randomChoice`
+### randomChoice
 
 `randomChoice<A>(...choices: A[]): A`
 
@@ -106,7 +106,7 @@ const choices = ['cat', 'dog', 'turtle'];
 Util.randomChoice<string>(...choices);
 ```
 
-### `debounce`
+### debounce
 
 `debounce(func: Function, delayInSeconds: number): Function`
 
@@ -127,7 +127,7 @@ const resizeDebounce = Util.debounce(() => alert('Done resizing!'), 0.2);
 window.addEventListener('resize', resizeDebounce);
 ```
 
-### `throttle`
+### throttle
 
 `throttle(func: Function, thresholdInSeconds: number): Function`
 

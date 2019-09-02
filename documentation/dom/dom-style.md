@@ -76,7 +76,7 @@ DOMStyle.copyStylesFrom(element, 'font-size', anotherElement, someOtherElement);
 
 `removeStyles(element: HTMLElement, properties: string | string[]): void`
 
-### `getStyleValue`
+### getStyleValue
 
 ```
 getStyleValue(
@@ -100,18 +100,18 @@ getStyleValues(
 ): StyleValue
 ```
 
-### `getFontSize`
+### getFontSize
 
 `getFontSize(element: HTMLElement): number`
 
-### `setFontSize`
+### setFontSize
 
 `setFontSize(element: HTMLElement, fontSize: number): void`
 
-### `getBaseFontSize`
+### getBaseFontSize
 
 `getBaseFontSize(): number`
 
-### `RemToPx`
+### RemToPx
 
 `RemToPx(rem: number): number`

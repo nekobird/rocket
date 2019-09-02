@@ -1,6 +1,6 @@
 [Back](../index.md)
 
-# `StringUtil`
+# StringUtil
 
 A set of string utilities.
 
@@ -14,7 +14,7 @@ import { StringUtil } from '@nekobird/rocket';
 
 ## Static Methods
 
-### `uppercaseFirstLetter`
+### uppercaseFirstLetter
 
 `uppercaseFirstLetter(string: string): string`
 
@@ -27,7 +27,7 @@ Returns string with uppercased first letter.
 StringUtil.uppercaseFirstLetter('andrew');
 ```
 
-### `lowercaseFirstLetter`
+### lowercaseFirstLetter
 
 `lowercaseFirstLetter(string: string): string`
 
@@ -40,7 +40,7 @@ Returns string with the first letter lowercased.
 StringUtil.lowercaseFirstLetter('Hello');
 ```
 
-### `removeExtraWhitespaces`
+### removeExtraWhitespaces
 
 `removeExtraWhitespaces(string: string): string`
 
@@ -53,19 +53,19 @@ Remove any extra whitespaces (more than one).
 StringUtil.removeExtraWhitespaces(' a  b c');
 ```
 
-### `removeTabs`
+### removeTabs
 
 `removeTabs(string: string): string`
 
 Remove any tab characters from string.
 
-### `removeNewLines`
+### removeNewLines
 
 `removeNewLines(string: string): string`
 
 Remove any new line characters from string.
 
-### `match`
+### match
 
 `match(string: string, regex: RegExp): string | string[] | false`
 

@@ -1,6 +1,6 @@
 [Back to index](./index.md)
 
-# `Animation`
+# Animation
 
 A generalized animation class with comprehensive callbacks, promises, and hooks
 to give you full control and freedom to tween anything you want.

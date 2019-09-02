@@ -1,12 +1,12 @@
 [Back](../index.md)
 
-# `DOMText`
+# DOMText
 
 A collection of static helper that helps you with text and text-boxes.
 
 ## Import
 
-Import **`DOMText`** into your project file.
+Import **DOMText** into your project file.
 
 ```typescript
 import { DOMText } from '@nekobird/rocket';

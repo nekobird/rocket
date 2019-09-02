@@ -1,12 +1,12 @@
 [Back](./index.md)
 
-# `Repeater`
+# Repeater
 
 Repeater
 
 ## Import
 
-Import **`Repeater`** into your project file.
+Import **Repeater** into your project file.
 
 ```typescript
 import { Repeater } from '@nekobird/rocket';
@@ -14,33 +14,33 @@ import { Repeater } from '@nekobird/rocket';
 
 ## Config
 
-### `enableTimeout`
+### enableTimeout
 
 `enableTimeout: boolean`
 
 If this is set to `true`.
 
-### `timeoutDelayInSeconds`
+### timeoutDelayInSeconds
 
 `timeoutDelayInSeconds: number`
 
-### `numberOfRepeatsPerSecond`
+### numberOfRepeatsPerSecond
 
 `numberOfRepeatsPerSecond: number`
 
-### `condition`
+### condition
 
 `condition: (context: Repeater) => boolean`
 
-### `onStart`
+### onStart
 
 `onStart: (context: Repeater) => void`
 
-### `onRepeat`
+### onRepeat
 
 `onRepeat: (context: Repeater) => void`
 
-### `onEnd`
+### onEnd
 
 `onEnd: (context: Repeater) => void`
 
@@ -48,10 +48,10 @@ If this is set to `true`.
 
 ## Methods
 
-### `setConfig`
+### setConfig
 
 `setConfig(config?: Partial<RepeaterConfig>): this`
 
-### `start`
+### start
 
-### `stop`
+### stop
