@@ -45,7 +45,8 @@ from that element.
 ```
 ascendFrom(
   from: HTMLElement,
-  inspect: DOMTraverseInspectFunction
+  inspect: DOMTraverseInspectFunction,
+  to: HTMLElement = document.documentElement,
 ): void
 ```
 
@@ -71,7 +72,7 @@ DOMTraverse.ascendFrom(from, parent => {
 ```
 descendFrom(
   from: HTMLElement,
-  inspect: DOMTraverseInspectFunction
+  inspect: DOMTraverseInspectFunction,
 ): void
 ```
 
@@ -95,7 +96,7 @@ DOMTraverse.descendFrom(element, child => {
 findAncestor(
   from: HTMLElement,
   identifyElement: DOMTraverseIdentifyElementFunction,
-  getAll: boolean = false,
+  getAllMatchingAncestors: boolean = false,
 ): DOMTraverseResult
 ```
 
@@ -118,7 +119,7 @@ DOMTraverse.findAncestor(from, element => {
 findDescendant(
   from: HTMLElement,
   identifyElement: DOMTraverseIdentifyElementFunction,
-  getAll: boolean = false,
+  getAllMatchingDescendants: boolean = false,
 ): DOMTraverseResult
 ```
 
@@ -145,7 +146,7 @@ DOMTraverse.findAncestor(from, parent => {
 findAncestorWithClass(
   from: HTMLElement,
   classNames: string | string[],
-  getAll: boolean = false,
+  getAllMatchingAncestors: boolean = false,
 ): DOMTraverseResult
 ```
 
@@ -163,7 +164,7 @@ DOMTraverse.findAncestorWithClass(from, ['class-0', 'class-1'], true);
 findDescendantWithClass(
   from: HTMLElement,
   classNames: string | string[],
-  getAll: boolean = false,
+  getAllMatchingDescendants: boolean = false,
 ): DOMTraverseResult
 ```
 
@@ -181,7 +182,7 @@ DOMTraverse.findDescendantWithClass(from, ['class-0', 'class-1'], true);
 findAncestorWithId(
   from: HTMLElement,
   id: string,
-  getAll: boolean = false,
+  getAllMatchingAncestors: boolean = false,
 ): DOMTraverseResult
 ```
 
@@ -191,7 +192,7 @@ findAncestorWithId(
 findDescendantWithId(
   from: HTMLElement,
   id: string,
-  getAll: boolean = false,
+  getAllMatchingDescendants: boolean = false,
 ): DOMTraverseResult
 ```
 
@@ -200,7 +201,7 @@ findDescendantWithId(
 ```
 hasAncestor(
   from: HTMLElement,
-  options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
+  options: HTMLElement | HTMLElements,
 ): boolean
 ```
 
@@ -209,7 +210,7 @@ hasAncestor(
 ```
 hasDescendant(
   from: HTMLElement,
-  options: HTMLElement | HTMLElement[] | NodeListOf<HTMLElement>,
+  options: HTMLElement | HTMLElements,
 ): boolean
 ```
 
@@ -224,16 +225,71 @@ getSiblings(
 
 ### findSibling
 
+```
+findSibling(
+  element: HTMLElement,
+  identifyElement: DOMTraverseIdentifyElementFunction,
+  getAllMatchingSiblings = true,
+): DOMTraverseResult
+```
+
 ### findNextSibling
+
+```
+findNextSibling(
+  element: HTMLElement,
+  identifyElement: DOMTraverseIdentifyElementFunction,
+): HTMLElement | false
+```
 
 ### findSiblingWithClass
 
+```
+findSiblingWithClass(
+  element: HTMLElement,
+  classNames: string | string[],
+  getAllMatchingSiblings: boolean = false,
+): DOMTraverseResult
+```
+
 ### getChildren
+
+```
+getChildren(
+  element: HTMLElement,
+  identifyElement?: DOMTraverseIdentifyElementFunction,
+): HTMLElement[]
+```
 
 ### getNthChild
 
+```
+getNthChild(
+  n: number | 'last',
+  element: HTMLElement,
+  identifyElement?: DOMTraverseIdentifyElementFunction,
+): HTMLElement | false
+```
+
 ### removeChildren
+
+`removeChildren(element: HTMLElement): number`
 
 ### removeChild
 
+```
+removeChild(
+  element: HTMLElement,
+  identifyElement: DOMTraverseIdentifyElementFunction,
+): number
+```
+
 ### mapDataFromChildren
+
+```
+mapDataFromChildren<T>(
+  element: HTMLElement,
+  extractFunction: DOMTraverseExtractFunction<T>,
+  identifyElement?: DOMTraverseIdentifyElementFunction,
+): T[]
+```

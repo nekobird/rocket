@@ -18,6 +18,10 @@ import { DOMUtil } from '@nekobird/rocket';
 
 `NodeListOf<HTMLElement> | HTMLCollection | HTMLElement[]`
 
+### InputOrTextArea
+
+`HTMLTextAreaElement | HTMLInputElement`
+
 ## Static Methods
 
 ### isHTMLElement

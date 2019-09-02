@@ -32,7 +32,7 @@ A collection of modules to help your interaction with the DOM a breeze.
 | [DOMView](./dom/dom-view.md) | HTMLElements and how relate to the Viewport. |
 | [DOMAlignOffset](./dom/dom-align-offset.md) | Find HTMLElement offsets relative to a set of reference points. |
 | [DOMOffset](./dom/dom-offset.md) | Find HTMLElement offsets. |
-| [DOMScroll](./dom/dom-text.md) | Get useful scroll values from HTMLElements. |
+| [DOMScroll](./dom/dom-scroll.md) | Get useful scroll values from HTMLElements. |
 
 ## Viewport
 
