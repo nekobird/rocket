@@ -1,20 +1,6 @@
 export type StringOrRegExp = string | RegExp;
 
 export class StringUtil {
-  private static isStringOrRegExp(thing: any): boolean {
-    return (
-      typeof thing === 'string'
-      || thing instanceof RegExp
-    )
-  }
-
-  private static isStringOrRegExpArray(thing: any): boolean {
-    return (
-      Array.isArray(thing) === true
-      && thing.every(member => this.isStringOrRegExp(member))
-    )
-  }
-
   public static uppercaseFirstLetter(string: string): string {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
@@ -111,5 +97,19 @@ export class StringUtil {
     }
 
     return from;
+  }
+
+  private static isStringOrRegExp(thing: any): boolean {
+    return (
+      typeof thing === 'string'
+      || thing instanceof RegExp
+    )
+  }
+
+  private static isStringOrRegExpArray(thing: any): boolean {
+    return (
+      Array.isArray(thing) === true
+      && thing.every(member => this.isStringOrRegExp(member))
+    )
   }
 }
