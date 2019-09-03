@@ -282,16 +282,16 @@ transform(
 ```
 
 Map a number from one range to another.
-The last flag, if set to true, will clamp the number within the target range.
+The last flag, if set to `true`, will clamp the number within the target range.
 
 **Examples**
 
 ```typescript
 // Returns 1
-Num.transform(0.5, 1, 2, true);
+Num.transform(0.5, 1, 2);
 
 // Returns 1.5
-Num.transform(0.75, [0.5, 1], [1, 2], true);
+Num.transform(0.75, [0.5, 1], [1, 2]);
 ```
 
 ### within
@@ -312,3 +312,17 @@ within(
 ```
 
 Check to see if a number is within a given range.
+
+**Examples**
+
+```typescript
+// Returns true
+Num.within(0.5, 1);
+Num.within(1, 1.5, 2);
+Num.within(2, [1, 2]);
+
+// Returns false
+Num.within(0, 1, true);
+Num.within(1, 1, 2, true);
+Num.within(1, [1, 2], true);
+```
