@@ -4,6 +4,29 @@
 
 Num provides useful helper methods for dealing with numbers.
 
+## Overview
+
+- [Num](#num)
+  - [Overview](#overview)
+  - [Import](#import)
+  - [Static Methods](#static-methods)
+    - [average](#average)
+    - [clamp](#clamp)
+    - [countDigits](#countdigits)
+    - [cubicBezier](#cubicbezier)
+    - [cycle](#cycle)
+    - [getEuclideanDistance](#geteuclideandistance)
+    - [getSign](#getsign)
+    - [hypotenuse](#hypotenuse)
+    - [lerp](#lerp)
+    - [random](#random)
+    - [reciprocal](#reciprocal)
+    - [roundTo](#roundto)
+    - [sum](#sum)
+    - [transform](#transform)
+    - [within](#within)
+
+
 ## Import
 
 Import **Num** into your project file.
@@ -21,7 +44,7 @@ import { Num } from '@nekobird/rocket';
 Calculate the average of the arguments.
 You need to enter at least two numbers or else it will throw an error.
 
-#### Examples
+**Examples**
 
 ```typescript
 // Returns 2
@@ -40,7 +63,7 @@ clamp(value: number, range: NumberOrRange): number
 
 Constrain a number to a range.
 
-#### Examples
+**Examples**
 
 ```typescript
 // Returns 3
@@ -64,7 +87,7 @@ Num.clamp(-1, 5);
 
 Count the number of digits of given number.
 
-#### Examples
+**Examples**
 
 ```typescript
 // Returns 5
@@ -91,7 +114,7 @@ cycle(
 
 Cycle number within given range.
 
-#### Examples
+**Examples**
 
 ```typescript
 // Returns 1
@@ -110,7 +133,7 @@ Num.cycle(2, [3, 5]);
 
 Calculate the euclidean distance between two numbers.
 
-#### Examples
+**Examples**
 
 ```typescript
 // Returns 4
@@ -132,7 +155,7 @@ Num.getEuclideanDistance(-3, -5);
 
 Similar to `Math.sign()` but returns **1** if **0** is given.
 
-#### Examples
+**Examples**
 
 ```typescript
 // Returns 1
@@ -154,7 +177,7 @@ Num.getSign(-0);
 
 A [more efficient way](http://www.johndcook.com/blog/2010/06/02/whats-so-hard-about-finding-a-hypotenuse/) of calculating hypotenuse (Pythagorean Theorem).
 
-#### Examples
+**Examples**
 
 ```typescript
 // Using Pythagorean Triples for examples.
@@ -184,7 +207,7 @@ random(
 
 Returns a random number, given range.
 
-#### Examples
+**Examples**
 
 ```typescript
 // Returns a random integer between 0 - 10.
@@ -210,7 +233,7 @@ Num.random(1, false, 4);
 Get reciprocal of a number `1 / n`.
 This will throw an error if **n** is **0**.
 
-#### Example
+**Example**
 
 ```typescript
 // Returns 0.5
@@ -224,7 +247,7 @@ Num.reciprocal(1);
 This will round number to specified decimal point.
 If `to` is not defined, it will default to 0 decimal point.
 
-#### Example
+**Example**
 
 ```typescript
 // Returns 3.14
@@ -237,7 +260,7 @@ Num.roundTo(3.1415, 2);
 
 Sum all the number arguments.
 
-#### Examples
+**Examples**
 
 ```typescript
 // Returns 6
@@ -261,7 +284,7 @@ transform(
 Map a number from one range to another.
 The last flag, if set to true, will clamp the number within the target range.
 
-#### Examples
+**Examples**
 
 ```typescript
 // Returns 1
