@@ -35,7 +35,6 @@ export * from './two/vector-2-group';
 
 // @animation
 export * from './animation/animation';
-export * from './animation-timeline';
 export * from './easings';
 
 // @canvas

@@ -1,8 +1,8 @@
 // Preferences
 // Available
 
-export ELEMENT_AUTO_ALIGN_CONFIG = {
-  
+export interface ElementAutoAlignConfig {
+  preference: string[];  
 }
 
 export class ElementAutoAlign {

@@ -1,6 +1,6 @@
 import {
   Vector2,
-} from '../rocket';
+} from '../../../rocket/rocket';
 
 import {
   Draggable,

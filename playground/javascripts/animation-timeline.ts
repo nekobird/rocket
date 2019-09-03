@@ -1,6 +1,6 @@
 import {
   Animation,
-} from './rocket';
+} from '../../rocket/rocket';
 
 export interface AnimationTimelineConfig {
   beforeStart: () => Promise<void> | void;
