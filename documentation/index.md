@@ -4,7 +4,7 @@
 
 | Name | Description |
 | --- | --- |
-| [Interfaces](./interfaces.md) | Global Interfaces used throughout the library. |
+| [Interfaces](./interfaces.md) | Interfaces used throughout the library. |
 
 ## Core
 

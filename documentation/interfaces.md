@@ -1,20 +1,29 @@
 # Interfaces
 
-## `Size`
+- [Interfaces](#interfaces)
+  - [Size](#size)
+  - [Offset](#offset)
+  - [FullOffset](#fulloffset)
+  - [Rectangle](#rectangle)
+- [Types](#types)
+  - [RangeArray](#rangearray)
+  - [NumberOrRange](#numberorrange)
+
+## Size
 
 ```
 width: number
 height: number
 ```
 
-## `Offset`
+## Offset
 
 ```
 left: number
 top: number
 ```
 
-## `FullOffset`
+## FullOffset
 
 ```
 left: number
@@ -25,7 +34,7 @@ bottom: number
 
 `FullOffset` is an extension of `Offset`.
 
-## `Rectangle`
+## Rectangle
 
 ```
 left: number
@@ -39,15 +48,31 @@ center: Point
 
 # Types
 
-## `RangeArray`
+## RangeArray
 
 `[number, number]`
 
 An array containing two numbers.
-Usually to represent min and max value.
+Usually to represent **min** and **max** value.
 
-## `NumberOrRange`
+**Examples**
+
+```typescript
+const a: RangeArray = [0, 1];
+
+const b: RangeArray = [20, 100];
+```
+
+## NumberOrRange
 
 `number | RangeArray`
 
 A number or an array containing two numbers.
+
+**Examples**
+
+```typescript
+const a: NumberOrRange = 1;
+
+const b: NumberOrRange = [20, 100];
+```
