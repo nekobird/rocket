@@ -54,11 +54,13 @@ export class StringUtil {
     patterns: StringOrRegExp,
     replacement: string | Function,
   ): string
+
   public static replace(
     string: string,
     patterns: StringOrRegExp[],
     replacement: string | Function,
   ): string
+  
   public static replace(
     string: string,
     patterns: StringOrRegExp | StringOrRegExp[],
