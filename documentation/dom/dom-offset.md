@@ -2,15 +2,25 @@
 
 # DOMOffset
 
+## Table of Contents
+
+- [DOMOffset](#domoffset)
+  - [Table of Contents](#table-of-contents)
+  - [Import](#import)
+  - [Static Methods](#static-methods)
+    - [getElementOffsetFromAnotherElement](#getelementoffsetfromanotherelement)
+    - [getElementOffsetFromDocument](#getelementoffsetfromdocument)
+    - [getElementOffsetFromView](#getelementoffsetfromview)
+
 ## Import
 
-Import **`DOMOffset`** into your project:
+Import **DOMOffset** into your project:
 
 ```typescript
 import { DOMOffset } from '@nekobird/rocket';
 ```
 
-## Static Properties
+## Static Methods
 
 ### getElementOffsetFromAnotherElement
 
