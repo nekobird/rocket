@@ -21,7 +21,7 @@
     "clean": "rm -r dist; rm -r build; rm -r .cache",
     "prepare": "npm run build",
     "start": "npx parcel ./playground/index.html",
-    "test": "jest"
+    "test": "npx jest"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
