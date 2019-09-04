@@ -1,6 +1,6 @@
 {
   "name": "@nekobird/rocket",
-  "version": "0.0.125",
+  "version": "0.0.126",
   "description": " A foundational library for creating interactive web experiences.",
   "keywords": [],
   "repository": {
@@ -34,12 +34,11 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-typescript": "^7.3.3",
-    "@types/chai": "^4.2.0",
+    "@types/chai": "^4.2.1",
     "@types/jest": "^24.0.18",
     "@types/mocha": "^5.2.7",
     "autoprefixer": "^9.6.1",
     "cssnano": "^4.1.10",
-    "jest": "^24.9.0",
     "sass": "^1.22.10",
     "ts-jest": "^24.0.2",
     "typescript": "^3.6.2"
