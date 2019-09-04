@@ -30,7 +30,7 @@ This static class helps you get useful, accurate, and reliable viewport informat
 
 ## Import
 
-Import **`Viewport`** into your project file.
+Import **Viewport** into your project file.
 
 ```typescript
 import { Viewport } from '@nekobird/rocket';
