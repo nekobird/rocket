@@ -4,6 +4,37 @@
 
 A collection of static methods to help you traverse the DOM and do stuff along the way.
 
+## Table of Contents
+
+- [DOMTraverse](#domtraverse)
+  - [Table of Contents](#table-of-contents)
+  - [Import](#import)
+  - [Interfaces](#interfaces)
+    - [DOMTraverseInspectFunction](#domtraverseinspectfunction)
+    - [DOMTraverseIdentifyElementFunction](#domtraverseidentifyelementfunction)
+    - [DOMTraverseExtractFunction](#domtraverseextractfunction)
+    - [DOMTraverseResult](#domtraverseresult)
+  - [Methods](#methods)
+    - [ascendFrom](#ascendfrom)
+    - [descendFrom](#descendfrom)
+    - [findAncestor](#findancestor)
+    - [findDescendant](#finddescendant)
+    - [findAncestorWithClass](#findancestorwithclass)
+    - [findDescendantWithClass](#finddescendantwithclass)
+    - [findAncestorWithId](#findancestorwithid)
+    - [findDescendantWithId](#finddescendantwithid)
+    - [hasAncestor](#hasancestor)
+    - [hasDescendant](#hasdescendant)
+    - [getSiblings](#getsiblings)
+    - [findSibling](#findsibling)
+    - [findNextSibling](#findnextsibling)
+    - [findSiblingWithClass](#findsiblingwithclass)
+    - [getChildren](#getchildren)
+    - [getNthChild](#getnthchild)
+    - [removeChildren](#removechildren)
+    - [removeChild](#removechild)
+    - [mapDataFromChildren](#mapdatafromchildren)
+
 ## Import
 
 Import **DOMTraverse** into your project file.
@@ -53,7 +84,7 @@ ascendFrom(
 This method takes in an element to start traversing from and a `DOMTraverseInspectElementFunction` function.
 It will then loop through each parent, passing it to the inspect function, until it returns true or it reached the root, `HTML` element.
 
-#### Example
+**Example**
 
 ```typescript
 // This will loop through element's ancestor all the way to the root,
@@ -79,7 +110,7 @@ descendFrom(
 This method takes in an element to start descending from and a `DOMTraverseInspectElementFunction` function.
 It will then loop through each child, passing it to to the identify function, until it returns true or it passed through all the child nodes.
 
-#### Example
+**Example**
 
 ```typescript
 DOMTraverse.descendFrom(element, child => {
@@ -103,7 +134,7 @@ findAncestor(
 This method takes in an element that you want to start traversing from and a `DOMTraverseIdentifyElementFunction` function.
 It will then loop through each ancestor, passing it to the inspect function, until it returns true or it reached the root `HTML` element.
 
-#### Example
+**Example**
 
 ```typescript
 DOMTraverse.findAncestor(from, element => {
@@ -126,7 +157,7 @@ findDescendant(
 This method takes in an element that you want to start traversing from and a `DOMTraverseIdentifyElementFunction` function.
 It will then loop through each ancestor, passing it to the inspect function, until it returns true or it reached the root `HTML` element.
 
-#### Example
+**Example**
 
 ```typescript
 // This will loop through element's ancestor all the way to the root,
@@ -152,7 +183,7 @@ findAncestorWithClass(
 
 Find a parent ancestor element with given classnames.
 
-#### Example
+**Example**
 
 ```typescript
 DOMTraverse.findAncestorWithClass(from, ['class-0', 'class-1'], true);
@@ -170,7 +201,7 @@ findDescendantWithClass(
 
 Find a parent ancestor element with given classnames.
 
-#### Example
+**Example**
 
 ```typescript
 DOMTraverse.findDescendantWithClass(from, ['class-0', 'class-1'], true);
