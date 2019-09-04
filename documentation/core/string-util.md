@@ -10,7 +10,7 @@ A set of string utilities.
   - [Table of Contents](#table-of-contents)
   - [Import](#import)
   - [Static Methods](#static-methods)
-  - [hasUppercaseLetter](#hasuppercaseletter)
+    - [hasUppercaseLetter](#hasuppercaseletter)
     - [isKebabCase](#iskebabcase)
     - [isSnakeCase](#issnakecase)
     - [kebabCaseToCamelCase](#kebabcasetocamelcase)
@@ -32,7 +32,7 @@ import { StringUtil } from '@nekobird/rocket';
 
 ## Static Methods
 
-## hasUppercaseLetter
+### hasUppercaseLetter
 
 `hasUppercaseLetter(...values: string[]): boolean`
 

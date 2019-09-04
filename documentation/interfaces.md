@@ -1,29 +1,39 @@
+[Back](./index.md)
+
 # Interfaces
 
-- [Interfaces](#interfaces)
-  - [Size](#size)
-  - [Offset](#offset)
-  - [FullOffset](#fulloffset)
-  - [Rectangle](#rectangle)
-- [Types](#types)
-  - [RangeArray](#rangearray)
-  - [NumberOrRange](#numberorrange)
+Set of interfaces and types used throughout the library.
 
-## Size
+## Table of Contents
+
+- [Interfaces](#interfaces)
+  - [Table of Contents](#table-of-contents)
+  - [Interfaces](#interfaces-1)
+    - [Size](#size)
+    - [Offset](#offset)
+    - [FullOffset](#fulloffset)
+    - [Rectangle](#rectangle)
+  - [Types](#types)
+    - [RangeArray](#rangearray)
+    - [NumberOrRange](#numberorrange)
+
+## Interfaces
+
+### Size
 
 ```
 width: number
 height: number
 ```
 
-## Offset
+### Offset
 
 ```
 left: number
 top: number
 ```
 
-## FullOffset
+### FullOffset
 
 ```
 left: number
@@ -34,7 +44,7 @@ bottom: number
 
 `FullOffset` is an extension of `Offset`.
 
-## Rectangle
+### Rectangle
 
 ```
 left: number
@@ -46,9 +56,9 @@ center: Point
 
 `Rectangle` is an extension of `FullOfsset` and `Size`.
 
-# Types
+## Types
 
-## RangeArray
+### RangeArray
 
 `[number, number]`
 
@@ -63,7 +73,7 @@ const a: RangeArray = [0, 1];
 const b: RangeArray = [20, 100];
 ```
 
-## NumberOrRange
+### NumberOrRange
 
 `number | RangeArray`
 
