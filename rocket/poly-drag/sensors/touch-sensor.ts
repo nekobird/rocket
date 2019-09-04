@@ -16,7 +16,7 @@ export class TouchSensor {
 
   public isListening: boolean = false;
 
-  public target?: HTMLElement;
+  public target: HTMLElement | null = null;
 
   constructor(polyDrag: PolyDrag) {
     this.polyDrag = polyDrag;
@@ -57,6 +57,8 @@ export class TouchSensor {
       window.removeEventListener('touchmove', this.onTouchMove);
       window.removeEventListener('touchend', this.onTouchEnd);
       window.removeEventListener('touchcancel', this.onTouchCancel);
+
+      this.target = null;
 
       this.isListening = false;
 

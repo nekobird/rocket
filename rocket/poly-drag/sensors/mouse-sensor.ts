@@ -18,7 +18,7 @@ export class MouseSensor {
 
   public mouseButtonIsDown: boolean = false;
 
-  public target?: HTMLElement;
+  public target: HTMLElement | null = null;
 
   constructor(polyDrag: PolyDrag) {
     this.polyDrag = polyDrag;
@@ -63,6 +63,8 @@ export class MouseSensor {
       window.removeEventListener('mouseup', this.onMouseUp);
 
       // document.documentElement.removeEventListener('mouseleave', this.onMouseLeave);
+
+      this.target = null;
 
       this.isListening = false;
 

@@ -36,31 +36,31 @@ export interface MonoDragConfig {
   onDragStart: (
     monoDragEvent: MonoDragEvent,
     monoDragStory: MonoDragStory,
-    monoDrag: MonoDrag
+    monoDrag: MonoDrag,
   ) => void;
 
   onDrag: (
     monoDragEvent: MonoDragEvent,
     monoDragStory: MonoDragStory,
-    monoDrag: MonoDrag
+    monoDrag: MonoDrag,
   ) => void;
 
   onDragStop: (
     monoDragEvent: MonoDragEvent,
     monoDragStory: MonoDragStory,
-    monoDrag: MonoDrag
+    monoDrag: MonoDrag,
   ) => void;
 
   onDragCancel: (
     monoDragEvent: MonoDragEvent,
     monoDragStory: MonoDragStory,
-    monoDrag: MonoDrag
+    monoDrag: MonoDrag,
   ) => void;
 
   onDragEnd: (
     monoDragEvent: MonoDragEvent,
     monoDragStory: MonoDragStory,
-    monoDrag: MonoDrag
+    monoDrag: MonoDrag,
   ) => void; 
 }
 
