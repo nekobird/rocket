@@ -4,6 +4,22 @@
 
 A collection of static general DOM helper methods.
 
+## Table of Contents
+
+- [DOMUtil](#domutil)
+  - [Table of Contents](#table-of-contents)
+  - [Import](#import)
+  - [Interfaces](#interfaces)
+    - [HTMLElements](#htmlelements)
+    - [InputOrTextArea](#inputortextarea)
+  - [Static Methods](#static-methods)
+    - [isHTMLElement](#ishtmlelement)
+    - [isNodeListOfHTMLElement](#isnodelistofhtmlelement)
+    - [isHTMLCollection](#ishtmlcollection)
+    - [isInputOrTextArea](#isinputortextarea)
+    - [toHTMLElementArray](#tohtmlelementarray)
+    - [prependChild](#prependchild)
+
 ## Import
 
 Import **DOMUtil** into your project file.
@@ -30,7 +46,7 @@ import { DOMUtil } from '@nekobird/rocket';
 
 Check if something is a valid `HTMLElement`.
 
-#### Example
+**Example**
 
 ```typescript
 // Only returns true if everything passed are HTMLElement.
@@ -43,7 +59,7 @@ DOMUtil.isHTMLElement(something, anotherThing);
 
 Check if something is a valid NodeListOf<HTMLElement>.
 
-#### Example
+**Example**
 
 ```typescript
 // Only returns true if everything passed are NodeListOf<HTMLElement>.
@@ -64,7 +80,7 @@ DOMUtil.isNodeListOfHTMLElement(something, anotherThing);
 
 If you enter things that are not `HTMLElements` or `HTMLElement`, it will return an empty array.
 
-#### Example
+**Example**
 
 ```typescript
 const collections = document.getElementsByTagName('div');
@@ -79,7 +95,7 @@ const result = DOMUtil.toHTMLElementArray(collections);
 
 Prepend an element inside another element.
 
-#### Example
+**Example**
 
 ```typescript
 const parentElement = document.querySelector('.targetParent');
