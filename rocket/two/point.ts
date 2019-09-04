@@ -447,8 +447,8 @@ export class Point {
   }
 
   public static lerp(time: number, from: PointLike, to: PointLike, mutate: boolean = false): Point {
-    const x = Num.modulate(time, 1, [from.x, to.x], false);
-    const y = Num.modulate(time, 1, [from.y, to.y], false);
+    const x = Num.transform(time, 1, [from.x, to.x]);
+    const y = Num.transform(time, 1, [from.y, to.y]);
 
     if (mutate === true) {
       from.x = x;

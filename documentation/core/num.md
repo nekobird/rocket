@@ -4,10 +4,10 @@
 
 Num provides useful helper methods for dealing with numbers.
 
-## Overview
+## Table of Contents
 
 - [Num](#num)
-  - [Overview](#overview)
+  - [Table of Contents](#table-of-contents)
   - [Import](#import)
   - [Static Methods](#static-methods)
     - [average](#average)

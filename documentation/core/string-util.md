@@ -4,6 +4,22 @@
 
 A set of string utilities.
 
+## Table of Contents
+
+- [StringUtil](#stringutil)
+  - [Table of Contents](#table-of-contents)
+  - [Import](#import)
+  - [Static Methods](#static-methods)
+    - [uppercaseFirstLetter](#uppercasefirstletter)
+      - [Example](#example)
+    - [lowercaseFirstLetter](#lowercasefirstletter)
+      - [Example](#example-1)
+    - [removeExtraWhitespaces](#removeextrawhitespaces)
+      - [Example](#example-2)
+    - [removeTabs](#removetabs)
+    - [removeNewLines](#removenewlines)
+    - [match](#match)
+
 ## Import
 
 Import **`StringUtil`** into your project file.

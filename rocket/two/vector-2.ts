@@ -602,8 +602,8 @@ export class Vector2 {
   }
 
   public applyLerp(t: number, point: PointLike): this {
-    this.x = Num.modulate(t, 1, [this.x, point.x], false);
-    this.y = Num.modulate(t, 1, [this.y, point.y], false);
+    this.x = Num.transform(t, 1, [this.x, point.x], false);
+    this.y = Num.transform(t, 1, [this.y, point.y], false);
 
     return this;
   }

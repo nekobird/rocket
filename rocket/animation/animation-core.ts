@@ -343,7 +343,7 @@ export class AnimationCore {
     if (this.isActive === false) {
       const { config } = this.animation;
 
-      let n = Num.constrain(to, 1);
+      let n = Num.clamp(to, 1);
 
       if (config.direction === -1) {
         n = 1 - n;

@@ -5,6 +5,29 @@
 Viewport is the visible viewing region of your document.
 This static class helps you get useful, accurate, and reliable viewport information.
 
+## Table of Contents
+
+- [Viewport](#viewport)
+  - [Table of Contents](#table-of-contents)
+  - [Import](#import)
+  - [Static Methods](#static-methods)
+    - [setScrollToggleElement](#setscrolltoggleelement)
+    - [disableScrolling](#disablescrolling)
+    - [enableScrolling](#enablescrolling)
+    - [scrollTo](#scrollto)
+  - [Static Properties](#static-properties)
+    - [scrollingIsEnabled](#scrollingisenabled)
+    - [scrollingIsDisabled](#scrollingisdisabled)
+    - [scrollingIsLocked](#scrollingislocked)
+    - [hasHorizontalScrollBar](#hashorizontalscrollbar)
+    - [hasVerticalScrollBar](#hasverticalscrollbar)
+    - [centerPoint](#centerpoint)
+    - [centerX](#centerx)
+    - [centerY](#centery)
+    - [width](#width)
+    - [height](#height)
+    - [diagonal](#diagonal)
+
 ## Import
 
 Import **`Viewport`** into your project file.
