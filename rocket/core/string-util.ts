@@ -1,25 +1,40 @@
 export type StringOrRegExp = string | RegExp;
 
 export class StringUtil {
-  public static uppercaseFirstLetter(string: string): string {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  public static hasUppercaseLetter(...values: string[]): boolean {
+    return values.every(value => value !== value.toLowerCase());
+  }
+
+  public static isKebabCase(...values: string[]): boolean {
+    return values.every(value => {
+      return (
+        this.hasUppercaseLetter(value) === false
+        && value.match(/^([a-z]+|[a-z][a-z\-]+[a-z])$/g) !== null
+      )
+    });
+  }
+
+  public static isSnakeCase(...values: string[]): boolean {
+    return values.every(value => {
+      return (
+        this.hasUppercaseLetter(value) === false
+        && value.match(/^([a-z]+|[a-z][a-z\_]+[a-z])$/g) !== null
+      )
+    });
+  }
+
+  public static kebabCaseToCamelCase(from: string): string {
+    if (this.isKebabCase(from) === true) {
+      return from.replace(/(\-[a-z]{1})/g, match => {
+        return match.replace(/[\-]/g, '').toUpperCase();
+      });
+    }
+
+    return from;
   }
 
   public static lowercaseFirstLetter(string: string): string {
     return string.charAt(0).toLowerCase() + string.slice(1);
-  }
-
-  // https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Whitespace_in_the_DOM
-  public static removeExtraWhitespaces(string: string): string {
-    return string.replace(/[\s]+/g, ' ');
-  }
-
-  public static removeTabs(string: string): string {
-    return string.replace(/[\t]+/g, '');
-  }
-
-  public static removeNewLines(string: string): string {
-    return string.replace(/[\r\n]+/g, '');
   }
 
   public static match(string: string, regex: RegExp): string | string[] | false {
@@ -32,6 +47,19 @@ export class StringUtil {
     }
 
     return value;
+  }
+
+  // https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Whitespace_in_the_DOM
+  public static removeExtraWhitespaces(string: string): string {
+    return string.replace(/[\s]+/g, ' ');
+  }
+
+  public static removeNewLines(string: string): string {
+    return string.replace(/[\r\n]+/g, '');
+  }
+
+  public static removeTabs(string: string): string {
+    return string.replace(/[\t]+/g, '');
   }
 
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_function_as_a_parameter
@@ -67,36 +95,8 @@ export class StringUtil {
     return string;
   }
 
-  public static hasUppercaseLetter(...values: string[]): boolean {
-    return values.every(value => value !== value.toLowerCase());
-  }
-
-  public static isKebabCase(...values: string[]): boolean {
-    return values.every(value => {
-      return (
-        this.hasUppercaseLetter(value) === false
-        && value.match(/^([a-z]+|[a-z][a-z\-]+[a-z])$/g) !== null
-      )
-    });
-  }
-
-  public static isSnakeCase(...values: string[]): boolean {
-    return values.every(value => {
-      return (
-        this.hasUppercaseLetter(value) === false
-        && value.match(/^([a-z]+|[a-z][a-z\_]+[a-z])$/g) !== null
-      )
-    });
-  }
-
-  public static kebabCaseToCamelCase(from: string): string {
-    if (this.isKebabCase(from) === true) {
-      return from.replace(/(\-[a-z]{1})/g, match => {
-        return match.replace(/[\-]/g, '').toUpperCase();
-      });
-    }
-
-    return from;
+  public static uppercaseFirstLetter(string: string): string {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   private static isStringOrRegExp(thing: any): boolean {

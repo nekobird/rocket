@@ -10,15 +10,17 @@ A set of string utilities.
   - [Table of Contents](#table-of-contents)
   - [Import](#import)
   - [Static Methods](#static-methods)
-    - [uppercaseFirstLetter](#uppercasefirstletter)
-      - [Example](#example)
+  - [hasUppercaseLetter](#hasuppercaseletter)
+    - [isKebabCase](#iskebabcase)
+    - [isSnakeCase](#issnakecase)
+    - [kebabCaseToCamelCase](#kebabcasetocamelcase)
     - [lowercaseFirstLetter](#lowercasefirstletter)
-      - [Example](#example-1)
-    - [removeExtraWhitespaces](#removeextrawhitespaces)
-      - [Example](#example-2)
-    - [removeTabs](#removetabs)
-    - [removeNewLines](#removenewlines)
     - [match](#match)
+    - [removeExtraWhitespaces](#removeextrawhitespaces)
+    - [removeNewLines](#removenewlines)
+    - [removeTabs](#removetabs)
+    - [replace](#replace)
+    - [uppercaseFirstLetter](#uppercasefirstletter)
 
 ## Import
 
@@ -30,18 +32,57 @@ import { StringUtil } from '@nekobird/rocket';
 
 ## Static Methods
 
-### uppercaseFirstLetter
+## hasUppercaseLetter
 
-`uppercaseFirstLetter(string: string): string`
+`hasUppercaseLetter(...values: string[]): boolean`
 
-Returns string with uppercased first letter.
+Returns true if each string argument has at least one uppercase letter.
 
-#### Example
+**Examples**
 
 ```typescript
-// Returns 'Andrew'.
-StringUtil.uppercaseFirstLetter('andrew');
+// Returns true
+StringUtil.hasUppercaseLetter('Abc', 'Def');
+
+// Returns false
+StringUtil.hasUppercaseLetter('abc', 'dEf');
 ```
+
+### isKebabCase
+
+`isKebabCase(...values: string[]): boolean`
+
+Returns true if each string argument is kebab case.
+
+**Examples**
+
+```typescript
+// Returns true
+StringUtil.isKebabCase('animal-cat', 'animal-dog');
+
+// Returns false
+StringUtil.isKebabCase('AnimalCat', 'animal-cat', 'dog_101');
+```
+
+### isSnakeCase
+
+`isSnakeCase(...values: string[]): boolean`
+
+Returns true if each string argument is snake case.
+
+**Examples**
+
+```typescript
+// Returns true
+StringUtil.isSnakeCase('animal_cat', 'animal_dog');
+
+// Returns false
+StringUtil.isSnakeCase('AnimalCat', 'animal-cat', 'dog_101');
+```
+
+### kebabCaseToCamelCase
+
+`kebabCaseToCamelCase(from: string): string`
 
 ### lowercaseFirstLetter
 
@@ -49,37 +90,12 @@ StringUtil.uppercaseFirstLetter('andrew');
 
 Returns string with the first letter lowercased.
 
-#### Example
+**Example**
 
 ```typescript
 // Returns 'hello'.
 StringUtil.lowercaseFirstLetter('Hello');
 ```
-
-### removeExtraWhitespaces
-
-`removeExtraWhitespaces(string: string): string`
-
-Remove any extra whitespaces (more than one).
-
-#### Example
-
-```typescript
-// Returns ' a b c';
-StringUtil.removeExtraWhitespaces(' a  b c');
-```
-
-### removeTabs
-
-`removeTabs(string: string): string`
-
-Remove any tab characters from string.
-
-### removeNewLines
-
-`removeNewLines(string: string): string`
-
-Remove any new line characters from string.
 
 ### match
 
@@ -89,3 +105,57 @@ It is similar to JavaScript [`string.match(regEx)`](https://developer.mozilla.or
 
 It returns false instead of null if there is no match.
 If there is only one match, it returns the matched string instead of an array.
+
+### removeExtraWhitespaces
+
+`removeExtraWhitespaces(string: string): string`
+
+Remove any extra whitespaces (more than one).
+
+**Example**
+
+```typescript
+// Returns ' a b c';
+StringUtil.removeExtraWhitespaces(' a  b c');
+```
+
+### removeNewLines
+
+`removeNewLines(string: string): string`
+
+Remove any new line characters from string.
+
+### removeTabs
+
+`removeTabs(string: string): string`
+
+Remove any tab characters from string.
+
+### replace
+
+```
+replace(
+  string: string,
+  patterns: StringOrRegExp,
+  replacement: string | Function,
+): string
+
+replace(
+  string: string,
+  patterns: StringOrRegExp[],
+  replacement: string | Function,
+): string
+```
+
+### uppercaseFirstLetter
+
+`uppercaseFirstLetter(string: string): string`
+
+Returns string with uppercased first letter.
+
+**Example**
+
+```typescript
+// Returns 'Andrew'.
+StringUtil.uppercaseFirstLetter('andrew');
+```
