@@ -53,6 +53,19 @@ describe('Num.getEuclideanDistance', () => {
   });
 });
 
+describe('Num.hypotenuse', () => {
+  test('Should return hypotenuse if two sides are given', () => {
+    expect(Num.hypotenuse(3, 4)).toBe(5);
+    expect(Num.hypotenuse(6, 8)).toBe(10);
+  });
+});
+
+describe('Num.getSign', () => {
+  test('Should return 1 if number is 1 beyond the cycle limit', () => {
+    expect(Num.cycle(2, 1)).toBe(1);
+  });
+});
+
 describe('Num.getSign', () => {
   test('Should return 1 if number is 1 beyond the cycle limit', () => {
     expect(Num.cycle(2, 1)).toBe(1);
