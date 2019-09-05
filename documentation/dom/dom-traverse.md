@@ -69,6 +69,8 @@ from that element.
 
 `Element | Element[] | null`
 
+Usually `null` is returned when there is no match.
+
 ## Methods
 
 ### ascendFrom
