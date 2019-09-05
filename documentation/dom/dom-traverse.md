@@ -11,7 +11,7 @@ A collection of static methods to help you traverse the DOM and do stuff along t
   - [Import](#import)
   - [Interfaces](#interfaces)
     - [DOMTraverseInspectFunction](#domtraverseinspectfunction)
-    - [DOMTraverseIdentifyElementFunction](#domtraverseidentifyelementfunction)
+    - [DOMTraverseIdentifyFunction](#domtraverseidentifyfunction)
     - [DOMTraverseExtractFunction](#domtraverseextractfunction)
     - [DOMTraverseResult](#domtraverseresult)
   - [Methods](#methods)
@@ -51,7 +51,7 @@ import { DOMTraverse } from '@nekobird/rocket';
 
 A function that takes in an `Element` and, optionally, return `true` if you want to stop further traversal.
 
-### DOMTraverseIdentifyElementFunction
+### DOMTraverseIdentifyFunction
 
 `(element: Element): boolean`
 
@@ -129,7 +129,7 @@ DOMTraverse.descendFrom(element, element => {
 ```
 findAncestor(
   from: Element,
-  identifyElement: DOMTraverseIdentifyElementFunction,
+  identifyElement: DOMTraverseIdentifyFunction,
   getAllMatchingAncestors: boolean = false,
 ): DOMTraverseResult
 ```
@@ -159,7 +159,7 @@ DOMTraverse.findAncestor(from, element => {
 ```
 findDescendant(
   from: Element,
-  identifyElement: DOMTraverseIdentifyElementFunction,
+  identifyElement: DOMTraverseIdentifyFunction,
   getAllMatchingDescendants: boolean = false,
 ): DOMTraverseResult
 ```
@@ -288,7 +288,7 @@ getSiblings(
 ```
 findSibling(
   element: Element,
-  identifyElement: DOMTraverseIdentifyElementFunction,
+  identifyElement: DOMTraverseIdentifyFunction,
   getAllMatchingSiblings = true,
 ): DOMTraverseResult
 ```
@@ -298,7 +298,7 @@ findSibling(
 ```
 findNextSibling(
   element: Element,
-  identifyElement: DOMTraverseIdentifyElementFunction,
+  identifyElement: DOMTraverseIdentifyFunction,
 ): Element | false
 ```
 
@@ -317,7 +317,7 @@ findSiblingWithClass(
 ```
 getChildren(
   element: Element,
-  identifyElement?: DOMTraverseIdentifyElementFunction,
+  identifyElement?: DOMTraverseIdentifyFunction,
 ): Element[]
 ```
 
@@ -327,7 +327,7 @@ getChildren(
 getNthChild(
   n: number | 'last',
   element: Element,
-  identifyElement?: DOMTraverseIdentifyElementFunction,
+  identifyElement?: DOMTraverseIdentifyFunction,
 ): Element | false
 ```
 
@@ -340,7 +340,7 @@ getNthChild(
 ```
 removeChild(
   element: Element,
-  identifyElement: DOMTraverseIdentifyElementFunction,
+  identifyElement: DOMTraverseIdentifyFunction,
 ): number
 ```
 
@@ -350,6 +350,6 @@ removeChild(
 mapDataFromChildren<T>(
   element: Element,
   extractFunction: DOMTraverseExtractFunction<T>,
-  identifyElement?: DOMTraverseIdentifyElementFunction,
+  identifyElement?: DOMTraverseIdentifyFunction,
 ): T[]
 ```
