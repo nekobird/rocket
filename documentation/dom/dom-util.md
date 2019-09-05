@@ -16,10 +16,10 @@ A collection of static general DOM helper methods.
   - [Static Methods](#static-methods)
     - [isElement](#iselement)
     - [isNodeListOfElement](#isnodelistofelement)
+    - [toElementArray](#toelementarray)
     - [isHTMLElement](#ishtmlelement)
     - [isNodeListOfHTMLElement](#isnodelistofhtmlelement)
     - [isHTMLCollection](#ishtmlcollection)
-    - [toElementArray](#toelementarray)
     - [toHTMLElementArray](#tohtmlelementarray)
     - [isInputOrTextArea](#isinputortextarea)
     - [prependChild](#prependchild)
@@ -74,6 +74,21 @@ Check if things are an instance of `NodeListOf<Element>`.
 DOMUtil.isNodeListOfElement(something, anotherThing);
 ```
 
+### toElementArray
+
+`toElementArray(elements: Element | Elements): Element[]`
+
+If you enter things that are not `Element` or `Elements`, it will return an empty array.
+
+**Example**
+
+```typescript
+const elements = document.querySelector('.stuff');
+
+// returns [Element, Element...]
+const result = DOMUtil.toElementArray(elements);
+```
+
 ### isHTMLElement
 
 `isHTMLElement(...things: any[]): boolean`
@@ -106,21 +121,6 @@ DOMUtil.isNodeListOfHTMLElement(something, anotherThing);
 
 Check if things are an instance of `HTMLCollection`.
 
-### toElementArray
-
-`toElementArray(elements: Element | Elements): Element[]`
-
-If you enter things that are not `Element` or `Elements`, it will return an empty array.
-
-**Example**
-
-```typescript
-const elements = document.querySelector('.stuff');
-
-// returns [element, element...]
-const result = DOMUtil.toElementArray(elements);
-```
-
 ### toHTMLElementArray
 
 `toHTMLElementArray(collection: HTMLElement | HTMLElements): HTMLElement[]`
@@ -132,7 +132,7 @@ If you enter things that are not `HTMLElement` or `HTMLElements`, it will return
 ```typescript
 const collections = document.getElementsByTagName('div');
 
-// returns [div, div...]
+// returns [HTMLElement, HTMLElement...]
 const result = DOMUtil.toHTMLElementArray(collections);
 ```
 

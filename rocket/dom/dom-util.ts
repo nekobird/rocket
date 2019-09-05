@@ -39,6 +39,28 @@ export class DOMUtil {
     return things.every(isNodeListOfElement);
   }
 
+  public static toElementArray(elements: Element | Elements): Element[] {
+    if (
+      this.isNodeListOfElement(elements) === true
+      || this.isHTMLCollection(elements) === true
+    ) {
+      elements = elements as NodeListOf<Element> | HTMLCollection;
+
+      return [...elements];
+    } else if (this.isElement(elements) === true) {
+      const element = elements as Element;
+
+      return [element];
+    } else if (
+      Array.isArray(elements) === true
+      && this.isElement(...elements as unknown[]) === true
+    ) {
+      return elements as Element[];
+    }
+
+    return [];
+  }
+
   public static isHTMLElement(...things: any[]): boolean {
     if (things.length === 0) {
       return false;
@@ -88,26 +110,6 @@ export class DOMUtil {
     return things.every(isHTMLCollection);
   }
 
-  public static isInputOrTextArea(...things: any[]): boolean {
-    if (things.length === 0) {
-      return false;
-    }
-
-    const isInputOrTextArea = thing => {
-      return (
-        typeof thing === 'object'
-        && typeof thing.nodeType === 'number'
-        && thing.nodeType === 1
-        && (
-          (thing.nodeName === 'INPUT' && thing instanceof HTMLInputElement)
-          || (thing.nodeName === 'TEXTAREA' && thing instanceof HTMLTextAreaElement)
-        )
-      );
-    }
-
-    return things.every(isInputOrTextArea);
-  }
-
   public static toHTMLElementArray(elements: HTMLElement | HTMLElements): HTMLElement[] {
     if (
       this.isNodeListOfHTMLElement(elements) === true
@@ -132,26 +134,24 @@ export class DOMUtil {
     return [];
   }
 
-  public static toElementArray(elements: Element | Elements): Element[] {
-    if (
-      this.isNodeListOfElement(elements) === true
-      || this.isHTMLCollection(elements) === true
-    ) {
-      elements = elements as NodeListOf<Element> | HTMLCollection;
-
-      return [...elements];
-    } else if (this.isElement(elements) === true) {
-      const element = elements as Element;
-
-      return [element];
-    } else if (
-      Array.isArray(elements) === true
-      && this.isElement(...elements as unknown[]) === true
-    ) {
-      return elements as Element[];
+  public static isInputOrTextArea(...things: any[]): boolean {
+    if (things.length === 0) {
+      return false;
     }
 
-    return [];
+    const isInputOrTextArea = thing => {
+      return (
+        typeof thing === 'object'
+        && typeof thing.nodeType === 'number'
+        && thing.nodeType === 1
+        && (
+          (thing.nodeName === 'INPUT' && thing instanceof HTMLInputElement)
+          || (thing.nodeName === 'TEXTAREA' && thing instanceof HTMLTextAreaElement)
+        )
+      );
+    }
+
+    return things.every(isInputOrTextArea);
   }
 
   public static prependChild(parent: HTMLElement, child: HTMLElement): void {
