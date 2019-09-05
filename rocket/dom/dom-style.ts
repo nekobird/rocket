@@ -207,7 +207,7 @@ export class DOMStyle {
 
   // @animation
 
-  public static getAnimationDelay(element: Element): number {
+  public static getAnimationDelay(element: HTMLElement): number {
     const computedStyle = getComputedStyle(element);
 
     const delay = computedStyle.animationDelay;
@@ -219,7 +219,7 @@ export class DOMStyle {
     }
   }
 
-  public static getAnimationDuration(element: Element): number {
+  public static getAnimationDuration(element: HTMLElement): number {
     const computedStyle = getComputedStyle(element);
 
     const duration = computedStyle.animationDuration;
@@ -232,7 +232,7 @@ export class DOMStyle {
   }
 
   public static getParentsMaxAnimationDuration(
-    from: Element,
+    from: HTMLElement,
     withDelay: boolean = false,
   ): number {
     let durations: number[] = [];
@@ -240,21 +240,25 @@ export class DOMStyle {
     DOMTraverse.ascendFrom(
       from,
       element => {
-        let duration = this.getAnimationDuration(element);
+        if (DOMUtil.isHTMLElement(element) === true) {
+          const _element = element as HTMLElement;
 
-        if (withDelay === true) {
-          duration += this.getAnimationDelay(element);
+          let duration = this.getAnimationDuration(_element);
+
+          if (withDelay === true) {
+            duration += this.getAnimationDelay(_element);
+          }
+
+          durations.push(duration);
         }
-
-        durations.push(duration);
-      },
+      }
     );
 
     return Math.max(...durations);
   }
 
   public static getChildrenMaxAnimationDuration(
-    from: Element,
+    from: HTMLElement,
     withDelay: boolean = false,
   ): number {
     let durations: number[] = [];
@@ -262,20 +266,24 @@ export class DOMStyle {
     DOMTraverse.descendFrom(
       from,
       element => {
-        let duration = this.getAnimationDuration(element);
+        if (DOMUtil.isHTMLElement(element) === true) {
+          const _element = element as HTMLElement;
 
-        if (withDelay === true) {
-          duration += this.getAnimationDelay(element);
+          let duration = this.getAnimationDuration(_element);
+
+          if (withDelay === true) {
+            duration += this.getAnimationDelay(_element);
+          }
+
+          durations.push(duration);
         }
-
-        durations.push(duration);
       }
     );
 
     return Math.max(...durations);
   }
 
-  public static getTransitionDuration(element: Element): number {
+  public static getTransitionDuration(element: HTMLElement): number {
     const computedStyle = getComputedStyle(element);
 
     const duration = computedStyle.transitionDuration;

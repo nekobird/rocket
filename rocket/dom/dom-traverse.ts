@@ -25,7 +25,11 @@ export class DOMTraverse {
   ): void {
     let element: Element | null = from;
 
-    while (element !== null && element !== to) {
+    while (
+      element !== null
+      && element !== to
+      && element !== document.documentElement
+    ) {
       if (inspect(element) === true) {
         break;
       }

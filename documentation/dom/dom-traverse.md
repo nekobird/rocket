@@ -81,18 +81,18 @@ ascendFrom(
 ): void
 ```
 
-This method takes in an `Element` to start traversing from and a `DOMTraverseInspectElementFunction` function.
-It will then loop through each parent, passing it to the inspect function, until it returns true or it reached the root, `HTML` element.
+This method takes in an `Element` and a `DOMTraverseInspectElementFunction` function.
+It will then loop through each parent from, starting from the given `from` element and passing each parent to the inspect function. It stops traversing if the inspect function returns `true` or it reached the `to` or root element.
 
 **Example**
 
 ```typescript
-// This will loop through element's ancestor all the way to the root,
-// unless the identify function returns true.
-DOMTraverse.ascendFrom(from, parent => {
-  // Do something with each parent element.
-  if (parent.id === 'target_ancestor') {
-    // If true is returned, the traversal will stop.
+DOMTraverse.ascendFrom(from, element => {
+  if (element.dataset.name === 'pikachu') {
+    // Do somethign with parent element.
+    iChooseYou(element);
+
+    // Stop traversing.
     return true;
   }
 });
@@ -107,15 +107,18 @@ descendFrom(
 ): void
 ```
 
-This method takes in an element to start descending from and a `DOMTraverseInspectElementFunction` function.
-It will then loop through each child, passing it to to the identify function, until it returns true or it passed through all the child nodes.
+This method takes in an `Element` and a `DOMTraverseInspectElementFunction` function.
+It will then loop through each child, starting from the given `from` element and passing each child to the identify function. It stops traversing if the inspect function returns `true` or it passed through all child nodes.
 
 **Example**
 
 ```typescript
-DOMTraverse.descendFrom(element, child => {
-  if (child.id === 'target_child') {
-    // Stop traversal when this function returns true.
+DOMTraverse.descendFrom(element, element => {
+  if (element.dataset.name === 'eevee') {
+    // Do something with child element.
+    iChooseYou(element);
+
+    // Stop traversing.
     return true;
   }
 });
@@ -131,14 +134,21 @@ findAncestor(
 ): DOMTraverseResult
 ```
 
-This method takes in an `Element` that you want to start traversing from and a `DOMTraverseIdentifyElementFunction` function.
-It will then loop through each ancestor, passing it to the inspect function, until it returns true or it reached the root `HTML` element.
+Similar to `ascendFrom`, but it return elements that when passed into the `identifyElement` function returns `true`. It only returns the first element that matched and stops traversing unless you set the `getAllMatchingAncestors` flag to `true`, then it will continue traversing and return an array of elements that matches.
 
-**Example**
+**Examples**
 
 ```typescript
+// Returns matchedElement
 DOMTraverse.findAncestor(from, element => {
-  if (element === anotherElement) {
+  if (element.dataset.category === 'pokemon') {
+    return true;
+  }
+});
+
+// Returns [matchedElement, anotherMatchedElement ...]
+DOMTraverse.findAncestor(from, element => {
+  if (element.dataset.category === 'pokemon') {
     return true;
   }
 }, true);
@@ -154,18 +164,21 @@ findDescendant(
 ): DOMTraverseResult
 ```
 
-This method takes in an `Element` that you want to start traversing from and a `DOMTraverseIdentifyElementFunction` function.
-It will then loop through each ancestor, passing it to the inspect function, until it returns true or it reached the root `HTML` element.
+Similar to `descendFrom`, but it return elements that when passed into the `identifyElement` function returns `true`. It only returns the first element that matched and stops traversing unless you set the `getAllMatchingDescendants` flag to `true`, then it will continue traversing and return an array of elements that matches.
 
-**Example**
+**Examples**
 
 ```typescript
-// This will loop through element's ancestor all the way to the root,
-// unless the identify function returns true.
-DOMTraverse.findAncestor(from, parent => {
-  // Do something with each parent element.
-  if (parent.id === 'target_ancestor') {
-    // If true is returned, the traversal will stop.
+// Returns matchedElement
+DOMTraverse.findDescendant(from, element => {
+  if (element.dataset.category === 'digimon') {
+    return true;
+  }
+});
+
+// Returns [matchedElement, anotherMatchedElement ...]
+DOMTraverse.findDescendant(from, element => {
+  if (element.dataset.category === 'digimon') {
     return true;
   }
 }, true);
@@ -183,10 +196,26 @@ findAncestorWithClass(
 
 Find a parent ancestor element with given classnames.
 
-**Example**
+**Examples**
+
+```html
+<div class="heaven">
+  <div class="earth">
+    <div class="limbo">
+      <div class="hell">From</div>
+    </div>
+  </div>
+</div>
+```
 
 ```typescript
-DOMTraverse.findAncestorWithClass(from, ['class-0', 'class-1'], true);
+const from = document.querySelector('.hell');
+
+// Returns div.earth
+DOMTraverse.findAncestorWithClass(from, ['earth', 'heaven']);
+
+// Returns [div.earth, div.heaven]
+DOMTraverse.findAncestorWithClass(from, ['earth', 'heaven'], true);
 ```
 
 ### findDescendantWithClass
