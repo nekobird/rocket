@@ -195,6 +195,16 @@ Num.hypotenuse(6, 8);
 
 Linear interpolation.
 
+**Examples**
+
+```typescript
+// Returns 50
+Num.lerp(0.5, 0, 100);
+
+// Returns 150
+Num.lerp(1.5, 0, 100);
+```
+
 ### random
 
 ```
@@ -231,7 +241,7 @@ Num.random(1, false, 4);
 `reciprocal(value: number): number`
 
 Get reciprocal of a number `1 / n`.
-This will throw an error if **n** is **0**.
+This will throw an error if `value` given is 0.
 
 **Example**
 
@@ -258,7 +268,7 @@ Num.roundTo(3.1415, 2);
 
 `sum(...values: number[]): number`
 
-Sum all the number arguments.
+Sum all the arguments (Assuming they are all numbers).
 
 **Examples**
 
