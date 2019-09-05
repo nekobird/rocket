@@ -29,3 +29,10 @@ const textAutoScale = new TextAutoScaler({
 });
 
 textAutoScale.scaleText();
+console.log('start');
+const elementStart = document.querySelector('.traverse');
+if (elementStart !== null) {
+  DOMTraverse.descendFrom(elementStart as HTMLElement, (el) => {
+    console.log(el);
+  });
+}

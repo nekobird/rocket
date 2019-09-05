@@ -49,7 +49,7 @@ import { DOMTraverse } from '@nekobird/rocket';
 
 `(element: HTMLElement): true | void`
 
-A function that takes in a HTMLElement and optionally return `true` if you want the inspection to stop.
+A function that takes in a HTMLElement and, optionally, return `true` if you want to stop further traversal.
 
 ### DOMTraverseIdentifyElementFunction
 
@@ -67,7 +67,7 @@ from that element.
 
 ### DOMTraverseResult
 
-`HTMLElement | HTMLElement[] | false`
+`HTMLElement | HTMLElement[] | null`
 
 ## Methods
 
