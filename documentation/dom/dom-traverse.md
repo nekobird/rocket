@@ -47,27 +47,27 @@ import { DOMTraverse } from '@nekobird/rocket';
 
 ### DOMTraverseInspectFunction
 
-`(element: HTMLElement): true | void`
+`(element: Element): true | void`
 
-A function that takes in a HTMLElement and, optionally, return `true` if you want to stop further traversal.
+A function that takes in an `Element` and, optionally, return `true` if you want to stop further traversal.
 
 ### DOMTraverseIdentifyElementFunction
 
-`(element: HTMLElement): boolean`
+`(element: Element): boolean`
 
-A function that takes in a HTMLElement and returns a `boolean`.
+A function that takes in an `Element` and returns a `boolean`.
 This is used for identifying an element while traversing.
 
 ### DOMTraverseExtractFunction
 
-`(child: HTMLElement): T | void`
+`(child: Element): T | void`
 
-A function that takes in a HTMLElement and returns something `<T>` that you want to extract
+A function that takes in an `Element` and returns something `<T>` that you want to extract
 from that element.
 
 ### DOMTraverseResult
 
-`HTMLElement | HTMLElement[] | null`
+`Element | Element[] | null`
 
 ## Methods
 
@@ -75,13 +75,13 @@ from that element.
 
 ```
 ascendFrom(
-  from: HTMLElement,
+  from: Element,
   inspect: DOMTraverseInspectFunction,
-  to: HTMLElement = document.documentElement,
+  to: Element = document.documentElement,
 ): void
 ```
 
-This method takes in an element to start traversing from and a `DOMTraverseInspectElementFunction` function.
+This method takes in an `Element` to start traversing from and a `DOMTraverseInspectElementFunction` function.
 It will then loop through each parent, passing it to the inspect function, until it returns true or it reached the root, `HTML` element.
 
 **Example**
@@ -102,7 +102,7 @@ DOMTraverse.ascendFrom(from, parent => {
 
 ```
 descendFrom(
-  from: HTMLElement,
+  from: Element,
   inspect: DOMTraverseInspectFunction,
 ): void
 ```
@@ -125,13 +125,13 @@ DOMTraverse.descendFrom(element, child => {
 
 ```
 findAncestor(
-  from: HTMLElement,
+  from: Element,
   identifyElement: DOMTraverseIdentifyElementFunction,
   getAllMatchingAncestors: boolean = false,
 ): DOMTraverseResult
 ```
 
-This method takes in an element that you want to start traversing from and a `DOMTraverseIdentifyElementFunction` function.
+This method takes in an `Element` that you want to start traversing from and a `DOMTraverseIdentifyElementFunction` function.
 It will then loop through each ancestor, passing it to the inspect function, until it returns true or it reached the root `HTML` element.
 
 **Example**
@@ -148,13 +148,13 @@ DOMTraverse.findAncestor(from, element => {
 
 ```
 findDescendant(
-  from: HTMLElement,
+  from: Element,
   identifyElement: DOMTraverseIdentifyElementFunction,
   getAllMatchingDescendants: boolean = false,
 ): DOMTraverseResult
 ```
 
-This method takes in an element that you want to start traversing from and a `DOMTraverseIdentifyElementFunction` function.
+This method takes in an `Element` that you want to start traversing from and a `DOMTraverseIdentifyElementFunction` function.
 It will then loop through each ancestor, passing it to the inspect function, until it returns true or it reached the root `HTML` element.
 
 **Example**
@@ -175,7 +175,7 @@ DOMTraverse.findAncestor(from, parent => {
 
 ```
 findAncestorWithClass(
-  from: HTMLElement,
+  from: Element,
   classNames: string | string[],
   getAllMatchingAncestors: boolean = false,
 ): DOMTraverseResult
@@ -193,7 +193,7 @@ DOMTraverse.findAncestorWithClass(from, ['class-0', 'class-1'], true);
 
 ```
 findDescendantWithClass(
-  from: HTMLElement,
+  from: Element,
   classNames: string | string[],
   getAllMatchingDescendants: boolean = false,
 ): DOMTraverseResult
@@ -211,7 +211,7 @@ DOMTraverse.findDescendantWithClass(from, ['class-0', 'class-1'], true);
 
 ```
 findAncestorWithId(
-  from: HTMLElement,
+  from: Element,
   id: string,
   getAllMatchingAncestors: boolean = false,
 ): DOMTraverseResult
@@ -221,7 +221,7 @@ findAncestorWithId(
 
 ```
 findDescendantWithId(
-  from: HTMLElement,
+  from: Element,
   id: string,
   getAllMatchingDescendants: boolean = false,
 ): DOMTraverseResult
@@ -231,8 +231,8 @@ findDescendantWithId(
 
 ```
 hasAncestor(
-  from: HTMLElement,
-  options: HTMLElement | HTMLElements,
+  from: Element,
+  options: Element | Elements,
 ): boolean
 ```
 
@@ -240,8 +240,8 @@ hasAncestor(
 
 ```
 hasDescendant(
-  from: HTMLElement,
-  options: HTMLElement | HTMLElements,
+  from: Element,
+  options: Element | Elements,
 ): boolean
 ```
 
@@ -249,16 +249,16 @@ hasDescendant(
 
 ```
 getSiblings(
-  element: HTMLElement,
+  element: Element,
   isExclusive: boolean = false,
-): HTMLElement[] | false
+): Element[] | false
 ```
 
 ### findSibling
 
 ```
 findSibling(
-  element: HTMLElement,
+  element: Element,
   identifyElement: DOMTraverseIdentifyElementFunction,
   getAllMatchingSiblings = true,
 ): DOMTraverseResult
@@ -268,16 +268,16 @@ findSibling(
 
 ```
 findNextSibling(
-  element: HTMLElement,
+  element: Element,
   identifyElement: DOMTraverseIdentifyElementFunction,
-): HTMLElement | false
+): Element | false
 ```
 
 ### findSiblingWithClass
 
 ```
 findSiblingWithClass(
-  element: HTMLElement,
+  element: Element,
   classNames: string | string[],
   getAllMatchingSiblings: boolean = false,
 ): DOMTraverseResult
@@ -287,9 +287,9 @@ findSiblingWithClass(
 
 ```
 getChildren(
-  element: HTMLElement,
+  element: Element,
   identifyElement?: DOMTraverseIdentifyElementFunction,
-): HTMLElement[]
+): Element[]
 ```
 
 ### getNthChild
@@ -297,20 +297,20 @@ getChildren(
 ```
 getNthChild(
   n: number | 'last',
-  element: HTMLElement,
+  element: Element,
   identifyElement?: DOMTraverseIdentifyElementFunction,
-): HTMLElement | false
+): Element | false
 ```
 
 ### removeChildren
 
-`removeChildren(element: HTMLElement): number`
+`removeChildren(element: Element): number`
 
 ### removeChild
 
 ```
 removeChild(
-  element: HTMLElement,
+  element: Element,
   identifyElement: DOMTraverseIdentifyElementFunction,
 ): number
 ```
@@ -319,7 +319,7 @@ removeChild(
 
 ```
 mapDataFromChildren<T>(
-  element: HTMLElement,
+  element: Element,
   extractFunction: DOMTraverseExtractFunction<T>,
   identifyElement?: DOMTraverseIdentifyElementFunction,
 ): T[]

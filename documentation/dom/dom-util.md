@@ -10,14 +10,18 @@ A collection of static general DOM helper methods.
   - [Table of Contents](#table-of-contents)
   - [Import](#import)
   - [Interfaces](#interfaces)
+    - [Elements](#elements)
     - [HTMLElements](#htmlelements)
     - [InputOrTextArea](#inputortextarea)
   - [Static Methods](#static-methods)
+    - [isElement](#iselement)
+    - [isNodeListOfElement](#isnodelistofelement)
     - [isHTMLElement](#ishtmlelement)
     - [isNodeListOfHTMLElement](#isnodelistofhtmlelement)
     - [isHTMLCollection](#ishtmlcollection)
-    - [isInputOrTextArea](#isinputortextarea)
+    - [toElementArray](#toelementarray)
     - [toHTMLElementArray](#tohtmlelementarray)
+    - [isInputOrTextArea](#isinputortextarea)
     - [prependChild](#prependchild)
 
 ## Import
@@ -30,6 +34,10 @@ import { DOMUtil } from '@nekobird/rocket';
 
 ## Interfaces
 
+### Elements
+
+`NodeListOf<Element> | Element[] | HTMLElements`
+
 ### HTMLElements
 
 `NodeListOf<HTMLElement> | HTMLCollection | HTMLElement[]`
@@ -40,16 +48,42 @@ import { DOMUtil } from '@nekobird/rocket';
 
 ## Static Methods
 
-### isHTMLElement
+### isElement
 
-`isHTMLElement(...things: any[]): boolean`
+`isElement(...things: any[]): boolean`
 
-Check if something is a valid `HTMLElement`.
+Check if things are an instance of `Element`.
 
 **Example**
 
 ```typescript
-// Only returns true if everything passed are HTMLElement.
+// Only returns true if everything passed are an instance of Element.
+DOMUtil.isHTMLElement(something, anotherThing);
+```
+
+### isNodeListOfElement
+
+`isNodeListOfElement(...things: any[]): boolean`
+
+Check if things are an instance of `NodeListOf<Element>`.
+
+**Example**
+
+```typescript
+// Only returns true if everything passed are an instance of NodeListOf<Element>.
+DOMUtil.isNodeListOfElement(something, anotherThing);
+```
+
+### isHTMLElement
+
+`isHTMLElement(...things: any[]): boolean`
+
+Check if things are an instance of `HTMLElement`.
+
+**Example**
+
+```typescript
+// Only returns true if everything passed are an instance of HTMLElement.
 DOMUtil.isHTMLElement(something, anotherThing);
 ```
 
@@ -57,12 +91,12 @@ DOMUtil.isHTMLElement(something, anotherThing);
 
 `isNodeListOfHTMLElement(...things: any[]): boolean`
 
-Check if something is a valid NodeListOf<HTMLElement>.
+Check if things are an instance of `NodeListOf<HTMLElement>`.
 
 **Example**
 
 ```typescript
-// Only returns true if everything passed are NodeListOf<HTMLElement>.
+// Only returns true if everything passed are an instance of NodeListOf<HTMLElement>.
 DOMUtil.isNodeListOfHTMLElement(something, anotherThing);
 ```
 
@@ -70,15 +104,28 @@ DOMUtil.isNodeListOfHTMLElement(something, anotherThing);
 
 `isHTMLCollection(...things: any[]): boolean`
 
-### isInputOrTextArea
+Check if things are an instance of `HTMLCollection`.
 
-`isInputOrTextArea(...things: any[]): boolean`
+### toElementArray
+
+`toElementArray(elements: Element | Elements): Element[]`
+
+If you enter things that are not `Element` or `Elements`, it will return an empty array.
+
+**Example**
+
+```typescript
+const elements = document.querySelector('.stuff');
+
+// returns [element, element...]
+const result = DOMUtil.toElementArray(elements);
+```
 
 ### toHTMLElementArray
 
 `toHTMLElementArray(collection: HTMLElement | HTMLElements): HTMLElement[]`
 
-If you enter things that are not `HTMLElements` or `HTMLElement`, it will return an empty array.
+If you enter things that are not `HTMLElement` or `HTMLElements`, it will return an empty array.
 
 **Example**
 
@@ -88,6 +135,10 @@ const collections = document.getElementsByTagName('div');
 // returns [div, div...]
 const result = DOMUtil.toHTMLElementArray(collections);
 ```
+
+### isInputOrTextArea
+
+`isInputOrTextArea(...things: any[]): boolean`
 
 ### prependChild
 
