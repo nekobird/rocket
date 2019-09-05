@@ -239,7 +239,7 @@ export class DOMTraverse {
   public static getSiblings(
     element: Element,
     isExclusive: boolean = false,
-  ): Element[] | false {
+  ): Element[] | null {
     if (element.parentElement !== null) {
       const siblings = [...element.parentElement.children];
 
@@ -247,10 +247,10 @@ export class DOMTraverse {
         siblings.splice(siblings.indexOf(element), 1);
       }
 
-      return siblings.length > 0 ? siblings : false;
+      return siblings.length > 0 ? siblings : null;
     }
 
-    return false;
+    return null;
   }
 
   public static findSibling(
@@ -258,9 +258,9 @@ export class DOMTraverse {
     identifyElement: DOMTraverseIdentifyFunction,
     getAllMatchingSiblings = true,
   ): DOMTraverseResult {
-    const siblings: Element[] | false = this.getSiblings(element);
+    const siblings = this.getSiblings(element);
 
-    if (siblings === false) {
+    if (siblings === null) {
       return null;
     }
 
@@ -290,7 +290,7 @@ export class DOMTraverse {
   public static findNextSibling(
     element: Element,
     identifyElement: DOMTraverseIdentifyFunction,
-  ): Element | false {
+  ): Element | null {
     let nextSibling: Element | null = element;
 
     while (nextSibling !== null) {
@@ -304,7 +304,7 @@ export class DOMTraverse {
       }
     }
 
-    return false;
+    return null;
   }
 
   public static findSiblingWithClass(
@@ -348,7 +348,7 @@ export class DOMTraverse {
     n: number | 'last',
     element: Element,
     identifyElement?: DOMTraverseIdentifyFunction,
-  ): Element | false {
+  ): Element | null {
     if (typeof identifyElement === 'undefined') {
       identifyElement = element => true;
     }
@@ -365,7 +365,7 @@ export class DOMTraverse {
       result = selectedChildren[n];
     }
 
-    return typeof result === 'object' ? result : false;
+    return typeof result === 'object' ? result : null;
   }
 
   public static removeChildren(element: Element): number {

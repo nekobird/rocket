@@ -282,7 +282,7 @@ hasDescendant(
 getSiblings(
   element: Element,
   isExclusive: boolean = false,
-): Element[] | false
+): Element[] | null
 ```
 
 ### findSibling
@@ -301,7 +301,7 @@ findSibling(
 findNextSibling(
   element: Element,
   identifyElement: DOMTraverseIdentifyFunction,
-): Element | false
+): Element | null
 ```
 
 ### findSiblingWithClass
@@ -330,7 +330,7 @@ getNthChild(
   n: number | 'last',
   element: Element,
   identifyElement?: DOMTraverseIdentifyFunction,
-): Element | false
+): Element | null
 ```
 
 ### removeChildren
