@@ -1,8 +1,8 @@
 import {
   DOMTraverse,
+  DOMUtil,
   StringUtil,
 } from '../rocket';
-import { DOMUtil } from './dom-util';
 
 export interface StyleObject {
   [key: string]: string | number;
@@ -207,7 +207,7 @@ export class DOMStyle {
 
   // @animation
 
-  public static getAnimationDelay(element: HTMLElement): number {
+  public static getAnimationDelay(element: Element): number {
     const computedStyle = getComputedStyle(element);
 
     const delay = computedStyle.animationDelay;
@@ -219,7 +219,7 @@ export class DOMStyle {
     }
   }
 
-  public static getAnimationDuration(element: HTMLElement): number {
+  public static getAnimationDuration(element: Element): number {
     const computedStyle = getComputedStyle(element);
 
     const duration = computedStyle.animationDuration;
@@ -232,7 +232,7 @@ export class DOMStyle {
   }
 
   public static getParentsMaxAnimationDuration(
-    from: HTMLElement,
+    from: Element,
     withDelay: boolean = false,
   ): number {
     let durations: number[] = [];
@@ -254,7 +254,7 @@ export class DOMStyle {
   }
 
   public static getChildrenMaxAnimationDuration(
-    from: HTMLElement,
+    from: Element,
     withDelay: boolean = false,
   ): number {
     let durations: number[] = [];
@@ -275,7 +275,7 @@ export class DOMStyle {
     return Math.max(...durations);
   }
 
-  public static getTransitionDuration(element: HTMLElement): number {
+  public static getTransitionDuration(element: Element): number {
     const computedStyle = getComputedStyle(element);
 
     const duration = computedStyle.transitionDuration;

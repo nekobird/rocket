@@ -1,19 +1,19 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "module": "commonjs",
+    "module": "ES6",
     "noImplicitAny": false,
     "noImplicitThis": false,
     "outDir": "build/",
     "preserveConstEnums": true,
     "removeComments": true,
-    "resolveJsonModule": true,
+    "resolveJsonModule": false,
     "sourceMap": false,
     "strict": true,
-    "target": "ES2015",
+    "target": "ES2015"
   },
   "include": [
-    "rocket/*",
+    "rocket/*"
   ],
   "exclude": [
     "node_modules",
