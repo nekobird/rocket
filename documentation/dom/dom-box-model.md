@@ -12,6 +12,8 @@ import { DOMBoxModel } from '@nekobird/rocket'
 
 ### getTotalHorizontalMargins
 
+`getTotalHorizontalMargins(element: HTMLElement): number`
+
 ### getTotalVerticalMargins
 
 ### getTotalHorizontalBorderWidths
