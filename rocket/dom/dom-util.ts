@@ -1,6 +1,6 @@
-export type HTMLElements = NodeListOf<HTMLElement> | HTMLCollection | HTMLElement[];
-
 export type Elements = NodeListOf<Element> | Element[] | HTMLElements;
+
+export type HTMLElements = NodeListOf<HTMLElement> | HTMLCollection | HTMLElement[];
 
 export type InputOrTextArea = HTMLTextAreaElement | HTMLInputElement;
 
