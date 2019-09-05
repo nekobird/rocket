@@ -1,6 +1,6 @@
 import {
   DOMUtil,
-  HTMLElements,
+  Elements,
 } from '../rocket';
 
 export interface DOMTraverseInspectFunction {
@@ -210,9 +210,9 @@ export class DOMTraverse {
 
   public static hasAncestor(
     from: Element,
-    options: HTMLElement | HTMLElements,
+    options: Element | Elements,
   ): boolean {
-    const candidates = DOMUtil.toHTMLElementArray(options);
+    const candidates = DOMUtil.toElementArray(options);
 
     const identifyElement = element => candidates.indexOf(element) !== -1;
 
@@ -221,9 +221,9 @@ export class DOMTraverse {
 
   public static hasDescendant(
     from: Element,
-    options: HTMLElement | HTMLElements,
+    options: Element | Elements,
   ): boolean {
-    const candidates = DOMUtil.toHTMLElementArray(options);
+    const candidates = DOMUtil.toElementArray(options);
 
     const identifyElement = element => candidates.indexOf(element) !== -1;
 
