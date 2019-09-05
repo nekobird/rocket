@@ -68,7 +68,7 @@ export class Color {
     return this;
   }
 
-  get clone(): Color {
+  public clone(): Color {
     return Color.clone(this);
   }
 
@@ -547,26 +547,26 @@ export class Color {
   }
 
   static triadic(color: Color): [Color, Color, Color] {
-    const color_a = color.clone.hueRotate(-120);
-    const color_c = color.clone.hueRotate(120);
+    const color_a = color.clone().hueRotate(-120);
+    const color_c = color.clone().hueRotate(120);
 
     return [color_a, color, color_c];
   }
 
   static complement(color: Color): Color {
-    return color.clone.hueRotate(180);
+    return color.clone().hueRotate(180);
   }
 
   static splitComplements(color: Color): [Color, Color, Color] {
-    const color_a = color.clone.hueRotate(-150);
-    const color_c = color.clone.hueRotate(150);
+    const color_a = color.clone().hueRotate(-150);
+    const color_c = color.clone().hueRotate(150);
 
     return [color_a, color, color_c];
   }
 
   static analogous(color: Color): [Color, Color, Color] {
-    const color_a = color.clone.hueRotate(-30);
-    const color_c = color.clone.hueRotate(30);
+    const color_a = color.clone().hueRotate(-30);
+    const color_c = color.clone().hueRotate(30);
 
     return [color_a, color, color_c];
   }
