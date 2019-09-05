@@ -91,7 +91,7 @@ It will then loop through each parent from, starting from the given `from` eleme
 ```typescript
 DOMTraverse.ascendFrom(from, element => {
   if (element.dataset.name === 'pikachu') {
-    // Do somethign with parent element.
+    // Do something with parent element.
     iChooseYou(element);
 
     // Stop traversing.

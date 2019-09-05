@@ -24,8 +24,8 @@ export class DOMStyle {
     this.copyStylesFrom(
       element,
       [
-        'font-size',
         'font-family',
+        'font-size',
         'line-height',
       ],
       temp,
