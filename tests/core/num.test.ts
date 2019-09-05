@@ -53,6 +53,15 @@ describe('Num.getEuclideanDistance', () => {
   });
 });
 
+describe('Num.getSign', () => {
+  test('Should return -1 if negative and 1 if positive or zero.', () => {
+    expect(Num.getSign(-123)).toBe(-1);
+    expect(Num.getSign(123)).toBe(1);
+    expect(Num.getSign(0)).toBe(1);
+    expect(Num.getSign(-0)).toBe(1);
+  });
+});
+
 describe('Num.hypotenuse', () => {
   test('Should return hypotenuse if two sides are given', () => {
     expect(Num.hypotenuse(3, 4)).toBe(5);
@@ -60,15 +69,30 @@ describe('Num.hypotenuse', () => {
   });
 });
 
-describe('Num.getSign', () => {
+describe('Num.lerp', () => {
   test('Should return 1 if number is 1 beyond the cycle limit', () => {
-    expect(Num.cycle(2, 1)).toBe(1);
+    expect(Num.lerp(0.5, 0, 100)).toBe(50);
+    expect(Num.lerp(1.5, 0, 100)).toBe(150);
   });
 });
 
-describe('Num.getSign', () => {
-  test('Should return 1 if number is 1 beyond the cycle limit', () => {
-    expect(Num.cycle(2, 1)).toBe(1);
+describe('Num.reciprocal', () => {
+  test('Should return reciprocal', () => {
+    expect(Num.reciprocal(5)).toBe(0.2);
+  });
+});
+
+describe('Num.roundTo', () => {
+  test('Should roundTo', () => {
+    expect(Num.roundTo(1.5)).toBe(2);
+    expect(Num.roundTo(3.1415, 2)).toBe(3.14);
+  });
+});
+
+describe('Num.sum', () => {
+  test('Should sum of numbers given', () => {
+    expect(Num.sum(1, 2, 3, 4, 5, 6, 7, 8, 9)).toBe(45);
+    expect(Num.sum(0, 1, 2, 3)).toBe(6);
   });
 });
 
