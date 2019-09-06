@@ -3,25 +3,22 @@ export * from './interfaces';
 
 // @core
 export * from './core/num';
-export * from './core/util';
 export * from './core/string-util';
+export * from './core/util';
 
 // @dom
-export * from './dom/dom-util';
-
-export * from './dom/dom-traverse';
-export * from './dom/dom-style';
-export * from './dom/dom-box-model';
-export * from './dom/dom-text';
-export * from './dom/dom-image';
-
-export * from './dom/dom-point';
-export * from './dom/dom-view';
 export * from './dom/dom-align-offset';
+export * from './dom/dom-box-model';
+export * from './dom/dom-image';
 export * from './dom/dom-offset';
+export * from './dom/dom-point';
 export * from './dom/dom-rectangle';
-
 export * from './dom/dom-scroll';
+export * from './dom/dom-style';
+export * from './dom/dom-text';
+export * from './dom/dom-traverse';
+export * from './dom/dom-util';
+export * from './dom/dom-view';
 
 // @viewport
 export * from './viewport';
@@ -37,14 +34,9 @@ export * from './two/vector-2-group';
 export * from './animation/animation';
 export * from './easings';
 
-// @canvas
-// export * from './canvas/canvas-draw';
-// export * from './canvas/canvas-layer';
-// export * from './canvas/canvas-layer-manager';
-
 // @color
-export * from './color/convert-color';
 export * from './color/color';
+export * from './color/convert-color';
 
 // @events
 export * from './mono-tap/mono-tap';
