@@ -53,8 +53,16 @@ export class DOMStyle {
   }
 
   // @styles
-  public static applyStyle(element: HTMLElement, styleObject: StyleObject): void
-  public static applyStyle(styleObject: StyleObject, ...elements: HTMLElement[]): void
+  public static applyStyle(
+    element: HTMLElement,
+    styleObject: StyleObject,
+  ): void
+
+  public static applyStyle(
+    styleObject: StyleObject,
+    ...elements: HTMLElement[]
+  ): void
+
   public static applyStyle(
     a: HTMLElement | StyleObject,
     b: HTMLElement | StyleObject,
