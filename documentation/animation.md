@@ -19,10 +19,10 @@ import { Animation } from '@nekobird/Animation';
 
 Define the time unit for all the time related config properties. Namely: `delay`, `iterationDelay`, `duration`.
 
-| Accepts | Description  | Default |
-| ------- | ------------ | ------- |
-| 's'     | Seconds      | Default |
-| 'ms'    | Milliseconds |         |
+| Accepts | Description | Default |
+| --- | --- | --- |
+| 's' | Seconds | Default |
+| 'ms' | Milliseconds | |
 
 ### alternate
 

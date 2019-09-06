@@ -1,8 +1,8 @@
 import {
   DOMTraverse,
+  DOMUtil,
   StringUtil,
 } from '../rocket';
-import { DOMUtil } from './dom-util';
 
 export interface StyleObject {
   [key: string]: string | number;
@@ -24,8 +24,8 @@ export class DOMStyle {
     this.copyStylesFrom(
       element,
       [
-        'font-size',
         'font-family',
+        'font-size',
         'line-height',
       ],
       temp,
@@ -240,14 +240,18 @@ export class DOMStyle {
     DOMTraverse.ascendFrom(
       from,
       element => {
-        let duration = this.getAnimationDuration(element);
+        if (DOMUtil.isHTMLElement(element) === true) {
+          const _element = element as HTMLElement;
 
-        if (withDelay === true) {
-          duration += this.getAnimationDelay(element);
+          let duration = this.getAnimationDuration(_element);
+
+          if (withDelay === true) {
+            duration += this.getAnimationDelay(_element);
+          }
+
+          durations.push(duration);
         }
-
-        durations.push(duration);
-      },
+      }
     );
 
     return Math.max(...durations);
@@ -262,13 +266,17 @@ export class DOMStyle {
     DOMTraverse.descendFrom(
       from,
       element => {
-        let duration = this.getAnimationDuration(element);
+        if (DOMUtil.isHTMLElement(element) === true) {
+          const _element = element as HTMLElement;
 
-        if (withDelay === true) {
-          duration += this.getAnimationDelay(element);
+          let duration = this.getAnimationDuration(_element);
+
+          if (withDelay === true) {
+            duration += this.getAnimationDelay(_element);
+          }
+
+          durations.push(duration);
         }
-
-        durations.push(duration);
       }
     );
 

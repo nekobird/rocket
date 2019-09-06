@@ -22,17 +22,18 @@ A collection of modules to help your interaction with the DOM a breeze.
 
 | Name | Description |
 | --- | --- |
-| [DOMUtil](./dom/dom-util.md) | General DOM Utilities. |
-| [DOMTraverse](./dom/dom-traverse.md) | Traverse the DOM tree and do stuff along the way. |
-| [DOMStyle](./dom/dom-style.md) | Easily get and set style values. |
+| [DOMAlignOffset](./dom/dom-align-offset.md) | Find HTMLElement offsets relative to a set of reference points. |
 | [DOMBoxModel](./dom/dom-box-model.md) | Quickly get HTMLElement box-model properties from. |
 | [DOMImage](./dom/dom-image.md) | Asynchronously load Images and get their dimensions. |
-| [DOMText](./dom/dom-text.md) | Anything to do with text and text-boxes. |
-| [DOMPoint](./dom/dom-point.md) | Calculate or get points from HTMLElements and vice versa. |
-| [DOMView](./dom/dom-view.md) | HTMLElements and how relate to the Viewport. |
-| [DOMAlignOffset](./dom/dom-align-offset.md) | Find HTMLElement offsets relative to a set of reference points. |
 | [DOMOffset](./dom/dom-offset.md) | Find HTMLElement offsets. |
+| [DOMPoint](./dom/dom-point.md) | Calculate or get points from HTMLElements and vice versa. |
+| [DOMRectangle](./dom/dom-rectangle.md) | |
 | [DOMScroll](./dom/dom-scroll.md) | Get useful scroll values from HTMLElements. |
+| [DOMStyle](./dom/dom-style.md) | Easily get and set style values. |
+| [DOMText](./dom/dom-text.md) | Anything to do with text and text-boxes. |
+| [DOMTraverse](./dom/dom-traverse.md) | Traverse the DOM tree and do stuff along the way. |
+| [DOMUtil](./dom/dom-util.md) | General DOM Utilities. |
+| [DOMView](./dom/dom-view.md) | HTMLElements and how relate to the Viewport. |
 
 ## Viewport
 

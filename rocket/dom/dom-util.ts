@@ -1,8 +1,66 @@
+export type Elements = NodeListOf<Element> | Element[] | HTMLElements;
+
 export type HTMLElements = NodeListOf<HTMLElement> | HTMLCollection | HTMLElement[];
 
 export type InputOrTextArea = HTMLTextAreaElement | HTMLInputElement;
 
 export class DOMUtil {
+  public static isElement(...things: any[]): boolean {
+    if (things.length === 0) {
+      return false;
+    }
+
+    const isElement = thing => {
+      return (
+        thing !== null
+        && typeof thing === 'object'
+        && typeof thing.nodeType === 'number'
+        && thing.nodeType === 1
+        && thing instanceof Element === true
+      )
+    }
+
+    return things.every(isElement);
+  }
+
+  public static isNodeListOfElement(...things: any[]): boolean {
+    if (things.length === 0) {
+      return false;
+    }
+
+    const isNodeListOfElement = thing => {
+      return (
+        typeof thing === 'object'
+        && NodeList.prototype.isPrototypeOf(thing) === true
+        && [...thing].every(element => DOMUtil.isElement(element)) === true
+      );
+    }
+
+    return things.every(isNodeListOfElement);
+  }
+
+  public static toElementArray(elements: Element | Elements): Element[] {
+    if (
+      this.isNodeListOfElement(elements) === true
+      || this.isHTMLCollection(elements) === true
+    ) {
+      elements = elements as NodeListOf<Element> | HTMLCollection;
+
+      return [...elements];
+    } else if (this.isElement(elements) === true) {
+      const element = elements as Element;
+
+      return [element];
+    } else if (
+      Array.isArray(elements) === true
+      && this.isElement(...elements as unknown[]) === true
+    ) {
+      return elements as Element[];
+    }
+
+    return [];
+  }
+
   public static isHTMLElement(...things: any[]): boolean {
     if (things.length === 0) {
       return false;
@@ -52,6 +110,30 @@ export class DOMUtil {
     return things.every(isHTMLCollection);
   }
 
+  public static toHTMLElementArray(elements: HTMLElement | HTMLElements): HTMLElement[] {
+    if (
+      this.isNodeListOfHTMLElement(elements) === true
+      || this.isHTMLCollection(elements) === true
+    ) {
+      elements = elements as NodeListOf<HTMLElement> | HTMLCollection;
+
+      return [...elements] as HTMLElement[];
+    } else if (
+      this.isHTMLElement(elements) === true
+    ) {
+      const element = elements as HTMLElement;
+
+      return [element];
+    } else if (
+      Array.isArray(elements) === true
+      && this.isHTMLElement(...elements as unknown[]) === true
+    ) {
+      return elements as HTMLElement[];
+    }
+
+    return [];
+  }
+
   public static isInputOrTextArea(...things: any[]): boolean {
     if (things.length === 0) {
       return false;
@@ -70,30 +152,6 @@ export class DOMUtil {
     }
 
     return things.every(isInputOrTextArea);
-  }
-
-  public static toHTMLElementArray(collection: HTMLElement | HTMLElements): HTMLElement[] {
-    if (
-      this.isNodeListOfHTMLElement(collection) === true
-      || this.isHTMLCollection(collection) === true
-    ) {
-      const elements = collection as NodeListOf<HTMLElement> | HTMLCollection;
-
-      return [...elements] as HTMLElement[];
-    } else if (
-      this.isHTMLElement(collection) === true
-    ) {
-      const element = collection as HTMLElement;
-
-      return [element];
-    } else if (
-      Array.isArray(collection) === true
-      && this.isHTMLElement(...collection as unknown[]) === true
-    ) {
-      return collection as HTMLElement[];
-    }
-
-    return [];
   }
 
   public static prependChild(parent: HTMLElement, child: HTMLElement): void {
