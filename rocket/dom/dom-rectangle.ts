@@ -5,9 +5,9 @@ import {
 } from '../rocket';
 
 export class DOMRectangle {
-  public static getMinimumBoundingRectangleFromElements(...elements: HTMLElement[]): Rectangle | false {
+  public static getMinimumBoundingRectangleFromElements(...elements: HTMLElement[]): Rectangle | null {
     if (elements.length === 0) {
-      return false;
+      return null;
     }
 
     const result = {

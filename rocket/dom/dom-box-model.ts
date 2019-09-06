@@ -176,7 +176,10 @@ export class DOMBoxModel {
     return this.getTotalVerticalMargins(element);
   }
 
-  public static getTotalHorizontalDimension(element: HTMLElement, includeTransform: boolean = false): number {
+  public static getTotalHorizontalDimension(
+    element: HTMLElement,
+    includeTransform: boolean = false,
+  ): number {
     let width = element.offsetWidth;
 
     if (includeTransform === true) {
@@ -186,7 +189,10 @@ export class DOMBoxModel {
     return width + this.getTotalHorizontalOuterSpace(element);
   }
 
-  public static getTotalVerticalDimension(element: HTMLElement, includeTransform: boolean = false): number {
+  public static getTotalVerticalDimension(
+    element: HTMLElement,
+    includeTransform: boolean = false,
+  ): number {
     let height = element.offsetHeight;
     
     if (includeTransform === true) {

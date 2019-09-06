@@ -2,7 +2,27 @@
 
 # DOMStyle
 
-A collection of helper methods to help you get and set styles.
+A collection of helper methods to help you get and set element styles.
+
+## Table of Contents
+
+- [DOMStyle](#domstyle)
+  - [Table of Contents](#table-of-contents)
+  - [Import](#import)
+  - [Interfaces](#interfaces)
+    - [StyleObject](#styleobject)
+  - [Static Methods](#static-methods)
+    - [getLineHeight](#getlineheight)
+    - [applyStyle](#applystyle)
+    - [copyStylesFrom](#copystylesfrom)
+    - [clearStyles](#clearstyles)
+    - [removeStyles](#removestyles)
+    - [getStyleValue](#getstylevalue)
+    - [getStyleValues](#getstylevalues)
+    - [getFontSize](#getfontsize)
+    - [setFontSize](#setfontsize)
+    - [getBaseFontSize](#getbasefontsize)
+    - [RemToPx](#remtopx)
 
 ## Import
 
@@ -20,13 +40,13 @@ import { DOMStyle } from '@nekobird/rocket';
 
 Is an `object` with a value that is a `string` or `number`.
 
-#### Example
+**Example**
 
 ```typescript
 const style: StyleObject = {
-  'background-color': 'pink',
-  'line-height': 1.5,
-}
+  'color': 'hsl(340, 100%, 50%)',
+  'font-size': 18,
+};
 ```
 
 ## Static Methods
@@ -35,17 +55,35 @@ const style: StyleObject = {
 
 `getLineHeight(element: HTMLElement): number`
 
-Get `line-height` in `px` of given element.
+Get `line-height` in `px` of an element.
 
-**Warning** May cause re-draw.
+*This method creates a model div element and may cause browser re-draw.
+Use with caution.*
 
 ### applyStyle
 
-`applyStyle(styleObject: StyleObject, ...elements: HTMLElement[]): void`
+```
+applyStyle(
+  element: HTMLElement,
+  styleObject: StyleObject,
+): void
 
-#### Example
+applyStyle(
+  styleObject: StyleObject,
+  ...elements: HTMLElement[]
+): void
+```
+
+Apply styles to element or elements.
+
+**Examples**
 
 ```typescript
+DOMStyle.applyStyle(element, {
+  'background-color': 'pink',
+  'font-size': 24,
+});
+
 DOMStyle.applyStyle({
   'background-color': 'pink',
   'font-size': 24,
@@ -62,7 +100,7 @@ copyStylesFrom(
 ): void
 ```
 
-#### Example
+**Example**
 
 ```typescript
 DOMStyle.copyStylesFrom(element, 'font-size', anotherElement, someOtherElement);
@@ -103,6 +141,8 @@ getStyleValues(
 ### getFontSize
 
 `getFontSize(element: HTMLElement): number`
+
+Get the computed `font-size` in `px` from an element.
 
 ### setFontSize
 

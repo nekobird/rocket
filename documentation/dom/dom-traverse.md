@@ -84,17 +84,40 @@ ascendFrom(
 ```
 
 This method takes in an `Element` and a `DOMTraverseInspectElementFunction` function.
-It will then loop through each parent from, starting from the given `from` element and passing each parent to the inspect function. It stops traversing if the inspect function returns `true` or it reached the `to` or root element.
+It will then loop through each parent starting from `from` element and passing each parent to the `inspect` function.
+Traversing up until the `inspect` function returns `true` or it reached the `to` or root element.
 
 **Example**
 
+```html
+<html><!-- If `to` is not defined it will stop traversing when it reach here. -->
+  <body>
+    <div class="pokemon-tree">
+      <div data-name="raichu">
+        <div data-name="pikachu">
+          <div data-name="pichu">
+            <div class="from">Starts here</div>
+          </div>
+        </div>
+      <div>
+    </div>
+  </body>
+</html>
+```
+
 ```typescript
+const from = document.querySelector('.from');
+
+// This will pass div[data-name="pichu"] and div[data-name="pikachu"] element.
 DOMTraverse.ascendFrom(from, element => {
   if (element.dataset.name === 'pikachu') {
-    // Do something with parent element.
+    // Do something with this element.
     iChooseYou(element);
 
-    // Stop traversing.
+    // Return true to stop traversing.
+    // div[data-name="raichu"]
+    // is never passed through this function
+    // because it stops ascending here.
     return true;
   }
 });
@@ -110,17 +133,31 @@ descendFrom(
 ```
 
 This method takes in an `Element` and a `DOMTraverseInspectElementFunction` function.
-It will then loop through each child, starting from the given `from` element and passing each child to the identify function. It stops traversing if the inspect function returns `true` or it passed through all child nodes.
+It will then loop through each child, starting from `from` element and passing each child to the `inspect` function.
+Traversing down until the `inspect` function returns `true` or it passed through all child elements.
 
 **Example**
 
+```html
+<html><!-- If `to` is not defined it will stop traversing when it reach here. -->
+  <body>
+    <div class="pokemon-tree">
+      <div data-name="pichu">
+        <div data-name="pikachu">
+          <div data-name="raichu"></div>
+          <div data-name="raichu-psychic"></div>
+        </div>
+      <div>
+    </div>
+  </body>
+</html>
+```
+
 ```typescript
-DOMTraverse.descendFrom(element, element => {
-  if (element.dataset.name === 'eevee') {
+DOMTraverse.descendFrom(from, element => {
+  if (element.dataset.name === 'raichu-psychic') {
     // Do something with child element.
     iChooseYou(element);
-
-    // Stop traversing.
     return true;
   }
 });
