@@ -115,31 +115,32 @@ export class DOMView {
   public static elementIsClipping(
     element: HTMLElement,
     cornersOrEdges?: DOMViewEdgeAndCornerNames | DOMViewEdgeAndCornerNames[],
-  ): DOMViewEdgeAndCornerNames | false {
+  ): DOMViewEdgeAndCornerNames | null {
+    let _cornersOrEdges: DOMViewEdgeAndCornerNames[] = [];
+
     if (typeof cornersOrEdges === 'undefined') {
-      cornersOrEdges = [...DOMViewEdgeAndCornerNames];
+      _cornersOrEdges = [...DOMViewEdgeAndCornerNames];
     }
 
-    if (Array.isArray(cornersOrEdges) === false) {
-      cornersOrEdges = [cornersOrEdges as DOMViewEdgeAndCornerNames];
+    if (Array.isArray(cornersOrEdges) === true) {
+      _cornersOrEdges = cornersOrEdges as DOMViewEdgeAndCornerNames[];
+    } else if (typeof cornersOrEdges === 'string') {
+      _cornersOrEdges = [cornersOrEdges];
     }
-
-    cornersOrEdges = cornersOrEdges as DOMViewEdgeAndCornerNames[];
 
     const result = this.elementIsClippingCornerOrEdge(element);
 
-    if (result === false) {
-      return false;
-    }
-
-    if (cornersOrEdges.indexOf(result) === -1) {
-      return false;
+    if (
+      result === null
+      || _cornersOrEdges.indexOf(result) === -1
+    ) {
+      return null;
     }
 
     return result;
   }
 
-  public static elementIsClippingEdge(element: HTMLElement): DOMViewEdgeNames | false {
+  public static elementIsClippingEdge(element: HTMLElement): DOMViewEdgeNames | null {
     const { top, bottom, left, right } = element.getBoundingClientRect();
 
     if (left < 0) {
@@ -152,10 +153,10 @@ export class DOMView {
       return 'bottom';
     }
 
-    return false;
+    return null;
   }
 
-  public static elementIsClippingCorner(element: HTMLElement): DOMViewCornerNames | false {
+  public static elementIsClippingCorner(element: HTMLElement): DOMViewCornerNames | null {
     const { top, bottom, left, right } = element.getBoundingClientRect();
 
     if (top < 0) {
@@ -176,12 +177,12 @@ export class DOMView {
       }
     }
 
-    return false;
+    return null;
   }
 
   public static elementIsClippingCornerOrEdge(
     element: HTMLElement,
-  ): DOMViewEdgeAndCornerNames | false {
+  ): DOMViewEdgeAndCornerNames | null {
     const { top, bottom, left, right } = element.getBoundingClientRect();
 
     if (top < 0) {
@@ -210,6 +211,6 @@ export class DOMView {
       return 'right';
     }
 
-    return false;
+    return null;
   }
 }
