@@ -27,7 +27,7 @@ type ColorArray4 = [number, number, number, number];
 
 export class ConvertColor {
   // RGB 1, 1, 1
-  static RGBToHEX(rgb: ColorArray3): string {
+  static RGBToHEX(...rgb: ColorArray3): string {
     rgb[0] = Num.cycle(rgb[0], 1);
     rgb[1] = Num.cycle(rgb[1], 1);
     rgb[2] = Num.cycle(rgb[2], 1);
@@ -40,7 +40,9 @@ export class ConvertColor {
   // RGB 1, 1, 1
   static HEXToRGB(hex: string): ColorArray3 {
     let rgb = [0, 0, 0];
-    let r = '', g = '', b = '';
+    let r = '';
+    let g = '';
+    let b = '';
 
     if (hex.length === 7) {
       r = hex.substr(1, 2);
@@ -65,14 +67,14 @@ export class ConvertColor {
 
   // CMYK 1, 1, 1, 1
   // RGB 1, 1, 1
-  static RGBToCMYK(rgb: ColorArray3): ColorArray4 {
+  static RGBToCMYK(...rgb: ColorArray3): ColorArray4 {
     rgb[0] = Num.cycle(rgb[0], 1);
     rgb[1] = Num.cycle(rgb[1], 1);
     rgb[2] = Num.cycle(rgb[2], 1);
 
     const cmyk = [0, 0, 0, 0];
 
-    cmyk[3] = 1 - Math.max.apply(this, rgb);
+    cmyk[3] = 1 - Math.max(...rgb);
     cmyk[0] = (1 - rgb[0] - cmyk[3]) / (1 - cmyk[3]);
     cmyk[1] = (1 - rgb[1] - cmyk[3]) / (1 - cmyk[3]);
     cmyk[2] = (1 - rgb[2] - cmyk[3]) / (1 - cmyk[3]);
@@ -82,7 +84,7 @@ export class ConvertColor {
 
   // CMYK 1, 1, 1, 1
   //  RGB 1, 1, 1
-  static CMYKToRGB(cmyk: ColorArray4): ColorArray3 {
+  static CMYKToRGB(...cmyk: ColorArray4): ColorArray3 {
     cmyk[0] = Num.cycle(cmyk[0], 1);
     cmyk[1] = Num.cycle(cmyk[1], 1);
     cmyk[2] = Num.cycle(cmyk[2], 1);
@@ -99,13 +101,13 @@ export class ConvertColor {
 
   // RGB   1, 1, 1
   // HSL 359, 1, 1
-  static RGBToHSL(rgb: ColorArray3): ColorArray3 {
+  static RGBToHSL(...rgb: ColorArray3): ColorArray3 {
     rgb[0] = Num.cycle(rgb[0], 1);
     rgb[1] = Num.cycle(rgb[1], 1);
     rgb[2] = Num.cycle(rgb[2], 1);
 
-    let cMin = Math.min.apply(this, rgb);
-    let cMax = Math.max.apply(this, rgb);
+    let cMin = Math.min(...rgb);
+    let cMax = Math.max(...rgb);
     
     let delta = cMax - cMin;
 
@@ -129,7 +131,7 @@ export class ConvertColor {
 
   // HSL 359, 1, 1
   // RGB   1, 1, 1
-  static HSLToRGB(hsl: ColorArray3): ColorArray3 {
+  static HSLToRGB(...hsl: ColorArray3): ColorArray3 {
     hsl[0] = Num.cycle(hsl[0], 359);
     hsl[1] = Num.cycle(hsl[1], 1);
     hsl[2] = Num.cycle(hsl[2], 1);
@@ -163,13 +165,13 @@ export class ConvertColor {
 
   // RGB   1, 1, 1
   // HSV 359, 1, 1
-  static RGBToHSV(rgb: ColorArray3): ColorArray3 {
+  static RGBToHSV(...rgb: ColorArray3): ColorArray3 {
     rgb[0] = Num.cycle(rgb[0], 1);
     rgb[1] = Num.cycle(rgb[1], 1);
     rgb[2] = Num.cycle(rgb[2], 1);
 
-    let cMin = Math.min.apply(this, rgb);
-    let cMax = Math.max.apply(this, rgb);
+    let cMin = Math.min(...rgb);
+    let cMax = Math.max(...rgb);
 
     let delta = cMax - cMin;
 
@@ -193,7 +195,7 @@ export class ConvertColor {
 
   // HSV 359, 1, 1
   // RGB   1, 1, 1
-  static HSVToRGB(hsv: ColorArray3): ColorArray3 {
+  static HSVToRGB(...hsv: ColorArray3): ColorArray3 {
     hsv[0] = Num.cycle(hsv[0], 359);
     hsv[1] = Num.cycle(hsv[1], 1);
     hsv[2] = Num.cycle(hsv[2], 1);

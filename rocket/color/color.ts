@@ -148,7 +148,7 @@ export class Color {
       hsl[1] /= 100;
       hsl[2] /= 100;
 
-      const rgb = ConvertColor.HSLToRGB(hsl as ColorArray3);
+      const rgb = ConvertColor.HSLToRGB(...hsl as ColorArray3);
 
       this.r = rgb[0];
       this.g = rgb[1];
@@ -167,7 +167,7 @@ export class Color {
       hsl[1] /= 100;
       hsl[2] /= 100;
 
-      const rgb = ConvertColor.HSLToRGB(hsl as ColorArray3);
+      const rgb = ConvertColor.HSLToRGB(...hsl as ColorArray3);
 
       this.r = rgb[0];
       this.g = rgb[1];
@@ -226,9 +226,9 @@ export class Color {
   }
 
   get hex(): string {
-    const rgb = [this.r, this.g, this.b];
+    const rgb = [this.r, this.g, this.b] as ColorArray3;
 
-    return ConvertColor.RGBToHEX(rgb as ColorArray3);
+    return ConvertColor.RGBToHEX(...rgb);
   }
 
   // RGB
@@ -282,7 +282,7 @@ export class Color {
   // HSL
 
   set hsl(hsl: ColorArray3) {
-    const rgb = ConvertColor.HSLToRGB(hsl);
+    const rgb = ConvertColor.HSLToRGB(...hsl);
 
     this.r = rgb[0];
     this.g = rgb[1];
@@ -290,14 +290,14 @@ export class Color {
   }
 
   get hsl(): ColorArray3 {
-    return ConvertColor.RGBToHSL([this.r, this.g, this.b]);
+    return ConvertColor.RGBToHSL(this.r, this.g, this.b);
   }
 
   // HSV and HSB
 
   set hsv(hsv: ColorArray3) {
     if (hsv.length === 3) {
-      const rgb = ConvertColor.HSVToRGB(hsv);
+      const rgb = ConvertColor.HSVToRGB(...hsv);
 
       this.r = rgb[0];
       this.g = rgb[1];
@@ -306,13 +306,13 @@ export class Color {
   }
 
   get hsv(): ColorArray3 {
-    return ConvertColor.HSVToRGB([this.r, this.g, this.b]);
+    return ConvertColor.HSVToRGB(this.r, this.g, this.b);
   }
 
   // CMYK
 
   set cmyk(cmyk: ColorArray4) {
-    const rgb = ConvertColor.CMYKToRGB(cmyk);
+    const rgb = ConvertColor.CMYKToRGB(...cmyk);
 
     this.r = rgb[0];
     this.g = rgb[1];
@@ -320,7 +320,7 @@ export class Color {
   }
 
   get cmyk(): ColorArray4 {
-    return ConvertColor.RGBToCMYK([this.r, this.g, this.b]);
+    return ConvertColor.RGBToCMYK(this.r, this.g, this.b);
   }
 
   // RED
@@ -380,11 +380,11 @@ export class Color {
   // CYAN
 
   set cyan(cyan: number) {
-    const cmyk = ConvertColor.RGBToCMYK([this.r, this.g, this.b]);
+    const cmyk = ConvertColor.RGBToCMYK(this.r, this.g, this.b);
 
     cmyk[0] = cyan;
 
-    const rgb = ConvertColor.CMYKToRGB(cmyk);
+    const rgb = ConvertColor.CMYKToRGB(...cmyk);
 
     this.r = rgb[0];
     this.g = rgb[1];
@@ -392,17 +392,17 @@ export class Color {
   }
 
   get cyan(): number {
-    return ConvertColor.RGBToCMYK([this.r, this.g, this.b])[0];
+    return ConvertColor.RGBToCMYK(this.r, this.g, this.b)[0];
   }
 
   // MAGENTA
 
   set magenta(magenta: number) {
-    const cmyk = ConvertColor.RGBToCMYK([this.r, this.g, this.b]);
+    const cmyk = ConvertColor.RGBToCMYK(this.r, this.g, this.b);
 
     cmyk[1] = magenta;
 
-    const rgb = ConvertColor.CMYKToRGB(cmyk);
+    const rgb = ConvertColor.CMYKToRGB(...cmyk);
 
     this.r = rgb[0];
     this.g = rgb[1];
@@ -410,17 +410,17 @@ export class Color {
   }
 
   get magenta(): number {
-    return ConvertColor.RGBToCMYK([this.r, this.g, this.b])[1];
+    return ConvertColor.RGBToCMYK(this.r, this.g, this.b)[1];
   }
 
   // YELLOW
 
   set yellow(yellow: number) {
-    const cmyk = ConvertColor.RGBToCMYK([this.r, this.g, this.b]);
+    const cmyk = ConvertColor.RGBToCMYK(this.r, this.g, this.b);
 
     cmyk[2] = yellow;
 
-    const rgb = ConvertColor.CMYKToRGB(cmyk);
+    const rgb = ConvertColor.CMYKToRGB(...cmyk);
 
     this.r = rgb[0];
     this.g = rgb[1];
@@ -428,7 +428,7 @@ export class Color {
   }
 
   get yellow(): number {
-    return ConvertColor.RGBToCMYK([this.r, this.g, this.b])[2];
+    return ConvertColor.RGBToCMYK(this.r, this.g, this.b)[2];
   }
 
   // ALPHA
@@ -444,11 +444,11 @@ export class Color {
   // HUE
 
   set hue(degrees: number) {
-    const hsl = ConvertColor.RGBToHSL([this.r, this.g, this.b]);
+    const hsl = ConvertColor.RGBToHSL(this.r, this.g, this.b);
 
     hsl[0] = Math.abs(Math.round(Num.cycle(degrees, 359)));
 
-    const rgb = ConvertColor.HSLToRGB(hsl);
+    const rgb = ConvertColor.HSLToRGB(...hsl);
 
     this.r = rgb[0];
     this.g = rgb[1];
@@ -456,7 +456,7 @@ export class Color {
   }
 
   get hue(): number {
-    const hsl = ConvertColor.RGBToHSL([this.r, this.g, this.b]);
+    const hsl = ConvertColor.RGBToHSL(this.r, this.g, this.b);
 
     return Math.round(hsl[0]);
   }
@@ -464,11 +464,11 @@ export class Color {
   // SATURATION
 
   set saturation(saturation: number) {
-    const hsl = ConvertColor.RGBToHSL([this.r, this.g, this.b]);
+    const hsl = ConvertColor.RGBToHSL(this.r, this.g, this.b);
 
     hsl[1] = Num.cycle(saturation, 1);
 
-    const rgb = ConvertColor.HSLToRGB(hsl);
+    const rgb = ConvertColor.HSLToRGB(...hsl);
 
     this.r = rgb[0];
     this.g = rgb[1];
@@ -476,7 +476,7 @@ export class Color {
   }
 
   get saturation(): number {
-    const hsl = ConvertColor.RGBToHSL([this.r, this.g, this.b]);
+    const hsl = ConvertColor.RGBToHSL(this.r, this.g, this.b);
 
     return hsl[1];
   }
@@ -484,11 +484,11 @@ export class Color {
   // VALUE
 
   set value(value: number) {
-    const hsv = ConvertColor.RGBToHSV([this.r, this.g, this.b]);
+    const hsv = ConvertColor.RGBToHSV(this.r, this.g, this.b);
 
     hsv[2] = Num.cycle(value, 1);
 
-    const rgb = ConvertColor.HSVToRGB(hsv);
+    const rgb = ConvertColor.HSVToRGB(...hsv);
 
     this.r = rgb[0];
     this.g = rgb[1];
@@ -496,7 +496,7 @@ export class Color {
   }
 
   get value(): number {
-    const hsv = ConvertColor.RGBToHSV([this.r, this.g, this.b]);
+    const hsv = ConvertColor.RGBToHSV(this.r, this.g, this.b);
 
     return hsv[2];
   }
