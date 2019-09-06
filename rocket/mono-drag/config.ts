@@ -82,8 +82,12 @@ export const MONO_DRAG_DEFAULT_CONFIG: MonoDragConfig = {
   onEvent: () => {},
 
   onDragStart: () => {},
+
   onDrag: () => {},
+
   onDragStop: () => {},
+
   onDragCancel: () => {},
+
   onDragEnd: () => {},
 };
