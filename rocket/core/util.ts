@@ -171,4 +171,45 @@ export class Util {
 
     return result;
   }
+
+  // TODO: Rename this.
+  public static fillArraysToLongestArray(filler: any, ...arrays: any[][]): number {
+    const maxLength = this.getMaxArraysLength(arrays);
+
+    arrays.forEach(array => {
+      while (array.length < maxLength) {
+        array.push(filler);
+      }
+    });
+
+    return maxLength;
+  }
+
+  public static getMaxArraysLength(...arrays: any[][]): number {
+    const lengths = arrays.map(array => array.length);
+
+    return Math.max(...lengths);
+  }
+
+  public static getMinArraysLength(...arrays: any[][]): number {
+    const lengths = arrays.map(array => array.length);
+
+    return Math.min(...lengths);
+  }
+
+  public static sumArrays(...arrays: number[][]): number[] {
+    const maxLength = this.fillArraysToLongestArray(0, ...arrays);
+
+    const sum: number[] = [];
+
+    for (let i = 0; i < maxLength; i++) {
+      sum[i] = 0;
+
+      arrays.forEach(array => {
+        sum[i] = sum[i] + array[i];
+      });
+    }
+
+    return sum;
+  }
 }

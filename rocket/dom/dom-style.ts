@@ -3,6 +3,7 @@ import {
   DOMUtil,
   StringUtil,
 } from '../rocket';
+import { Util } from '../core/util';
 
 export interface StyleObject {
   [key: string]: string | number;
@@ -291,15 +292,42 @@ export class DOMStyle {
     return Math.max(...durations);
   }
 
-  public static getTransitionDuration(element: HTMLElement): number {
+  public static getTransitionDurationsInSeconds(element: HTMLElement): number[] {
     const computedStyle = getComputedStyle(element);
 
-    const duration = computedStyle.transitionDuration;
+    const value = computedStyle.transitionDuration;
 
-    if (duration === null || duration === '') {
-      return 0;
-    } else {
-      return parseFloat(duration) * 1000;
+    if (!value) {
+      return [0];
     }
+
+    return value.split(',').map(duration => parseFloat(duration) * 1000);
+  }
+
+  public static getTransitionDelaysInSeconds(element: HTMLElement): number[] {
+    const computedStyle = getComputedStyle(element);
+
+    const value = computedStyle.transitionDelay;
+
+    if (!value) {
+      return [0];
+    }
+
+    return value.split(',').map(delay => parseFloat(delay) * 1000);
+  }
+
+  public static getMaxTransitionDurationsInSeconds(element: HTMLElement): number {
+    return Math.max(...this.getTransitionDurationsInSeconds(element));
+  }
+
+  public static getMaxTransitionDelaysInSeconds(element: HTMLElement): number {
+    return Math.max(...this.getTransitionDelaysInSeconds(element));
+  }
+
+  public static getTotalTransitionDurationWithDelay(element: HTMLElement): number {
+    const delays = this.getTransitionDelaysInSeconds(element);
+    const durations = this.getTransitionDurationsInSeconds(element);
+
+    return Math.max(...Util.sumArrays(delays, durations));
   }
 }

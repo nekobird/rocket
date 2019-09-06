@@ -30,3 +30,14 @@
   padding: px-to-rem(40);
   width: px-to-rem(200);
 }
+
+.box-one {
+  background-color: black;
+}
+
+.box {
+  background: black;
+
+  transition-property: color, background-color;
+  transition-duration: 100ms, 400ms;
+}
