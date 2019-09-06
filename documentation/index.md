@@ -13,8 +13,8 @@ Foundation for the rest of the library.
 | Name | Description |
 | --- | --- |
 | [Num](./core/num.md) | Tools for working with numbers. |
-| [Util](./core/util.md) | General utility methods. |
 | [StringUtil](./core/string-util.md) | Simple utility for working with strings. |
+| [Util](./core/util.md) | General utility methods. |
 
 ## DOM
 
