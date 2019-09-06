@@ -52,7 +52,7 @@ export class DOMBoxModel {
     return top + bottom;
   }
 
-  public static getTotalHorizontalBorderWidths(element: HTMLElement) {
+  public static getTotalHorizontalBorderWidths(element: HTMLElement): number {
     const style = window.getComputedStyle(element);
 
     let { borderLeftWidth, borderRightWidth } = style;
