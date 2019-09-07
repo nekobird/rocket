@@ -35,7 +35,10 @@ export class Util {
 
   // Returns a debouncer function that no matter the frequency of calls
   // will only be invoked after the given delay times out (in seconds).
-  public static debounce(func: Function, delayInSeconds: number): Function {
+  public static debounce(
+    func: Function,
+    delayInSeconds: number,
+  ): Function {
     let timeout;
 
     const delay = delayInSeconds * 1000;
@@ -109,7 +112,10 @@ export class Util {
     });
   }
 
-  public static promiseEach<A>(array: A[], func: (value: A) => Promise<void>): Promise<void> {
+  public static promiseEach<A>(
+    array: A[],
+    func: (value: A) => Promise<void>,
+  ): Promise<void> {
     if (array.length === 0) {
       return Promise.resolve();
     }
@@ -128,7 +134,10 @@ export class Util {
     return choices[index];
   }
 
-  public static throttle(func: Function, thresholdInSeconds: number): Function {
+  public static throttle(
+    func: Function,
+    thresholdInSeconds: number,
+  ): Function {
     let timeout;
     let last;
 
@@ -172,7 +181,10 @@ export class Util {
     return result;
   }
 
-  public static fillArraysToLargestLength(filler: unknown, ...arrays: unknown[][]): number {
+  public static fillArraysToLargestLength(
+    filler: unknown,
+    ...arrays: unknown[][]
+  ): number {
     const maxLength = this.getMaxArraysLength(...arrays);
 
     arrays.forEach(array => {

@@ -41,3 +41,33 @@
   transition-property: color, background-color;
   transition-duration: 100ms, 400ms;
 }
+
+@keyframes animate-translate {
+  0% {
+    transform: translateY(20px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes animate-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.page-testing {
+  .animate {
+    transform-origin: 50% 50%;
+    animation-delay: 500ms, 100ms;
+    animation-duration: 200ms, 1000ms;
+    animation-name: animate-translate, animate-rotate;
+    animation-timing-function: ease-out, ease-out;
+  }
+}

@@ -4,7 +4,6 @@ import {
   Num,
   StringUtil,
 } from '../rocket';
-import { Util } from '../core/util';
 
 export interface StyleObject {
   [key: string]: string | number;
@@ -227,10 +226,12 @@ export class DOMStyle {
         if (DOMUtil.isHTMLElement(element) === true) {
           const _element = element as HTMLElement;
 
-          let duration = this.getMaxAnimationDurationsInSeconds(_element);
+          let duration;
 
           if (withDelay === true) {
-            duration += this.getTotalAnimationDurationIncludingDelay(_element);
+            duration = this.getMaxAnimationDurationWithDelayInSeconds(_element);
+          } else {
+            duration = this.getMaxAnimationDurationInSeconds(_element);
           }
 
           durations.push(duration);
@@ -253,10 +254,12 @@ export class DOMStyle {
         if (DOMUtil.isHTMLElement(element) === true) {
           const _element = element as HTMLElement;
 
-          let duration = this.getMaxAnimationDurationsInSeconds(_element);
+          let duration;
 
           if (withDelay === true) {
-            duration += this.getTotalAnimationDurationIncludingDelay(_element);
+            duration = this.getMaxAnimationDurationInSeconds(_element);
+          } else {
+            duration = this.getMaxAnimationDurationWithDelayInSeconds(_element);
           }
 
           durations.push(duration);
@@ -291,15 +294,15 @@ export class DOMStyle {
     return value.split(',').map(delay => parseFloat(delay) * 1000);
   }
 
-  public static getMaxAnimationDurationsInSeconds(element: HTMLElement): number {
+  public static getMaxAnimationDurationInSeconds(element: HTMLElement): number {
     return Math.max(...this.getAnimationDurationsInSeconds(element));
   }
 
-  public static getMaxAnimationDelaysInSeconds(element: HTMLElement): number {
+  public static getMaxAnimationDelayInSeconds(element: HTMLElement): number {
     return Math.max(...this.getAnimationDelaysInSeconds(element));
   }
 
-  public static getTotalAnimationDurationIncludingDelay(element: HTMLElement): number {
+  public static getMaxAnimationDurationWithDelayInSeconds(element: HTMLElement): number {
     const delays = this.getAnimationDelaysInSeconds(element);
     const durations = this.getAnimationDurationsInSeconds(element);
 
@@ -330,15 +333,15 @@ export class DOMStyle {
     return value.split(',').map(delay => parseFloat(delay) * 1000);
   }
 
-  public static getMaxTransitionDurationsInSeconds(element: HTMLElement): number {
+  public static getMaxTransitionDurationInSeconds(element: HTMLElement): number {
     return Math.max(...this.getTransitionDurationsInSeconds(element));
   }
 
-  public static getMaxTransitionDelaysInSeconds(element: HTMLElement): number {
+  public static getMaxTransitionDelayInSeconds(element: HTMLElement): number {
     return Math.max(...this.getTransitionDelaysInSeconds(element));
   }
 
-  public static getTotalTransitionDurationIncludingDelay(element: HTMLElement): number {
+  public static getMaxTransitionDurationWithDelayInSeconds(element: HTMLElement): number {
     const delays = this.getTransitionDelaysInSeconds(element);
     const durations = this.getTransitionDurationsInSeconds(element);
 
