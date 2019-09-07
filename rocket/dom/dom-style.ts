@@ -1,6 +1,7 @@
 import {
   DOMTraverse,
   DOMUtil,
+  Num,
   StringUtil,
 } from '../rocket';
 import { Util } from '../core/util';
@@ -328,6 +329,6 @@ export class DOMStyle {
     const delays = this.getTransitionDelaysInSeconds(element);
     const durations = this.getTransitionDurationsInSeconds(element);
 
-    return Math.max(...Util.sumArrays(delays, durations));
+    return Math.max(...Num.sumNumberArrays(delays, durations));
   }
 }

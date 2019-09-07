@@ -1,6 +1,7 @@
 import {
   NumberOrRange,
   RangeArray,
+  Util,
 } from '../rocket';
 
 export class Num {
@@ -162,6 +163,24 @@ export class Num {
 
   public static sum(...values: number[]): number {
     return values.reduce((previous, current) => previous + current);
+  }
+
+  public static sumNumberArrays(...arrays: number[][]): number[] {
+    const maxLength = Util.getMaxArraysLength(...arrays);
+
+    const sum: number[] = [];
+
+    for (let i = 0; i < maxLength; i++) {
+      sum[i] = 0;
+
+      arrays.forEach(array => {
+        if (typeof array[i] === 'number') {
+          sum[i] += array[i];
+        }
+      });
+    }
+
+    return sum;
   }
 
   // https://math.stackexchange.com/questions/377169/calculating-a-value-inside-one-range-to-a-value-of-another-range/377174
