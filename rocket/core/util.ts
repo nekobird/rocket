@@ -172,7 +172,7 @@ export class Util {
     return result;
   }
 
-  public static fillArraysToLargestLength(filler: any, ...arrays: any[][]): number {
+  public static fillArraysToLargestLength(filler: unknown, ...arrays: unknown[][]): number {
     const maxLength = this.getMaxArraysLength(...arrays);
 
     arrays.forEach(array => {
