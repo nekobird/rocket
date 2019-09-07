@@ -215,32 +215,6 @@ export class DOMStyle {
     return rem * this.getBaseFontSize();
   }
 
-  // @animation
-
-  public static getAnimationDelay(element: HTMLElement): number {
-    const computedStyle = getComputedStyle(element);
-
-    const delay = computedStyle.animationDelay;
-
-    if (delay === null || delay === '') {
-      return 0;
-    } else {
-      return parseFloat(delay) * 1000;
-    }
-  }
-
-  public static getAnimationDuration(element: HTMLElement): number {
-    const computedStyle = getComputedStyle(element);
-
-    const duration = computedStyle.animationDuration;
-
-    if (duration === null || duration === '') {
-      return 0;
-    } else {
-      return parseFloat(duration) * 1000;
-    }
-  }
-
   public static getParentsMaxAnimationDuration(
     from: HTMLElement,
     withDelay: boolean = false,
@@ -253,10 +227,10 @@ export class DOMStyle {
         if (DOMUtil.isHTMLElement(element) === true) {
           const _element = element as HTMLElement;
 
-          let duration = this.getAnimationDuration(_element);
+          let duration = this.getMaxAnimationDurationsInSeconds(_element);
 
           if (withDelay === true) {
-            duration += this.getAnimationDelay(_element);
+            duration += this.getTotalAnimationDurationIncludingDelay(_element);
           }
 
           durations.push(duration);
@@ -279,10 +253,10 @@ export class DOMStyle {
         if (DOMUtil.isHTMLElement(element) === true) {
           const _element = element as HTMLElement;
 
-          let duration = this.getAnimationDuration(_element);
+          let duration = this.getMaxAnimationDurationsInSeconds(_element);
 
           if (withDelay === true) {
-            duration += this.getAnimationDelay(_element);
+            duration += this.getTotalAnimationDurationIncludingDelay(_element);
           }
 
           durations.push(duration);
@@ -291,6 +265,45 @@ export class DOMStyle {
     );
 
     return Math.max(...durations);
+  }
+
+  public static getAnimationDurationsInSeconds(element: HTMLElement): number[] {
+    const computedStyle = getComputedStyle(element);
+
+    const value = computedStyle.animationDuration;
+
+    if (!value) {
+      return [0];
+    }
+
+    return value.split(',').map(duration => parseFloat(duration) * 1000);
+  }
+
+  public static getAnimationDelaysInSeconds(element: HTMLElement): number[] {
+    const computedStyle = getComputedStyle(element);
+
+    const value = computedStyle.animationDelay;
+
+    if (!value) {
+      return [0];
+    }
+
+    return value.split(',').map(delay => parseFloat(delay) * 1000);
+  }
+
+  public static getMaxAnimationDurationsInSeconds(element: HTMLElement): number {
+    return Math.max(...this.getAnimationDurationsInSeconds(element));
+  }
+
+  public static getMaxAnimationDelaysInSeconds(element: HTMLElement): number {
+    return Math.max(...this.getAnimationDelaysInSeconds(element));
+  }
+
+  public static getTotalAnimationDurationIncludingDelay(element: HTMLElement): number {
+    const delays = this.getAnimationDelaysInSeconds(element);
+    const durations = this.getAnimationDurationsInSeconds(element);
+
+    return Math.max(...Num.sumNumberArrays(delays, durations));
   }
 
   public static getTransitionDurationsInSeconds(element: HTMLElement): number[] {
@@ -325,7 +338,7 @@ export class DOMStyle {
     return Math.max(...this.getTransitionDelaysInSeconds(element));
   }
 
-  public static getTotalTransitionDurationWithDelay(element: HTMLElement): number {
+  public static getTotalTransitionDurationIncludingDelay(element: HTMLElement): number {
     const delays = this.getTransitionDelaysInSeconds(element);
     const durations = this.getTransitionDurationsInSeconds(element);
 
