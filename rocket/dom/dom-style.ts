@@ -14,46 +14,6 @@ export interface StyleObject {
 // For example element.style.backgroundColor = null;
 
 export class DOMStyle {
-  public static getLineHeight(element: HTMLElement): number {
-    const temp = document.createElement('div');
-
-    temp.style.padding = '0';
-    temp.style.visibility = 'none';
-
-    temp.textContent = 'abcd';
-
-    this.copyStylesFrom(
-      element,
-      [
-        'font-family',
-        'font-size',
-        'line-height',
-      ],
-      temp,
-    );
-
-    let result;
-
-    if (element.parentNode !== null) {
-      element.parentNode.appendChild(temp);
-
-      result = temp.clientHeight;
-
-      element.parentNode.removeChild(temp);
-    } else {
-      document.appendChild(temp);
-
-      result = temp.clientHeight;
-
-      document.removeChild(temp);
-    }
-
-    temp.remove();
-
-    return result;
-  }
-
-  // @styles
   public static applyStyle(
     element: HTMLElement,
     styleObject: StyleObject,
@@ -95,6 +55,10 @@ export class DOMStyle {
     });
   }
 
+  public static clearStyles(element: HTMLElement) {
+    element.removeAttribute('style');
+  }
+
   public static copyStylesFrom(
     from: HTMLElement,
     properties: string | string[],
@@ -115,23 +79,176 @@ export class DOMStyle {
     });
   }
 
-  public static clearStyles(element: HTMLElement) {
-    element.removeAttribute('style');
-  }
+  public static getAnimationDelaysInSeconds(element: HTMLElement): number[] {
+    const computedStyle = getComputedStyle(element);
 
-  public static removeStyles(
-    element: HTMLElement,
-    properties: string | string[],
-  ) {
-    if (typeof properties === 'string') {
-      properties = [properties];
+    const value = computedStyle.animationDelay;
+
+    if (!value) {
+      return [0];
     }
 
-    properties.forEach(property => {
-      property = StringUtil.kebabCaseToCamelCase(property);
+    return value.split(',').map(delay => parseFloat(delay) * 1000);
+  }
 
-      element.style.removeProperty(property);
-    });
+  public static getAnimationDurationsInSeconds(element: HTMLElement): number[] {
+    const computedStyle = getComputedStyle(element);
+
+    const value = computedStyle.animationDuration;
+
+    if (!value) {
+      return [0];
+    }
+
+    return value.split(',').map(duration => parseFloat(duration) * 1000);
+  }
+
+  public static getBaseFontSize(): number {
+    const fontSize = window.getComputedStyle(document.documentElement).fontSize;
+
+    if (
+      typeof fontSize === 'string'
+      && fontSize.match(/^[0-9]+/g) !== null
+    ) {
+      return parseFloat(fontSize);
+    }
+
+    return 16;
+  }
+
+  public static getBoxSizing(element: HTMLElement): string {
+    return this.getStyleValue(element, 'box-sizing') as string;
+  }
+
+  public static getChildrenMaxAnimationDuration(
+    from: HTMLElement,
+    withDelay: boolean = false,
+  ): number {
+    let durations: number[] = [];
+
+    DOMTraverse.descendFrom(
+      from,
+      element => {
+        if (DOMUtil.isHTMLElement(element) === true) {
+          const _element = element as HTMLElement;
+
+          let duration;
+
+          if (withDelay === true) {
+            duration = this.getMaxAnimationDurationInSeconds(_element);
+          } else {
+            duration = this.getMaxAnimationDurationWithDelayInSeconds(_element);
+          }
+
+          durations.push(duration);
+        }
+      }
+    );
+
+    return Math.max(...durations);
+  }
+
+  public static getFontSize(element: HTMLElement): number {
+    return this.getStyleValue(element, 'font-size') as number;
+  }
+
+  public static getLineHeight(element: HTMLElement): number {
+    const temp = document.createElement('div');
+
+    temp.style.padding = '0';
+    temp.style.visibility = 'none';
+
+    temp.textContent = 'abcd';
+
+    this.copyStylesFrom(
+      element,
+      [
+        'font-family',
+        'font-size',
+        'line-height',
+      ],
+      temp,
+    );
+
+    let result;
+
+    if (element.parentNode !== null) {
+      element.parentNode.appendChild(temp);
+
+      result = temp.clientHeight;
+
+      element.parentNode.removeChild(temp);
+    } else {
+      document.appendChild(temp);
+
+      result = temp.clientHeight;
+
+      document.removeChild(temp);
+    }
+
+    temp.remove();
+
+    return result;
+  }
+
+  public static getMaxAnimationDelayInSeconds(element: HTMLElement): number {
+    return Math.max(...this.getAnimationDelaysInSeconds(element));
+  }
+
+  public static getMaxAnimationDurationInSeconds(element: HTMLElement): number {
+    return Math.max(...this.getAnimationDurationsInSeconds(element));
+  }
+
+  public static getMaxAnimationDurationWithDelayInSeconds(element: HTMLElement): number {
+    const delays = this.getAnimationDelaysInSeconds(element);
+
+    const durations = this.getAnimationDurationsInSeconds(element);
+
+    return Math.max(...Num.sumNumberArrays(delays, durations));
+  }
+
+  public static getMaxTransitionDelayInSeconds(element: HTMLElement): number {
+    return Math.max(...this.getTransitionDelaysInSeconds(element));
+  }
+
+  public static getMaxTransitionDurationInSeconds(element: HTMLElement): number {
+    return Math.max(...this.getTransitionDurationsInSeconds(element));
+  }
+
+  public static getMaxTransitionDurationWithDelayInSeconds(element: HTMLElement): number {
+    const delays = this.getTransitionDelaysInSeconds(element);
+
+    const durations = this.getTransitionDurationsInSeconds(element);
+
+    return Math.max(...Num.sumNumberArrays(delays, durations));
+  }
+
+  public static getParentsMaxAnimationDuration(
+    from: HTMLElement,
+    withDelay: boolean = false,
+  ): number {
+    let durations: number[] = [];
+
+    DOMTraverse.ascendFrom(
+      from,
+      element => {
+        if (DOMUtil.isHTMLElement(element) === true) {
+          const _element = element as HTMLElement;
+
+          let duration;
+
+          if (withDelay === true) {
+            duration = this.getMaxAnimationDurationWithDelayInSeconds(_element);
+          } else {
+            duration = this.getMaxAnimationDurationInSeconds(_element);
+          }
+
+          durations.push(duration);
+        }
+      }
+    );
+
+    return Math.max(...durations);
   }
 
   public static getStyleValue(
@@ -180,133 +297,16 @@ export class DOMStyle {
     return result;
   }
 
-  public static getBoxSizing(element: HTMLElement): string {
-    return this.getStyleValue(element, 'box-sizing') as string;
-  }
-
-  // @font-size
-  public static getFontSize(element: HTMLElement): number {
-    return this.getStyleValue(element, 'font-size') as number;
-  }
-
-  public static setFontSize(
-    element: HTMLElement,
-    fontSize: number,
-    unit: string = 'px',
-  ): void {
-    element.style.fontSize = `${fontSize}${unit}`;
-  }
-
-  public static getBaseFontSize(): number {
-    const fontSize = window.getComputedStyle(document.documentElement).fontSize;
-
-    if (
-      typeof fontSize === 'string'
-      && fontSize.match(/^[0-9]+/g) !== null
-    ) {
-      return parseFloat(fontSize);
-    }
-
-    return 16;
-  }
-
-  public static RemToPx(rem: number): number {
-    return rem * this.getBaseFontSize();
-  }
-
-  public static getParentsMaxAnimationDuration(
-    from: HTMLElement,
-    withDelay: boolean = false,
-  ): number {
-    let durations: number[] = [];
-
-    DOMTraverse.ascendFrom(
-      from,
-      element => {
-        if (DOMUtil.isHTMLElement(element) === true) {
-          const _element = element as HTMLElement;
-
-          let duration;
-
-          if (withDelay === true) {
-            duration = this.getMaxAnimationDurationWithDelayInSeconds(_element);
-          } else {
-            duration = this.getMaxAnimationDurationInSeconds(_element);
-          }
-
-          durations.push(duration);
-        }
-      }
-    );
-
-    return Math.max(...durations);
-  }
-
-  public static getChildrenMaxAnimationDuration(
-    from: HTMLElement,
-    withDelay: boolean = false,
-  ): number {
-    let durations: number[] = [];
-
-    DOMTraverse.descendFrom(
-      from,
-      element => {
-        if (DOMUtil.isHTMLElement(element) === true) {
-          const _element = element as HTMLElement;
-
-          let duration;
-
-          if (withDelay === true) {
-            duration = this.getMaxAnimationDurationInSeconds(_element);
-          } else {
-            duration = this.getMaxAnimationDurationWithDelayInSeconds(_element);
-          }
-
-          durations.push(duration);
-        }
-      }
-    );
-
-    return Math.max(...durations);
-  }
-
-  public static getAnimationDurationsInSeconds(element: HTMLElement): number[] {
+  public static getTransitionDelaysInSeconds(element: HTMLElement): number[] {
     const computedStyle = getComputedStyle(element);
 
-    const value = computedStyle.animationDuration;
-
-    if (!value) {
-      return [0];
-    }
-
-    return value.split(',').map(duration => parseFloat(duration) * 1000);
-  }
-
-  public static getAnimationDelaysInSeconds(element: HTMLElement): number[] {
-    const computedStyle = getComputedStyle(element);
-
-    const value = computedStyle.animationDelay;
+    const value = computedStyle.transitionDelay;
 
     if (!value) {
       return [0];
     }
 
     return value.split(',').map(delay => parseFloat(delay) * 1000);
-  }
-
-  public static getMaxAnimationDurationInSeconds(element: HTMLElement): number {
-    return Math.max(...this.getAnimationDurationsInSeconds(element));
-  }
-
-  public static getMaxAnimationDelayInSeconds(element: HTMLElement): number {
-    return Math.max(...this.getAnimationDelaysInSeconds(element));
-  }
-
-  public static getMaxAnimationDurationWithDelayInSeconds(element: HTMLElement): number {
-    const delays = this.getAnimationDelaysInSeconds(element);
-    const durations = this.getAnimationDurationsInSeconds(element);
-
-    return Math.max(...Num.sumNumberArrays(delays, durations));
   }
 
   public static getTransitionDurationsInSeconds(element: HTMLElement): number[] {
@@ -321,30 +321,30 @@ export class DOMStyle {
     return value.split(',').map(duration => parseFloat(duration) * 1000);
   }
 
-  public static getTransitionDelaysInSeconds(element: HTMLElement): number[] {
-    const computedStyle = getComputedStyle(element);
-
-    const value = computedStyle.transitionDelay;
-
-    if (!value) {
-      return [0];
+  public static removeStyles(
+    element: HTMLElement,
+    properties: string | string[],
+  ) {
+    if (typeof properties === 'string') {
+      properties = [properties];
     }
 
-    return value.split(',').map(delay => parseFloat(delay) * 1000);
+    properties.forEach(property => {
+      property = StringUtil.kebabCaseToCamelCase(property);
+
+      element.style.removeProperty(property);
+    });
   }
 
-  public static getMaxTransitionDurationInSeconds(element: HTMLElement): number {
-    return Math.max(...this.getTransitionDurationsInSeconds(element));
+  public static RemToPx(rem: number): number {
+    return rem * this.getBaseFontSize();
   }
 
-  public static getMaxTransitionDelayInSeconds(element: HTMLElement): number {
-    return Math.max(...this.getTransitionDelaysInSeconds(element));
-  }
-
-  public static getMaxTransitionDurationWithDelayInSeconds(element: HTMLElement): number {
-    const delays = this.getTransitionDelaysInSeconds(element);
-    const durations = this.getTransitionDurationsInSeconds(element);
-
-    return Math.max(...Num.sumNumberArrays(delays, durations));
+  public static setFontSize(
+    element: HTMLElement,
+    fontSize: number,
+    unit: string = 'px',
+  ): void {
+    element.style.fontSize = `${fontSize}${unit}`;
   }
 }
