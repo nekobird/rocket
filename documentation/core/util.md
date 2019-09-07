@@ -13,6 +13,10 @@ A collection of general static utility methods.
     - [cycleArray](#cyclearray)
     - [cycleArrayNext](#cyclearraynext)
     - [debounce](#debounce)
+    - [fillArraysToLargestLength](#fillarraystolargestlength)
+    - [getMaxArrayLength](#getmaxarraylength)
+    - [getMinArrayLength](#getminarraylength)
+    - [getMinArraysLength](#getminarrayslength)
     - [isEmptyObject](#isemptyobject)
     - [isObject](#isobject)
     - [isPromise](#ispromise)
@@ -100,6 +104,66 @@ This is useful for detecting or only do something only once event firing has sto
 const resizeDebounce = Util.debounce(() => alert('Done resizing!'), 0.2);
 window.addEventListener('resize', resizeDebounce);
 ```
+
+### fillArraysToLargestLength
+
+```
+fillArraysToLargestLength(
+  filler: unknown,
+  ...arrays: unknown[][]
+): number
+```
+
+Fill given arrays with `filler` so all the arrays will have the same length as the array with the largest length.
+
+This method returns the max length of array given.
+
+**Example**
+
+```typescript
+const a = [1, 2, 3];
+const b = [1, 2, 3, 4, 5];
+
+// Returns 5
+Util.fillArraysToLargestLength(
+  0, a, b
+);
+
+// a : [1, 2, 3, 0, 0]
+// b : [1, 2, 3, 4, 5]
+```
+
+### getMaxArrayLength
+
+`getMaxArraysLength(...arrays: unknown[][]): number`
+
+Return the max array length.
+
+```typescript
+// Returns 5
+Util.getMaxArrayslength(
+  [1, 2, 3],
+  [1, 2, 3, 4, 5],
+  [1, 2, 3, 4],
+);
+```
+
+### getMinArrayLength
+
+`getMinArraysLength(...arrays: unknown[][]): number`
+
+Return the min array length.
+
+```typescript
+// Returns 3
+Util.getMinArrayslength(
+  [1, 2, 3],
+  [1, 2, 3, 4, 5],
+  [1, 2, 3, 4],
+);
+```
+
+### getMinArraysLength
 
 ### isEmptyObject
 

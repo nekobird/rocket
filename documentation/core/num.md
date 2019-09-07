@@ -23,6 +23,7 @@ Num provides useful helper methods for dealing with numbers.
     - [reciprocal](#reciprocal)
     - [roundTo](#roundto)
     - [sum](#sum)
+    - [sumNumberArrays](#sumnumberarrays)
     - [transform](#transform)
     - [within](#within)
 
@@ -278,6 +279,23 @@ Num.sum(4, 2, 0);
 
 // Returns 10
 Num.sum(1, 2, 3, 4)
+```
+
+### sumNumberArrays
+
+`sumNumberArrays(...arrays: number[][]): number[]`
+
+Returns an array with the sum of each element of the given arrays with the same index that is a number.
+
+**Examples**
+
+```typescript
+// Returns [3, 4, 6, 4]
+Num.sumNumberArrays(
+  [1, 2, 3],
+  [1, 'a'],
+  [1, 2, 3, 4],  
+);
 ```
 
 ### transform

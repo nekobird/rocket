@@ -53,6 +53,33 @@ export class Util {
     };
   }
 
+  public static fillArraysToLargestLength(
+    filler: unknown,
+    ...arrays: unknown[][]
+  ): number {
+    const maxLength = this.getMaxArraysLength(...arrays);
+
+    arrays.forEach(array => {
+      while (array.length < maxLength) {
+        array.push(filler);
+      }
+    });
+
+    return maxLength;
+  }
+
+  public static getMaxArraysLength(...arrays: unknown[][]): number {
+    const lengths = arrays.map(array => array.length);
+
+    return Math.max(...lengths);
+  }
+
+  public static getMinArraysLength(...arrays: unknown[][]): number {
+    const lengths = arrays.map(array => array.length);
+
+    return Math.min(...lengths);
+  }
+
   public static isEmptyObject(object: any): boolean {
     return (
       this.isObject(object)
@@ -179,32 +206,5 @@ export class Util {
     }
 
     return result;
-  }
-
-  public static fillArraysToLargestLength(
-    filler: unknown,
-    ...arrays: unknown[][]
-  ): number {
-    const maxLength = this.getMaxArraysLength(...arrays);
-
-    arrays.forEach(array => {
-      while (array.length < maxLength) {
-        array.push(filler);
-      }
-    });
-
-    return maxLength;
-  }
-
-  public static getMaxArraysLength(...arrays: unknown[][]): number {
-    const lengths = arrays.map(array => array.length);
-
-    return Math.max(...lengths);
-  }
-
-  public static getMinArraysLength(...arrays: unknown[][]): number {
-    const lengths = arrays.map(array => array.length);
-
-    return Math.min(...lengths);
   }
 }
