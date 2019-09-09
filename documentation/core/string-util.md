@@ -99,12 +99,10 @@ StringUtil.lowercaseFirstLetter('Hello');
 
 ### match
 
-`match(string: string, regex: RegExp): string | string[] | false`
+`match(string: string, regex: RegExp): string | string[] | null`
 
-It is similar to JavaScript [`string.match(regEx)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match) with a few differences.
-
-It returns false instead of null if there is no match.
-If there is only one match, it returns the matched string instead of an array.
+Similar to JavaScript [`string.match(regEx)`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/match), it returns `null` if there is no match.
+But if there is only one match, it returns that matched string instead of an array.
 
 ### removeExtraWhitespaces
 

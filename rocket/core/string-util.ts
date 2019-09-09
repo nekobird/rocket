@@ -37,11 +37,11 @@ export class StringUtil {
     return string.charAt(0).toLowerCase() + string.slice(1);
   }
 
-  public static match(string: string, regex: RegExp): string | string[] | false {
+  public static match(string: string, regex: RegExp): string | string[] | null {
     const value = string.match(regex);
 
-    if (value === null) {
-      return false;
+    if (!value) {
+      return null;
     } else if (value.length === 1) {
       return value[0];
     }

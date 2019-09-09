@@ -123,13 +123,13 @@ export class Color {
   set rgbaString(input: string) {
     const numbers = input.match(/([\d]+(\.[\d]+)?)/g);
 
-    if (numbers !== null) {
-      const rgba = numbers.map((v, index) => {
+    if (numbers) {
+      const rgba = numbers.map((value, index) => {
         if (index === 3) {
-          return Num.cycle(parseFloat(v), 1);
+          return Num.cycle(parseFloat(value), 1);
         }
 
-        return Num.cycle(parseFloat(v) / 255, 1);
+        return Num.cycle(parseFloat(value) / 255, 1);
       });
 
       this.r = rgba[0];
