@@ -23,16 +23,10 @@ export class Vector2 {
   constructor(p: PointLike);
   constructor();
   constructor(a?: number | PointLike, b?: number) {
-    if (
-      typeof a === 'number'
-      && typeof b === 'number'
-    ) {
+    if (typeof a === 'number' && typeof b === 'number') {
       this.x = a;
       this.y = b;
-    } else if (
-      typeof a === 'number'
-      && typeof b !== 'number'
-    ) {
+    } else if (typeof a === 'number' && typeof b !== 'number') {
       this.x = a;
       this.y = a;
     } else if (Point.isPointLike(a) === true) {
@@ -51,16 +45,10 @@ export class Vector2 {
   public equals(p: Point): this;
   public equals(p: PointLike): this;
   public equals(a?: number | PointLike, b?: number): this {
-    if (
-      typeof a === 'number'
-      && typeof b === 'number'
-    ) {
+    if (typeof a === 'number' && typeof b === 'number') {
       this.x = a;
       this.y = b;
-    } else if (
-      typeof a === 'number'
-      && typeof b !== 'number'
-    ) {
+    } else if (typeof a === 'number' && typeof b !== 'number') {
       this.x = a;
       this.y = a;
     } else if (Point.isPointLike(a) === true) {
