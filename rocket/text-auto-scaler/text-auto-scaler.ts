@@ -30,7 +30,7 @@ export class TextAutoScaler {
   public configRangeIsValid(): boolean {
     const { element, fontSizeRange, fontSizeIncrement } = this.config;
 
-    if (
+    return (
       DOMUtil.isHTMLElement(element) === true
 
       && typeof fontSizeRange === 'object'
@@ -41,34 +41,26 @@ export class TextAutoScaler {
 
       && typeof fontSizeIncrement === 'number'
       && fontSizeIncrement > 0
-    ) {
-      return true;
-    }
-
-    return false;
+    );
   }
 
   public configSetIsvalid(): boolean {
     const { validFontSizes } = this.config;
 
-    if (
+    return (
       typeof validFontSizes === 'object'
       && Array.isArray(validFontSizes) === true
       && validFontSizes.length > 0
-    ) {
-      return true;
-    }
-
-    return false;
+    );
   }
 
   public getTextBoxWidth(): number {
     let { element } = this.config;
 
     if (DOMUtil.isHTMLElement(element) === true) {
-      element = element as HTMLElement;
+      const targetElement = element as HTMLElement;
 
-      return DOMBoxModel.getContentWidth(element);
+      return DOMBoxModel.getContentWidth(targetElement);
     } else {
       return 0;
     }
@@ -77,21 +69,21 @@ export class TextAutoScaler {
   public getModelWidth(text: string, fontSize: number): number {
     let { element } = this.config;
 
-    element = element as HTMLElement;
+    const targetElement = element as HTMLElement;
 
     return DOMText.getTextBoxWidthFromElement(
-      element,
+      targetElement,
       text.trim(),
       {
-        fontSize: `${fontSize}px`
-      }
+        fontSize: `${fontSize}px`,
+      },
     );
   }
 
   public scaleText(): number | false {
     let { validFontSizes } = this.config;
     
-    if (typeof validFontSizes !== 'undefined') {
+    if (validFontSizes) {
       return this.scaleTextFromValidFontSizes();
     }
 
@@ -102,12 +94,13 @@ export class TextAutoScaler {
     let { element, validFontSizes } = this.config;
 
     if (this.configSetIsvalid() === true) {
-      element = element as HTMLElement;
+      const targetElement = element as HTMLElement;
+
       validFontSizes = validFontSizes as number[];
 
       validFontSizes.sort((a, b) => a - b);
 
-      const text = DOMText.getTextFromElement(element).trim();
+      const text = DOMText.getTextFromElement(targetElement).trim();
       
       const originalWidth = this.getTextBoxWidth();
 
@@ -131,7 +124,7 @@ export class TextAutoScaler {
         }
       }
 
-      this.config.setFontSize(element, finalFontSize, this);
+      this.config.setFontSize(targetElement, finalFontSize, this);
 
       return finalFontSize;
     }
