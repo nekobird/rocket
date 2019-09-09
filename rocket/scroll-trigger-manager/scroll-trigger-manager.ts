@@ -1,7 +1,10 @@
 import {
+  DOMScroll,
   Util,
   Viewport,
 } from '../rocket';
+
+// TODO: Add a way to remove event listeners once completed.
 
 export interface ScrollLocation {
   left: number;
@@ -124,10 +127,10 @@ export class ScrollTriggerManager {
 
   public get scrollLocation(): ScrollLocation {
     return (this.currentScrollLocation = {
-      left: window.scrollX,
-      top: window.scrollY,
-      right: window.scrollX + Viewport.width,
-      bottom: window.scrollY + Viewport.height,
+      left: DOMScroll.scrollLeft,
+      top: DOMScroll.scrollTop,
+      right: DOMScroll.scrollLeft + Viewport.width,
+      bottom: DOMScroll.scrollTop + Viewport.height,
     });
   }
 

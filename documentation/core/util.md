@@ -14,8 +14,7 @@ A collection of general static utility methods.
     - [cycleArrayNext](#cyclearraynext)
     - [debounce](#debounce)
     - [fillArraysToLargestLength](#fillarraystolargestlength)
-    - [getMaxArrayLength](#getmaxarraylength)
-    - [getMinArrayLength](#getminarraylength)
+    - [getMaxArraysLength](#getmaxarrayslength)
     - [getMinArraysLength](#getminarrayslength)
     - [isEmptyObject](#isemptyobject)
     - [isObject](#isobject)
@@ -133,7 +132,7 @@ Util.fillArraysToLargestLength(
 // b : [1, 2, 3, 4, 5]
 ```
 
-### getMaxArrayLength
+### getMaxArraysLength
 
 `getMaxArraysLength(...arrays: unknown[][]): number`
 
@@ -148,7 +147,7 @@ Util.getMaxArrayslength(
 );
 ```
 
-### getMinArrayLength
+### getMinArraysLength
 
 `getMinArraysLength(...arrays: unknown[][]): number`
 
@@ -162,8 +161,6 @@ Util.getMinArrayslength(
   [1, 2, 3, 4],
 );
 ```
-
-### getMinArraysLength
 
 ### isEmptyObject
 
