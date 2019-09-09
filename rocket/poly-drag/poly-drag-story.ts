@@ -117,7 +117,10 @@ export class PolyDragStory {
   }
 
   private updateMaxTranslationDistance(event: PolyDragEvent) {
-    const distance = Vector2.getDistanceBetween(this.startingEvent.position, event.position);
+    const distance = Vector2.getDistanceBetween(
+      this.startingEvent.position,
+      event.position,
+    );
 
     if (distance > this.maxTranslationDistance) {
       this.maxTranslationDistance = distance;
