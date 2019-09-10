@@ -283,4 +283,13 @@ export class Num {
 
     return [min, max];
   }
+
+  /*
+    Still in progress.
+  */
+
+  // Snap value to an interval.
+  public static snapToInterval(value: number, interval: number): number {
+    return Math.round(value / interval) * interval;
+  }
 }

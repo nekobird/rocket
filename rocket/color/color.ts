@@ -109,7 +109,7 @@ export class Color {
   set rgbString(input: string) {
     const numbers = input.match(/(\d+)/g);
 
-    if (numbers !== null) {
+    if (numbers) {
       const rgb = numbers.map(v => {
         return Num.cycle(parseFloat(v) / 255, 1);
       });
@@ -142,7 +142,7 @@ export class Color {
   set hslString(input: string) {
     const numbers = input.match(/(\d+)/g);
 
-    if (numbers !== null) {
+    if (numbers) {
       const hsl = numbers.map(v => parseFloat(v));
 
       hsl[1] /= 100;
@@ -159,7 +159,7 @@ export class Color {
   set hslaString(input: string) {
     const numbers = input.match(/([\d]+(\.[\d]+)?)/g);
 
-    if (numbers !== null) {
+    if (numbers) {
       const hsla = numbers.map(v => parseFloat(v));
 
       const hsl = hsla.slice(0, 3);
