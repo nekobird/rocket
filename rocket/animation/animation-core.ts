@@ -201,7 +201,7 @@ export class AnimationCore {
 
     this.runCallbacks('onIterationComplete');
 
-    // Complete animation if iterationCount exceeds numberOfIterations.
+    // Complete animation if iterationCount exceeds numberOfIterations
     if (
       typeof config.numberOfIterations === 'number'
       && this.iterationCount >= config.numberOfIterations
@@ -362,7 +362,9 @@ export class AnimationCore {
       config.onTick(n, this.iterationCount, this.animation, config.dataExport);
     } else if (Array.isArray(config.onTick) === true) {
       config.onTick.forEach(tick => {
-        tick(n, this.iterationCount, this.animation, config.dataExport);
+        if (typeof tick === 'function') {
+          tick(n, this.iterationCount, this.animation, config.dataExport);
+        }
       });
     }
 
@@ -380,15 +382,12 @@ export class AnimationCore {
 
   // TODO: Rename this to something better.
   public setProgressTimeOffsetFromProgressTarget(target: number) {
-    let offset = this.getCurrentProgress() - target;
+    const offset = this.getCurrentProgress() - target;
 
-    let sign = Num.getSign(offset) * -1;
+    const sign = Num.getSign(offset) * -1;
 
-    let timeOffset = Num.transform(
-      Math.abs(offset),
-      1,
-      [this.startTime, this.endTime],
-      true
+    const timeOffset = Num.transform(
+      Math.abs(offset), 1, [this.startTime, this.endTime], true
     );
 
     this.progressTimeOffset += (timeOffset - this.startTime) * sign;
