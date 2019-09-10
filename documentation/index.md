@@ -12,18 +12,18 @@ Foundation for the rest of the library.
 
 | Name | Description |
 | --- | --- |
-| [Num](./core/num.md) | Tools for working with numbers. |
-| [StringUtil](./core/string-util.md) | Simple utility for working with strings. |
+| [Num](./core/num.md) | Helper methods for working with numbers. |
+| [StringUtil](./core/string-util.md) | Helper methods for working with strings. |
 | [Util](./core/util.md) | General utility methods. |
 
 ## DOM
 
-A collection of modules to help your interaction with the DOM a breeze.
+A collection of modules to help you do stuff with the DOM.
 
 | Name | Description |
 | --- | --- |
 | [DOMAlignOffset](./dom/dom-align-offset.md) | Find HTMLElement offsets relative to a set of reference points. |
-| [DOMBoxModel](./dom/dom-box-model.md) | Quickly get HTMLElement box-model properties from. |
+| [DOMBoxModel](./dom/dom-box-model.md) | Quickly get HTMLElement box-model properties. |
 | [DOMImage](./dom/dom-image.md) | Asynchronously load Images and get their dimensions. |
 | [DOMOffset](./dom/dom-offset.md) | Find HTMLElement offsets. |
 | [DOMPoint](./dom/dom-point.md) | Calculate or get points from HTMLElements and vice versa. |
@@ -33,7 +33,7 @@ A collection of modules to help your interaction with the DOM a breeze.
 | [DOMText](./dom/dom-text.md) | Anything to do with text and text-boxes. |
 | [DOMTraverse](./dom/dom-traverse.md) | Traverse the DOM tree and do stuff along the way. |
 | [DOMUtil](./dom/dom-util.md) | General DOM Utilities. |
-| [DOMView](./dom/dom-view.md) | HTMLElements and how relate to the Viewport. |
+| [DOMView](./dom/dom-view.md) | Get HTMLElements information relative to the Viewport. |
 
 ## Viewport
 
@@ -57,7 +57,7 @@ A collection of modules to help your interaction with the DOM a breeze.
 | [Point](./point.md) | A Point Class. |
 | [Vector2](./vector-2.md) | A powerful 2D Vector Class. |
 
-## Dynamics
+## Dynamics 
 
 | Name | Description |
 | --- | --- |
@@ -72,4 +72,3 @@ A collection of modules to help your interaction with the DOM a breeze.
 | --- | --- |
 | [MonoDrag](./mono-drag.md) | Hybrid Touch and Mouse event manager. |
 | [PolyDrag](./poly-drag.md) | Manage and control multiple drag events. |
-
