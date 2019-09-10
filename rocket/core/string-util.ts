@@ -100,10 +100,7 @@ export class StringUtil {
   }
 
   private static isStringOrRegExp(thing: any): boolean {
-    return (
-      typeof thing === 'string'
-      || thing instanceof RegExp
-    )
+    return (typeof thing === 'string' || thing instanceof RegExp)
   }
 
   private static isStringOrRegExpArray(thing: any): boolean {
