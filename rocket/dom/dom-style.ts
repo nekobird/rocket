@@ -30,6 +30,7 @@ export class DOMStyle {
     ...c: HTMLElement[]
   ): void {
     let elements = c;
+
     let styleObject;
 
     if (DOMUtil.isHTMLElement(a) === true) {

@@ -285,8 +285,8 @@ export class Num {
   }
 
   /*
-    Still in progress.
-  */
+   * Below: Still in progress.
+   */
 
   // Snap value to an interval.
   public static snapToInterval(value: number, interval: number): number {
