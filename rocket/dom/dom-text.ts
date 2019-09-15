@@ -204,7 +204,7 @@ export class DOMText {
   public static getLastLine(element: HTMLElement): string {
     const text = element.textContent;
 
-    if (text !== null) {
+    if (text) {
       const words = text.split(' ');
 
       const lastLine: string[] = [];
@@ -224,7 +224,7 @@ export class DOMText {
 
       temp.textContent = text;
 
-      if (element.parentNode !== null) {
+      if (element.parentNode) {
         element.parentNode.appendChild(temp);
       } else {
         document.appendChild(temp);
@@ -235,7 +235,7 @@ export class DOMText {
       let textCopy = text;
 
       while (true) {
-        if (typeof words[index] === 'undefined') {
+        if (!words[index]) {
           break;
         }
 
@@ -254,7 +254,7 @@ export class DOMText {
         index--;
       }
 
-      if (element.parentNode !== null) {
+      if (element.parentNode) {
         element.parentNode.removeChild(temp);
       } else {
         document.removeChild(temp);

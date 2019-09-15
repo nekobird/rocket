@@ -173,7 +173,7 @@ export class DOMStyle {
 
     let result;
 
-    if (element.parentNode !== null) {
+    if (element.parentNode) {
       element.parentNode.appendChild(temp);
 
       result = temp.clientHeight;
@@ -263,7 +263,10 @@ export class DOMStyle {
 
     const value = style[property];
 
-    if (stringOnly === false && value.match(/^[0-9]+/g) !== null) {
+    if (
+      stringOnly === false
+      && value.match(/^[0-9]+/g)
+    ) {
       return parseFloat(value);
     }
 
@@ -288,7 +291,10 @@ export class DOMStyle {
 
       const value = style[property];
 
-      if (stringOnly === false && value.match(/^[0-9]+/g) !== null) {
+      if (
+        stringOnly === false
+        && value.match(/^[0-9]+/g)
+      ) {
         result[property] = parseFloat(value);
       } else {
         result[property] = value

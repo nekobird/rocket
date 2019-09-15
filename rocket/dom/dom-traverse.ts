@@ -26,7 +26,7 @@ export class DOMTraverse {
     let element: Element | null = from;
 
     while (
-      element !== null
+      element
       && element !== to
       && element !== document.documentElement
     ) {
@@ -81,7 +81,7 @@ export class DOMTraverse {
     let element: Element | null = from;
 
     while (
-      element !== null
+      element
       && element !== document.documentElement
     ) {
       if (identifyElement(element) === true) {
@@ -240,7 +240,7 @@ export class DOMTraverse {
     element: Element,
     isExclusive: boolean = false,
   ): Element[] | null {
-    if (element.parentElement !== null) {
+    if (element.parentElement) {
       const siblings = [...element.parentElement.children];
 
       if (isExclusive === true) {
@@ -260,7 +260,7 @@ export class DOMTraverse {
   ): DOMTraverseResult {
     const siblings = this.getSiblings(element);
 
-    if (siblings === null) {
+    if (!siblings) {
       return null;
     }
 
@@ -293,9 +293,9 @@ export class DOMTraverse {
   ): Element | null {
     let nextSibling: Element | null = element;
 
-    while (nextSibling !== null) {
+    while (nextSibling) {
       if (
-        element !== null
+        element
         && identifyElement(element) === true
       ) {
         return element;
@@ -349,7 +349,7 @@ export class DOMTraverse {
     element: Element,
     identifyElement?: DOMTraverseIdentifyFunction,
   ): Element | null {
-    if (typeof identifyElement === 'undefined') {
+    if (!identifyElement) {
       identifyElement = element => true;
     }
 
@@ -414,7 +414,7 @@ export class DOMTraverse {
     extractFunction: DOMTraverseExtractFunction<T>,
     identifyElement?: DOMTraverseIdentifyFunction,
   ): T[] {
-    if (typeof identifyElement === 'undefined') {
+    if (!identifyElement) {
       identifyElement = element => true;
     }
 
@@ -429,7 +429,7 @@ export class DOMTraverse {
     if (selectedChildren.length === 1) {
       const datum: T = <T>extractFunction(selectedChildren[0]);
 
-      return typeof datum !== 'undefined' ? [datum] : [];
+      return datum ? [datum] : [];
     }
 
     const results: T[] = [];
@@ -437,7 +437,7 @@ export class DOMTraverse {
     selectedChildren.forEach(child => {
       const datum: T = <T>extractFunction(child);
 
-      if (typeof datum !== 'undefined') {
+      if (datum) {
         results.push(datum);
       }
     });

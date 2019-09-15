@@ -12,7 +12,7 @@ export class DOMUtil {
 
     const isElement = thing => {
       return (
-        thing !== null
+        thing
         && typeof thing === 'object'
         && typeof thing.nodeType === 'number'
         && thing.nodeType === 1
@@ -30,7 +30,8 @@ export class DOMUtil {
 
     const isNodeListOfElement = thing => {
       return (
-        typeof thing === 'object'
+        thing
+        && typeof thing === 'object'
         && NodeList.prototype.isPrototypeOf(thing) === true
         && [...thing].every(element => DOMUtil.isElement(element)) === true
       );
@@ -68,7 +69,7 @@ export class DOMUtil {
 
     const isHTMLElement = thing => {
       return (
-        thing !== null
+        thing
         && typeof thing === 'object'
         && typeof thing.nodeType === 'number'
         && thing.nodeType === 1
@@ -86,7 +87,8 @@ export class DOMUtil {
 
     const isNodeListOfHTMLElement = thing => {
       return (
-        typeof thing === 'object'
+        thing
+        && typeof thing === 'object'
         && NodeList.prototype.isPrototypeOf(thing) === true
         && [...thing].every(element => DOMUtil.isHTMLElement(element)) === true
       );
@@ -102,7 +104,8 @@ export class DOMUtil {
 
     const isHTMLCollection = thing => {
       return (
-        typeof thing === 'object'
+        thing
+        && typeof thing === 'object'
         && HTMLCollection.prototype.isPrototypeOf(thing) === true
       );
     }
@@ -141,7 +144,8 @@ export class DOMUtil {
 
     const isInputOrTextArea = thing => {
       return (
-        typeof thing === 'object'
+        thing
+        && typeof thing === 'object'
         && typeof thing.nodeType === 'number'
         && thing.nodeType === 1
         && (

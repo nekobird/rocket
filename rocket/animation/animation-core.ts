@@ -236,7 +236,10 @@ export class AnimationCore {
   }
 
   public pause(): this {
-    if (this.isActive === true && this.isPaused === false) {
+    if (
+      this.isActive === true
+      && this.isPaused === false
+    ) {
       this.clearTimeoutsAndAnimationFrames();
 
       this.state = 'PAUSED';
@@ -322,7 +325,10 @@ export class AnimationCore {
   }
 
   public tick(): this {
-    if (this.isActive === true && this.isAnimating === true) {
+    if (
+      this.isActive === true
+      && this.isAnimating === true
+    ) {
       const { config } = this.animation;
 
       this.progress = this.getCurrentProgress();

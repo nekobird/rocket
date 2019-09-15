@@ -11,20 +11,8 @@ export class DOMBoxModel {
 
     const { marginLeft, marginRight } = style;
 
-    let left;
-    let right;
-
-    if (marginLeft === null || marginLeft === '' ) {
-      left = 0;
-    } else {
-      left = parseFloat(marginLeft);
-    }
-
-    if (marginRight === null || marginRight === '' ) {
-      right = 0;
-    } else {
-      right = parseFloat(marginRight);
-    }
+    const left = marginLeft ? parseFloat(marginLeft) : 0;
+    const right = marginRight ? parseFloat(marginRight) : 0;
 
     return left + right;
   }
@@ -34,43 +22,19 @@ export class DOMBoxModel {
 
     const { marginTop, marginBottom } = style;
 
-    let top;
-    let bottom;
+    const top = marginTop ? parseFloat(marginTop) : 0;
+    const bottom = marginBottom ? parseFloat(marginBottom) : 0;
 
-    if (marginTop === null || marginTop === '' ) {
-      top = 0;
-    } else {
-      top = parseFloat(marginTop);
-    }
-
-    if (marginBottom === null || marginBottom === '' ) {
-      bottom = 0;
-    } else {
-      bottom = parseFloat(marginBottom);
-    }
-  
     return top + bottom;
   }
 
   public static getTotalHorizontalBorderWidths(element: HTMLElement): number {
     const style = window.getComputedStyle(element);
 
-    let { borderLeftWidth, borderRightWidth } = style;
+    const { borderLeftWidth, borderRightWidth } = style;
 
-    let left;
-    let right;
-
-    if (borderLeftWidth === null || borderLeftWidth === '' ) {
-      left = 0;
-    } else {
-      left = parseFloat(borderLeftWidth);
-    }
-
-    if (borderRightWidth === null || borderRightWidth === '' ) {
-      right = 0;
-    } else {
-      right = parseFloat(borderRightWidth);
-    }
+    const left = borderLeftWidth ? parseFloat(borderLeftWidth) : 0;
+    const right = borderRightWidth ? parseFloat(borderRightWidth) : 0;
 
     return left + right;
   }
@@ -80,20 +44,8 @@ export class DOMBoxModel {
 
     const { borderTopWidth, borderBottomWidth } = style;
 
-    let top;
-    let bottom;
-
-    if (borderTopWidth === null || borderTopWidth === '' ) {
-      top = 0;
-    } else {
-      top = parseFloat(borderTopWidth);
-    }
-
-    if (borderBottomWidth === null || borderBottomWidth === '' ) {
-      bottom = 0;
-    } else {
-      bottom = parseFloat(borderBottomWidth);
-    }
+    const top = borderTopWidth ? parseFloat(borderTopWidth) : 0;
+    const bottom = borderBottomWidth ? parseFloat(borderBottomWidth) : 0;
 
     return top + bottom;
   }
@@ -101,22 +53,10 @@ export class DOMBoxModel {
   public static getTotalHorizontalPaddings(element: HTMLElement): number {
     const style = window.getComputedStyle(element);
 
-    let { paddingLeft, paddingRight } = style;
+    const { paddingLeft, paddingRight } = style;
 
-    let left;
-    let right;
-
-    if (paddingLeft === null || paddingLeft === '') {
-      left = 0;
-    } else {
-      left = parseFloat(paddingLeft);
-    }
-
-    if (paddingRight === null || paddingRight === '') {
-      right = 0;
-    } else {
-      right = parseFloat(paddingRight);
-    }
+    const left = paddingLeft ? parseFloat(paddingLeft) : 0;
+    const right = paddingRight ? parseFloat(paddingRight) : 0;
 
     return left + right;
   }
@@ -126,20 +66,8 @@ export class DOMBoxModel {
 
     const { paddingTop, paddingBottom } = style;
 
-    let top;
-    let bottom;
-
-    if (paddingTop === null || paddingTop === '' ) {
-      top = 0;
-    } else {
-      top = parseFloat(paddingTop);
-    }
-
-    if (paddingBottom === null || paddingBottom === '' ) {
-      bottom = 0;
-    } else {
-      bottom = parseFloat(paddingBottom);
-    }
+    const top = paddingTop ? parseFloat(paddingTop) : 0;
+    const bottom = paddingBottom ? parseFloat(paddingBottom) : 0;
 
     return top + bottom;
   }
