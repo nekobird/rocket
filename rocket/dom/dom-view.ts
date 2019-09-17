@@ -118,7 +118,7 @@ export class DOMView {
   ): DOMViewEdgeAndCornerNames | null {
     let _cornersOrEdges: DOMViewEdgeAndCornerNames[] = [];
 
-    if (typeof cornersOrEdges === 'undefined') {
+    if (!cornersOrEdges) {
       _cornersOrEdges = [...DOMViewEdgeAndCornerNames];
     }
 
