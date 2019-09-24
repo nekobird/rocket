@@ -11,17 +11,15 @@ import {
   MonoTapEventType,
 } from '../mono-tap-event';
 
-export class MouseSensor {
-  public monoTap: MonoTap;
+import {
+  Sensor,
+} from './sensor';
 
-  public isListening: boolean = false;
-
+export class MouseSensor extends Sensor {
   public mouseButtonIsDown: boolean = false;
 
-  private target?: HTMLElement;
-
   constructor(monoTap: MonoTap) {
-    this.monoTap = monoTap;
+    super(monoTap);
   }
 
   public attach(): boolean {

@@ -1,112 +1,126 @@
 export type StringOrRegExp = string | RegExp;
 
-export class StringUtil {
-  public static hasUppercaseLetter(...values: string[]): boolean {
-    return values.every(value => value !== value.toLowerCase());
-  }
+export function hasUppercaseLetter(...values: string[]): boolean {
+  return values.every(value => value !== value.toLowerCase());
+}
 
-  public static isKebabCase(...values: string[]): boolean {
-    return values.every(value => {
-      return (
-        this.hasUppercaseLetter(value) === false
-        && value.match(/^([a-z]+|[a-z][a-z\-]+[a-z])$/g) !== null
-      )
+export function isKebabCase(...values: string[]): boolean {
+  return values.every(value => {
+    return (
+      hasUppercaseLetter(value) === false
+      && value.match(/^([a-z]+|[a-z][a-z\-]+[a-z])$/g) !== null
+    )
+  });
+}
+
+export function isSnakeCase(...values: string[]): boolean {
+  return values.every(value => {
+    return (
+      hasUppercaseLetter(value) === false
+      && value.match(/^([a-z]+|[a-z][a-z\_]+[a-z])$/g) !== null
+    )
+  });
+}
+
+export function kebabCaseToCamelCase(from: string): string {
+  if (isKebabCase(from) === true) {
+    return from.replace(/(\-[a-z]{1})/g, match => {
+      return match.replace(/[\-]/g, '').toUpperCase();
     });
   }
 
-  public static isSnakeCase(...values: string[]): boolean {
-    return values.every(value => {
-      return (
-        this.hasUppercaseLetter(value) === false
-        && value.match(/^([a-z]+|[a-z][a-z\_]+[a-z])$/g) !== null
-      )
-    });
+  return from;
+}
+
+export function lowercaseFirstLetter(string: string): string {
+  return string.charAt(0).toLowerCase() + string.slice(1);
+}
+
+export function match(string: string, regex: RegExp): string | string[] | null {
+  const value = string.match(regex);
+
+  if (!value) {
+    return null;
+  } else if (value.length === 1) {
+    return value[0];
   }
 
-  public static kebabCaseToCamelCase(from: string): string {
-    if (this.isKebabCase(from) === true) {
-      return from.replace(/(\-[a-z]{1})/g, match => {
-        return match.replace(/[\-]/g, '').toUpperCase();
-      });
-    }
+  return value;
+}
 
-    return from;
-  }
+// https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Whitespace_in_the_DOM
+export function removeExtraWhitespaces(string: string): string {
+  return string.replace(/[\s]+/g, ' ');
+}
 
-  public static lowercaseFirstLetter(string: string): string {
-    return string.charAt(0).toLowerCase() + string.slice(1);
-  }
+export function removeNewLines(string: string): string {
+  return string.replace(/[\r\n]+/g, '');
+}
 
-  public static match(string: string, regex: RegExp): string | string[] | null {
-    const value = string.match(regex);
-
-    if (!value) {
-      return null;
-    } else if (value.length === 1) {
-      return value[0];
-    }
-
-    return value;
-  }
-
-  // https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Whitespace_in_the_DOM
-  public static removeExtraWhitespaces(string: string): string {
-    return string.replace(/[\s]+/g, ' ');
-  }
-
-  public static removeNewLines(string: string): string {
-    return string.replace(/[\r\n]+/g, '');
-  }
-
-  public static removeTabs(string: string): string {
-    return string.replace(/[\t]+/g, '');
-  }
+export function removeTabs(string: string): string {
+  return string.replace(/[\t]+/g, '');
+}
 
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace#Specifying_a_function_as_a_parameter
-  public static replace(
-    string: string,
-    patterns: StringOrRegExp,
-    replacement: string | Function,
-  ): string
+export function replace(
+  string: string,
+  patterns: StringOrRegExp,
+  replacement: string | Function,
+): string
 
-  public static replace(
-    string: string,
-    patterns: StringOrRegExp[],
-    replacement: string | Function,
-  ): string
+export function replace(
+  string: string,
+  patterns: StringOrRegExp[],
+  replacement: string | Function,
+): string
   
-  public static replace(
-    string: string,
-    patterns: StringOrRegExp | StringOrRegExp[],
-    replacement: string | Function = '',
-  ): string {
-    if (this.isStringOrRegExpArray(patterns) === true) {
-      patterns = patterns as StringOrRegExp[];
+export function replace(
+  string: string,
+  patterns: StringOrRegExp | StringOrRegExp[],
+  replacement: string | Function = '',
+): string {
+  if (isStringOrRegExpArray(patterns) === true) {
+    patterns = patterns as StringOrRegExp[];
 
-      patterns.forEach(pattern => {
-        string = string.replace(pattern, replacement as string);
-      });
-    } else if (this.isStringOrRegExp(patterns) === true) {
-      let pattern = patterns as StringOrRegExp;
-
+    patterns.forEach(pattern => {
       string = string.replace(pattern, replacement as string);
-    }
+    });
+  } else if (isStringOrRegExp(patterns) === true) {
+    let pattern = patterns as StringOrRegExp;
 
-    return string;
+    string = string.replace(pattern, replacement as string);
   }
 
-  public static uppercaseFirstLetter(string: string): string {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-
-  private static isStringOrRegExp(thing: any): boolean {
-    return (typeof thing === 'string' || thing instanceof RegExp)
-  }
-
-  private static isStringOrRegExpArray(thing: any): boolean {
-    return (
-      Array.isArray(thing) === true
-      && thing.every(member => this.isStringOrRegExp(member))
-    )
-  }
+  return string;
 }
+
+export function uppercaseFirstLetter(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function isStringOrRegExp(thing: any): boolean {
+  return (typeof thing === 'string' || thing instanceof RegExp);
+}
+
+function isStringOrRegExpArray(thing: any): boolean {
+  return (
+    Array.isArray(thing) === true
+    && thing.every(member => isStringOrRegExp(member))
+  );
+}
+
+export const StringUtil = {
+  hasUppercaseLetter,
+  isKebabCase,
+  isSnakeCase,
+  kebabCaseToCamelCase,
+  lowercaseFirstLetter,
+  match,
+  removeExtraWhitespaces,
+  removeNewLines,
+  removeTabs,
+  replace,
+  uppercaseFirstLetter,  
+}
+
+export default StringUtil;
