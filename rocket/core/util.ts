@@ -49,6 +49,18 @@ export function debounce(func: Function, delayInSeconds: number): Function {
   };
 }
 
+export function delay(callback: Function, delayInSeconds: number): Promise<void> {
+  return new Promise(resolve => {
+    setTimeout(
+      () => {
+        callback();
+        resolve();
+      },
+      delayInSeconds * 1000
+    );
+  });
+}
+
 export function fillArraysToLargestLength(filler: unknown, ...arrays: unknown[][]): number {
   const maxLength = this.getMaxArraysLength(...arrays);
 
