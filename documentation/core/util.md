@@ -13,6 +13,7 @@ A collection of general static utility methods.
     - [cycleArray](#cyclearray)
     - [cycleArrayNext](#cyclearraynext)
     - [debounce](#debounce)
+    - [delay](#delay)
     - [fillArraysToLargestLength](#fillarraystolargestlength)
     - [getMaxArraysLength](#getmaxarrayslength)
     - [getMinArraysLength](#getminarrayslength)
@@ -102,6 +103,24 @@ This is useful for detecting or only do something only once event firing has sto
 // Alert is called after the user is done resizing.
 const resizeDebounce = Util.debounce(() => alert('Done resizing!'), 0.2);
 window.addEventListener('resize', resizeDebounce);
+```
+
+### delay
+
+`delay(callback: Function, delayInSeconds: number): Promise<void>`
+
+A simple `setTimeout` Promise wrapper.
+
+**Example**
+
+```ts
+import { delay } from '@nekobird/rocket';
+
+delay(() => {
+  // Do something...
+}, 5).then(() =>{
+  // Do something after 5 seconds.
+});
 ```
 
 ### fillArraysToLargestLength
