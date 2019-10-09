@@ -163,6 +163,10 @@ export function randomChoice<A>(...choices: A[]): A {
   return choices[index];
 }
 
+export function sleep(timeInSeconds: number): Promise<void> {
+  return new Promise(resolve => setTimeout(() => resolve(), timeInSeconds * 1000));
+}
+
 export function throttle(func: Function, thresholdInSeconds: number): Function {
   let timeout;
   let last;
