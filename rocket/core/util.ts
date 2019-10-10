@@ -212,6 +212,7 @@ export const Util = {
   cycleArray,
   cycleArrayNext,
   debounce,
+  delay,
   fillArraysToLargestLength,
   getMaxArraysLength,
   getMinArraysLength,
@@ -221,6 +222,7 @@ export const Util = {
   promiseChain,
   promiseEach,
   randomChoice,
+  sleep,
   throttle,
   truthChain,
 }
