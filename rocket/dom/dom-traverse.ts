@@ -7,7 +7,7 @@ export interface DOMTraverseInspectFunction {
   (element: Element): true | void;
 }
 
-export interface DOMTraverseIdentifyFunction {
+export interface DOMTraversePredicateFunction {
   (element: Element): boolean;
 }
 
@@ -65,7 +65,7 @@ export class DOMTraverse {
 
   public static findAncestor(
     from: Element,
-    identifyElement: DOMTraverseIdentifyFunction,
+    identifyElement: DOMTraversePredicateFunction,
     getAllMatchingAncestors: boolean = false,
   ): DOMTraverseResult {
     const results: Element[] = [];
@@ -104,7 +104,7 @@ export class DOMTraverse {
 
   public static findDescendant(
     from: Element,
-    identifyElement: DOMTraverseIdentifyFunction,
+    identifyElement: DOMTraversePredicateFunction,
     getAllMatchingDescendants: boolean = false,
   ): DOMTraverseResult {
     const results: Element[] = [];
@@ -255,7 +255,7 @@ export class DOMTraverse {
 
   public static findSibling(
     element: Element,
-    identifyElement: DOMTraverseIdentifyFunction,
+    identifyElement: DOMTraversePredicateFunction,
     getAllMatchingSiblings = true,
   ): DOMTraverseResult {
     const siblings = this.getSiblings(element);
@@ -289,7 +289,7 @@ export class DOMTraverse {
 
   public static findNextSibling(
     element: Element,
-    identifyElement: DOMTraverseIdentifyFunction,
+    identifyElement: DOMTraversePredicateFunction,
   ): Element | null {
     let nextSibling: Element | null = element;
 
@@ -333,7 +333,7 @@ export class DOMTraverse {
 
   public static getChildren(
     element: Element,
-    identifyElement?: DOMTraverseIdentifyFunction,
+    identifyElement?: DOMTraversePredicateFunction,
   ): Element[] {
     const children = [...element.children];
 
@@ -347,7 +347,7 @@ export class DOMTraverse {
   public static getNthChild(
     n: number | 'last',
     element: Element,
-    identifyElement?: DOMTraverseIdentifyFunction,
+    identifyElement?: DOMTraversePredicateFunction,
   ): Element | null {
     if (!identifyElement) {
       identifyElement = element => true;
@@ -382,7 +382,7 @@ export class DOMTraverse {
 
   public static removeChild(
     element: Element,
-    identifyElement: DOMTraverseIdentifyFunction,
+    identifyElement: DOMTraversePredicateFunction,
   ): number {
     let deleteCount = 0;
 
@@ -412,7 +412,7 @@ export class DOMTraverse {
   public static mapDataFromChildren<T>(
     element: Element,
     extractFunction: DOMTraverseExtractFunction<T>,
-    identifyElement?: DOMTraverseIdentifyFunction,
+    identifyElement?: DOMTraversePredicateFunction,
   ): T[] {
     if (!identifyElement) {
       identifyElement = element => true;
