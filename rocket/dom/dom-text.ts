@@ -74,6 +74,7 @@ export class DOMText {
   public static getTextBoxHeightFromElement(
     element: HTMLElement,
     text?: string,
+    transformTextHook?: (text: string) => string,
     styleOverride?: StyleObject,
   ): number {
     const modelElement = document.createElement('TEXTAREA') as HTMLTextAreaElement;
@@ -96,10 +97,16 @@ export class DOMText {
       Object.assign(modelElement.style, styleOverride);
     }
 
+    let transformText = (text: string) => text.trim();
+
+    if (typeof transformTextHook === 'function') {
+      transformText = transformTextHook;
+    }
+
     if (typeof text === 'string') {
-      modelElement.value = text;
+      modelElement.value = transformText(text);
     } else {
-      modelElement.value = this.getTextFromElement(element).trim();
+      modelElement.value = transformText(this.getTextFromElement(element));
     }
 
     // Set offset for when boxSizing is set to border-box.
@@ -125,6 +132,7 @@ export class DOMText {
   public static getTextBoxWidthFromElement(
     element: HTMLElement,
     text?: string,
+    transformTextHook?: (text: string) => string,
     styleOverride?: StyleObject,
   ): number {
     const modelElement = document.createElement('DIV');
@@ -155,11 +163,16 @@ export class DOMText {
     }
 
     let textString;
+    let transformText = (text: string) => text.trim();
+
+    if (typeof transformTextHook === 'function') {
+      transformText = transformTextHook;
+    }
 
     if (typeof text === 'string') {
-      textString = text;
+      textString = transformText(text);
     } else {
-      textString = this.getTextFromElement(element).trim();
+      textString = transformText(this.getTextFromElement(element));
     }
 
     textString = textString.replace(/[\n\r]/g, '<br>');
