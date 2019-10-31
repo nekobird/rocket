@@ -74,6 +74,7 @@ export class TextAutoScaler {
     return DOMText.getTextBoxWidthFromElement(
       targetElement,
       text.trim(),
+      null,
       {
         fontSize: `${fontSize}px`,
       },

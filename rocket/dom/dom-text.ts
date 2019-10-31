@@ -74,8 +74,8 @@ export class DOMText {
   public static getTextBoxHeightFromElement(
     element: HTMLElement,
     text?: string,
-    transformTextHook?: (text: string) => string,
-    styleOverride?: StyleObject,
+    transformTextHook: ((text: string) => string) | null = null,
+    styleOverride: StyleObject | null = null,
   ): number {
     const modelElement = document.createElement('TEXTAREA') as HTMLTextAreaElement;
 
@@ -93,14 +93,17 @@ export class DOMText {
       whiteSpace: 'pre-wrap',
     });
 
-    if (typeof styleOverride === 'object') {
+    if (
+      typeof styleOverride === 'object'
+      && styleOverride !== null
+    ) {
       Object.assign(modelElement.style, styleOverride);
     }
 
-    let transformText = (text: string) => text.trim();
+    let transformText = text => text.trim();
 
     if (typeof transformTextHook === 'function') {
-      transformText = transformTextHook;
+      transformText = transformTextHook as (text: string) => string;
     }
 
     if (typeof text === 'string') {
@@ -132,8 +135,8 @@ export class DOMText {
   public static getTextBoxWidthFromElement(
     element: HTMLElement,
     text?: string,
-    transformTextHook?: (text: string) => string,
-    styleOverride?: StyleObject,
+    transformTextHook: ((text: string) => string) | null = null,
+    styleOverride: StyleObject | null = null,
   ): number {
     const modelElement = document.createElement('DIV');
 
@@ -158,15 +161,19 @@ export class DOMText {
       wordWrap: 'normal',
     });
 
-    if (typeof styleOverride === 'object') {
+    if (
+      typeof styleOverride === 'object'
+      && styleOverride !== null
+    ) {
       Object.assign(modelElement.style, styleOverride);
     }
 
     let textString;
+
     let transformText = (text: string) => text.trim();
 
     if (typeof transformTextHook === 'function') {
-      transformText = transformTextHook;
+      transformText = transformTextHook as (text: string) => string;
     }
 
     if (typeof text === 'string') {
