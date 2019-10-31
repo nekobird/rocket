@@ -73,7 +73,7 @@ interface StyleObject {
 export class DOMText {
   public static getTextBoxHeightFromElement(
     element: HTMLElement,
-    text?: string,
+    text: string | null = null,
     transformTextHook: ((text: string) => string) | null = null,
     styleOverride: StyleObject | null = null,
   ): number {
@@ -100,7 +100,7 @@ export class DOMText {
       Object.assign(modelElement.style, styleOverride);
     }
 
-    let transformText = text => text.trim();
+    let transformText = text => text;
 
     if (typeof transformTextHook === 'function') {
       transformText = transformTextHook as (text: string) => string;
@@ -134,7 +134,7 @@ export class DOMText {
 
   public static getTextBoxWidthFromElement(
     element: HTMLElement,
-    text?: string,
+    text: string | null = null,
     transformTextHook: ((text: string) => string) | null = null,
     styleOverride: StyleObject | null = null,
   ): number {
@@ -170,7 +170,7 @@ export class DOMText {
 
     let textString;
 
-    let transformText = (text: string) => text.trim();
+    let transformText = text => text;
 
     if (typeof transformTextHook === 'function') {
       transformText = transformTextHook as (text: string) => string;
