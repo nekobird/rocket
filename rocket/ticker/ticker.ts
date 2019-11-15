@@ -5,20 +5,14 @@ import {
 
 export class Ticker {
   public config: TickerConfig;
-
   public isActive: boolean = false;
-
   public timeStart: number = 0;
-
   public timeEnd: number = 0;
-
   public progress: number = 0;
-
   public tickCount: number = 0;
 
-  private requestAnimationFrameId?: number;
-
   public callback?: Function;
+  private requestAnimationFrameId: number | null = null;
 
   constructor(config: Partial<TickerConfig>) {
     this.config = {...TICKER_DEFAULT_CONFIG};
@@ -51,7 +45,7 @@ export class Ticker {
       if (typeof this.requestAnimationFrameId === 'number') {
         window.cancelAnimationFrame(this.requestAnimationFrameId);
 
-        this.requestAnimationFrameId = undefined;
+        this.requestAnimationFrameId = null;
       }
 
       this.timeEnd = Date.now();
@@ -81,7 +75,6 @@ export class Ticker {
       } else {
         if (this.config.loopForever === true) {
           this.progress = 0;
-
           this.continueLoop();
         } else {
           this.stop();
@@ -95,7 +88,6 @@ export class Ticker {
       if (typeof this.requestAnimationFrameId === 'number') {
         window.cancelAnimationFrame(this.requestAnimationFrameId);
       }
-
       this.requestAnimationFrameId = window.requestAnimationFrame(this.loop);
     }
   }
