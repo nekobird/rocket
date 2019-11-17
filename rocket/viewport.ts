@@ -3,7 +3,7 @@ import {
   DOMUtil,
   Num,
   Point,
-} from '@/rocket';
+} from '~/rocket';
 
 const VIEWPORT_MODEL_ATTRIBUTES = {
   border: 'none',

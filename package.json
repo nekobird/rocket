@@ -1,6 +1,6 @@
 {
   "name": "@nekobird/rocket",
-  "version": "0.0.132",
+  "version": "0.0.133",
   "description": " A general utility library for creating interactivity on the web.",
   "keywords": [],
   "repository": {
@@ -19,7 +19,7 @@
     "build2": "rm -r build; tsc -t es6 --emitDeclarationOnly; npx parcel build ./rocket/rocket.ts --out-dir build",
     "build-playground": "npx parcel build ./playground/index.html --public-url ./",
     "clean": "rm -r dist; rm -r build; rm -r .cache",
-    "prepare": "npm run build",
+    "prepublishOnly": "npm run build",
     "start": "npx parcel ./playground/index.html",
     "test": "npx jest"
   },

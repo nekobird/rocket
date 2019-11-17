@@ -1,6 +1,6 @@
 import {
   Size,
-} from '@/rocket';
+} from '~/rocket';
 
 export interface DOMImagePromiseValue {
   image: HTMLImageElement;

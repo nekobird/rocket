@@ -1,6 +1,6 @@
 import {
   Point,
-} from '@/rocket';
+} from '~/rocket';
 
 export class Geometry {
   // linear

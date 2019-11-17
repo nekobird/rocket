@@ -3,7 +3,7 @@ import {
   Util,
   Vector2,
   Viewport,
-} from '@/rocket';
+} from '~/rocket';
 
 import {
   POINTER_MOVE_DEFAULT_CONFIG,

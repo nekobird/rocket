@@ -1,6 +1,6 @@
 import {
   Util,
-} from '@/rocket';
+} from '~/rocket';
 
 import {
   MonoDrag,

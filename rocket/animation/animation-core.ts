@@ -1,6 +1,6 @@
 import {
   Num,
-} from '@/rocket';
+} from '~/rocket';
 
 import {
   Animation,

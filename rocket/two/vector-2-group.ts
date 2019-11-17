@@ -1,7 +1,7 @@
 import {
   PointLike,
   Vector2,
-} from '@/rocket';
+} from '~/rocket';
 
 export class Vector2Group {
   public static addGroupBy(group: Vector2[], by: PointLike): Vector2[] {

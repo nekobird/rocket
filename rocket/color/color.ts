@@ -2,7 +2,7 @@ import {
   ConvertColor,
   Num,
   StringUtil,
-} from '@/rocket';
+} from '~/rocket';
 
 type ColorArray3 = [number, number, number];
 

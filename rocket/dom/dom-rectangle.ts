@@ -2,7 +2,7 @@ import {
   Num,
   Point,
   Rectangle,
-} from '@/rocket';
+} from '~/rocket';
 
 export class DOMRectangle {
   public static getMinimumBoundingRectangleFromElements(...elements: HTMLElement[]): Rectangle | null {

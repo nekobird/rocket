@@ -1,6 +1,6 @@
 import {
   Num,
-} from '@/rocket';
+} from '~/rocket';
 
 /*
   https://gist.github.com/felipesabino/5066336

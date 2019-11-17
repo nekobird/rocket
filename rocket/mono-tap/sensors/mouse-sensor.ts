@@ -1,6 +1,6 @@
 import {
   DOMUtil,
-} from '@/rocket';
+} from '~/rocket';
 
 import {
   MonoTap,

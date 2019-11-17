@@ -31,7 +31,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'rocket/'),
+      '~': path.resolve(__dirname, 'rocket/'),
     },
     extensions: ['.ts', '.js'],
   },

@@ -1,6 +1,6 @@
 import {
   Num,
-} from '@/rocket';
+} from '~/rocket';
 
 export class Angle {
   public static toDegrees(radians: number): number {

@@ -1,7 +1,7 @@
 import {
   Num,
   Point,
-} from '@/rocket';
+} from '~/rocket';
 
 interface IdentifiyElementFunction {
   (element: HTMLElement): boolean;

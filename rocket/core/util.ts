@@ -1,6 +1,6 @@
 import {
   Num,
-} from '@/rocket';
+} from '~/rocket';
 
 export function cycleArray<A>(array: A[], offset: number): A {
   let index = offset % array.length;

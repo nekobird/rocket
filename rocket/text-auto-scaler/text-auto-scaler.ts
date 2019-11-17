@@ -3,7 +3,7 @@ import {
   DOMText,
   DOMUtil,
   RangeArray,
-} from '@/rocket';
+} from '~/rocket';
 
 import {
   TEXT_AUTO_SCALER_DEFAULT_CONFIG,

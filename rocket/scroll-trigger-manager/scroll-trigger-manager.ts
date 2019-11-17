@@ -2,7 +2,7 @@ import {
   DOMScroll,
   Util,
   Viewport,
-} from '@/rocket';
+} from '~/rocket';
 
 // TODO: Add a way to remove event listeners once completed.
 

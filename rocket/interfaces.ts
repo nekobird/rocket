@@ -1,6 +1,6 @@
 import {
   Point,
-} from '@/rocket';
+} from '~/rocket';
 
 export interface Size {
   width: number;
