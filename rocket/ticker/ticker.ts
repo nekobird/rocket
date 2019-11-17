@@ -5,10 +5,15 @@ import {
 
 export class Ticker {
   public config: TickerConfig;
+
   public isActive: boolean = false;
   public timeStart: number = 0;
   public timeEnd: number = 0;
+
+  private progressTimeStart: number = 0;
   public progress: number = 0;
+
+  public progressIterationCount: number = 0;
   public tickCount: number = 0;
 
   public callback?: Function;
@@ -33,6 +38,7 @@ export class Ticker {
       this.isActive = true;
 
       this.timeStart = Date.now();
+      this.progressTimeStart = this.timeStart;
 
       this.config.onStart(this);
 
@@ -44,16 +50,15 @@ export class Ticker {
     if (this.isActive === true) {
       if (typeof this.requestAnimationFrameId === 'number') {
         window.cancelAnimationFrame(this.requestAnimationFrameId);
-
         this.requestAnimationFrameId = null;
       }
 
       this.timeEnd = Date.now();
 
       this.progress = 0;
+      this.progressIterationCount = 0;
 
       this.tickCount = 0;
-
       this.isActive = false;
 
       this.config.onComplete(this);
@@ -64,17 +69,22 @@ export class Ticker {
     if (this.isActive === true) {
       this.updateProgress();
 
-      const n = this.config.timingFunction(this.progress);
+      const t = this.config.timingFunction(this.progress);
 
-      this.config.onTick(n, this.tickCount, this);
+      const data: [number, number, number] = [t, this.progressIterationCount, this.tickCount];
+
+      this.config.onTick(data, this);
 
       this.tickCount++;
 
-      if (this.progress <= 1) {
+      if (this.progress < 1) {
         this.continueLoop();
       } else {
-        if (this.config.loopForever === true) {
+        if (this.config.loopForever) {
           this.progress = 0;
+          this.progressIterationCount++;
+          this.progressTimeStart = Date.now();
+
           this.continueLoop();
         } else {
           this.stop();
@@ -84,25 +94,28 @@ export class Ticker {
   }
 
   private continueLoop() {
-    if (this.isActive === true) {
+    if (this.isActive) {
       if (typeof this.requestAnimationFrameId === 'number') {
         window.cancelAnimationFrame(this.requestAnimationFrameId);
       }
+
       this.requestAnimationFrameId = window.requestAnimationFrame(this.loop);
     }
   }
 
   private updateProgress() {
-    const { durationInSeconds } = this.config;
+    let progress = 1;
 
-    const now = Date.now();
+    const durationInMilliseconds = this.config.durationInSeconds * 1000;
 
-    const durationInMilliseconds = durationInSeconds * 1000;
+    if (durationInMilliseconds) {
+      const value = (Date.now() - this.progressTimeStart) / durationInMilliseconds;
 
-    this.progress = (now - this.timeStart) / durationInMilliseconds;
-
-    if (this.progress > 1) {
-      this.progress = 1;
+      if (value < 1) {
+        progress = value;
+      }
     }
+
+    this.progress = progress;
   }
 }
