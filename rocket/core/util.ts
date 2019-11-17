@@ -35,14 +35,14 @@ export function cycleArrayNext<A>(array: A[]): Function {
 // Returns a debouncer function that no matter the frequency of calls
 // will only be invoked after the given delay times out (in seconds).
 export function debounce(func: Function, delayInSeconds: number): Function {
-  let timeout;
+  let timeout: number;
 
   const delay = delayInSeconds * 1000;
 
   return function() {
     clearTimeout(timeout);
 
-    timeout = setTimeout(
+    timeout = window.setTimeout(
       () => func.apply(this, arguments),
       delay
     );
@@ -168,8 +168,8 @@ export function sleep(timeInSeconds: number): Promise<void> {
 }
 
 export function throttle(func: Function, thresholdInSeconds: number): Function {
-  let timeout;
-  let last;
+  let timeout: number;
+  let last: number;
 
   const threshold = thresholdInSeconds * 1000;
 
@@ -179,7 +179,7 @@ export function throttle(func: Function, thresholdInSeconds: number): Function {
     if (typeof last === 'number' && now < last + threshold) {
       clearTimeout(timeout);
 
-      timeout = setTimeout(
+      timeout = window.setTimeout(
         () => {
           last = now;
           func.apply(this, arguments);

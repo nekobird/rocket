@@ -61,7 +61,7 @@ export class Repeater {
         numberOfRepeatsPerSecond,
       } = this.config;
 
-      this.intervalId = setInterval(
+      this.intervalId = window.setInterval(
         () => this.onRepeat(),
         1000 / numberOfRepeatsPerSecond
       );
@@ -101,7 +101,7 @@ export class Repeater {
   private startTimeout(): this {
     const { timeoutDelayInSeconds } = this.config;
 
-    this.timeoutId = setTimeout(
+    this.timeoutId = window.setTimeout(
       () => this.stop(),
       timeoutDelayInSeconds * 1000
     );

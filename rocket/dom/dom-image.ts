@@ -43,7 +43,7 @@ export class DOMImage {
 
       image.src = source;
 
-      let timeoutId;
+      let timeoutId: number;
 
       const intervalId = setInterval(
         () => {
@@ -63,7 +63,7 @@ export class DOMImage {
         checkIntervalInMilliseconds
       );
 
-      timeoutId = setTimeout(
+      timeoutId = window.setTimeout(
         () => {
           clearInterval(intervalId);
           reject(new Error('DOMImage.getImageSizeFromSource: Timeout trying to get image size.'));

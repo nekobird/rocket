@@ -74,7 +74,7 @@ export class AnimationCore {
 
           await config.beforeStartWithDelay(this.animation, config.dataExport);
 
-          this.startTimeoutId = setTimeout(this.begin, this.getTimeInMilliseconds(delay));
+          this.startTimeoutId = window.setTimeout(this.begin, this.getTimeInMilliseconds(delay));
 
           return Promise.resolve();
         } catch (error) {
@@ -218,7 +218,7 @@ export class AnimationCore {
     try {
       await config.beforeSubsequentIteration(this.animation, config.dataExport);
 
-      this.iterationTimeoutId = setTimeout(
+      this.iterationTimeoutId = window.setTimeout(
         () => {
           if (config.alternate === true) {
             this.toggleCurrentDirection();
