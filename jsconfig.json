@@ -2,8 +2,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["rocket/*"]
+      "@/*": [
+        "rocket/*"
+      ]
     }
   },
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
 }

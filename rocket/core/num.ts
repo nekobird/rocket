@@ -1,7 +1,7 @@
 import {
   NumberOrRange,
   RangeArray,
-  Util,
+  getMaxArraysLength,
 } from '~/rocket';
 
 export function average(...values: number[]): number {
@@ -165,7 +165,7 @@ export function sum(...values: number[]): number {
 }
 
 export function sumNumberArrays(...arrays: number[][]): number[] {
-  const maxLength = Util.getMaxArraysLength(...arrays);
+  const maxLength = getMaxArraysLength(...arrays);
 
   const sum: number[] = [];
 

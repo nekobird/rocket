@@ -5,9 +5,9 @@
     "lib": [
       "dom.iterable",
       "dom",
-      "es6"
+      "esnext"
     ],
-    "module": "ES6",
+    "module": "esnext",
     "moduleResolution": "node",
     "noImplicitAny": false,
     "noImplicitThis": false,
@@ -22,7 +22,7 @@
     "resolveJsonModule": false,
     "sourceMap": true,
     "strict": true,
-    "target": "ES6",
+    "target": "esnext",
   },
   "include": [
     "rocket/*",

@@ -7,8 +7,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'rocket.js',
-    library: 'rocket',
-    libraryTarget: 'umd',
+    // library: 'rocket',
+    // libraryTarget: 'umd',
   },
   module: {
     rules: [
@@ -16,17 +16,19 @@ module.exports = {
         test: /\.(ts)$/,
         exclude: /node_modules/,
         use: [
-          'babel-loader',
+          {
+            loader: 'babel-loader',
+          },
           'ts-loader',
         ],
       },
-      {
-        test: /\.(js)$/,
-        exclude: /node_modules/,
-        use: [
-          'babel-loader',
-        ],
-      },
+      // {
+      //   test: /\.(js)$/,
+      //   exclude: /node_modules/,
+      //   use: [
+      //     'babel-loader',
+      //   ],
+      // },
     ],
   },
   resolve: {
@@ -38,4 +40,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
   ],
+  optimization: {
+    minimize: false,
+    sideEffects: false,
+  },
 }
