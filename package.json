@@ -16,8 +16,8 @@
   "types": "build/rocket.d.ts",
   "scripts": {
     "build": "rm -r build; webpack --config webpack.config.js",
-    "build2": "rm -r build; tsc -t es6 --emitDeclarationOnly; npx parcel build ./rocket/rocket.ts --out-dir build",
     "build-playground": "npx parcel build ./playground/index.html --public-url ./",
+    "build2": "rm -r build; tsc -t es6 --emitDeclarationOnly; npx parcel build ./rocket/rocket.ts --out-dir build",
     "clean": "rm -r dist; rm -r build; rm -r .cache",
     "prepublishOnly": "npm run build",
     "start": "npx parcel ./playground/index.html",
