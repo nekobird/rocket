@@ -1,7 +1,7 @@
 import {
   DOMUtil,
   Vector2,
-} from '../rocket';
+} from '@/rocket';
 
 import {
   PolyDragEvent,

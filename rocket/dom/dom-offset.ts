@@ -2,7 +2,7 @@ import {
   DOMScroll,
   FullOffset,
   Num,
-} from '../rocket';
+} from '@/rocket';
 
 export class DOMOffset {
   public static getElementOffsetFromAnotherElement(from: HTMLElement, to: HTMLElement): FullOffset {

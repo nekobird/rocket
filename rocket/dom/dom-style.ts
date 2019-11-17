@@ -3,7 +3,7 @@ import {
   DOMUtil,
   Num,
   StringUtil,
-} from '../rocket';
+} from '@/rocket';
 
 export interface StyleObject {
   [key: string]: string | number;

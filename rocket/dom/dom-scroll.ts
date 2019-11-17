@@ -2,7 +2,7 @@ import {
   DOMRectangle,
   Offset,
   Viewport,
-} from '../rocket';
+} from '@/rocket';
 
 export class DOMScroll {
   public static get scrollLeft(): number {

@@ -1,6 +1,6 @@
 import {
   Viewport,
-} from '../rocket';
+} from '@/rocket';
 
 export type DOMViewCornerNames = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 

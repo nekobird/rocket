@@ -6,7 +6,7 @@ import {
   Point,
   Util,
   Viewport,
-} from '../rocket';
+} from '@/rocket';
 
 export type DOMAlignOffsetReferenceCornerNames = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 

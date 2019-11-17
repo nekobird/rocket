@@ -1,7 +1,7 @@
 import {
   Num,
   Vector2,
-} from '../rocket';
+} from '@/rocket';
 
 export interface PointLike {
   x: number;

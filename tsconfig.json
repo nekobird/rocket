@@ -16,6 +16,10 @@
     "sourceMap": true,
     "strict": true,
     "target": "ES6",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["rocket/*"]
+    },
   },
   "include": [
     "rocket/*"

@@ -3,7 +3,7 @@ import {
   DOMStyle,
   DOMUtil,
   InputOrTextArea,
-} from '../rocket';
+} from '@/rocket';
 
 const TEXT_BOX_MODEL_ATTRIBUTES = {
   border: 'none',

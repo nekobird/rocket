@@ -2,7 +2,7 @@ import {
   NumberOrRange,
   RangeArray,
   Util,
-} from '../rocket';
+} from '@/rocket';
 
 export function average(...values: number[]): number {
   if (values.length < 2) {

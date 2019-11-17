@@ -3,7 +3,7 @@
 
 import {
   DOMStyle,
-} from '../rocket';
+} from '@/rocket';
 
 export class DOMBoxModel {
   public static getTotalHorizontalMargins(element: HTMLElement): number {

@@ -3,7 +3,7 @@ import {
   Num,
   Point,
   PointLike,
-} from '../rocket';
+} from '@/rocket';
 
 // Glossary
 

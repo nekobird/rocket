@@ -1,7 +1,7 @@
 import {
   DOMUtil,
   Elements,
-} from '../rocket';
+} from '@/rocket';
 
 export interface DOMTraverseInspectFunction {
   (element: Element): true | void;

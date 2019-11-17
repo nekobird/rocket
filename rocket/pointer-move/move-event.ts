@@ -1,6 +1,6 @@
 import {
   Vector2,
-} from '../rocket';
+} from '@/rocket';
 
 export type MoveEventType = 'move' | 'enter' | 'leave';
 

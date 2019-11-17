@@ -1,7 +1,7 @@
 import {
   DOMTraverse,
   Util,
-} from '../rocket';
+} from '@/rocket';
 
 import {
   MonoTap,
