@@ -1,9 +1,13 @@
 import {
-  DOMScroll,
   DOMUtil,
   Num,
   Point,
 } from '~/rocket';
+
+import {
+  scrollLeft,
+  scrollTop,
+} from '~/global';
 
 const VIEWPORT_MODEL_ATTRIBUTES = {
   border: 'none',
@@ -62,8 +66,8 @@ export class Viewport {
         hasVerticalScrollBar,
       } = this;
 
-      scrollX = DOMScroll.scrollLeft;
-      scrollY = DOMScroll.scrollTop;
+      scrollX = scrollLeft();
+      scrollY = scrollTop();
 
       scrollToggleElement.style.overflow = 'hidden';
       scrollToggleElement.style.position = 'fixed';
@@ -205,11 +209,11 @@ export class Viewport {
   }
 
   public static getHorizontalPageScrollPercentage(): number {
-    return (DOMScroll.scrollLeft / this.documentWidth) * 100;
+    return (scrollLeft() / this.documentWidth) * 100;
   }
 
   public static getVerticalPageScrollPercentage(): number {
-    return (DOMScroll.scrollTop / this.documentHeight) * 100;
+    return (scrollTop() / this.documentHeight) * 100;
   }
 
   // @model

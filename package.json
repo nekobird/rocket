@@ -19,7 +19,7 @@
   "scripts": {
     "build": "tsc --emitDeclarationOnly --outDir build/types/; rollup -c rollup.config.js",
     "build-playground": "npx parcel build ./playground/index.html --public-url ./",
-    "clean": "rm -r dist; rm -r build; rm -r .cache",
+    "clean": "rimraf dist build .cache",
     "prepublishOnly": "npm run build",
     "start": "npx parcel ./playground/index.html",
     "test": "npx jest"
@@ -31,9 +31,10 @@
     "@babel/polyfill": "^7.7.0",
     "@babel/preset-env": "^7.7.1",
     "@babel/preset-typescript": "^7.7.2",
+    "@rollup/plugin-alias": "^2.2.0",
     "@types/jest": "^24.0.23",
+    "rimraf": "^3.0.0",
     "rollup": "^1.27.0",
-    "rollup-plugin-alias": "^2.2.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",

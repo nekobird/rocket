@@ -2,9 +2,9 @@
 export * from './interfaces';
 
 // @core
+export * from './core/util';
 export * from './core/num';
 export * from './core/string-util';
-export * from './core/util';
 
 // @dom
 export * from './dom/dom-align-offset';

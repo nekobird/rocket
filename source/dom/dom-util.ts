@@ -1,3 +1,5 @@
+// DOMUtil does not have any dependencies.
+
 export type Elements = NodeListOf<Element> | Element[] | HTMLElements;
 
 export type HTMLElements = NodeListOf<HTMLElement> | HTMLCollection | HTMLElement[];

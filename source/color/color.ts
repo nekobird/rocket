@@ -1,8 +1,9 @@
 import {
   ConvertColor,
-  Num,
-  StringUtil,
-} from '~/rocket';
+} from './convert-color';
+
+import Num from '~/core/num';
+import StringUtil from '~/core/string-util';
 
 type ColorArray3 = [number, number, number];
 

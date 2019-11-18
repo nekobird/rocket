@@ -1,14 +1,17 @@
 import {
   NumberOrRange,
   RangeArray,
+} from '~/interfaces';
+
+import {
   getMaxArraysLength,
-} from '~/rocket';
+} from './util';
 
 export function average(...values: number[]): number {
   if (values.length < 2) {
     throw new Error ('Num.average: Expects at least two numbers.');
   }
-  
+
   return sum(...values) / values.length;
 }
 
@@ -98,6 +101,12 @@ export function getEuclideanDistance(a: number, b: number): number {
   }
 
   return Math.sqrt(Math.abs((a - b) * (b - a)));
+}
+
+export function getRandomInteger(min: number, max: number): number {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 export function getSign(value: number): number {
@@ -298,21 +307,22 @@ export const Num = {
   cubicBezier,
   cycle,
   getEuclideanDistance,
+  getRandomInteger,
+  getRangeFromNumberOrRange,
   getSign,
   hypotenuse,
+  isNumberOrRange,
+  isRangeArray,
   lerp,
+  orderRangeArray,
   random,
   reciprocal,
   roundTo,
+  snapToInterval,
   sum,
   sumNumberArrays,
   transform,
   within,
-  getRangeFromNumberOrRange,
-  isNumberOrRange,
-  isRangeArray,
-  orderRangeArray,
-  snapToInterval,
 }
 
 export default Num;

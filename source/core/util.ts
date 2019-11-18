@@ -1,6 +1,6 @@
 import {
-  Num,
-} from '~/rocket';
+  getRandomInteger,
+} from '~/global';
 
 export function cycleArray<A>(array: A[], offset: number): A {
   let index = offset % array.length;
@@ -158,8 +158,7 @@ export function promiseEach<A>(array: A[], func: (value: A) => Promise<void>): P
 }
 
 export function randomChoice<A>(...choices: A[]): A {
-  const index = Num.random(choices.length - 1, true);
-
+  const index = getRandomInteger(0, choices.length - 1);
   return choices[index];
 }
 

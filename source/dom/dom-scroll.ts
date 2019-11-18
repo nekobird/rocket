@@ -1,3 +1,9 @@
+
+import {
+  scrollLeft,
+  scrollTop,
+} from '~/global';
+
 import {
   DOMRectangle,
   Offset,
@@ -6,25 +12,11 @@ import {
 
 export class DOMScroll {
   public static get scrollLeft(): number {
-    if (typeof window.pageXOffset === 'number') {
-      return window.pageXOffset;
-    }
-
-    return document.documentElement.scrollLeft
-      || document.body.scrollLeft
-      || window.scrollX
-      || 0;
+    return scrollLeft();
   }
 
   public static get scrollTop(): number {
-    if (typeof window.pageYOffset === 'number') {
-      return window.pageYOffset;
-    }
-
-    return document.documentElement.scrollTop
-      || document.body.scrollTop
-      || window.scrollY
-      || 0;
+    return scrollTop();
   }
 
   public static getScrollLeftToElement(...elements: HTMLElement[]): number {

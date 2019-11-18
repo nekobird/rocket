@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "declaration": true,
+    "declarationDir": "./build/types/",
     "lib": [
       "dom.iterable",
       "dom",
@@ -11,10 +12,11 @@
     "moduleResolution": "node",
     "noImplicitAny": false,
     "noImplicitThis": false,
-    "outDir": "build/",
+    "outDir": "./build/",
+    "rootDir": ".",
     "paths": {
       "~/*": [
-        "rocket/*"
+        "source/*"
       ]
     },
     "preserveConstEnums": true,
@@ -25,10 +27,9 @@
     "target": "esnext",
   },
   "include": [
-    "rocket/*",
+    "./source/*"
   ],
   "exclude": [
-    "node_modules",
-    "source"
+    "node_modules"
   ]
 }

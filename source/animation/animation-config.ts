@@ -1,6 +1,4 @@
-import {
-  Animation,
-} from './animation';
+declare class Animation {};
 
 export interface AnimationTimingFunction {
   (t: number): number;

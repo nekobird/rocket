@@ -1,6 +1,4 @@
-import {
-  Num,
-} from '~/rocket';
+import Num from '~/core/num';
 
 /*
   https://gist.github.com/felipesabino/5066336

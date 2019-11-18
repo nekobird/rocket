@@ -3,8 +3,12 @@ import {
 } from '~/rocket';
 
 import {
-  Animation,
-} from './animation';
+  AnimationConfig
+} from './animation-config';
+
+declare class Animation {
+  config: AnimationConfig;
+}
 
 export type AnimationState = 'READY' | 'INITIAL' | 'BETWEEN' | 'ANIMATING' | 'PAUSED';
 
